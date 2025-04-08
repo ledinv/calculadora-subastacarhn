@@ -7,126 +7,94 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      background-color: #f4f4f4;
+      background-color: #f4f6f9;
       font-family: 'Segoe UI', sans-serif;
-      font-size: 0.85rem;
-      color: #333;
+      font-size: 0.9rem;
       margin: 0;
     }
     header {
-      background: linear-gradient(to right, #5a9bff, #004ba0);
+      background: linear-gradient(to right, #72b5ff, #004ba0);
       height: 80px;
       display: flex;
       align-items: center;
-      padding-left: 40px;
+      padding-left: 30px;
     }
     header h1 {
       color: white;
-      font-size: 28px;
+      font-size: 24px;
       margin: 0;
     }
-    .calculator {
-      max-width: 720px;
+    .container-box {
+      max-width: 880px;
       margin: 30px auto;
-      background: #ffffff;
+      background: white;
+      padding: 30px;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-      padding: 20px 25px;
     }
     label {
       font-weight: 500;
-      margin-bottom: 4px;
+      font-size: 0.85rem;
     }
     input, select {
-      border-radius: 6px !important;
+      height: 34px !important;
       font-size: 0.85rem !important;
-      padding: 6px 10px !important;
-      height: 32px !important;
     }
-    .btn {
-      padding: 6px 16px;
+    table {
       font-size: 0.85rem;
-      border-radius: 6px;
     }
-    .form-group {
-      margin-bottom: 12px;
-    }
-    .social {
-      text-align: center;
-      margin: 30px auto 15px;
-    }
-    .social a {
-      display: inline-block;
-      margin: 0 8px;
-      font-size: 20px;
-      color: #004ba0;
-      text-decoration: none;
-    }
-    .cta {
-      text-align: center;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 30px;
+    table td {
+      padding: 4px 8px;
     }
   </style>
-  <script src="https://kit.fontawesome.com/a2d9d5c9f1.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <header>
     <h1>SUBASTACARHN</h1>
   </header>
 
-  <div class="calculator">
-    <h2 class="text-center mb-3">Calculadora de Importación</h2>
-    <form id="calc-form">
-      <div class="form-row">
-        <div class="form-group col-md-4">
-          <label>Monto Oferta</label>
-          <input type="number" id="c1" class="form-control" value="3000">
-        </div>
-        <div class="form-group col-md-4">
-          <label>Barco</label>
-          <input type="number" id="c7" class="form-control" value="950">
-        </div>
-        <div class="form-group col-md-4">
-          <label>Grua</label>
-          <input type="number" id="c8" class="form-control" value="375">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-4">
-          <label>Tipo Cambio</label>
-          <input type="number" id="e2" class="form-control" value="25.78" readonly>
-        </div>
-        <div class="form-group col-md-4">
-          <label>VIN</label>
-          <select id="c13" class="form-control">
-            <option value="1,4,5">1,4,5</option>
-            <option value="OTROS">OTROS</option>
-          </select>
-        </div>
-        <div class="form-group col-md-4">
-          <label>Tipo Vehículo</label>
-          <select id="c14" class="form-control">
-            <option value="PICK UP">PICK UP</option>
-            <option value="OTROS">OTROS</option>
-          </select>
-        </div>
-      </div>
-      <button type="button" id="calculateBtn" class="btn btn-primary btn-block">Calcular</button>
-    </form>
-    <div class="mt-3" id="results"></div>
-  </div>
+  <div class="container-box">
+    <h4 class="text-center mb-4">Calculadora de Importación de Vehículos</h4>
 
-  <div class="social">
-    <a href="https://wa.me/50499999999" target="_blank"><i class="fab fa-whatsapp"></i></a>
-    <a href="https://tiktok.com/@tu_usuario" target="_blank"><i class="fab fa-tiktok"></i></a>
-    <a href="https://instagram.com/tu_usuario" target="_blank"><i class="fab fa-instagram"></i></a>
-    <a href="https://facebook.com/tu_pagina" target="_blank"><i class="fab fa-facebook"></i></a>
-  </div>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="c1">Monto de Oferta (C1):</label>
+        <input type="number" id="c1" class="form-control" value="3000">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="c7">Precio de Barco (C7):</label>
+        <input type="number" id="c7" class="form-control" value="950">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="c8">Precio de Grua (C8):</label>
+        <input type="number" id="c8" class="form-control" value="375">
+      </div>
+    </div>
 
-  <div class="cta">
-    ¡Importá tu carro hoy con SubastaCarHN y ahorrá hasta un 30%!
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="e2">Tipo de Cambio (E2):</label>
+        <input type="number" id="e2" class="form-control" value="25.78" readonly>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="c13">VIN (C13):</label>
+        <select id="c13" class="form-control">
+          <option value="1,4,5">1,4,5</option>
+          <option value="OTROS">OTROS</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="c14">Tipo de Vehículo (C14):</label>
+        <select id="c14" class="form-control">
+          <option value="PICK UP">PICK UP</option>
+          <option value="OTROS">OTROS</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-block mb-4" id="calculateBtn">Calcular</button>
+
+    <div id="results"></div>
   </div>
 
   <script>
@@ -134,23 +102,64 @@
       style: "currency", currency: "HNL"
     }).format(valor);
 
-    const buyerFees = [[50,1],[100,25],[200,60],[350,90],[400,125],[450,135],[500,145],[550,155],[600,170],[700,195],[800,215],[900,215],[1000,250],[1200,270],[1300,285],[1400,300],[1500,315],[1600,330],[1700,350],[1800,370],[2000,390],[2400,425],[2500,460],[3000,505],[3500,555],[4000,600],[4500,625],[5000,650],[6000,700],[7000,755],[8000,800],[9000,820],[10000,850],[11000,850],[12000,875],[13000,890],[14000,900],[15000,900]];
-    const virtualBidFees = [[100,49],[500,65],[1000,85],[2000,95],[4000,125],[6000,145],[8000,145],[9000,160],[10000,160],[200000,160]];
-    const buscarValor = (tabla, valor) => tabla.slice().reverse().find(t => valor >= t[0])?.[1] || 0;
+    const buyerFees = [
+      [50.00, 1.00], [100.00, 25.00], [200.00, 60.00], [350.00, 90.00], [400.00, 125.00],
+      [450.00, 135.00], [500.00, 145.00], [550.00, 155.00], [600.00, 170.00], [700.00, 195.00],
+      [800.00, 215.00], [900.00, 215.00], [1000.00, 250.00], [1200.00, 270.00], [1300.00, 285.00],
+      [1400.00, 300.00], [1500.00, 315.00], [1600.00, 330.00], [1700.00, 350.00], [1800.00, 370.00],
+      [2000.00, 390.00], [2400.00, 425.00], [2500.00, 460.00], [3000.00, 505.00], [3500.00, 555.00],
+      [4000.00, 600.00], [4500.00, 625.00], [5000.00, 650.00], [6000.00, 700.00], [7000.00, 755.00],
+      [8000.00, 800.00], [9000.00, 820.00], [10000.00, 850.00], [11000.00, 850.00],
+      [12000.00, 875.00], [13000.00, 890.00], [14000.00, 900.00], [15000.00, 900.00]
+    ];
 
-    document.getElementById('calculateBtn').addEventListener('click', () => {
-      const c1 = +document.getElementById('c1').value;
-      const c7 = +document.getElementById('c7').value;
-      const c8 = +document.getElementById('c8').value;
-      const e2 = +document.getElementById('e2').value;
+    const virtualBidFees = [
+      [100, 49], [500, 65], [1000, 85], [2000, 95], [4000, 125], [6000, 145], [8000, 145],
+      [9000, 160], [10000, 160], [200000, 160]
+    ];
+
+    function buscarValor(tabla, valor) {
+      let resultado = 0;
+      for (let i = tabla.length - 1; i >= 0; i--) {
+        if (valor >= tabla[i][0]) {
+          resultado = tabla[i][1];
+          break;
+        }
+      }
+      return resultado;
+    }
+
+    function buscarBuyerFee(c1) {
+      return c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
+    }
+
+    function buscarVirtualBidFee(c1) {
+      return c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
+    }
+
+    function calcular() {
+      const c1 = parseFloat(document.getElementById('c1').value);
+      const c7 = parseFloat(document.getElementById('c7').value);
+      const c8 = parseFloat(document.getElementById('c8').value);
+      const e2 = parseFloat(document.getElementById('e2').value);
       const c13 = document.getElementById('c13').value;
       const c14 = document.getElementById('c14').value;
 
-      const c2 = 15, c3 = c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1), c4 = c1 > 15000 ? c1 * 0.06 : buscarValor(buyerFees, c1), c5 = 115;
-      const c6 = c1 + c2 + c3 + c4 + c5, c9 = c7 + c8, c10 = c6 + c9, c11 = c10 * e2;
+      const c2 = 15;
+      const c3 = buscarVirtualBidFee(c1);
+      const c4 = buscarBuyerFee(c1);
+      const c5 = 115;
+      const c6 = c1 + c2 + c3 + c4 + c5;
+      const c9 = c7 + c8;
+      const c10 = c6 + c9;
+      const c11 = c10 * e2;
 
-      const o3 = 50 * e2, o4 = (c6 * 0.015) * e2;
-      const c15 = c13 === "OTROS" ? (c11 + o3 + o4) * 0.15 : 0;
+      const n3 = 50;
+      const n4 = c6 * 0.015;
+      const o3 = n3 * e2;
+      const o4 = n4 * e2;
+
+      const c15 = (c13 === "OTROS") ? (c11 + o3 + o4) * 0.15 : 0;
 
       let isc = 0;
       if (c10 <= 7000) isc = 0.10;
@@ -159,22 +168,26 @@
       else if (c10 <= 30000) isc = 0.30;
       else isc = 0.45;
 
-      const c16 = c14 === "OTROS" ? (c11 + o3 + o4 + c15) * isc : 0;
+      const c16 = (c14 === "OTROS") ? (c11 + o3 + o4 + c15) * isc : 0;
       const c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
-      const c18 = c15 + c16 + c17, c25 = 5000 + 4000 + 7500 + 4000 + 1417.81;
+      const c18 = c15 + c16 + c17;
+
+      const c25 = 5000 + 4000 + 7500 + 4000 + 1417.81;
       const c26 = c11 + c18 + c25 + o3 + o4;
 
       document.getElementById('results').innerHTML = `
         <table class="table table-sm table-bordered">
           <tbody>
-            <tr><td>Total Lempiras</td><td><strong>${formatear(c26)}</strong></td></tr>
+            <tr><td><strong>Total Lempiras</strong></td><td><strong>${formatear(c26)}</strong></td></tr>
             <tr><td>FOB (L)</td><td>${formatear(c11)}</td></tr>
             <tr><td>Impuestos</td><td>${formatear(c18)}</td></tr>
             <tr><td>Gastos Fijos</td><td>${formatear(c25)}</td></tr>
           </tbody>
         </table>
       `;
-    });
+    }
+
+    document.getElementById('calculateBtn').addEventListener('click', calcular);
 
     window.addEventListener('load', () => {
       fetch("https://dolar-ficohsa-api.onrender.com/api/tipo-cambio")
