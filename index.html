@@ -1,82 +1,76 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de Importación de Vehículos - SUBASTACARHN</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SUBASTACARHN - Calculadora de Importación</title>
   <style>
-    /* Estilos generales */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f9f9f9;
+      background: #f9f9f9;
+    }
+    header {
+      background: linear-gradient(to right, #000000, #434343);
+      height: 80px;
+      color: white;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
     }
     h1, h2 {
       text-align: center;
     }
     .section {
-      margin: 20px;
+      padding: 20px;
     }
     .form-group {
+      max-width: 400px;
+      margin: auto;
       display: flex;
       flex-direction: column;
       gap: 15px;
-      max-width: 400px;
-      margin: 0 auto;
     }
     label {
       font-weight: bold;
     }
-    input, select {
-      padding: 8px;
+    input, select, textarea {
       width: 100%;
-      border: 1px solid #ccc;
+      padding: 8px;
       border-radius: 6px;
+      border: 1px solid #ccc;
     }
     button {
       padding: 10px;
-      font-size: 16px;
+      background: #0066cc;
+      color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      background-color: #0066cc;
-      color: white;
       margin-top: 10px;
     }
     button#resetBtn {
-      background-color: #888;
+      background: #888;
     }
     .table-container {
       overflow-x: auto;
-      margin-top: 20px;
     }
     table {
-      border-collapse: collapse;
       width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
       min-width: 600px;
     }
-    table, th, td {
-      border: 1px solid #ccc;
+    th, td {
       padding: 8px;
+      border: 1px solid #ccc;
     }
     th {
-      background-color: #eaeaea;
+      background: #eaeaea;
     }
-
-    /* Encabezado con degradado negro */
-    header {
-      background: linear-gradient(to right, #000000, #434343);
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    /* Botón flotante de WhatsApp */
     .whatsapp-button {
       position: fixed;
       bottom: 20px;
@@ -93,53 +87,38 @@
       text-decoration: none;
       box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     }
-    .whatsapp-button:hover {
-      background-color: #1ebe57;
-    }
-
-    /* Pie de página con enlaces a redes sociales */
     footer {
       text-align: center;
-      margin-top: 20px;
-      padding: 10px;
-      background-color: #333;
+      padding: 15px;
+      background: #333;
       color: white;
     }
     footer a {
       color: #25d366;
-      text-decoration: none;
       margin: 0 10px;
+      text-decoration: none;
     }
-    footer a:hover {
-      text-decoration: underline;
-    }
-
   </style>
 </head>
 <body>
+  <header>SUBASTACARHN</header>
 
-  <!-- Encabezado -->
-  <header>
-    SUBASTACARHN
-  </header>
-
-  <!-- Contenido de la página -->
   <h1>Calculadora de Importación de Vehículos</h1>
 
   <div class="section">
     <h2>Entradas</h2>
     <div class="form-group">
       <label for="c1">Monto de Oferta (C1):</label>
-      <input type="number" id="c1" value="0">
+      <input type="number" id="c1" value="0" />
 
       <label for="c7">Precio de Barco (C7):</label>
-      <input type="number" id="c7" value="0">
+      <input type="number" id="c7" value="0" />
 
       <label for="c8">Precio de Grua (C8):</label>
-      <input type="number" id="c8" value="0">
+      <input type="number" id="c8" value="0" />
 
       <label for="e2">Tipo de Cambio (E2):</label>
-      <input type="number" id="e2" value="25.90" readonly>
+      <input type="number" id="e2" value="25.90" readonly />
 
       <label for="c13">VIN (C13):</label>
       <select id="c13">
@@ -153,24 +132,42 @@
         <option value="OTROS">OTROS</option>
       </select>
     </div>
-
-    <button id="calculateBtn">Calcular</button>
-    <button id="resetBtn">Reiniciar</button>
+    <div class="form-group">
+      <button id="calculateBtn">Calcular</button>
+      <button id="resetBtn">Reiniciar</button>
+    </div>
   </div>
 
   <div class="section">
     <h2>Resultados</h2>
-    <div class="table-container">
-      <div id="results"></div>
-    </div>
+    <div id="results"></div>
   </div>
 
-  <!-- Botón flotante de WhatsApp -->
-  <a href="https://wa.me/50497330137" class="whatsapp-button" target="_blank">
-    &#x1F4AC;
-  </a>
+  <!-- FORMULARIO DE CONTACTO -->
+  <div class="section" style="max-width: 600px; margin: auto;">
+    <h2>¿Quieres importar tu vehículo?</h2>
+    <p>Déjanos tus datos y te contactaremos pronto.</p>
+    <form action="https://formspree.io/f/mnnpordn" method="POST">
+      <label for="nombre">Nombre completo:</label>
+      <input type="text" name="nombre" id="nombre" required>
 
-  <!-- Pie de página con enlaces a redes sociales -->
+      <label for="telefono">Celular / WhatsApp:</label>
+      <input type="tel" name="telefono" id="telefono" required>
+
+      <label for="correo">Correo electrónico:</label>
+      <input type="email" name="correo" id="correo" required>
+
+      <label for="comentario">Comentario o consulta:</label>
+      <textarea name="comentario" id="comentario" rows="4" required></textarea>
+
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+
+  <!-- BOTÓN FLOTANTE DE WHATSAPP -->
+  <a href="https://wa.me/50497330137" class="whatsapp-button" target="_blank">💬</a>
+
+  <!-- PIE DE PÁGINA CON REDES -->
   <footer>
     Síguenos en:
     <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
@@ -179,25 +176,96 @@
   </footer>
 
   <script>
-    // Función para formatear valores monetarios
-    const formatear = valor => new Intl.NumberFormat("es-HN", {
+    const formatear = v => new Intl.NumberFormat("es-HN", {
       style: "currency",
       currency: "HNL"
-    }).format(valor);
+    }).format(v);
 
-    // Función para buscar valores en tablas
+    const buyerFees = [
+      [50, 1], [100, 25], [200, 60], [350, 90], [400, 125], [450, 135],
+      [500, 145], [550, 155], [600, 170], [700, 195], [800, 215],
+      [900, 215], [1000, 250], [1200, 270], [1300, 285], [1400, 300],
+      [1500, 315], [1600, 330], [1700, 350], [1800, 370], [2000, 390],
+      [2400, 425], [2500, 460], [3000, 505], [3500, 555], [4000, 600],
+      [4500, 625], [5000, 650], [6000, 700], [7000, 755], [8000, 800],
+      [9000, 820], [10000, 850], [11000, 850], [12000, 875],
+      [13000, 890], [14000, 900], [15000, 900]
+    ];
+    const virtualBidFees = [
+      [100, 49], [500, 65], [1000, 85], [2000, 95], [4000, 125],
+      [6000, 145], [8000, 145], [9000, 160], [10000, 160], [200000, 160]
+    ];
     const buscarValor = (tabla, valor) => {
-      let resultado = 0;
       for (let i = tabla.length - 1; i >= 0; i--) {
-        if (valor >= tabla[i][0]) {
-          resultado = tabla[i][1];
-          break;
-        }
+        if (valor >= tabla[i][0]) return tabla[i][1];
       }
-      return resultado;
+      return 0;
     };
+    const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
+    const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
 
-    // Funciones específicas para tarifas
-    const buscarBuyerFee = c1 => c1
-::contentReference[oaicite:0]{index=0}
- 
+    function calcular() {
+      const c1 = parseFloat(document.getElementById('c1').value);
+      const c7 = parseFloat(document.getElementById('c7').value);
+      const c8 = parseFloat(document.getElementById('c8').value);
+      const e2 = parseFloat(document.getElementById('e2').value);
+      const c13 = document.getElementById('c13').value;
+      const c14 = document.getElementById('c14').value;
+
+      const c2 = 15, c3 = buscarVirtualBidFee(c1), c4 = buscarBuyerFee(c1), c5 = 115;
+      const c6 = c1 + c2 + c3 + c4 + c5;
+      const c9 = c7 + c8, c10 = c6 + c9, c11 = c10 * e2;
+      const o3 = 50 * e2, o4 = c6 * 0.015 * e2;
+      const c15 = (c13 === "OTROS") ? (c11 + o3 + o4) * 0.15 : 0;
+      let isc = 0;
+      if (c10 <= 7000) isc = 0.10;
+      else if (c10 <= 10000) isc = 0.15;
+      else if (c10 <= 20000) isc = 0.20;
+      else if (c10 <= 30000) isc = 0.30;
+      else isc = 0.45;
+      const c16 = (c14 === "OTROS") ? (c11 + o3 + o4 + c15) * isc : 0;
+      const c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
+      const c18 = c15 + c16 + c17;
+      const c20 = 5000, c21 = 4000, c22 = 7500, c23 = 4000, c24 = 1417.81;
+      const c25 = c20 + c21 + c22 + c23 + c24;
+      const c26 = c11 + c18 + c25 + o3 + o4;
+
+      document.getElementById('results').innerHTML = `
+        <p><strong>Total General (C26):</strong> ${formatear(c26)}</p>
+        <button onclick="mostrarDetalles()" id="toggleBtn">Ver detalles</button>
+        <div id="detalleResultados" style="display:none;">
+          <table>
+            <tr><th>Concepto</th><th>Valor</th></tr>
+            ${[
+              ['C1 (Monto de Oferta)', c1], ['C2 (Environmental Fee)', c2], ['C3', c3],
+              ['C4', c4], ['C5', c5], ['C6', c6], ['C7', c7], ['C8', c8],
+              ['C9', c9], ['C10', c10], ['C11', c11], ['C13', c13], ['C14', c14],
+              ['C15', c15], ['C16', c16], ['C17', c17], ['C18', c18],
+              ['C20', c20], ['C21', c21], ['C22', c22], ['C23', c23],
+              ['C24', c24], ['C25', c25], ['C26', c26]
+            ].map(([k,v]) => `<tr><td>${k}</td><td>${formatear(v)}</td></tr>`).join('')}
+          </table>
+        </div>
+      `;
+    }
+
+    function mostrarDetalles() {
+      const tabla = document.getElementById("detalleResultados");
+      const btn = document.getElementById("toggleBtn");
+      tabla.style.display = tabla.style.display === "none" ? "block" : "none";
+      btn.textContent = tabla.style.display === "block" ? "Ocultar detalles" : "Ver detalles";
+    }
+
+    function reiniciar() {
+      document.getElementById('c1').value = 0;
+      document.getElementById('c7').value = 0;
+      document.getElementById('c8').value = 0;
+      document.getElementById('results').innerHTML = '';
+      document.getElementById('e2').value = "25.90";
+    }
+
+    document.getElementById('calculateBtn').addEventListener('click', calcular);
+    document.getElementById('resetBtn').addEventListener('click', reiniciar);
+  </script>
+</body>
+</html>
