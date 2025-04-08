@@ -2,55 +2,94 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Calculadora de Importación</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculadora Importación</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f4f4f4;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.85rem;
+      color: #333;
+    }
+    .calculator {
+      max-width: 720px;
+      margin: 30px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      padding: 20px 25px;
+    }
+    h1 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    input, select {
+      border-radius: 6px !important;
+      font-size: 0.85rem !important;
+      padding: 6px 10px !important;
+      height: 32px !important;
+    }
+    .btn {
+      padding: 6px 16px;
+      font-size: 0.85rem;
+      border-radius: 6px;
+    }
+    table td, table th {
+      padding: 6px 10px !important;
+    }
+    .form-group {
+      margin-bottom: 12px;
+    }
+  </style>
 </head>
-<body class="bg-light">
-  <div class="container py-5">
-    <h1 class="mb-4 text-center">Calculadora de Importación de Vehículos</h1>
-
-    <div class="card mb-4">
-      <div class="card-header">Entradas</div>
-      <div class="card-body">
-        <div class="form-group">
-          <label>Monto de Oferta (C1)</label>
+<body>
+  <div class="calculator">
+    <h1>Calculadora Importación Vehículos</h1>
+    <form id="calc-form">
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label>Monto Oferta (C1)</label>
           <input type="number" id="c1" class="form-control" value="3000">
         </div>
-        <div class="form-group">
-          <label>Precio de Barco (C7)</label>
+        <div class="form-group col-md-4">
+          <label>Barco (C7)</label>
           <input type="number" id="c7" class="form-control" value="950">
         </div>
-        <div class="form-group">
-          <label>Precio de Grua (C8)</label>
+        <div class="form-group col-md-4">
+          <label>Grua (C8)</label>
           <input type="number" id="c8" class="form-control" value="375">
         </div>
-        <div class="form-group">
-          <label>Tipo de Cambio (E2)</label>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label>Tipo Cambio (E2)</label>
           <input type="number" id="e2" class="form-control" value="25.78" readonly>
         </div>
-        <div class="form-group">
+        <div class="form-group col-md-4">
           <label>VIN (C13)</label>
           <select id="c13" class="form-control">
             <option value="1,4,5">1,4,5</option>
             <option value="OTROS">OTROS</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Tipo de Vehículo (C14)</label>
+        <div class="form-group col-md-4">
+          <label>Tipo Vehículo (C14)</label>
           <select id="c14" class="form-control">
             <option value="PICK UP">PICK UP</option>
             <option value="OTROS">OTROS</option>
           </select>
         </div>
-        <button id="calculateBtn" class="btn btn-primary btn-block">Calcular</button>
       </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">Resultados</div>
-      <div class="card-body" id="results"></div>
-    </div>
+      <button type="button" id="calculateBtn" class="btn btn-primary btn-block">Calcular</button>
+    </form>
+    <div class="mt-3" id="results"></div>
   </div>
 
   <script>
@@ -60,29 +99,21 @@
 
     const buyerFees = [[50,1],[100,25],[200,60],[350,90],[400,125],[450,135],[500,145],[550,155],[600,170],[700,195],[800,215],[900,215],[1000,250],[1200,270],[1300,285],[1400,300],[1500,315],[1600,330],[1700,350],[1800,370],[2000,390],[2400,425],[2500,460],[3000,505],[3500,555],[4000,600],[4500,625],[5000,650],[6000,700],[7000,755],[8000,800],[9000,820],[10000,850],[11000,850],[12000,875],[13000,890],[14000,900],[15000,900]];
     const virtualBidFees = [[100,49],[500,65],[1000,85],[2000,95],[4000,125],[6000,145],[8000,145],[9000,160],[10000,160],[200000,160]];
+    const buscarValor = (tabla, valor) => tabla.slice().reverse().find(t => valor >= t[0])?.[1] || 0;
 
-    const buscarValor = (tabla, valor) => {
-      let res = 0;
-      for (let i = tabla.length - 1; i >= 0; i--) {
-        if (valor >= tabla[i][0]) { res = tabla[i][1]; break; }
-      }
-      return res;
-    };
-
-    const calcular = () => {
-      const c1 = parseFloat(document.getElementById('c1').value);
-      const c7 = parseFloat(document.getElementById('c7').value);
-      const c8 = parseFloat(document.getElementById('c8').value);
-      const e2 = parseFloat(document.getElementById('e2').value);
+    document.getElementById('calculateBtn').addEventListener('click', () => {
+      const c1 = +document.getElementById('c1').value;
+      const c7 = +document.getElementById('c7').value;
+      const c8 = +document.getElementById('c8').value;
+      const e2 = +document.getElementById('e2').value;
       const c13 = document.getElementById('c13').value;
       const c14 = document.getElementById('c14').value;
 
       const c2 = 15, c3 = c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1), c4 = c1 > 15000 ? c1 * 0.06 : buscarValor(buyerFees, c1), c5 = 115;
-      const c6 = c1 + c2 + c3 + c4 + c5;
-      const c9 = c7 + c8, c10 = c6 + c9, c11 = c10 * e2;
+      const c6 = c1 + c2 + c3 + c4 + c5, c9 = c7 + c8, c10 = c6 + c9, c11 = c10 * e2;
 
-      const n3 = 50, n4 = c6 * 0.015, o3 = n3 * e2, o4 = n4 * e2;
-      const c15 = (c13 === "OTROS") ? (c11 + o3 + o4) * 0.15 : 0;
+      const o3 = 50 * e2, o4 = (c6 * 0.015) * e2;
+      const c15 = c13 === "OTROS" ? (c11 + o3 + o4) * 0.15 : 0;
 
       let isc = 0;
       if (c10 <= 7000) isc = 0.10;
@@ -91,52 +122,29 @@
       else if (c10 <= 30000) isc = 0.30;
       else isc = 0.45;
 
-      const c16 = (c14 === "OTROS") ? (c11 + o3 + o4 + c15) * isc : 0;
+      const c16 = c14 === "OTROS" ? (c11 + o3 + o4 + c15) * isc : 0;
       const c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
-      const c18 = c15 + c16 + c17;
-      const c20 = 5000, c21 = 4000, c22 = 7500, c23 = 4000, c24 = 1417.81;
-      const c25 = c20 + c21 + c22 + c23 + c24, c26 = c11 + c18 + c25 + o3 + o4;
+      const c18 = c15 + c16 + c17, c25 = 5000 + 4000 + 7500 + 4000 + 1417.81;
+      const c26 = c11 + c18 + c25 + o3 + o4;
 
       document.getElementById('results').innerHTML = `
-        <table class="table table-bordered table-sm">
-          <thead class="thead-light"><tr><th>Concepto</th><th>Valor</th></tr></thead>
+        <table class="table table-sm table-bordered">
           <tbody>
-            <tr><td>C1 (Monto de Oferta)</td><td>${formatear(c1)}</td></tr>
-            <tr><td>C2 (Environmental Fee)</td><td>${formatear(c2)}</td></tr>
-            <tr><td>C3 (Virtual Bid Fee)</td><td>${formatear(c3)}</td></tr>
-            <tr><td>C4 (Buyer Fee)</td><td>${formatear(c4)}</td></tr>
-            <tr><td>C5 (Gate y Title Pick Fee)</td><td>${formatear(c5)}</td></tr>
-            <tr><td>C6 (Total 1)</td><td>${formatear(c6)}</td></tr>
-            <tr><td>C7 (Barco)</td><td>${formatear(c7)}</td></tr>
-            <tr><td>C8 (Grua)</td><td>${formatear(c8)}</td></tr>
-            <tr><td>C10 ($)</td><td>${formatear(c10)}</td></tr>
-            <tr><td>C11 (Lempiras)</td><td>${formatear(c11)}</td></tr>
-            <tr><td>O3 (Fijo)</td><td>${formatear(o3)}</td></tr>
-            <tr><td>O4 (% calc)</td><td>${formatear(o4)}</td></tr>
-            <tr><td>C15 (DAI)</td><td>${formatear(c15)}</td></tr>
-            <tr><td>C16 (ISC)</td><td>${formatear(c16)}</td></tr>
-            <tr><td>C17 (ISV)</td><td>${formatear(c17)}</td></tr>
-            <tr><td>C18 (Impuestos)</td><td>${formatear(c18)}</td></tr>
-            <tr><td>C25 (Gastos Fijos)</td><td>${formatear(c25)}</td></tr>
-            <tr><td>C26 (Total General)</td><td><strong>${formatear(c26)}</strong></td></tr>
+            <tr><td>Total Lempiras</td><td><strong>${formatear(c26)}</strong></td></tr>
+            <tr><td>FOB (L)</td><td>${formatear(c11)}</td></tr>
+            <tr><td>Impuestos</td><td>${formatear(c18)}</td></tr>
+            <tr><td>Gastos Fijos</td><td>${formatear(c25)}</td></tr>
           </tbody>
         </table>
       `;
-    };
-
-    document.getElementById('calculateBtn').addEventListener('click', calcular);
+    });
 
     window.addEventListener('load', () => {
       fetch("https://dolar-ficohsa-api.onrender.com/api/tipo-cambio")
       .then(res => res.json())
-      .then(data => {
-        document.getElementById('e2').value = data.tipoCambio;
-      }).catch(() => {
-        document.getElementById('e2').value = 25.7784;
-      });
+      .then(data => { document.getElementById('e2').value = data.tipoCambio; })
+      .catch(() => { document.getElementById('e2').value = 25.7784; });
     });
   </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
