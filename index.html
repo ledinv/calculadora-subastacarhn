@@ -218,10 +218,15 @@
       fetch("https://dolar-ficohsa-api.onrender.com/api/tipo-cambio")
         .then(res => res.json())
         .then(data => {
-          document.getElementById('e2').value = parseFloat(data.tipoCambio).toFixed(4);
+          const cambio = parseFloat(data.tipoCambio);
+          if (!isNaN(cambio)) {
+            document.getElementById('e2').value = cambio.toFixed(4);
+          } else {
+            document.getElementById('e2').value = "25.7784";
+          }
         })
         .catch(() => {
-          document.getElementById('e2').value = 25.7784;
+          document.getElementById('e2').value = "25.7784";
         });
     });
   </script>
