@@ -1,124 +1,51 @@
+<!-- Archivo completo para guardar como calculadora.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Importación de Vehículos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #f9f9f9;
-    }
-    h1, h2 {
-      text-align: center;
-    }
-    .section {
-      margin-bottom: 20px;
-    }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      max-width: 400px;
-      margin: 0 auto;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    input, select {
-      padding: 8px;
-      width: 100%;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    button {
-      margin-top: 10px;
-      padding: 10px;
-      width: 100%;
-      max-width: 400px;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      background-color: #0066cc;
-      color: white;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    button#resetBtn {
-      background-color: #888;
-    }
-    .table-container {
-      overflow-x: auto;
-      margin-top: 20px;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      min-width: 600px;
-    }
-    table, th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-    }
-    th {
-      background-color: #eaeaea;
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .section { margin-bottom: 20px; }
+    label { display: inline-block; width: 200px; max-width: 100%; }
+    input, select { width: 100%; max-width: 300px; }
+    table { border-collapse: collapse; margin-top: 10px; width: 100%; overflow-x: auto; }
+    table, th, td { border: 1px solid #ccc; padding: 5px; }
+    button { margin-top: 10px; padding: 10px 20px; }
+    @media (max-width: 600px) {
+      label { width: 100%; }
     }
   </style>
 </head>
 <body>
-
   <h1>Calculadora de Importación de Vehículos</h1>
 
   <div class="section">
     <h2>Entradas</h2>
-    <div class="form-group">
-      <div>
-        <label for="c1">Monto de Oferta:</label>
-        <input type="number" id="c1" value="3000">
-      </div>
-      <div>
-        <label for="c7">Precio de Barco:</label>
-        <input type="number" id="c7" value="950">
-      </div>
-      <div>
-        <label for="c8">Precio de Grua:</label>
-        <input type="number" id="c8" value="375">
-      </div>
-      <div>
-        <label for="e2">Tipo de Cambio:</label>
-        <input type="number" id="e2" value="25.90">
-        <small style="font-size: 0.85em; color: #666;">Este valor es fijo, pero puedes modificarlo si deseas un cálculo más preciso.</small>
-      </div>
-      <div>
-        <label for="c13">VIN:</label>
-        <select id="c13">
-          <option value="1,4,5">1,4,5</option>
-          <option value="OTROS">OTROS</option>
-        </select>
-      </div>
-      <div>
-        <label for="c14">Tipo de Vehículo:</label>
-        <select id="c14">
-          <option value="PICK UP">PICK UP</option>
-          <option value="OTROS">OTROS</option>
-        </select>
-      </div>
+    <div><label for="c1">Monto de Oferta (C1):</label><input type="number" id="c1" value="0"></div>
+    <div><label for="c7">Precio de Barco (C7):</label><input type="number" id="c7" value="0"></div>
+    <div><label for="c8">Precio de Grua (C8):</label><input type="number" id="c8" value="0"></div>
+    <div><label for="e2">Tipo de Cambio (E2):</label><input type="number" id="e2" value="25.78" readonly></div>
+    <div><label for="c13">VIN (C13):</label>
+      <select id="c13">
+        <option value="1,4,5">1,4,5</option>
+        <option value="OTROS">OTROS</option>
+      </select>
     </div>
-
+    <div><label for="c14">Tipo de Vehículo (C14):</label>
+      <select id="c14">
+        <option value="PICK UP">PICK UP</option>
+        <option value="OTROS">OTROS</option>
+      </select>
+    </div>
     <button id="calculateBtn">Calcular</button>
     <button id="resetBtn">Reiniciar</button>
   </div>
 
   <div class="section">
     <h2>Resultados</h2>
-    <div class="table-container">
-      <div id="results"></div>
-    </div>
+    <div id="results"></div>
   </div>
 
   <script>
@@ -128,19 +55,18 @@
     }).format(valor);
 
     const buyerFees = [
-      [50, 1], [100, 25], [200, 60], [350, 90], [400, 125],
-      [450, 135], [500, 145], [550, 155], [600, 170], [700, 195],
-      [800, 215], [900, 215], [1000, 250], [1200, 270], [1300, 285],
-      [1400, 300], [1500, 315], [1600, 330], [1700, 350], [1800, 370],
-      [2000, 390], [2400, 425], [2500, 460], [3000, 505], [3500, 555],
-      [4000, 600], [4500, 625], [5000, 650], [6000, 700], [7000, 755],
-      [8000, 800], [9000, 820], [10000, 850], [11000, 850],
-      [12000, 875], [13000, 890], [14000, 900], [15000, 900]
+      [50, 1], [100, 25], [200, 60], [350, 90], [400, 125], [450, 135], [500, 145],
+      [550, 155], [600, 170], [700, 195], [800, 215], [900, 215], [1000, 250],
+      [1200, 270], [1300, 285], [1400, 300], [1500, 315], [1600, 330], [1700, 350],
+      [1800, 370], [2000, 390], [2400, 425], [2500, 460], [3000, 505], [3500, 555],
+      [4000, 600], [4500, 625], [5000, 650], [6000, 700], [7000, 755], [8000, 800],
+      [9000, 820], [10000, 850], [11000, 850], [12000, 875], [13000, 890],
+      [14000, 900], [15000, 900]
     ];
 
     const virtualBidFees = [
-      [100, 49], [500, 65], [1000, 85], [2000, 95],
-      [4000, 125], [6000, 145], [8000, 145], [9000, 160], [10000, 160], [200000, 160]
+      [100, 49], [500, 65], [1000, 85], [2000, 95], [4000, 125], [6000, 145],
+      [8000, 145], [9000, 160], [10000, 160], [200000, 160]
     ];
 
     const buscarValor = (tabla, valor) => {
@@ -196,39 +122,73 @@
       const c25 = c20 + c21 + c22 + c23 + c24;
       const c26 = c11 + c18 + c25 + o3 + o4;
 
-      document.getElementById('results').innerHTML = `
-        <table>
-          <tr><th>Concepto</th><th>Valor</th></tr>
-          <tr><td>Monto de Oferta</td><td>${formatear(c1)}</td></tr>
-          <tr><td>Environmental Fee</td><td>${formatear(c2)}</td></tr>
-          <tr><td>Virtual Bid Fee</td><td>${formatear(c3)}</td></tr>
-          <tr><td>Buyer Fee</td><td>${formatear(c4)}</td></tr>
-          <tr><td>Gate y Title Pick Fee</td><td>${formatear(c5)}</td></tr>
-          <tr><td>Total CIF (USD)</td><td>${formatear(c10)}</td></tr>
-          <tr><td>Total CIF (LPS)</td><td>${formatear(c11)}</td></tr>
-          <tr><td>DAI</td><td>${formatear(c15)}</td></tr>
-          <tr><td>ISC</td><td>${formatear(c16)}</td></tr>
-          <tr><td>ISV</td><td>${formatear(c17)}</td></tr>
-          <tr><td>Total Impuestos</td><td>${formatear(c18)}</td></tr>
-          <tr><td>Gastos Fijos</td><td>${formatear(c25)}</td></tr>
-          <tr><td>Total General</td><td>${formatear(c26)}</td></tr>
-        </table>
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = `
+        <p><strong>Total General (C26):</strong> ${formatear(c26)}</p>
+        <button onclick="mostrarDetalles()" id="toggleBtn">Ver detalles</button>
+        <div id="detalleResultados" style="display: none;">
+          <table>
+            <tr><th>Concepto</th><th>Valor</th></tr>
+            <tr><td>C1 (Monto de Oferta)</td><td>${formatear(c1)}</td></tr>
+            <tr><td>C2 (Environmental Fee)</td><td>${formatear(c2)}</td></tr>
+            <tr><td>C3 (Virtual Bid Fee)</td><td>${formatear(c3)}</td></tr>
+            <tr><td>C4 (Buyer Fee)</td><td>${formatear(c4)}</td></tr>
+            <tr><td>C5 (Gate y Title Pick Fee)</td><td>${formatear(c5)}</td></tr>
+            <tr><td>C6</td><td>${formatear(c6)}</td></tr>
+            <tr><td>C7</td><td>${formatear(c7)}</td></tr>
+            <tr><td>C8</td><td>${formatear(c8)}</td></tr>
+            <tr><td>C9</td><td>${formatear(c9)}</td></tr>
+            <tr><td>C10</td><td>${formatear(c10)}</td></tr>
+            <tr><td>C11</td><td>${formatear(c11)}</td></tr>
+            <tr><td>C13</td><td>${c13}</td></tr>
+            <tr><td>C14</td><td>${c14}</td></tr>
+            <tr><td>C15 (DAI)</td><td>${formatear(c15)}</td></tr>
+            <tr><td>C16 (ISC)</td><td>${formatear(c16)}</td></tr>
+            <tr><td>C17 (ISV)</td><td>${formatear(c17)}</td></tr>
+            <tr><td>C18</td><td>${formatear(c18)}</td></tr>
+            <tr><td>C20</td><td>${formatear(c20)}</td></tr>
+            <tr><td>C21</td><td>${formatear(c21)}</td></tr>
+            <tr><td>C22</td><td>${formatear(c22)}</td></tr>
+            <tr><td>C23</td><td>${formatear(c23)}</td></tr>
+            <tr><td>C24</td><td>${formatear(c24)}</td></tr>
+            <tr><td>C25</td><td>${formatear(c25)}</td></tr>
+            <tr><td>C26</td><td>${formatear(c26)}</td></tr>
+          </table>
+        </div>
       `;
     }
 
+    function mostrarDetalles() {
+      const detalles = document.getElementById('detalleResultados');
+      const boton = document.getElementById('toggleBtn');
+      if (detalles.style.display === 'none') {
+        detalles.style.display = 'block';
+        boton.textContent = 'Ocultar detalles';
+      } else {
+        detalles.style.display = 'none';
+        boton.textContent = 'Ver detalles';
+      }
+    }
+
     function reiniciar() {
-      document.getElementById('c1').value = 3000;
-      document.getElementById('c7').value = 950;
-      document.getElementById('c8').value = 375;
-      document.getElementById('e2').value = 25.90;
-      document.getElementById('c13').value = "1,4,5";
-      document.getElementById('c14').value = "PICK UP";
-      document.getElementById('results').innerHTML = "";
+      document.getElementById('c1').value = 0;
+      document.getElementById('c7').value = 0;
+      document.getElementById('c8').value = 0;
+
+      fetch("https://dolar-ficohsa-api.onrender.com/api/tipo-cambio")
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('e2').value = data.tipoCambio;
+        })
+        .catch(() => {
+          document.getElementById('e2').value = 25.7784;
+        });
+
+      document.getElementById('results').innerHTML = '';
     }
 
     document.getElementById('calculateBtn').addEventListener('click', calcular);
     document.getElementById('resetBtn').addEventListener('click', reiniciar);
   </script>
-
 </body>
 </html>
