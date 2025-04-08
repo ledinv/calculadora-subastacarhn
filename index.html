@@ -1,127 +1,108 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculadora de Importación</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Importación de Vehículos</title>
   <style>
-    * { box-sizing: border-box; }
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f1f3f6;
+      margin: 20px;
+      background-color: #f9f9f9;
     }
-    header {
-      background: linear-gradient(to right, #4d9fd6, #003b8e);
-      color: white;
-      padding: 20px 40px;
-      font-size: 1.5em;
-      font-weight: bold;
+    h1, h2 {
       text-align: center;
     }
-    .container {
-      max-width: 900px;
-      margin: 30px auto;
-      background: white;
-      border-radius: 10px;
-      padding: 30px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 30px;
+    .section {
+      margin-bottom: 20px;
     }
     .form-group {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 15px;
-    }
-    .form-group > div {
-      flex: 1 1 100%;
-    }
-    @media (min-width: 600px) {
-      .form-group > div {
-        flex: 1 1 calc(50% - 15px);
-      }
-    }
-    @media (min-width: 900px) {
-      .form-group > div {
-        flex: 1 1 calc(33.33% - 15px);
-      }
+      max-width: 400px;
+      margin: 0 auto;
     }
     label {
-      font-weight: bold;
       display: block;
       margin-bottom: 5px;
+      font-weight: bold;
     }
     input, select {
-      width: 100%;
       padding: 8px;
+      width: 100%;
       border: 1px solid #ccc;
       border-radius: 6px;
-    }
-    #mensajeCambio {
-      color: red;
-      font-size: 0.9em;
-      margin-top: -10px;
-      margin-bottom: 10px;
     }
     button {
-      background-color: #0066cc;
-      color: white;
+      margin-top: 10px;
+      padding: 10px;
+      width: 100%;
+      max-width: 400px;
+      font-size: 16px;
       border: none;
-      padding: 12px 20px;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 1em;
-      width: 100%;
-      margin-top: 10px;
+      background-color: #0066cc;
+      color: white;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    button#resetBtn {
+      background-color: #888;
+    }
+    .table-container {
+      overflow-x: auto;
+      margin-top: 20px;
     }
     table {
-      width: 100%;
       border-collapse: collapse;
-      margin-top: 25px;
+      width: 100%;
+      min-width: 600px;
     }
-    th, td {
+    table, th, td {
       border: 1px solid #ccc;
-      padding: 10px;
-      text-align: left;
+      padding: 8px;
     }
     th {
-      background-color: #f8f9fa;
-    }
-    tfoot td {
-      font-weight: bold;
-    }
-    .cta {
-      text-align: center;
-      margin-top: 30px;
-      font-weight: bold;
-      color: #333;
+      background-color: #eaeaea;
     }
   </style>
 </head>
 <body>
-  <header>SUBASTACARHN</header>
-  <div class="container">
-    <h2>Calculadora de Importación de Vehículos</h2>
 
+  <h1>Calculadora de Importación de Vehículos</h1>
+
+  <div class="section">
+    <h2>Entradas</h2>
     <div class="form-group">
-      <div><label for="c1">Monto de Oferta :</label><input type="number" id="c1" value="3000" /></div>
-      <div><label for="c7">Precio de Barco :</label><input type="number" id="c7" value="950" /></div>
-      <div><label for="c8">Precio de Grua :</label><input type="number" id="c8" value="375" /></div>
       <div>
-        <label for="e2">Tipo de Cambio :</label>
-        <input type="text" id="e2" value="25.90" readonly />
-        <div id="mensajeCambio"></div>
+        <label for="c1">Monto de Oferta (C1):</label>
+        <input type="number" id="c1" value="3000">
       </div>
-      <div><label for="c13">VIN :</label>
+      <div>
+        <label for="c7">Precio de Barco (C7):</label>
+        <input type="number" id="c7" value="950">
+      </div>
+      <div>
+        <label for="c8">Precio de Grua (C8):</label>
+        <input type="number" id="c8" value="375">
+      </div>
+      <div>
+        <label for="e2">Tipo de Cambio (E2):</label>
+        <input type="number" id="e2" value="25.90">
+        <small style="font-size: 0.85em; color: #666;">Este valor es fijo, pero puedes modificarlo si deseas un cálculo más preciso.</small>
+      </div>
+      <div>
+        <label for="c13">VIN (C13):</label>
         <select id="c13">
           <option value="1,4,5">1,4,5</option>
           <option value="OTROS">OTROS</option>
         </select>
       </div>
-      <div><label for="c14">Tipo de Vehículo :</label>
+      <div>
+        <label for="c14">Tipo de Vehículo (C14):</label>
         <select id="c14">
           <option value="PICK UP">PICK UP</option>
           <option value="OTROS">OTROS</option>
@@ -129,14 +110,15 @@
       </div>
     </div>
 
-    <button onclick="calcular()">Calcular</button>
+    <button id="calculateBtn">Calcular</button>
+    <button id="resetBtn">Reiniciar</button>
+  </div>
 
-    <div class="section">
-      <h2>Resultados</h2>
+  <div class="section">
+    <h2>Resultados</h2>
+    <div class="table-container">
       <div id="results"></div>
     </div>
-
-    <div class="cta">¡Importá tu carro hoy con SubastaCarHN y ahorrá hasta un 30%!</div>
   </div>
 
   <script>
@@ -155,6 +137,7 @@
       [8000, 800], [9000, 820], [10000, 850], [11000, 850],
       [12000, 875], [13000, 890], [14000, 900], [15000, 900]
     ];
+
     const virtualBidFees = [
       [100, 49], [500, 65], [1000, 85], [2000, 95],
       [4000, 125], [6000, 145], [8000, 145], [9000, 160], [10000, 160], [200000, 160]
@@ -213,7 +196,7 @@
       const c25 = c20 + c21 + c22 + c23 + c24;
       const c26 = c11 + c18 + c25 + o3 + o4;
 
-      const resultados = `
+      document.getElementById('results').innerHTML = `
         <table>
           <tr><th>Concepto</th><th>Valor</th></tr>
           <tr><td>Monto de Oferta</td><td>${formatear(c1)}</td></tr>
@@ -221,44 +204,31 @@
           <tr><td>Virtual Bid Fee</td><td>${formatear(c3)}</td></tr>
           <tr><td>Buyer Fee</td><td>${formatear(c4)}</td></tr>
           <tr><td>Gate y Title Pick Fee</td><td>${formatear(c5)}</td></tr>
-          <tr><td>Factura copart total</td><td>${formatear(c6)}</td></tr>
-          <tr><td>Barco</td><td>${formatear(c7)}</td></tr>
-          <tr><td>Grua</td><td>${formatear(c8)}</td></tr>
-          <tr><td>Total factura de envio maritimo</td><td>${formatear(c9)}</td></tr>
-          <tr><td>Total en $</td><td>${formatear(c10)}</td></tr>
-          <tr><td>Total en LPS</td><td>${formatear(c11)}</td></tr>
+          <tr><td>Total CIF (USD)</td><td>${formatear(c10)}</td></tr>
+          <tr><td>Total CIF (LPS)</td><td>${formatear(c11)}</td></tr>
           <tr><td>DAI</td><td>${formatear(c15)}</td></tr>
           <tr><td>ISC</td><td>${formatear(c16)}</td></tr>
           <tr><td>ISV</td><td>${formatear(c17)}</td></tr>
           <tr><td>Total Impuestos</td><td>${formatear(c18)}</td></tr>
           <tr><td>Gastos Fijos</td><td>${formatear(c25)}</td></tr>
-          <tfoot><tr><td>Total General </td><td>${formatear(c26)}</td></tr></tfoot>
-        </table>`;
-      
-      document.getElementById('results').innerHTML = resultados;
+          <tr><td>Total General</td><td>${formatear(c26)}</td></tr>
+        </table>
+      `;
     }
 
-    window.addEventListener('load', () => {
-      const inputCambio = document.getElementById('e2');
-      const mensajeCambio = document.getElementById('mensajeCambio');
-      inputCambio.value = "...";
+    function reiniciar() {
+      document.getElementById('c1').value = 3000;
+      document.getElementById('c7').value = 950;
+      document.getElementById('c8').value = 375;
+      document.getElementById('e2').value = 25.90;
+      document.getElementById('c13').value = "1,4,5";
+      document.getElementById('c14').value = "PICK UP";
+      document.getElementById('results').innerHTML = "";
+    }
 
-      fetch("https://dolar-ficohsa-api.onrender.com/api/tipo-cambio")
-        .then(res => res.json())
-        .then(data => {
-          const cambio = parseFloat(data.tipoCambio);
-          if (!isNaN(cambio)) {
-            inputCambio.value = cambio.toFixed(4);
-          } else {
-            mensajeCambio.innerText = "Tipo de cambio inválido. Usando valor predeterminado.";
-            inputCambio.value = "25.7842";
-          }
-        })
-        .catch(() => {
-          mensajeCambio.innerText = "No se pudo obtener el tipo de cambio. Se usará el valor predeterminado.";
-          inputCambio.value = "25.7842";
-        });
-    });
+    document.getElementById('calculateBtn').addEventListener('click', calcular);
+    document.getElementById('resetBtn').addEventListener('click', reiniciar);
   </script>
+
 </body>
 </html>
