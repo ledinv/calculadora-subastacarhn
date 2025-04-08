@@ -1,178 +1,204 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>SubastaCarHN - Calculadora de Importación</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculadora SubastaCarHN</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #f3f3f3;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
     }
     header {
-      background: linear-gradient(90deg, #4a90e2, #003c8f);
+      background: linear-gradient(to right, #4da1ff, #003d99);
       color: white;
       padding: 20px 40px;
-      font-size: 1.6rem;
+      font-size: 1.6em;
       font-weight: bold;
+      letter-spacing: 1px;
     }
-    .container {
+    main {
       max-width: 900px;
-      margin: 30px auto;
-      background: white;
-      padding: 30px 40px;
-      border-radius: 8px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
     }
     h2 {
       text-align: center;
-      margin-bottom: 25px;
-      font-size: 1.6rem;
+      margin-bottom: 30px;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    .form-group {
+      display: flex;
+      flex-wrap: wrap;
       gap: 20px;
+      margin-bottom: 20px;
+      justify-content: space-between;
     }
     label {
-      display: block;
-      font-size: 0.9rem;
-      margin-bottom: 4px;
+      flex: 1 1 250px;
+      display: flex;
+      flex-direction: column;
+      font-weight: 600;
+      font-size: 0.95em;
     }
     input, select {
-      width: 100%;
-      padding: 6px 8px;
+      padding: 8px 10px;
+      font-size: 1em;
+      margin-top: 5px;
       border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 0.95rem;
+      border-radius: 6px;
+      background-color: #fafafa;
     }
     button {
-      width: 100%;
-      padding: 10px;
       background-color: #0366d6;
       color: white;
       border: none;
-      border-radius: 4px;
-      font-size: 1rem;
-      margin-top: 15px;
+      padding: 12px 20px;
+      font-size: 1em;
+      border-radius: 8px;
+      width: 100%;
       cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #024fab;
     }
     table {
       width: 100%;
-      margin-top: 20px;
+      margin-top: 25px;
       border-collapse: collapse;
     }
     th, td {
-      padding: 10px;
-      border: 1px solid #ccc;
-      font-size: 0.95rem;
-    }
-    th {
-      background-color: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      padding: 10px 12px;
       text-align: left;
     }
-    .footer {
+    th {
+      background-color: #f5f5f5;
+      font-weight: bold;
+    }
+    .footer-text {
+      margin-top: 30px;
+      font-size: 0.9em;
       text-align: center;
-      margin-top: 25px;
-      font-size: 0.95rem;
-      color: #444;
+      color: #555;
     }
   </style>
 </head>
 <body>
-
-<header>SUBASTACARHN</header>
-
-<div class="container">
-  <h2>Calculadora de Importación</h2>
-
-  <div class="grid">
-    <div>
-      <label for="c1">Monto Oferta</label>
-      <input type="number" id="c1" value="3000">
+  <header>SUBASTACARHN</header>
+  <main>
+    <h2>Calculadora de Importación de Vehículos</h2>
+    <div class="form-group">
+      <label>Monto de Oferta (C1):<input type="number" id="c1" value="3000"/></label>
+      <label>Precio de Barco (C7):<input type="number" id="c7" value="950"/></label>
+      <label>Precio de Grua (C8):<input type="number" id="c8" value="375"/></label>
+      <label>Tipo de Cambio (E2):<input type="number" id="e2" value="25.78" readonly/></label>
+      <label>VIN (C13):
+        <select id="c13">
+          <option value="1,4,5">1,4,5</option>
+          <option value="OTROS">OTROS</option>
+        </select>
+      </label>
+      <label>Tipo de Vehículo (C14):
+        <select id="c14">
+          <option value="PICK UP">PICK UP</option>
+          <option value="OTROS">OTROS</option>
+        </select>
+      </label>
     </div>
-    <div>
-      <label for="c7">Barco</label>
-      <input type="number" id="c7" value="950">
-    </div>
-    <div>
-      <label for="c8">Grua</label>
-      <input type="number" id="c8" value="375">
-    </div>
-    <div>
-      <label for="e2">Tipo Cambio</label>
-      <input type="number" id="e2" value="25.78" readonly>
-    </div>
-    <div>
-      <label for="c13">VIN</label>
-      <select id="c13">
-        <option value="1,4,5">1,4,5</option>
-        <option value="OTROS">OTROS</option>
-      </select>
-    </div>
-    <div>
-      <label for="c14">Tipo Vehículo</label>
-      <select id="c14">
-        <option value="PICK UP">PICK UP</option>
-        <option value="OTROS">OTROS</option>
-      </select>
-    </div>
-  </div>
+    <button onclick="calcular()">Calcular</button>
+    <div id="results"></div>
+    <p class="footer-text">¡Importá tu carro hoy con SubastaCarHN y ahorrá hasta un 30%!</p>
+  </main>
 
-  <button onclick="calcular()">Calcular</button>
+  <script>
+    const formatear = val => new Intl.NumberFormat("es-HN", {
+      style: "currency", currency: "HNL"
+    }).format(val);
 
-  <div id="results"></div>
+    const buyerFees = [[50,1],[100,25],[200,60],[350,90],[400,125],[450,135],[500,145],[550,155],[600,170],[700,195],[800,215],[900,215],[1000,250],[1200,270],[1300,285],[1400,300],[1500,315],[1600,330],[1700,350],[1800,370],[2000,390],[2400,425],[2500,460],[3000,505],[3500,555],[4000,600],[4500,625],[5000,650],[6000,700],[7000,755],[8000,800],[9000,820],[10000,850],[11000,850],[12000,875],[13000,890],[14000,900],[15000,900]];
+    const virtualBidFees = [[100,49],[500,65],[1000,85],[2000,95],[4000,125],[6000,145],[8000,145],[9000,160],[10000,160],[200000,160]];
 
-  <div class="footer">
-    ¡Importá tu carro hoy con SubastaCarHN y ahorrá hasta un 30%!
-  </div>
-</div>
+    const buscarValor = (tabla, valor) => {
+      for (let i = tabla.length - 1; i >= 0; i--) if (valor >= tabla[i][0]) return tabla[i][1];
+      return 0;
+    };
 
-<script>
-  const formatear = v => new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
+    const calcular = () => {
+      const c1 = +document.getElementById('c1').value;
+      const c7 = +document.getElementById('c7').value;
+      const c8 = +document.getElementById('c8').value;
+      const e2 = +document.getElementById('e2').value;
+      const c13 = document.getElementById('c13').value;
+      const c14 = document.getElementById('c14').value;
 
-  const buyerFees = [[50,1],[100,25],[200,60],[350,90],[400,125],[450,135],[500,145],[550,155],[600,170],[700,195],[800,215],[900,215],[1000,250],[1200,270],[1300,285],[1400,300],[1500,315],[1600,330],[1700,350],[1800,370],[2000,390],[2400,425],[2500,460],[3000,505],[3500,555],[4000,600],[4500,625],[5000,650],[6000,700],[7000,755],[8000,800],[9000,820],[10000,850],[11000,850],[12000,875],[13000,890],[14000,900],[15000,900]];
-  const virtualBidFees = [[100,49],[500,65],[1000,85],[2000,95],[4000,125],[6000,145],[8000,145],[9000,160],[10000,160],[200000,160]];
+      const c2 = 15;
+      const c3 = c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
+      const c4 = c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
+      const c5 = 115;
+      const c6 = c1 + c2 + c3 + c4 + c5;
+      const c9 = c7 + c8;
+      const c10 = c6 + c9;
+      const c11 = c10 * e2;
 
-  const buscarValor = (tabla, valor) => {
-    for (let i = tabla.length - 1; i >= 0; i--) if (valor >= tabla[i][0]) return tabla[i][1];
-    return 0;
-  };
+      const n3 = 50, n4 = c6 * 0.015;
+      const o3 = n3 * e2, o4 = n4 * e2;
+      const c15 = (c13 === "OTROS") ? (c11 + o3 + o4) * 0.15 : 0;
 
-  const calcular = () => {
-    const c1 = parseFloat(document.getElementById('c1').value);
-    const c7 = parseFloat(document.getElementById('c7').value);
-    const c8 = parseFloat(document.getElementById('c8').value);
-    const e2 = parseFloat(document.getElementById('e2').value);
-    const c13 = document.getElementById('c13').value;
-    const c14 = document.getElementById('c14').value;
+      let isc = 0;
+      if (c10 <= 7000) isc = 0.10;
+      else if (c10 <= 10000) isc = 0.15;
+      else if (c10 <= 20000) isc = 0.20;
+      else if (c10 <= 30000) isc = 0.30;
+      else isc = 0.45;
 
-    const c2 = 15, c3 = buscarValor(virtualBidFees, c1), c4 = c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1), c5 = 115;
-    const c6 = c1 + c2 + c3 + c4 + c5, c9 = c7 + c8, c10 = c6 + c9, c11 = c10 * e2;
-    const n3 = 50, n4 = c6 * 0.015, o3 = n3 * e2, o4 = n4 * e2;
-    const c15 = (c13 === "OTROS") ? (c11 + o3 + o4) * 0.15 : 0;
-    let isc = 0; if (c10 <= 7000) isc = 0.10; else if (c10 <= 10000) isc = 0.15; else if (c10 <= 20000) isc = 0.20; else if (c10 <= 30000) isc = 0.30; else isc = 0.45;
-    const c16 = (c14 === "OTROS") ? (c11 + o3 + o4 + c15) * isc : 0;
-    const c17 = (c11 + c15 + c16 + o3 + o4) * 0.15, c18 = c15 + c16 + c17;
-    const c25 = 5000 + 4000 + 7500 + 4000 + 1417.81, c26 = c11 + c18 + c25 + o3 + o4;
+      const c16 = (c14 === "OTROS") ? (c11 + o3 + o4 + c15) * isc : 0;
+      const c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
+      const c18 = c15 + c16 + c17;
 
-    document.getElementById("results").innerHTML = `
+      const [c20, c21, c22, c23, c24] = [5000, 4000, 7500, 4000, 1417.81];
+      const c25 = c20 + c21 + c22 + c23 + c24;
+      const c26 = c11 + c18 + c25 + o3 + o4;
+
+      const tabla = `
       <table>
         <tr><th>Concepto</th><th>Valor</th></tr>
-        <tr><td>Monto de Oferta</td><td>${formatear(c1)}</td></tr>
-        <tr><td>FOB (L)</td><td>${formatear(c11)}</td></tr>
-        <tr><td>Impuestos</td><td>${formatear(c18)}</td></tr>
-        <tr><td>Gastos Fijos</td><td>${formatear(c25)}</td></tr>
-        <tr><td><strong>Total Lempiras</strong></td><td><strong>${formatear(c26)}</strong></td></tr>
+        <tr><td>C1 (Monto de Oferta)</td><td>${formatear(c1)}</td></tr>
+        <tr><td>C2 (Environmental Fee)</td><td>${formatear(c2)}</td></tr>
+        <tr><td>C3 (Virtual Bid Fee)</td><td>${formatear(c3)}</td></tr>
+        <tr><td>C4 (Buyer Fee)</td><td>${formatear(c4)}</td></tr>
+        <tr><td>C5 (Gate y Title Pick Fee)</td><td>${formatear(c5)}</td></tr>
+        <tr><td>C6 (Subtotal)</td><td>${formatear(c6)}</td></tr>
+        <tr><td>C7 (Barco)</td><td>${formatear(c7)}</td></tr>
+        <tr><td>C8 (Grua)</td><td>${formatear(c8)}</td></tr>
+        <tr><td>C9 (C7 + C8)</td><td>${formatear(c9)}</td></tr>
+        <tr><td>C10 (CIF USD)</td><td>${formatear(c10)}</td></tr>
+        <tr><td>C11 (CIF L)</td><td>${formatear(c11)}</td></tr>
+        <tr><td>O3 (50 x TC)</td><td>${formatear(o3)}</td></tr>
+        <tr><td>O4 (1.5% x TC x C6)</td><td>${formatear(o4)}</td></tr>
+        <tr><td>C15 (DAI)</td><td>${formatear(c15)}</td></tr>
+        <tr><td>C16 (ISC)</td><td>${formatear(c16)}</td></tr>
+        <tr><td>C17 (ISV)</td><td>${formatear(c17)}</td></tr>
+        <tr><td>C18 (Impuestos Totales)</td><td>${formatear(c18)}</td></tr>
+        <tr><td>C25 (Gastos Fijos)</td><td>${formatear(c25)}</td></tr>
+        <tr><td>C26 (Total Lempiras)</td><td><strong>${formatear(c26)}</strong></td></tr>
       </table>`;
-  };
+      document.getElementById('results').innerHTML = tabla;
+    };
 
-  window.addEventListener('load', () => {
-    fetch("https://dolar-ficohsa-api.onrender.com/api/tipo-cambio")
-      .then(res => res.json())
-      .then(data => document.getElementById('e2').value = data.tipoCambio)
-      .catch(() => document.getElementById('e2').value = 25.7784);
-  });
-</script>
+    window.addEventListener('load', () => {
+      fetch("https://dolar-ficohsa-api.onrender.com/api/tipo-cambio")
+        .then(res => res.json())
+        .then(data => document.getElementById('e2').value = data.tipoCambio)
+        .catch(() => document.getElementById('e2').value = 25.7784);
+    });
+  </script>
 </body>
 </html>
