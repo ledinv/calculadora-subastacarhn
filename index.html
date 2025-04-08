@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Calculadora de Importación</title>
   <style>
     * { box-sizing: border-box; }
@@ -16,6 +17,7 @@
       padding: 20px 40px;
       font-size: 1.5em;
       font-weight: bold;
+      text-align: center;
     }
     .container {
       max-width: 900px;
@@ -30,10 +32,22 @@
       margin-bottom: 30px;
     }
     .form-group {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      display: flex;
+      flex-wrap: wrap;
       gap: 15px;
-      margin-bottom: 25px;
+    }
+    .form-group > div {
+      flex: 1 1 100%;
+    }
+    @media (min-width: 600px) {
+      .form-group > div {
+        flex: 1 1 calc(50% - 15px);
+      }
+    }
+    @media (min-width: 900px) {
+      .form-group > div {
+        flex: 1 1 calc(33.33% - 15px);
+      }
     }
     label {
       font-weight: bold;
@@ -45,6 +59,12 @@
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 6px;
+    }
+    #mensajeCambio {
+      color: red;
+      font-size: 0.9em;
+      margin-top: -10px;
+      margin-bottom: 10px;
     }
     button {
       background-color: #0066cc;
@@ -90,7 +110,11 @@
       <div><label for="c1">Monto de Oferta :</label><input type="number" id="c1" value="3000" /></div>
       <div><label for="c7">Precio de Barco :</label><input type="number" id="c7" value="950" /></div>
       <div><label for="c8">Precio de Grua :</label><input type="number" id="c8" value="375" /></div>
-      <div><label for="e2">Tipo de Cambio :</label><input type="text" id="e2" value="25.90" readonly /></div>
+      <div>
+        <label for="e2">Tipo de Cambio :</label>
+        <input type="text" id="e2" value="..." readonly />
+        <div id="mensajeCambio"></div>
+      </div>
       <div><label for="c13">VIN :</label>
         <select id="c13">
           <option value="1,4,5">1,4,5</option>
@@ -216,7 +240,8 @@
 
     window.addEventListener('load', () => {
       const inputCambio = document.getElementById('e2');
-      inputCambio.value = "..."; // estado temporal mientras se consulta
+      const mensajeCambio = document.getElementById('mensajeCambio');
+      inputCambio.value = "...";
 
       fetch("https://dolar-ficohsa-api.onrender.com/api/tipo-cambio")
         .then(res => res.json())
@@ -225,12 +250,12 @@
           if (!isNaN(cambio)) {
             inputCambio.value = cambio.toFixed(4);
           } else {
-            alert("Error: Tipo de cambio no válido.");
+            mensajeCambio.innerText = "Tipo de cambio inválido. Usando valor predeterminado.";
             inputCambio.value = "25.7842";
           }
         })
         .catch(() => {
-          alert("No se pudo obtener el tipo de cambio. Se usará el último valor disponible.");
+          mensajeCambio.innerText = "No se pudo obtener el tipo de cambio. Se usará el valor predeterminado.";
           inputCambio.value = "25.7842";
         });
     });
