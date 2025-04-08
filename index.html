@@ -90,7 +90,7 @@
       <div><label for="c1">Monto de Oferta :</label><input type="number" id="c1" value="3000" /></div>
       <div><label for="c7">Precio de Barco :</label><input type="number" id="c7" value="950" /></div>
       <div><label for="c8">Precio de Grua :</label><input type="number" id="c8" value="375" /></div>
-      <div><label for="e2">Tipo de Cambio :</label><input type="text" id="e2" value="25.7800" readonly /></div>
+      <div><label for="e2">Tipo de Cambio :</label><input type="text" id="e2" value="..." readonly /></div>
       <div><label for="c13">VIN :</label>
         <select id="c13">
           <option value="1,4,5">1,4,5</option>
@@ -215,18 +215,23 @@
     }
 
     window.addEventListener('load', () => {
+      const inputCambio = document.getElementById('e2');
+      inputCambio.value = "..."; // estado temporal mientras se consulta
+
       fetch("https://dolar-ficohsa-api.onrender.com/api/tipo-cambio")
         .then(res => res.json())
         .then(data => {
           const cambio = parseFloat(data.tipoCambio);
           if (!isNaN(cambio)) {
-            document.getElementById('e2').value = cambio.toFixed(4);
+            inputCambio.value = cambio.toFixed(4);
           } else {
-            document.getElementById('e2').value = "25.7784";
+            alert("Error: Tipo de cambio no válido.");
+            inputCambio.value = "25.7842";
           }
         })
         .catch(() => {
-          document.getElementById('e2').value = "25.7784";
+          alert("No se pudo obtener el tipo de cambio. Se usará el último valor disponible.");
+          inputCambio.value = "25.7842";
         });
     });
   </script>
