@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Calculadora Importación</title>
+  <title>Calculadora SubastaCarHN</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
@@ -11,6 +11,19 @@
       font-family: 'Segoe UI', sans-serif;
       font-size: 0.85rem;
       color: #333;
+      margin: 0;
+    }
+    header {
+      background: linear-gradient(to right, #5a9bff, #004ba0);
+      height: 80px;
+      display: flex;
+      align-items: center;
+      padding-left: 40px;
+    }
+    header h1 {
+      color: white;
+      font-size: 28px;
+      margin: 0;
     }
     .calculator {
       max-width: 720px;
@@ -19,12 +32,6 @@
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.05);
       padding: 20px 25px;
-    }
-    h1 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      text-align: center;
-      margin-bottom: 20px;
     }
     label {
       font-weight: 500;
@@ -41,46 +48,65 @@
       font-size: 0.85rem;
       border-radius: 6px;
     }
-    table td, table th {
-      padding: 6px 10px !important;
-    }
     .form-group {
       margin-bottom: 12px;
     }
+    .social {
+      text-align: center;
+      margin: 30px auto 15px;
+    }
+    .social a {
+      display: inline-block;
+      margin: 0 8px;
+      font-size: 20px;
+      color: #004ba0;
+      text-decoration: none;
+    }
+    .cta {
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
   </style>
+  <script src="https://kit.fontawesome.com/a2d9d5c9f1.js" crossorigin="anonymous"></script>
 </head>
 <body>
+  <header>
+    <h1>SUBASTACARHN</h1>
+  </header>
+
   <div class="calculator">
-    <h1>Calculadora Importación Vehículos</h1>
+    <h2 class="text-center mb-3">Calculadora de Importación</h2>
     <form id="calc-form">
       <div class="form-row">
         <div class="form-group col-md-4">
-          <label>Monto Oferta (C1)</label>
+          <label>Monto Oferta</label>
           <input type="number" id="c1" class="form-control" value="3000">
         </div>
         <div class="form-group col-md-4">
-          <label>Barco (C7)</label>
+          <label>Barco</label>
           <input type="number" id="c7" class="form-control" value="950">
         </div>
         <div class="form-group col-md-4">
-          <label>Grua (C8)</label>
+          <label>Grua</label>
           <input type="number" id="c8" class="form-control" value="375">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-4">
-          <label>Tipo Cambio (E2)</label>
+          <label>Tipo Cambio</label>
           <input type="number" id="e2" class="form-control" value="25.78" readonly>
         </div>
         <div class="form-group col-md-4">
-          <label>VIN (C13)</label>
+          <label>VIN</label>
           <select id="c13" class="form-control">
             <option value="1,4,5">1,4,5</option>
             <option value="OTROS">OTROS</option>
           </select>
         </div>
         <div class="form-group col-md-4">
-          <label>Tipo Vehículo (C14)</label>
+          <label>Tipo Vehículo</label>
           <select id="c14" class="form-control">
             <option value="PICK UP">PICK UP</option>
             <option value="OTROS">OTROS</option>
@@ -90,6 +116,17 @@
       <button type="button" id="calculateBtn" class="btn btn-primary btn-block">Calcular</button>
     </form>
     <div class="mt-3" id="results"></div>
+  </div>
+
+  <div class="social">
+    <a href="https://wa.me/50499999999" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://tiktok.com/@tu_usuario" target="_blank"><i class="fab fa-tiktok"></i></a>
+    <a href="https://instagram.com/tu_usuario" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://facebook.com/tu_pagina" target="_blank"><i class="fab fa-facebook"></i></a>
+  </div>
+
+  <div class="cta">
+    ¡Importá tu carro hoy con SubastaCarHN y ahorrá hasta un 30%!
   </div>
 
   <script>
