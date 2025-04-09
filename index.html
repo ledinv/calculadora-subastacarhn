@@ -81,6 +81,16 @@
       align-items: center;
       justify-content: center;
       font-weight: bold;
+      position: relative;
+    }
+
+    header span#contadorClics {
+      position: absolute;
+      right: 15px;
+      top: 30px;
+      font-size: 14px;
+      color: #ffc20e;
+      font-weight: normal;
     }
 
     h1 {
@@ -259,7 +269,11 @@
     </ul>
   </nav>
 
-  <header>SUBASTACARHN</header>
+  <header>
+    SUBASTACARHN
+    <span id="contadorClics">Cálculos: ...</span>
+  </header>
+
   <h1>Calculadora de Importación de Vehículos</h1>
 
   <div class="layout">
@@ -329,6 +343,8 @@
     const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
 
     function calcular() {
+      registrarClic(); // sumamos clic al presionar Calcular
+
       const c1 = parseFloat(document.getElementById('c1').value);
       const c7 = parseFloat(document.getElementById('c7').value);
       const c8 = parseFloat(document.getElementById('c8').value);
@@ -418,6 +434,31 @@
 
     document.getElementById('calculateBtn').addEventListener('click', calcular);
     document.getElementById('resetBtn').addEventListener('click', reiniciar);
+
+    // 🔗 Conexión con contador backend
+    const endpoint = "https://contador-clics-backend.onrender.com/contador";
+
+    async function obtenerContador() {
+      try {
+        const res = await fetch(endpoint);
+        const data = await res.json();
+        document.getElementById('contadorClics').textContent = `Cálculos: ${data.clics}`;
+      } catch (e) {
+        console.error("Error al obtener el contador:", e);
+      }
+    }
+
+    async function registrarClic() {
+      try {
+        const res = await fetch(endpoint, { method: "POST" });
+        const data = await res.json();
+        document.getElementById('contadorClics').textContent = `Cálculos: ${data.clics}`;
+      } catch (e) {
+        console.error("Error al registrar clic:", e);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", obtenerContador);
   </script>
 </body>
 </html>
