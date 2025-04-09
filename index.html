@@ -5,244 +5,247 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SUBASTACARHN - Calculadora de Importación</title>
   <style>
-    body {
-      font-family: Helvetica, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f9f9f9;
-    }
+  body {
+    font-family: Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f9f9f9;
+  }
 
-    header {
-      background: linear-gradient(to right, #002f6c, #004aad);
-      height: 70px;
-      color: white;
-      font-size: 22px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 15px;
-      position: sticky;
-      top: 0;
-      z-index: 999;
-    }
+  header {
+    background: linear-gradient(to right, #002f6c, #004aad);
+    height: 70px;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
 
-    header span#contadorClics {
-      font-size: 13px;
-      color: #ffc20e;
-      font-weight: normal;
-    }
+  header span#contadorClics {
+    font-size: 13px;
+    color: #ffc20e;
+    font-weight: normal;
+  }
 
-    .menu-icon {
-      font-size: 20px;
-      background: #ffc20e;
-      color: #002f6c;
-      padding: 8px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    }
+  .menu-icon {
+    font-size: 20px;
+    background: #ffc20e;
+    color: #002f6c;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
 
-    #menu-links {
-      display: none;
-      list-style: none;
-      padding: 10px;
-      margin: 10px 0 0;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      position: absolute;
-      top: 70px;
-      left: 15px;
-      z-index: 1000;
-    }
+  #menu-links {
+    display: none;
+    list-style: none;
+    padding: 10px;
+    margin: 10px 0 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    position: absolute;
+    top: 70px;
+    left: 15px;
+    z-index: 1000;
+  }
 
-    #menu-links li {
-      margin-bottom: 10px;
-    }
+  #menu-links li {
+    margin-bottom: 10px;
+  }
 
-    #menu-links a {
-      text-decoration: none;
-      color: #002f6c;
-      font-weight: bold;
-    }
+  #menu-links a {
+    text-decoration: none;
+    color: #002f6c;
+    font-weight: bold;
+  }
 
-    h1 {
-      text-align: center;
-      color: #002f6c;
-      margin-top: 20px;
-      font-size: 20px;
-    }
+  h1 {
+    text-align: center;
+    color: #002f6c;
+    margin-top: 20px;
+    font-size: 20px;
+  }
 
+  .layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px 10px;
+    gap: 20px;
+    flex-wrap: wrap; /* permite que se acomoden en pantallas pequeñas */
+  }
+
+  .banner {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .banner img {
+    width: 400px;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  }
+
+  .contenido-central {
+    max-width: 380px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+  }
+
+  label {
+    font-weight: bold;
+    color: #002f6c;
+    display: block;
+    margin-top: 10px;
+  }
+
+  input, select {
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #004aad;
+    background-color: #f0f8ff;
+    width: 100%;
+    margin-top: 5px;
+    box-sizing: border-box;
+  }
+
+  button {
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background-color: #ffc20e;
+    color: #002f6c;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+
+  button:hover {
+    background-color: #e6ac00;
+  }
+
+  #results {
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 0 20px;
+  }
+
+  #toggleBtn {
+    background: #ffc20e;
+    color: #002f6c;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  #detalleResultados {
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    overflow-x: auto;
+  }
+
+  #detalleResultados table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    border: 1px solid #ffc20e;
+  }
+
+  th, td {
+    padding: 6px;
+    border: 1px solid #ccc;
+    color: #002f6c;
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+
+  th {
+    background: #ffc20e;
+    color: black;
+  }
+
+  .whatsapp-button {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background-color: #25d366;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 999;
+  }
+
+  footer {
+    text-align: center;
+    padding: 15px;
+    background: #002f6c;
+    color: white;
+    font-size: 14px;
+  }
+
+  footer a {
+    color: #ffc20e;
+    margin: 0 10px;
+    text-decoration: none;
+  }
+
+  @media (max-width: 768px) {
     .layout {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 20px 10px;
-      gap: 20px;
+      flex-direction: column;
+      align-items: center;
     }
 
     .banner {
-      display: block;
+      display: none !important;
     }
 
-    .banner img {
-      width: 180px;
-      height: auto;
-      object-fit: contain;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    h1 {
+      font-size: 18px;
     }
 
     .contenido-central {
-      max-width: 380px;
-      width: 100%;
-      background-color: #ffffff;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      padding: 20px;
-    }
-
-    label {
-      font-weight: bold;
-      color: #002f6c;
-      display: block;
-      margin-top: 10px;
+      margin: 10px;
+      padding: 15px;
     }
 
     input, select {
-      font-size: 14px;
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid #004aad;
-      background-color: #f0f8ff;
-      width: 100%;
-      margin-top: 5px;
-      box-sizing: border-box;
-    }
-
-    button {
-      font-size: 15px;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      background-color: #ffc20e;
-      color: #002f6c;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #e6ac00;
-    }
-
-    #results {
-      margin: 20px auto;
-      max-width: 600px;
-      padding: 0 20px;
-    }
-
-    #toggleBtn {
-      background: #ffc20e;
-      color: #002f6c;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    #detalleResultados {
-      border-radius: 10px;
-      padding: 10px;
-      margin-top: 10px;
-      overflow-x: auto;
+      font-size: 13px;
     }
 
     #detalleResultados table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-      border: 1px solid #ffc20e;
+      font-size: 12px;
     }
 
-    th, td {
-      padding: 6px;
-      border: 1px solid #ccc;
-      color: #002f6c;
-      background-color: rgba(255, 255, 255, 0.95);
-    }
-
-    th {
-      background: #ffc20e;
-      color: black;
-    }
-
-    .whatsapp-button {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      background-color: #25d366;
-      color: white;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      text-decoration: none;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-      z-index: 999;
-    }
-
-    footer {
-      text-align: center;
-      padding: 15px;
-      background: #002f6c;
-      color: white;
+    button {
       font-size: 14px;
+      padding: 8px;
     }
+  }
+</style>
 
-    footer a {
-      color: #ffc20e;
-      margin: 0 10px;
-      text-decoration: none;
-    }
-
-    @media (max-width: 768px) {
-      .layout {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .banner {
-        display: none !important;
-      }
-
-      h1 {
-        font-size: 18px;
-      }
-
-      .contenido-central {
-        margin: 10px;
-        padding: 15px;
-      }
-
-      input, select {
-        font-size: 13px;
-      }
-
-      #detalleResultados table {
-        font-size: 12px;
-      }
-
-      button {
-        font-size: 14px;
-        padding: 8px;
-      }
-    }
-  </style>
 </head>
 <body>
   <header>
