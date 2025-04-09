@@ -26,6 +26,7 @@
     h1 {
       text-align: center;
       color: #002f6c;
+      margin-top: 20px;
     }
 
     h2 {
@@ -33,45 +34,61 @@
       color: #ffc20e;
     }
 
-    .section {
-      padding: 20px;
-    }
-
-    .form-group {
-      max-width: 400px;
-      margin: auto;
+    .contenedor-formulario {
       display: flex;
-      flex-direction: column;
-      gap: 15px;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 20px;
     }
 
-    label {
+    .burbuja-formulario {
+      background-color: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      max-width: 450px;
+      width: 100%;
+    }
+
+    .burbuja-formulario label {
       font-weight: bold;
       color: #002f6c;
+      display: block;
+      margin-top: 10px;
     }
 
-    input, select {
-      width: 100%;
-      padding: 8px;
-      border-radius: 6px;
+    .burbuja-formulario input,
+    .burbuja-formulario select {
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 8px;
       border: 1px solid #004aad;
       background-color: #f0f8ff;
+      width: 100%;
+      margin-top: 5px;
     }
 
-    button {
-      padding: 10px;
-      background: #ffc20e;
-      color: #002f6c;
+    .burbuja-formulario button {
+      font-size: 18px;
+      padding: 12px;
+      border-radius: 8px;
       border: none;
-      border-radius: 6px;
-      font-weight: bold;
+      background-color: #ffc20e;
+      color: #002f6c;
       cursor: pointer;
-      margin-top: 10px;
-      transition: background 0.3s ease;
+      width: 100%;
+      margin-top: 15px;
+      font-weight: bold;
     }
 
-    button:hover {
-      background: #e6ac00;
+    .burbuja-formulario button:hover {
+      background-color: #e6ac00;
+    }
+
+    #results {
+      margin: 30px auto;
+      max-width: 600px;
+      padding: 0 20px;
     }
 
     #results p strong {
@@ -82,6 +99,7 @@
       background: #ffc20e;
       color: #002f6c;
       font-weight: bold;
+      margin-top: 10px;
     }
 
     #detalleResultados {
@@ -126,46 +144,9 @@
       color: black;
     }
 
-    .layout {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 20px;
-      margin: 40px auto;
-      padding: 0 20px;
-      max-width: 1400px;
-      flex-wrap: nowrap;
-    }
-
-    .banner {
-      flex: 1;
-      max-width: 800px;
-    }
-
-    .banner img {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    .contenido-central {
-      flex: 2;
-      min-width: 350px;
-    }
-
     @media (max-width: 768px) {
-      .layout {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .banner {
-        display: none;
-      }
-
-      .contenido-central {
-        width: 100%;
+      .burbuja-formulario {
+        padding: 20px;
       }
 
       #detalleResultados table {
@@ -204,52 +185,42 @@
     }
   </style>
 </head>
-
 <body>
+
   <header>SUBASTACARHN</header>
   <h1>Calculadora de Importación de Vehículos</h1>
 
-  <div class="layout">
-    <div class="banner izquierda">
-      <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20izquierdo.jpeg" alt="Banner Izquierdo">
-    </div>
+  <div class="contenedor-formulario">
+    <div class="burbuja-formulario">
+      <label for="c1">Monto de Oferta $:</label>
+      <input type="number" id="c1" value="0" />
 
-    <div class="contenido-central">
-      <div class="section">
-        <h2>Entradas</h2>
-        <div class="form-group">
-          <label for="c1">Monto de Oferta $:</label>
-          <input type="number" id="c1" value="0" />
-          <label for="c7">Precio de Barco $:</label>
-          <input type="number" id="c7" value="0" />
-          <label for="c8">Precio de Grua $:</label>
-          <input type="number" id="c8" value="0" />
-          <label for="e2">Tipo de Cambio:</label>
-          <input type="number" id="e2" value="25.90" />
-          <label for="c13">VIN:</label>
-          <select id="c13">
-            <option value="1,4,5">1,4,5</option>
-            <option value="OTROS">OTROS</option>
-          </select>
-          <label for="c14">Tipo de Vehículo:</label>
-          <select id="c14">
-            <option value="PICK UP">PICK UP</option>
-            <option value="OTROS">OTROS</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <button id="calculateBtn">Calcular</button>
-          <button id="resetBtn">Reiniciar</button>
-        </div>
-      </div>
-    </div>
+      <label for="c7">Precio de Barco $:</label>
+      <input type="number" id="c7" value="0" />
 
-    <div class="banner derecha">
-      <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20derecho.jpg" alt="Banner Derecho">
+      <label for="c8">Precio de Grua $:</label>
+      <input type="number" id="c8" value="0" />
+
+      <label for="e2">Tipo de Cambio:</label>
+      <input type="number" id="e2" value="25.90" />
+
+      <label for="c13">VIN:</label>
+      <select id="c13">
+        <option value="1,4,5">1,4,5</option>
+        <option value="OTROS">OTROS</option>
+      </select>
+
+      <label for="c14">Tipo de Vehículo:</label>
+      <select id="c14">
+        <option value="PICK UP">PICK UP</option>
+        <option value="OTROS">OTROS</option>
+      </select>
+
+      <button id="calculateBtn">Calcular</button>
+      <button id="resetBtn">Reiniciar</button>
     </div>
   </div>
 
-  <h2>Resultados</h2>
   <div id="results"></div>
 
   <a href="https://wa.me/50497330137" class="whatsapp-button" target="_blank">💬</a>
@@ -343,14 +314,12 @@
         <p><strong>Total Final:</strong> ${formatear(c26)}</p>
         <button onclick="mostrarDetalles()" id="toggleBtn">Ver detalles</button>
         <div id="detalleResultados" style="display:none;">
-          <div style="overflow-x:auto;">
-            <table>
-              <tr><th>Concepto</th><th>Valor</th></tr>
-              ${detalles.map(([titulo, valor, tipo]) => `
-                <tr><td>${titulo}</td><td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td></tr>
-              `).join('')}
-            </table>
-          </div>
+          <table>
+            <tr><th>Concepto</th><th>Valor</th></tr>
+            ${detalles.map(([titulo, valor, tipo]) => `
+              <tr><td>${titulo}</td><td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td></tr>
+            `).join('')}
+          </table>
         </div>
       `;
     }
