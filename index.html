@@ -5,112 +5,121 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SUBASTACARHN - Calculadora de Importación</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f9f9f9;
-    }
-    header {
-      background: linear-gradient(to right, #003366, #336699);
-      height: 80px;
-      color: white;
-      font-size: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-    }
-    h1, h2 {
-      text-align: center;
-      color: #003366;
-    }
-    .section {
-      padding: 20px;
-    }
-    .form-group {
-      max-width: 400px;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    label {
-      font-weight: bold;
-      color: #003366;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #336699;
-      background-color: #f0f8ff;
-    }
-    button {
-      padding: 10px;
-      background: #003366;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button#resetBtn {
-      background: #999;
-    }
-    #results p strong {
-      color: #003366;
-    }
-    #toggleBtn {
-      background: #003366;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      min-width: 600px;
-      border: 2px solid #f4c430;
-      background: #fff8dc;
-      box-shadow: 0 0 10px rgba(244, 196, 48, 0.5);
-      border-radius: 8px;
-    }
-    th, td {
-      padding: 8px;
-      border: 1px solid #ccc;
-      color: #003366;
-    }
-    th {
-      background: #f4c430;
-      color: black;
-    }
-    .whatsapp-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #25d366;
-      color: white;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      text-decoration: none;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    }
-    footer {
-      text-align: center;
-      padding: 15px;
-      background: #003366;
-      color: white;
-    }
-    footer a {
-      color: #f4c430;
-      margin: 0 10px;
-      text-decoration: none;
-    }
-  </style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f9f9f9;
+  }
+  header {
+    background: linear-gradient(to right, #002f6c, #004aad);
+    height: 80px;
+    color: white;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+  h1 {
+    text-align: center;
+    color: #002f6c;
+  }
+  h2 {
+    text-align: center;
+    color: #ffc20e;
+  }
+  .section {
+    padding: 20px;
+  }
+  .form-group {
+    max-width: 400px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  label {
+    font-weight: bold;
+    color: #002f6c;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #004aad;
+    background-color: #f0f8ff;
+  }
+  button {
+    padding: 10px;
+    background: #ffc20e;
+    color: #002f6c;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+  }
+  button:hover {
+    background: #e6ac00;
+  }
+  #results p strong {
+    color: #002f6c;
+  }
+  #toggleBtn {
+    background: #ffc20e;
+    color: #002f6c;
+    font-weight: bold;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    min-width: 600px;
+    border: 2px solid #ffc20e;
+    background: #fff8dc;
+    box-shadow: 0 0 10px rgba(255, 194, 14, 0.4);
+    border-radius: 8px;
+  }
+  th, td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    color: #002f6c;
+  }
+  th {
+    background: #ffc20e;
+    color: #000;
+  }
+  .whatsapp-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  }
+  footer {
+    text-align: center;
+    padding: 15px;
+    background: #002f6c;
+    color: white;
+  }
+  footer a {
+    color: #ffc20e;
+    margin: 0 10px;
+    text-decoration: none;
+  }
+</style>
+
 </head>
 <body>
   <header>SUBASTACARHN</header>
