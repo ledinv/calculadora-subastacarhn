@@ -318,6 +318,12 @@
   </footer>
 
   <script>
+    // Agrega esto dentro de <script>
+function toggleMenu() {
+  const menu = document.getElementById('menu-links');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
     const formatear = v => new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
     const formatearUSD = v => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
 
