@@ -173,35 +173,46 @@
 
   <h1>Calculadora de Importación de Vehículos</h1>
 
-  <div class="section">
-    <h2>Entradas</h2>
-    <div class="form-group">
-      <label for="c1">Monto de Oferta $:</label>
-      <input type="number" id="c1" value="0" />
-      <label for="c7">Precio de Barco $:</label>
-      <input type="number" id="c7" value="0" />
-      <label for="c8">Precio de Grua $:</label>
-      <input type="number" id="c8" value="0" />
-      <label for="e2">Tipo de Cambio:</label>
-      <input type="number" id="e2" value="25.90" />
-      <label for="c13">VIN:</label>
-      <select id="c13">
-        <option value="1,4,5">1,4,5</option>
-        <option value="OTROS">OTROS</option>
-      </select>
-      <label for="c14">Tipo de Vehículo:</label>
-      <select id="c14">
-        <option value="PICK UP">PICK UP</option>
-        <option value="OTROS">OTROS</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <button id="calculateBtn">Calcular</button>
-      <button id="resetBtn">Reiniciar</button>
+  <div class="layout">
+  <div class="banner izquierda">
+    <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20izquierdo.jpeg" alt="Banner Izquierdo">
+  </div>
+
+  <div class="contenido-central">
+    <div class="section">
+      <h2>Entradas</h2>
+      <div class="form-group">
+        <label for="c1">Monto de Oferta $:</label>
+        <input type="number" id="c1" value="0" />
+        <label for="c7">Precio de Barco $:</label>
+        <input type="number" id="c7" value="0" />
+        <label for="c8">Precio de Grua $:</label>
+        <input type="number" id="c8" value="0" />
+        <label for="e2">Tipo de Cambio:</label>
+        <input type="number" id="e2" value="25.90" />
+        <label for="c13">VIN:</label>
+        <select id="c13">
+          <option value="1,4,5">1,4,5</option>
+          <option value="OTROS">OTROS</option>
+        </select>
+        <label for="c14">Tipo de Vehículo:</label>
+        <select id="c14">
+          <option value="PICK UP">PICK UP</option>
+          <option value="OTROS">OTROS</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <button id="calculateBtn">Calcular</button>
+        <button id="resetBtn">Reiniciar</button>
+      </div>
     </div>
   </div>
 
-  <div class="section">
+  <div class="banner derecha">
+    <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20derecho.jpg" alt="Banner Derecho">
+  </div>
+</div>
+
     <h2>Resultados</h2>
     <div id="results"></div>
   </div>
