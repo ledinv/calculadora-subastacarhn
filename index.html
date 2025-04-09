@@ -403,18 +403,18 @@
         ['TOTAL FINAL', c26, 'hnl']
       ];
 
-      document.getElementById('results').innerHTML = 
+      document.getElementById('results').innerHTML = `
         <p><strong>Total Final:</strong> ${formatear(c26)}</p>
         <button onclick="mostrarDetalles()" id="toggleBtn">Ver detalles</button>
         <div id="detalleResultados" style="display:none;">
           <table>
             <tr><th>Concepto</th><th>Valor</th></tr>
             ${detalles.map(([titulo, valor, tipo]) =>
-              <tr><td>${titulo}</td><td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td></tr>
+              `<tr><td>${titulo}</td><td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td></tr>`
             ).join('')}
           </table>
         </div>
-      ;
+      `;
     }
 
     function mostrarDetalles() {
@@ -442,7 +442,7 @@
       try {
         const res = await fetch(endpoint);
         const data = await res.json();
-        document.getElementById('contadorClics').textContent = Cálculos: ${data.clics};
+        document.getElementById('contadorClics').textContent = `Cálculos: ${data.clics}`;
       } catch (e) {
         console.error("Error al obtener el contador:", e);
       }
@@ -452,7 +452,7 @@
       try {
         const res = await fetch(endpoint, { method: "POST" });
         const data = await res.json();
-        document.getElementById('contadorClics').textContent = Cálculos: ${data.clics};
+        document.getElementById('contadorClics').textContent = `Cálculos: ${data.clics}`;
       } catch (e) {
         console.error("Error al registrar clic:", e);
       }
