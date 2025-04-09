@@ -14,9 +14,9 @@
 
     header {
       background: linear-gradient(to right, #002f6c, #004aad);
-      height: 80px;
+      height: 70px;
       color: white;
-      font-size: 24px;
+      font-size: 22px;
       font-weight: bold;
       display: flex;
       align-items: center;
@@ -28,17 +28,17 @@
     }
 
     header span#contadorClics {
-      font-size: 14px;
+      font-size: 13px;
       color: #ffc20e;
       font-weight: normal;
     }
 
     .menu-icon {
-      font-size: 28px;
+      font-size: 20px;
       background: #ffc20e;
       color: #002f6c;
-      padding: 10px 12px;
-      border-radius: 8px;
+      padding: 8px 10px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -75,14 +75,33 @@
       font-size: 20px;
     }
 
+    .layout {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px 10px;
+      gap: 20px;
+    }
+
+    .banner {
+      display: block;
+    }
+
+    .banner img {
+      width: 180px;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
+
     .contenido-central {
-      max-width: 450px;
+      max-width: 380px;
       width: 100%;
       background-color: #ffffff;
       border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       padding: 20px;
-      margin: 20px auto;
     }
 
     label {
@@ -93,17 +112,18 @@
     }
 
     input, select {
-      font-size: 15px;
-      padding: 10px;
+      font-size: 14px;
+      padding: 8px;
       border-radius: 8px;
       border: 1px solid #004aad;
       background-color: #f0f8ff;
       width: 100%;
       margin-top: 5px;
+      box-sizing: border-box;
     }
 
     button {
-      font-size: 16px;
+      font-size: 15px;
       padding: 10px;
       border-radius: 8px;
       border: none;
@@ -142,7 +162,7 @@
     #detalleResultados table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 14px;
+      font-size: 13px;
       border: 1px solid #ffc20e;
     }
 
@@ -191,6 +211,15 @@
     }
 
     @media (max-width: 768px) {
+      .layout {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .banner {
+        display: none !important;
+      }
+
       h1 {
         font-size: 18px;
       }
@@ -201,11 +230,11 @@
       }
 
       input, select {
-        font-size: 14px;
+        font-size: 13px;
       }
 
       #detalleResultados table {
-        font-size: 13px;
+        font-size: 12px;
       }
 
       button {
@@ -216,44 +245,57 @@
   </style>
 </head>
 <body>
-  <div class="mobile-nav">
+  <header>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
-    <ul id="menu-links">
-      <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
-      <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
-      <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
-      <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
-    </ul>
-  </div>
+    SUBASTACARHN
+    <span id="contadorClics">Cálculos: ...</span>
+  </header>
+
+  <ul id="menu-links">
+    <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
+    <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
+    <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
+    <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+  </ul>
 
   <h1>Calculadora de Importación de Vehículos</h1>
 
-  <div class="contenido-central">
-    <label for="c1">Monto de Oferta $:</label>
-    <input type="number" id="c1" value="0" />
-    <label for="c7">Precio de Barco $:</label>
-    <input type="number" id="c7" value="0" />
-    <label for="c8">Precio de Grua $:</label>
-    <input type="number" id="c8" value="0" />
-    <label for="e2">Tipo de Cambio:</label>
-    <input type="number" id="e2" value="25.90" />
-    <label for="c13">VIN:</label>
-    <select id="c13">
-      <option value="1,4,5">1,4,5</option>
-      <option value="OTROS">OTROS</option>
-    </select>
-    <label for="c14">Tipo de Vehículo:</label>
-    <select id="c14" onchange="bloquearMotor()">
-      <option value="PICK UP">PICK UP</option>
-      <option value="OTROS">OTROS</option>
-    </select>
-    <label for="motor">Tipo de Motor:</label>
-    <select id="motor">
-      <option value="1.5 Inferior">1.5 Inferior</option>
-      <option value="Superior 1.5">Superior 1.5</option>
-    </select>
-    <button id="calculateBtn">Calcular</button>
-    <button id="resetBtn">Reiniciar</button>
+  <div class="layout">
+    <div class="banner izquierda">
+      <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20izquierdo.jpeg" alt="Banner Izquierdo">
+    </div>
+
+    <div class="contenido-central">
+      <label for="c1">Monto de Oferta $:</label>
+      <input type="number" id="c1" value="0" />
+      <label for="c7">Precio de Barco $:</label>
+      <input type="number" id="c7" value="0" />
+      <label for="c8">Precio de Grua $:</label>
+      <input type="number" id="c8" value="0" />
+      <label for="e2">Tipo de Cambio:</label>
+      <input type="number" id="e2" value="25.90" />
+      <label for="c13">VIN:</label>
+      <select id="c13">
+        <option value="1,4,5">1,4,5</option>
+        <option value="OTROS">OTROS</option>
+      </select>
+      <label for="c14">Tipo de Vehículo:</label>
+      <select id="c14" onchange="bloquearMotor()">
+        <option value="PICK UP">PICK UP</option>
+        <option value="OTROS">OTROS</option>
+      </select>
+      <label for="motor">Tipo de Motor:</label>
+      <select id="motor">
+        <option value="1.5 Inferior">1.5 Inferior</option>
+        <option value="Superior 1.5">Superior 1.5</option>
+      </select>
+      <button id="calculateBtn">Calcular</button>
+      <button id="resetBtn">Reiniciar</button>
+    </div>
+
+    <div class="banner derecha">
+      <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20derecho.jpg" alt="Banner Derecho">
+    </div>
   </div>
 
   <div id="results"></div>
