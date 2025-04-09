@@ -5,216 +5,203 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SUBASTACARHN - Calculadora de Importación</title>
   <style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f9f9f9;
-  }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+    }
 
-  header {
-    background: linear-gradient(to right, #002f6c, #004aad);
-    height: 80px;
-    color: white;
-    font-size: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-  }
-
-  h1 {
-    text-align: center;
-    color: #002f6c;
-  }
-
-  h2 {
-    text-align: center;
-    color: #ffc20e;
-  }
-
-  .section {
-    padding: 20px;
-  }
-
-  .form-group {
-    max-width: 400px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  label {
-    font-weight: bold;
-    color: #002f6c;
-  }
-
-  input, select, textarea {
-    width: 100%;
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #004aad;
-    background-color: #f0f8ff;
-  }
-
-  button {
-    padding: 10px;
-    background: #ffc20e;
-    color: #002f6c;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.3s ease;
-  }
-
-  button:hover {
-    background: #e6ac00;
-  }
-
-  #results p strong {
-    color: #002f6c;
-  }
-
-  #toggleBtn {
-    background: #ffc20e;
-    color: #002f6c;
-    font-weight: bold;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    min-width: 600px;
-    border: 2px solid #ffc20e;
-    background: transparent;
-    border-radius: 8px;
-    position: relative;
-    z-index: 1;
-  }
-
-  th, td {
-    padding: 8px;
-    border: 1px solid #ccc;
-    color: #002f6c;
-    background-color: rgba(255, 255, 255, 0.85);
-  }
-
-  th {
-    background: #ffc20e;
-    color: black;
-  }
-
-  #detalleResultados {
-    background-image: url('https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/fondo.jpeg');
-    background-size: cover;
-    background-position: center;
-    border-radius: 10px;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-    margin-top: 20px;
-  }
-
-  #detalleResultados::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-color: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(0.5px);
-    z-index: 0;
-  }
-
-  #detalleResultados table {
-    position: relative;
-    z-index: 1;
-  }
-
-  .whatsapp-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #25d366;
-    color: white;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    text-decoration: none;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-  }
-
-  footer {
-    text-align: center;
-    padding: 15px;
-    background: #002f6c;
-    color: white;
-  }
-
-  footer a {
-    color: #ffc20e;
-    margin: 0 10px;
-    text-decoration: none;
-  }
-
-  .layout {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 20px;
-    margin: 40px auto;
-    padding: 0 20px;
-    max-width: 1400px;
-    flex-wrap: nowrap;
-  }
-
-  .banner {
-    flex: 1;
-    max-width: 400px;
-  }
-
-  .banner img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
-
-  .contenido-central {
-    flex: 2;
-    min-width: 350px;
-  }
-
-  @media (max-width: 768px) {
-    .layout {
-      flex-direction: column;
+    header {
+      background: linear-gradient(to right, #002f6c, #004aad);
+      height: 80px;
+      color: white;
+      font-size: 28px;
+      display: flex;
       align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    h1 {
+      text-align: center;
+      color: #002f6c;
+    }
+
+    h2 {
+      text-align: center;
+      color: #ffc20e;
+    }
+
+    .section {
+      padding: 20px;
+    }
+
+    .form-group {
+      max-width: 400px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      color: #002f6c;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #004aad;
+      background-color: #f0f8ff;
+    }
+
+    button {
+      padding: 10px;
+      background: #ffc20e;
+      color: #002f6c;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #e6ac00;
+    }
+
+    #results p strong {
+      color: #002f6c;
+    }
+
+    #toggleBtn {
+      background: #ffc20e;
+      color: #002f6c;
+      font-weight: bold;
+    }
+
+    #detalleResultados {
+      background-image: url('https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/fondo.jpeg');
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+      margin-top: 20px;
+      overflow-x: auto;
+    }
+
+    #detalleResultados::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(0.5px);
+      z-index: 0;
+    }
+
+    #detalleResultados table {
+      position: relative;
+      z-index: 1;
+      min-width: 600px;
+      width: 100%;
+      border-collapse: collapse;
+      border: 2px solid #ffc20e;
+      background: transparent;
+    }
+
+    th, td {
+      padding: 8px;
+      border: 1px solid #ccc;
+      color: #002f6c;
+      background-color: rgba(255, 255, 255, 0.85);
+    }
+
+    th {
+      background: #ffc20e;
+      color: black;
+    }
+
+    .layout {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      margin: 40px auto;
+      padding: 0 20px;
+      max-width: 1400px;
+      flex-wrap: nowrap;
     }
 
     .banner {
-      display: none;
+      flex: 1;
+      max-width: 300px;
+    }
+
+    .banner img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
     .contenido-central {
-      width: 100%;
+      flex: 2;
+      min-width: 350px;
     }
-  }
-    #detalleResultados {
-  overflow-x: auto;
-}
 
-  #detalleResultados table {
-    min-width: 500px;
-    width: 100%;
-    table-layout: auto;
-  }
+    @media (max-width: 768px) {
+      .layout {
+        flex-direction: column;
+        align-items: center;
+      }
 
+      .banner {
+        display: none;
+      }
+
+      .contenido-central {
+        width: 100%;
+      }
+
+      #detalleResultados table {
+        min-width: 100%;
+      }
+    }
+
+    .whatsapp-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      color: white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      text-decoration: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #002f6c;
+      color: white;
+    }
+
+    footer a {
+      color: #ffc20e;
+      margin: 0 10px;
+      text-decoration: none;
+    }
   </style>
 </head>
 
@@ -356,12 +343,14 @@
         <p><strong>Total Final:</strong> ${formatear(c26)}</p>
         <button onclick="mostrarDetalles()" id="toggleBtn">Ver detalles</button>
         <div id="detalleResultados" style="display:none;">
-          <table>
-            <tr><th>Concepto</th><th>Valor</th></tr>
-            ${detalles.map(([titulo, valor, tipo]) => `
-              <tr><td>${titulo}</td><td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td></tr>
-            `).join('')}
-          </table>
+          <div style="overflow-x:auto;">
+            <table>
+              <tr><th>Concepto</th><th>Valor</th></tr>
+              ${detalles.map(([titulo, valor, tipo]) => `
+                <tr><td>${titulo}</td><td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td></tr>
+              `).join('')}
+            </table>
+          </div>
         </div>
       `;
     }
@@ -378,4 +367,11 @@
       document.getElementById('c7').value = 0;
       document.getElementById('c8').value = 0;
       document.getElementById('results').innerHTML = '';
-      document.getElementById('e2').value =
+      document.getElementById('e2').value = "25.90";
+    }
+
+    document.getElementById('calculateBtn').addEventListener('click', calcular);
+    document.getElementById('resetBtn').addEventListener('click', reiniciar);
+  </script>
+</body>
+</html>
