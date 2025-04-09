@@ -120,14 +120,15 @@
     margin-top: 20px;
   }
 
-  #detalleResultados::before {
+    #detalleResultados::before {
     content: "";
     position: absolute;
     inset: 0;
-    background-color: rgba(255, 255, 255, 0.85); /* capa blanca semi */
-    backdrop-filter: blur(1px);
+    background-color: rgba(255, 255, 255, 0.55); /* más transparencia */
+    backdrop-filter: blur(0.5px); /* menos desenfoque */
     z-index: 0;
   }
+
 
   #detalleResultados table {
     position: relative;
