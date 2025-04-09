@@ -5,6 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SUBASTACARHN - Calculadora de Importación</title>
   <style>
+    /* Agrega esto dentro del <style> */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 999;
+}
+
+.menu-icon {
+  font-size: 32px;
+  background: #ffc20e;
+  color: #002f6c;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#menu-links {
+  display: none;
+  list-style: none;
+  padding: 10px;
+  margin: 10px 0 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+#menu-links li {
+  margin-bottom: 10px;
+}
+
+#menu-links a {
+  text-decoration: none;
+  color: #002f6c;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .mobile-nav {
+    display: block;
+  }
+}
+
     body {
       font-family: Helvetica, sans-serif;
       margin: 0;
