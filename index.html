@@ -259,6 +259,19 @@
         padding: 8px;
       }
     }
+    .marca-agua {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 50px;
+  color: rgba(0, 0, 0, 0.08);
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
   </style>
 </head>
 <body>
@@ -428,10 +441,12 @@
     ];
 
     document.getElementById('results').innerHTML = `
+      <div class="marca-agua">SUBASTACARHN</div>
       <p><strong>Total Final:</strong> ${formatear(c26)}</p>
       <button onclick="mostrarDetalles()" id="toggleBtn" class="styled-btn">Ver detalles</button>
       <button onclick="descargarPDF()" class="styled-btn">📄 Descargar PDF</button>
       <button onclick="compartirWhatsApp()" class="styled-btn">📲 Compartir por WhatsApp</button>
+    
 
       <div id="detalleResultados" style="display:none;">
         <table>
@@ -453,15 +468,23 @@
 
   
     function descargarPDF() {
-      const resultados = document.getElementById("results");
+  const resultados = document.getElementById("results");
 
-      // Mostrar los detalles si están ocultos
-      const detalles = document.getElementById("detalleResultados");
-      if (detalles.style.display === "none") {
-        detalles.style.display = "block";
-         const toggle = document.getElementById("toggleBtn");
-        if (toggle) toggle.textContent = "Ocultar detalles";
+  // Mostrar detalles si están ocultos
+  const detalles = document.getElementById("detalleResultados");
+  if (detalles.style.display === "none") {
+    detalles.style.display = "block";
+    const toggle = document.getElementById("toggleBtn");
+    if (toggle) toggle.textContent = "Ocultar detalles";
   }
+
+  // Ocultar botones para el PDF
+  const botones = resultados.querySelectorAll("button");
+  botones.forEach(btn => btn.style.display = "none");
+
+  // Crear copia temporal sin colores
+  const originalBg = document.body.style.backgroundColor;
+  document.body.style.backgroundColor = "white";
 
   const opt = {
     margin: 0.5,
@@ -471,9 +494,11 @@
     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
   };
 
-  html2pdf().from(resultados).set(opt).save();
+  html2pdf().from(resultados).set(opt).save().then(() => {
+    botones.forEach(btn => btn.style.display = "block");
+    document.body.style.backgroundColor = originalBg;
+  });
 }
-
 
   function compartirWhatsApp() {
   let texto = "¡Hola! Aquí tienes el cálculo de importación de tu vehículo:\n\n";
