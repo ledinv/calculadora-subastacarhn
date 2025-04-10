@@ -424,7 +424,18 @@
               `<tr><td>${titulo}</td><td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td></tr>`
             ).join('')}
           </table>
-        </div>
+        <p><strong>Total Final:</strong> L 27,621.46</p>
+<button onclick="mostrarDetalles()" id="toggleBtn" class="styled-btn">Ver detalles</button>
+<button onclick="descargarPDF()" class="styled-btn">📄 Descargar PDF</button>
+<button onclick="compartirWhatsApp()" class="styled-btn">📲 Compartir por WhatsApp</button>
+
+<div id="detalleResultados" style="display:none;">
+  <table>
+    <tr><th>Concepto</th><th>Valor</th></tr>
+    <!-- Filas generadas dinámicamente -->
+  </table>
+</div>
+
       `;
     }
 
