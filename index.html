@@ -451,30 +451,49 @@
     btn.textContent = tabla.style.display === "block" ? "Ocultar detalles" : "Ver detalles";
   }
 
-  function descargarPDF() {
-    const detalles = document.getElementById("detalleResultados");
-    if (detalles.style.display === "none") {
-      detalles.style.display = "block";
-      document.getElementById("toggleBtn").textContent = "Ocultar detalles";
-    }
+  
+    function descargarPDF() {
+      const resultados = document.getElementById("results");
 
-    const opt = {
-      margin: 0.5,
-      filename: 'detalle_importacion.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
-
-    html2pdf().from(detalles).set(opt).save();
+      // Mostrar los detalles si están ocultos
+      const detalles = document.getElementById("detalleResultados");
+      if (detalles.style.display === "none") {
+        detalles.style.display = "block";
+         const toggle = document.getElementById("toggleBtn");
+        if (toggle) toggle.textContent = "Ocultar detalles";
   }
+
+  const opt = {
+    margin: 0.5,
+    filename: 'detalle_importacion_completo.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+
+  html2pdf().from(resultados).set(opt).save();
+}
+
 
   function compartirWhatsApp() {
-    const total = document.querySelector("#results p")?.innerText || '';
-    const texto = `¡Hola! Aquí tienes el cálculo de importación de tu vehículo:\n${total}\nCalculado con SUBASTACARHN 👉 https://ledinv.github.io/calculadora-subastacarhn/`;
-    const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
-    window.open(url, "_blank");
-  }
+  let texto = "¡Hola! Aquí tienes el cálculo de importación de tu vehículo:\n\n";
+
+  const filas = document.querySelectorAll("#detalleResultados table tr");
+  filas.forEach((fila, i) => {
+    const cols = fila.querySelectorAll("td, th");
+    if (cols.length === 2) {
+      const concepto = cols[0].innerText.trim();
+      const valor = cols[1].innerText.trim();
+      texto += `${concepto}: ${valor}\n`;
+    }
+  });
+
+  texto += "\nCalculado con SUBASTACARHN 👉 https://ledinv.github.io/calculadora-subastacarhn/";
+
+  const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+  window.open(url, "_blank");
+}
+
 
   function reiniciar() {
     document.getElementById('c1').value = 0;
