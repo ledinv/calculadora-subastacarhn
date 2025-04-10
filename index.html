@@ -11,7 +11,6 @@
       padding: 0;
       background: #f9f9f9;
     }
-
     header {
       background: linear-gradient(to right, #002f6c, #004aad);
       height: 70px;
@@ -26,13 +25,11 @@
       top: 0;
       z-index: 999;
     }
-
     header span#contadorClics {
       font-size: 13px;
       color: #ffc20e;
       font-weight: normal;
     }
-
     .menu-icon {
       font-size: 20px;
       background: #ffc20e;
@@ -43,7 +40,6 @@
       font-weight: bold;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
-
     .styled-btn {
       background-color: #ffc20e;
       color: #002f6c;
@@ -57,11 +53,9 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       transition: background-color 0.2s ease;
     }
-
     .styled-btn:hover {
       background-color: #e6ac00;
     }
-
     #menu-links {
       display: none;
       list-style: none;
@@ -75,24 +69,18 @@
       left: 15px;
       z-index: 1000;
     }
-
-    #menu-links li {
-      margin-bottom: 10px;
-    }
-
+    #menu-links li { margin-bottom: 10px; }
     #menu-links a {
       text-decoration: none;
       color: #002f6c;
       font-weight: bold;
     }
-
     h1 {
       text-align: center;
       color: #002f6c;
       margin-top: 20px;
       font-size: 20px;
     }
-
     .layout {
       display: flex;
       justify-content: center;
@@ -101,12 +89,10 @@
       gap: 20px;
       flex-wrap: wrap;
     }
-
     .banner {
       display: block;
       flex-shrink: 0;
     }
-
     .banner img {
       width: 400px;
       height: 400px;
@@ -114,7 +100,6 @@
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.15);
     }
-
     .contenido-central {
       max-width: 380px;
       width: 100%;
@@ -123,14 +108,12 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       padding: 20px;
     }
-
     label {
       font-weight: bold;
       color: #002f6c;
       display: block;
       margin-top: 10px;
     }
-
     input, select {
       font-size: 14px;
       padding: 8px;
@@ -141,205 +124,84 @@
       margin-top: 5px;
       box-sizing: border-box;
     }
-
-    button {
-      font-size: 15px;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      background-color: #ffc20e;
-      color: #002f6c;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #e6ac00;
-    }
-
-    #results {
-      margin: 20px auto;
-      max-width: 600px;
-      padding: 0 20px;
-    }
-
-    #toggleBtn {
-      margin-top: 10px;
-    }
-
-    #detalleResultados {
-      border-radius: 10px;
-      padding: 10px;
-      margin-top: 10px;
-      overflow-x: auto;
-    }
-
-    #detalleResultados table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-      border: 1px solid #ffc20e;
-    }
-
-    th, td {
-      padding: 6px;
-      border: 1px solid #ccc;
-      color: #002f6c;
-      background-color: rgba(255, 255, 255, 0.95);
-    }
-
-    th {
-      background: #ffc20e;
-      color: black;
-    }
-
-    .whatsapp-button {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      background-color: #25d366;
-      color: white;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      text-decoration: none;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-      z-index: 999;
-    }
-
-    footer {
-      text-align: center;
-      padding: 15px;
-      background: #002f6c;
-      color: white;
-      font-size: 14px;
-    }
-
-    footer a {
-      color: #ffc20e;
-      margin: 0 10px;
-      text-decoration: none;
-    }
-
-    @media (max-width: 768px) {
-      .layout {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .banner {
-        display: none !important;
-      }
-
-      h1 {
-        font-size: 18px;
-      }
-
-      .contenido-central {
-        margin: 10px;
-        padding: 15px;
-      }
-
-      input, select {
-        font-size: 13px;
-      }
-
-      #detalleResultados table {
-        font-size: 12px;
-      }
-
-      button {
-        font-size: 14px;
-        padding: 8px;
-      }
     .marca-agua {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-30deg);
-  font-size: 50px;
-  color: rgba(0, 0, 0, 0.08);
-  z-index: 0;
-  pointer-events: none;
-  user-select: none;
-  white-space: nowrap;
-}
-
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-30deg);
+      font-size: 50px;
+      color: rgba(0, 0, 0, 0.08);
+      z-index: 0;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
-    SUBASTACARHN
-    <span id="contadorClics">Cálculos: ...</span>
-  </header>
+<header>
+  <div class="menu-icon" onclick="toggleMenu()">☰</div>
+  SUBASTACARHN
+  <span id="contadorClics">Cálculos: ...</span>
+</header>
 
-  <ul id="menu-links">
-    <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
-    <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
-    <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
-    <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
-  </ul>
+<ul id="menu-links">
+  <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
+  <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
+  <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
+  <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+</ul>
 
-  <h1>Calculadora de Importación de Vehículos</h1>
-
-  <div class="layout">
-    <div class="banner izquierda">
-      <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20izquierdo.jpeg" alt="Banner Izquierdo">
-    </div>
-
-    <div class="contenido-central">
-      <label for="c1">Monto de Oferta $:</label>
-      <input type="number" id="c1" value="" />
-      <label for="c7">Precio de Barco $:</label>
-      <input type="number" id="c7" value="" />
-      <label for="c8">Precio de Grua $:</label>
-      <input type="number" id="c8" value="" />
-      <label for="e2">Tipo de Cambio:</label>
-      <input type="number" id="e2" value="25.7842" />
-      <label for="c13">VIN:</label>
-      <select id="c13">
-        <option value="1,4,5">1,4,5</option>
-        <option value="OTROS">OTROS</option>
-      </select>
-      <label for="c14">Tipo de Vehículo:</label>
-      <select id="c14" onchange="bloquearMotor()">
-        <option value="PICK UP">PICK UP</option>
-        <option value="OTROS">OTROS</option>
-      </select>
-      <label for="motor">Tipo de Motor:</label>
-      <select id="motor">
-        <option value="1.5 Inferior">1.5 Inferior</option>
-        <option value="Superior 1.5">Superior 1.5</option>
-      </select>
-      <button id="calculateBtn">Calcular</button>
-      <button id="resetBtn">Reiniciar</button>
-    </div>
-
-    <div class="banner derecha">
-      <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20derecho.jpg" alt="Banner Derecho">
-    </div>
+<h1>Calculadora de Importación de Vehículos</h1>
+<div class="layout">
+  <div class="banner izquierda">
+    <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20izquierdo.jpeg" alt="Banner Izquierdo">
   </div>
 
-  <div id="results"></div>
+  <div class="contenido-central">
+    <label for="c1">Monto de Oferta $:</label>
+    <input type="number" id="c1" value="" />
+    <label for="c7">Precio de Barco $:</label>
+    <input type="number" id="c7" value="" />
+    <label for="c8">Precio de Grua $:</label>
+    <input type="number" id="c8" value="" />
+    <label for="e2">Tipo de Cambio:</label>
+    <input type="number" id="e2" value="25.90" />
+    <label for="c13">VIN:</label>
+    <select id="c13">
+      <option value="1,4,5">1,4,5</option>
+      <option value="OTROS">OTROS</option>
+    </select>
+    <label for="c14">Tipo de Vehículo:</label>
+    <select id="c14" onchange="bloquearMotor()">
+      <option value="PICK UP">PICK UP</option>
+      <option value="OTROS">OTROS</option>
+    </select>
+    <label for="motor">Tipo de Motor:</label>
+    <select id="motor">
+      <option value="1.5 Inferior">1.5 Inferior</option>
+      <option value="Superior 1.5">Superior 1.5</option>
+    </select>
+    <button id="calculateBtn">Calcular</button>
+    <button id="resetBtn">Reiniciar</button>
+  </div>
 
-  <a href="https://wa.me/50497330137" class="whatsapp-button" target="_blank">💬</a>
+  <div class="banner derecha">
+    <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20derecho.jpg" alt="Banner Derecho">
+  </div>
+</div>
 
-  <footer>
-    Síguenos en:
-    <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
-    <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
-    <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
-  </footer>
+<div id="results"></div>
+<a href="https://wa.me/50497330137" class="whatsapp-button" target="_blank">💬</a>
+<footer>
+  Síguenos en:
+  <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
+  <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
+  <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+</footer>
+
 <!-- Librería para exportar PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
 <script>
   function toggleMenu() {
     const menu = document.getElementById("menu-links");
@@ -370,114 +232,102 @@
   const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
 
   function calcular() {
-  registrarClic();
+    registrarClic();
 
-  // Obtener valores y limpiar espacios
-  const c1 = document.getElementById('c1').value.trim();
-  const c7 = document.getElementById('c7').value.trim();
-  const c8 = document.getElementById('c8').value.trim();
-  const e2 = document.getElementById('e2').value.trim();
-  const c13 = document.getElementById('c13').value;
-  const c14 = document.getElementById('c14').value;
-  const motor = document.getElementById('motor').value;
+    const c1 = document.getElementById('c1').value.trim();
+    const c7 = document.getElementById('c7').value.trim();
+    const c8 = document.getElementById('c8').value.trim();
+    const e2 = document.getElementById('e2').value.trim();
+    const c13 = document.getElementById('c13').value;
+    const c14 = document.getElementById('c14').value;
+    const motor = document.getElementById('motor').value;
 
-  // Validar campos requeridos (excepto motor si es PICK UP)
-  if (!c1 || !c7 || !c8 || !e2 || !c13 || !c14 || (c14 !== 'PICK UP' && !motor)) {
-    alert("Por favor completa todos los campos. El campo 'Tipo de Motor' puede estar vacío solo si el vehículo es PICK UP.");
-    return;
+    if (!c1 || !c7 || !c8 || !e2 || !c13 || !c14 || (c14 !== 'PICK UP' && !motor)) {
+      alert("Por favor completa todos los campos. El campo 'Tipo de Motor' puede estar vacío solo si el vehículo es PICK UP.");
+      return;
+    }
+
+    const monto = parseFloat(c1);
+    const barco = parseFloat(c7);
+    const grua = parseFloat(c8);
+    const cambio = parseFloat(e2);
+
+    const c2 = 15;
+    const c3 = buscarVirtualBidFee(monto);
+    const c4 = buscarBuyerFee(monto);
+    const c5 = 115;
+    const c6 = monto + c2 + c3 + c4 + c5;
+    const c9 = barco + grua;
+    const c10 = c6 + c9;
+    const c11 = c10 * cambio;
+    const o3 = 50 * cambio;
+    const o4 = c6 * 0.015 * cambio;
+
+    let c15 = 0;
+    if (c13 === "OTROS" && c14 === "PICK UP") {
+      c15 = (c11 + o3 + o4 + c5) * 0.10;
+    } else if (motor === "1.5 Inferior") {
+      c15 = (c11 + o3 + o4 + c5) * 0.05;
+    } else if (c13 === "OTROS") {
+      c15 = (c11 + o3 + o4) * 0.15;
+    }
+
+    let isc = 0;
+    if (c10 <= 7000) isc = 0.10;
+    else if (c10 <= 10000) isc = 0.15;
+    else if (c10 <= 20000) isc = 0.20;
+    else if (c10 <= 30000) isc = 0.30;
+    else isc = 0.45;
+
+    const c16 = (c14 === "OTROS") ? (c11 + o3 + o4 + c15) * isc : 0;
+    const c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
+    const c18 = c15 + c16 + c17;
+    const c20 = 5000, c21 = 4000, c22 = 7500, c23 = 4000, c24 = 55 * cambio;
+    const c25 = c20 + c21 + c22 + c23 + c24;
+    const c26 = c11 + c18 + c25 + o4 + o3;
+
+    const detalles = [
+      ['MONTO DE OFERTA', monto, 'usd'],
+      ['ENVIRONMENTAL FEE', c2, 'usd'],
+      ['VIRTUAL BID FEE', c3, 'usd'],
+      ['BUYER FEE', c4, 'usd'],
+      ['GATE Y TITLE PICK FEE', c5, 'usd'],
+      ['TOTAL PRECIO SUBASTA', c6, 'usd'],
+      ['VALOR DE BARCO', barco, 'usd'],
+      ['PRECIO DE GRÚA', grua, 'usd'],
+      ['TOTAL DE ENVÍO MARÍTIMO', c9, 'usd'],
+      ['TOTAL CIF EN DÓLARES', c10, 'usd'],
+      ['TOTAL CIF EN LEMPIRAS', c11, 'hnl'],
+      ['DAI', c15, 'hnl'],
+      ['ISC', c16, 'hnl'],
+      ['ISV', c17, 'hnl'],
+      ['TOTAL DE IMPUESTOS HONDURAS', c18, 'hnl'],
+      ['ECOTASA', c20, 'hnl'],
+      ['ADUANERO', c21, 'hnl'],
+      ['VOTAINER - CONSOLIDADOS HN', c22, 'hnl'],
+      ['MATRÍCULA Y PLACAS', c23, 'hnl'],
+      ['TRANSFERENCIA INTERNACIONAL', c24, 'hnl'],
+      ['TOTAL DE GASTOS FIJOS', c25, 'hnl'],
+      ['TOTAL FINAL', c26, 'hnl']
+    ];
+
+    document.getElementById('results').innerHTML = `
+      <div class="marca-agua">SUBASTACARHN</div>
+      <p><strong>Total Final:</strong> ${formatear(c26)}</p>
+      <button onclick="mostrarDetalles()" id="toggleBtn" class="styled-btn">Ver detalles</button>
+      <button onclick="descargarPDF()" class="styled-btn">📄 Descargar PDF</button>
+      <button onclick="compartirWhatsApp()" class="styled-btn">📲 Compartir por WhatsApp</button>
+
+      <div id="detalleResultados" style="display:none;">
+        <table>
+          <tr><th>Concepto</th><th>Valor</th></tr>
+          ${detalles.map(([titulo, valor, tipo]) =>
+            `<tr><td>${titulo}</td><td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td></tr>`
+          ).join('')}
+        </table>
+      </div>
+    `;
   }
-
-  // Convertir a número
-  const montoOferta = parseFloat(c1);
-  const precioBarco = parseFloat(c7);
-  const precioGrua = parseFloat(c8);
-  const tipoCambio = parseFloat(e2);
-
-  // Tarifas y cargos base
-  const environmentalFee = 15;
-  const virtualBidFee = buscarVirtualBidFee(montoOferta);
-  const buyerFee = buscarBuyerFee(montoOferta);
-  const gateFee = 115;
-  const totalSubastaUSD = montoOferta + environmentalFee + virtualBidFee + buyerFee + gateFee;
-
-  const totalEnvioUSD = precioBarco + precioGrua;
-  const totalCIFUSD = totalSubastaUSD + totalEnvioUSD;
-  const totalCIFHNL = totalCIFUSD * tipoCambio;
-  const transferenciaInternacional = 50 * tipoCambio;
-  const tasaSobreValor = totalSubastaUSD * 0.015 * tipoCambio;
-
-  // Calcular DAI
-  let DAI = 0;
-  if (c13 === "OTROS" && c14 === "PICK UP") {
-    DAI = (totalCIFHNL + transferenciaInternacional + tasaSobreValor + gateFee) * 0.10;
-  } else if (motor === "1.5 Inferior") {
-    DAI = (totalCIFHNL + transferenciaInternacional + tasaSobreValor + gateFee) * 0.05;
-  } else if (c13 === "OTROS") {
-    DAI = (totalCIFHNL + transferenciaInternacional + tasaSobreValor) * 0.15;
-  }
-
-  // Calcular ISC
-  let isc = 0;
-  if (totalCIFUSD <= 7000) isc = 0.10;
-  else if (totalCIFUSD <= 10000) isc = 0.15;
-  else if (totalCIFUSD <= 20000) isc = 0.20;
-  else if (totalCIFUSD <= 30000) isc = 0.30;
-  else isc = 0.45;
-
-  const ISC = (c14 === "OTROS") ? (totalCIFHNL + transferenciaInternacional + tasaSobreValor + DAI) * isc : 0;
-  const ISV = (totalCIFHNL + DAI + ISC + transferenciaInternacional + tasaSobreValor) * 0.15;
-
-  const totalImpuestos = DAI + ISC + ISV;
-
-  // Costos fijos
-  const ecotasa = 5000;
-  const aduanero = 4000;
-  const votainer = 7500;
-  const matricula = 4000;
-  const transferencia = 55 * tipoCambio;
-  const totalFijos = ecotasa + aduanero + votainer + matricula + transferencia;
-
-  const totalFinal = totalCIFHNL + totalImpuestos + totalFijos + tasaSobreValor + transferenciaInternacional;
-
-  // Mostrar resultados
-  const detalles = [
-    ['MONTO DE OFERTA', montoOferta, 'usd'],
-    ['ENVIRONMENTAL FEE', environmentalFee, 'usd'],
-    ['VIRTUAL BID FEE', virtualBidFee, 'usd'],
-    ['BUYER FEE', buyerFee, 'usd'],
-    ['GATE Y TITLE PICK FEE', gateFee, 'usd'],
-    ['TOTAL PRECIO SUBASTA', totalSubastaUSD, 'usd'],
-    ['VALOR DE BARCO', precioBarco, 'usd'],
-    ['PRECIO DE GRÚA', precioGrua, 'usd'],
-    ['TOTAL DE ENVÍO MARÍTIMO', totalEnvioUSD, 'usd'],
-    ['TOTAL CIF EN DÓLARES', totalCIFUSD, 'usd'],
-    ['TOTAL CIF EN LEMPIRAS', totalCIFHNL, 'hnl'],
-    ['DAI', DAI, 'hnl'],
-    ['ISC', ISC, 'hnl'],
-    ['ISV', ISV, 'hnl'],
-    ['TOTAL DE IMPUESTOS HONDURAS', totalImpuestos, 'hnl'],
-    ['ECOTASA', ecotasa, 'hnl'],
-    ['ADUANERO', aduanero, 'hnl'],
-    ['VOTAINER - CONSOLIDADOS HN', votainer, 'hnl'],
-    ['MATRÍCULA Y PLACAS', matricula, 'hnl'],
-    ['TRANSFERENCIA INTERNACIONAL', transferencia, 'hnl'],
-    ['TOTAL DE GASTOS FIJOS', totalFijos, 'hnl'],
-    ['TOTAL FINAL', totalFinal, 'hnl']
-  ];
-
-  document.getElementById('results').innerHTML = `
-    <div class="marca-agua">SUBASTACARHN</div>
-    <p><strong>Total Final:</strong> ${formatear(totalFinal)}</p>
-    <button onclick="mostrarDetalles()" id="toggleBtn" class="styled-btn">Ver detalles</button>
-    <button onclick="descargarPDF()" class="styled-btn">📄 Descargar PDF</button>
-    <button onclick="compartirWhatsApp()" class="styled-btn">📲 Compartir por WhatsApp</button>
-
-    <div id="detalleResultados" style="display:none;">
-      <table>
-        <tr><th>Concepto</th><th>Valor</th></tr>
-        ${detalles.map(([titulo, valor, tipo]) =>
-          `<tr><td>${titulo}</td
-
 
   function mostrarDetalles() {
     const tabla = document.getElementById("detalleResultados");
@@ -486,66 +336,55 @@
     btn.textContent = tabla.style.display === "block" ? "Ocultar detalles" : "Ver detalles";
   }
 
-  
-    function descargarPDF() {
-  const resultados = document.getElementById("results");
+  function descargarPDF() {
+    const resultados = document.getElementById("results");
+    const detalles = document.getElementById("detalleResultados");
+    if (detalles.style.display === "none") mostrarDetalles();
+    const botones = resultados.querySelectorAll("button");
+    botones.forEach(btn => btn.style.display = "none");
+    const originalBg = document.body.style.backgroundColor;
+    document.body.style.backgroundColor = "white";
 
-  // Mostrar detalles si están ocultos
-  const detalles = document.getElementById("detalleResultados");
-  if (detalles.style.display === "none") {
-    detalles.style.display = "block";
-    const toggle = document.getElementById("toggleBtn");
-    if (toggle) toggle.textContent = "Ocultar detalles";
+    const opt = {
+      margin: 0.5,
+      filename: 'detalle_importacion_completo.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().from(resultados).set(opt).save().then(() => {
+      botones.forEach(btn => btn.style.display = "block");
+      document.body.style.backgroundColor = originalBg;
+    });
   }
 
-  // Ocultar botones para el PDF
-  const botones = resultados.querySelectorAll("button");
-  botones.forEach(btn => btn.style.display = "none");
-
-  // Crear copia temporal sin colores
-  const originalBg = document.body.style.backgroundColor;
-  document.body.style.backgroundColor = "white";
-
-  const opt = {
-    margin: 0.5,
-    filename: 'detalle_importacion_completo.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-  };
-
-  html2pdf().from(resultados).set(opt).save().then(() => {
-    botones.forEach(btn => btn.style.display = "block");
-    document.body.style.backgroundColor = originalBg;
-  });
-}
-
   function compartirWhatsApp() {
-  let texto = "¡Hola! Aquí tienes el cálculo de importación de tu vehículo:\n\n";
-
-  const filas = document.querySelectorAll("#detalleResultados table tr");
-  filas.forEach((fila, i) => {
-    const cols = fila.querySelectorAll("td, th");
-    if (cols.length === 2) {
-      const concepto = cols[0].innerText.trim();
-      const valor = cols[1].innerText.trim();
-      texto += `${concepto}: ${valor}\n`;
-    }
-  });
-
-  texto += "\nCalculado con SUBASTACARHN 👉 https://ledinv.github.io/calculadora-subastacarhn/";
-
-  const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
-  window.open(url, "_blank");
-}
-
+    let texto = "¡Hola! Aquí tienes el cálculo de importación de tu vehículo:\n\n";
+    const filas = document.querySelectorAll("#detalleResultados table tr");
+    filas.forEach((fila, i) => {
+      const cols = fila.querySelectorAll("td, th");
+      if (cols.length === 2) {
+        const concepto = cols[0].innerText.trim();
+        const valor = cols[1].innerText.trim();
+        texto += `${concepto}: ${valor}\n`;
+      }
+    });
+    texto += "\nCalculado con SUBASTACARHN 👉 https://ledinv.github.io/calculadora-subastacarhn/";
+    const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+    window.open(url, "_blank");
+  }
 
   function reiniciar() {
-    document.getElementById('c1').value = 0;
-    document.getElementById('c7').value = 0;
-    document.getElementById('c8').value = 0;
+    document.getElementById('c1').value = "";
+    document.getElementById('c7').value = "";
+    document.getElementById('c8').value = "";
     document.getElementById('e2').value = "25.90";
+    document.getElementById('c13').selectedIndex = 0;
+    document.getElementById('c14').selectedIndex = 0;
+    document.getElementById('motor').value = "";
     document.getElementById('results').innerHTML = '';
+    bloquearMotor();
   }
 
   document.getElementById('calculateBtn').addEventListener('click', calcular);
@@ -573,7 +412,10 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", obtenerContador);
+  document.addEventListener("DOMContentLoaded", () => {
+    obtenerContador();
+    bloquearMotor();
+  });
 </script>
 </body>
 </html>
