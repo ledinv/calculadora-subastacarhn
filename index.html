@@ -499,6 +499,37 @@
     }
 
     document.addEventListener("DOMContentLoaded", obtenerContador);
-  </script>
+  <!-- Librería para exportar a PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+  function descargarPDF() {
+    const detalles = document.getElementById("detalleResultados");
+
+    // Mostrar detalles si están ocultos
+    if (detalles.style.display === "none") {
+      detalles.style.display = "block";
+      document.getElementById("toggleBtn").textContent = "Ocultar detalles";
+    }
+
+    const opt = {
+      margin: 0.5,
+      filename: 'detalle_importacion.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().from(detalles).set(opt).save();
+  }
+
+  function compartirWhatsApp() {
+    const total = document.querySelector("#results p")?.innerText || '';
+    const texto = `¡Hola! Aquí tienes el cálculo de importación de tu vehículo:\n${total}\nCalculado con SUBASTACARHN 👉 https://ledinv.github.io/calculadora-subastacarhn/`;
+    const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+    window.open(url, "_blank");
+  }
+</script>
+  
 </body>
 </html>
