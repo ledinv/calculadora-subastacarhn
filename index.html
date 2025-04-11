@@ -92,6 +92,7 @@
       margin-top: 20px;
       font-size: 20px;
     }
+
     .layout {
       display: flex;
       justify-content: center;
@@ -122,8 +123,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       padding: 20px;
     }
-
-    label {
+        label {
       font-weight: bold;
       color: #002f6c;
       display: block;
@@ -194,22 +194,26 @@
       color: black;
     }
 
-    .whatsapp-button {
+    /* Nuevo botón de soporte gratuito */
+    .soporte-gratis {
       position: fixed;
       bottom: 80px;
       right: 20px;
-      background-color: #25d366;
+      background-color: rgba(0, 74, 173, 0.85);
       color: white;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
+      border-radius: 50px;
+      padding: 12px 20px;
+      font-weight: bold;
+      font-size: 14px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 30px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       text-decoration: none;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
       z-index: 999;
+    }
+
+    .soporte-gratis svg {
+      margin-right: 8px;
     }
 
     footer {
@@ -291,8 +295,13 @@
 
 <h1>Calculadora de Importación de Vehículos</h1>
 
+<!-- Frase de soporte visible -->
+<div style="text-align: center; font-weight: bold; margin-top: -10px; margin-bottom: 10px; font-size: 15px;">
+  ¿Necesitás ayuda? <span style="color: #004aad;">Soporte gratuito</span> al <a href="https://wa.me/50497330137" style="color: #25D366; text-decoration: none;">+504 9733-0137</a>
+</div>
+
 <div class="layout">
-  <div class="banner izquierda">
+    <div class="banner izquierda">
     <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20izquierdo.jpeg" alt="Banner Izquierdo">
   </div>
 
@@ -337,7 +346,15 @@
 </div>
 
 <div id="results"></div>
-<a href="https://wa.me/50497330137" class="whatsapp-button" target="_blank">💬</a>
+
+<!-- Botón flotante nuevo (soporte gratuito) -->
+<a href="https://wa.me/50497330137" class="soporte-gratis" target="_blank">
+  <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="white">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+  </svg>
+  Soporte gratuito
+</a>
 
 <footer>
   Síguenos en:
@@ -347,7 +364,6 @@
 </footer>
 <!-- Librería para exportar PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
 <script>
   function toggleMenu() {
     const menu = document.getElementById("menu-links");
@@ -381,6 +397,7 @@
 
   const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
   const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
+
   function calcular() {
     registrarClic();
 
@@ -421,8 +438,7 @@
     } else if (c13 === "OTROS") {
       c15 = (c11 + o3 + o4) * 0.15;
     }
-
-    let isc = 0;
+        let isc = 0;
     if (c10 <= 7000) isc = 0.10;
     else if (c10 <= 10000) isc = 0.15;
     else if (c10 <= 20000) isc = 0.20;
@@ -493,8 +509,7 @@
     botones.forEach(btn => btn.style.display = "none");
     const originalBg = document.body.style.backgroundColor;
     document.body.style.backgroundColor = "white";
-
-    const opt = {
+        const opt = {
       margin: 0.5,
       filename: 'detalle_importacion_completo.pdf',
       image: { type: 'jpeg', quality: 0.98 },
