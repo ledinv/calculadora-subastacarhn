@@ -297,7 +297,8 @@ const buscarValor = (tabla, valor) => {
 
 const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
 const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
- function calcular() {
+
+function calcular() {
   registrarClic();
 
   const c1 = parseFloat(document.getElementById('c1').value.trim());
@@ -351,7 +352,8 @@ const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, 
   const c21 = 4000, c22 = 7500, c23 = 4000, c24 = 55 * e2;
   const c25 = c20 + c21 + c22 + c23 + c24;
   const c26 = c11 + c18 + c25 + o4 + o3;
-     const detalles = [
+
+  const detalles = [
     ['MONTO DE OFERTA', c1, 'usd'],
     ['ENVIRONMENTAL FEE', c2, 'usd'],
     ['VIRTUAL BID FEE', c3, 'usd'],
@@ -391,7 +393,8 @@ const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, 
     </div>
   `;
 }
- function mostrarDetalles() {
+
+function mostrarDetalles() {
   const tabla = document.getElementById("detalleResultados");
   const btn = document.getElementById("toggleBtn");
   tabla.style.display = tabla.style.display === "none" ? "block" : "none";
