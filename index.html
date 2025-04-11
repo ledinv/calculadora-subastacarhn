@@ -431,13 +431,15 @@
     const o4 = c6 * 0.015 * cambio;
 
     let c15 = 0;
-    if (c13 === "OTROS" && c14 === "PICK UP") {
-      c15 = (c11 + o3 + o4 + c5) * 0.10;
-    } else if (motor === "1.5 Inferior") {
-      c15 = (c11 + o3 + o4 + c5) * 0.05;
-    } else if (c13 === "OTROS") {
-      c15 = (c11 + o3 + o4) * 0.15;
-    }
+
+// Si es motor 1.5 Inferior, se ignoran todas las otras condiciones y solo se aplica 5%
+if (motor === "1.5 Inferior") {
+  c15 = (c11 + o3 + o4 + c5) * 0.05;
+} else if (c13 === "OTROS" && c14 === "PICK UP") {
+  c15 = (c11 + o3 + o4 + c5) * 0.10;
+} else if (c13 === "OTROS") {
+  c15 = (c11 + o3 + o4 + c5) * 0.15;
+}
         let isc = 0;
     if (c10 <= 7000) isc = 0.10;
     else if (c10 <= 10000) isc = 0.15;
