@@ -238,8 +238,8 @@
     <label for="motor">Tipo de Motor:</label>
     <select id="motor">
       <option value="">Seleccionar...</option>
+      <option value="Superior 1.5">Superior 1.5</option> 
       <option value="1.5 Inferior">1.5 Inferior</option>
-      <option value="Superior 1.5">Superior 1.5</option>
     </select>
 
     <button id="calculateBtn" class="styled-btn">Calcular</button>
@@ -326,13 +326,16 @@ function calcular() {
   const o4 = c6 * 0.015 * e2;
 
   let c15 = 0;
+
+if (c13 === "OTROS") {
   if (motor === "1.5 Inferior") {
     c15 = (c11 + o3 + o4 + c5) * 0.05;
-  } else if (c13 === "OTROS" && c14 === "PICK UP") {
+  } else if (c14 === "PICK UP") {
     c15 = (c11 + o3 + o4 + c5) * 0.10;
-  } else if (c13 === "OTROS") {
+  } else {
     c15 = (c11 + o3 + o4 + c5) * 0.15;
   }
+}
 
   let isc = 0;
   if (c10 <= 7000) isc = 0.10;
