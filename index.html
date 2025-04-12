@@ -253,8 +253,9 @@
       <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20derecho.jpg" alt="Banner Derecho">
     </div>
   </div>
+
   <div id="results"></div>
-  <!-- Botón flotante nuevo (soporte gratuito) -->
+
   <a href="https://wa.me/50497330137" class="soporte-gratis" target="_blank" style="
     position: fixed;
     bottom: 80px;
@@ -288,30 +289,24 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
   <script>
     async function obtenerTipoCambioAutomatico() {
-      const apiKey = '57a1e73f68904bbdb91101a070bc822c';
-      const url = 'https://bchapi-am.developer.azure-api.net/api/v1/indicadores/620/cifras';
+      const url = 'https://softcom.hn/dolar.php'; // Usando scrapping alternativo
 
       try {
-        const response = await fetch(url, {
-          headers: { 'Ocp-Apim-Subscription-Key': apiKey }
-        });
-
+        const response = await fetch(url);
         if (!response.ok) throw new Error('Error al obtener el tipo de cambio');
-
-        const datos = await response.json();
-        const tipoCambio = datos[0]?.Valor;
+        const tipoCambio = parseFloat(await response.text());
 
         if (tipoCambio) {
           console.log("actualizando tipo de cambio...");
           document.getElementById('e2').value = tipoCambio.toFixed(2);
         }
       } catch (error) {
-        console.error('Error al conectar con la API del BCH:', error);
+        console.error('Error al conectar con fuente alternativa de tipo de cambio:', error);
       }
     }
+
     function toggleMenu() {
       const menu = document.getElementById("menu-links");
       menu.style.display = menu.style.display === "block" ? "none" : "block";
@@ -390,7 +385,6 @@
       const c16 = (c14 === "OTROS") ? (c11 + o3 + o4 + c15) * isc : 0;
       const c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
       const c18 = c15 + c16 + c17;
-
       let c20 = 5000;
       if (c1 > 15000 && c1 <= 25000) c20 = 7000;
       else if (c1 > 25000) c20 = 10000;
@@ -439,6 +433,7 @@
         </div>
       `;
     }
+
     function mostrarDetalles() {
       const tabla = document.getElementById("detalleResultados");
       const btn = document.getElementById("toggleBtn");
