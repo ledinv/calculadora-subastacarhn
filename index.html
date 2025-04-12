@@ -61,7 +61,6 @@
     .styled-btn:hover {
       background-color: #e6ac00;
     }
-
     #menu-links {
       display: none;
       list-style: none;
@@ -195,7 +194,7 @@
     SUBASTACARHN
     <span id="contadorClics">Cálculos: ...</span>
   </header>
-    <ul id="menu-links">
+  <ul id="menu-links">
     <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
     <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
     <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
@@ -215,13 +214,13 @@
 
     <div class="contenido-central">
       <label for="c1">Monto de Oferta $:</label>
-      <input type="number" id="c1" value="" />
+      <input type="number" id="c1" />
 
       <label for="c7">Precio de Barco $:</label>
-      <input type="number" id="c7" value="" />
+      <input type="number" id="c7" />
 
       <label for="c8">Precio de Grua $:</label>
-      <input type="number" id="c8" value="" />
+      <input type="number" id="c8" />
 
       <label for="e2">Tipo de Cambio:</label>
       <input type="number" id="e2" value="25.90" />
@@ -253,9 +252,8 @@
       <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20derecho.jpg" alt="Banner Derecho">
     </div>
   </div>
-    <div id="results"></div>
+  <div id="results"></div>
 
-  <!-- Botón flotante nuevo (soporte gratuito) -->
   <a href="https://wa.me/50497330137" class="soporte-gratis" target="_blank" style="
     position: fixed;
     bottom: 80px;
@@ -279,20 +277,43 @@
     Soporte gratuito
   </a>
 
-  <!-- Marca de agua para resultados -->
   <div class="marca-agua">SUBASTACARHN</div>
-
-  <!-- Footer estilizado -->
   <footer style="background: #002f6c; color: white; text-align: center; padding: 10px 0; margin-top: 40px;">
     Síguenos en:
     <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank" style="color: #ffc20e;">Facebook</a> |
     <a href="https://www.instagram.com/subastacar1/" target="_blank" style="color: #ffc20e;">Instagram</a> |
     <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank" style="color: #ffc20e;">TikTok</a>
   </footer>
-    <!-- Librería para exportar PDF -->
+
+  <!-- Librería para exportar PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+  <!-- Script principal con API BCH incluida -->
   <script>
+    async function obtenerTipoCambioAutomatico() {
+      const apiKey = '57a1e73f68904bbdb91101a070bc822c'; // ← Tu API key del BCH
+      const url = 'https://bchapi-am.developer.azure-api.net/api/v1/indicadores/620/cifras';
+
+      try {
+        const response = await fetch(url, {
+          headers: { 'Ocp-Apim-Subscription-Key': apiKey }
+        });
+
+        if (!response.ok) throw new Error('Error al obtener el tipo de cambio');
+
+        const datos = await response.json();
+        const tipoCambio = datos[0]?.Valor;
+
+        if (tipoCambio) {
+          document.getElementById('e2').value = tipoCambio.toFixed(2);
+          console.log('Tipo de cambio actualizado:', tipoCambio.toFixed(2));
+        } else {
+          console.warn('No se encontró un valor válido en la respuesta');
+        }
+      } catch (error) {
+        console.error('Error al conectar con la API del BCH:', error);
+      }
+    }
     function toggleMenu() {
       const menu = document.getElementById("menu-links");
       menu.style.display = menu.style.display === "block" ? "none" : "block";
@@ -325,7 +346,6 @@
 
     const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
     const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
-
     function calcular() {
       registrarClic();
 
@@ -421,7 +441,6 @@
         </div>
       `;
     }
-
     function mostrarDetalles() {
       const tabla = document.getElementById("detalleResultados");
       const btn = document.getElementById("toggleBtn");
@@ -509,6 +528,7 @@
       document.getElementById("c13").value = "OTROS";
       bloquearMotorPorVin();
       obtenerContador();
+      obtenerTipoCambioAutomatico(); // ← llamada a la API BCH para actualizar tipo de cambio
     });
   </script>
 </body>
