@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SUBASTACARHN - Calculadora de Importación</title>
   <style>
     body {
@@ -141,7 +141,7 @@
     button:hover {
       background-color: #e6ac00;
     }
-    /* Botón flotante "Cotizalo ya" */
+    /* Estilos para el botón de "Cotizalo ya" */
     .soporte-gratis {
       position: fixed;
       bottom: 80px;
@@ -157,9 +157,6 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       text-decoration: none;
       z-index: 999;
-    }
-    .soporte-gratis svg {
-      margin-right: 8px;
     }
     @media (max-width: 768px) {
       .layout {
@@ -183,6 +180,7 @@
         font-size: 14px;
         padding: 8px;
       }
+      /* Ajustes para que el botón no tape información en móvil */
       .soporte-gratis {
         bottom: 20px;
         right: 10px;
@@ -193,7 +191,6 @@
   </style>
 </head>
 <body>
-  <!-- Encabezado y Menú -->
   <header>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
     SUBASTACARHN
@@ -205,17 +202,14 @@
     <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
     <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
   </ul>
-  
   <h1>Calculadora de Importación de Vehículos</h1>
   <p style="text-align:center; font-weight:bold; margin: 10px 0;">
     ¿Necesitás ayuda? <a href="https://wa.me/50497330137" target="_blank" style="color:#004aad;">Soporte gratuito</a> al <span style="color:green;">+504 9733-0137</span>
   </p>
-  
   <div class="layout">
     <div class="banner izquierda">
       <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20izquierdo.jpeg" alt="Banner Izquierdo">
     </div>
-  
     <div class="contenido-central">
       <label for="c1">Monto de Oferta $:</label>
       <input type="number" id="c1" />
@@ -224,122 +218,108 @@
       <label for="c8">Precio de Grua $:</label>
       <input type="number" id="c8" />
       <label for="e2">Tipo de Cambio:</label>
+      <!-- Aseguramos que e2 quede de solo lectura -->
       <input type="number" id="e2" value="25.90" readonly />
-  
       <label for="c13">VIN:</label>
       <select id="c13" onchange="bloquearMotorPorVin()">
         <option value="OTROS" selected>OTROS</option>
         <option value="1,4,5">1,4,5</option>
       </select>
-  
       <label for="c14">Tipo de Vehículo:</label>
       <select id="c14">
         <option value="OTROS">OTROS</option>
         <option value="PICK UP">PICK UP</option>
       </select>
-  
       <label for="motor">Tipo de Motor:</label>
       <select id="motor">
         <option value="">Seleccionar...</option>
         <option value="1.5 Inferior">1.5 Inferior</option>
         <option value="Superior 1.5">Superior 1.5</option>
       </select>
-  
       <button id="calculateBtn" class="styled-btn">Calcular</button>
       <button id="resetBtn" class="styled-btn">Reiniciar</button>
     </div>
-  
     <div class="banner derecha">
       <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20derecho.jpg" alt="Banner Derecho">
     </div>
   </div>
-  
-  <!-- Contenedor para resultados -->
   <div id="results"></div>
-  
-  <!-- Botón flotante, se mantiene tal como estaba (WhatsApp) -->
+  <!-- Botón de soporte modificado: se cambia el texto a "Cotizalo ya" -->
   <a href="https://wa.me/50497330137" class="soporte-gratis" target="_blank">
-    <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18" fill="white">
+    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="white" style="margin-right: 8px;">
       <path d="M0 0h24v24H0z" fill="none"/>
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48
-               10 10 10 10-4.48 10-10S17.52
-               2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8
-               8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0
-               8h2v2h-2z"/>
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
     </svg>
     Cotizalo ya
   </a>
-  
   <div class="marca-agua">SUBASTACARHN</div>
-  
   <footer style="background: #002f6c; color: white; text-align: center; padding: 10px 0; margin-top: 40px;">
     Síguenos en:
     <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank" style="color: #ffc20e;">Facebook</a> |
     <a href="https://www.instagram.com/subastacar1/" target="_blank" style="color: #ffc20e;">Instagram</a> |
     <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank" style="color: #ffc20e;">TikTok</a>
   </footer>
-  
-  <!-- Se incluye la librería html2pdf -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script>
-    // Función para obtener el tipo de cambio (se mantiene opcional si usas backend)
+    // Actualizamos la función para obtener el tipo de cambio desde tu backend
     async function obtenerTipoCambioAutomatico() {
+      // Reemplaza la URL con la de tu backend en Render
       const url = "https://subastacar-bch-api.onrender.com/api/tipo-cambio-bch";
       try {
         const response = await fetch(url);
         const data = await response.json();
         if (data.valor) {
+          // El valor ya viene formateado a 4 decimales como string desde el backend
           document.getElementById("e2").value = data.valor;
           document.getElementById("e2").readOnly = true;
+        } else {
+          console.warn("No se encontró el tipo de cambio de venta.");
         }
       } catch (error) {
         console.error("Error al conectar con el backend:", error);
       }
     }
-    
-    // Función para el menú (opcional)
+
     function toggleMenu() {
       const menu = document.getElementById("menu-links");
-      menu.style.display = (menu.style.display === "block") ? "none" : "block";
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
     }
-    
-    // Bloquear el selector de motor si el VIN es distinto de "OTROS"
+
     function bloquearMotorPorVin() {
       const vin = document.getElementById("c13").value;
       const motorSelect = document.getElementById("motor");
-      motorSelect.disabled = (vin !== "OTROS");
+      motorSelect.disabled = vin !== "OTROS";
       if (motorSelect.disabled) motorSelect.value = "";
     }
-    
-    // Formateo de valores a moneda
+
     const formatear = v => new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
     const formatearUSD = v => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
-    
-    // Tarifas de buyer y virtual bid
+
     const buyerFees = [
       [50,1],[100,25],[200,60],[350,90],[400,125],[450,135],[500,145],[550,155],[600,170],[700,195],
       [800,215],[900,215],[1000,250],[1200,270],[1300,285],[1400,300],[1500,315],[1600,330],[1700,350],[1800,370],[2000,390],
       [2400,425],[2500,460],[3000,505],[3500,555],[4000,600],[4500,625],[5000,650],[6000,700],[7000,755],[8000,800],
       [9000,820],[10000,850],[11000,850],[12000,875],[13000,890],[14000,900],[15000,900]
     ];
+
     const virtualBidFees = [
       [100,50],[500,65],[1000,85],[1500,95],[2000,110],[4000,125],[6000,145],[8000,160],
       [9000,160],[10000,160],[200000,160]
     ];
+
     const buscarValor = (tabla, valor) => {
       for (let i = tabla.length - 1; i >= 0; i--) {
         if (valor >= tabla[i][0]) return tabla[i][1];
       }
       return 0;
     };
+
     const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
     const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
-    
-    // Función principal que realiza el cálculo
+
     function calcular() {
-      // Se pueden registrar clics en backend (opcional) si usas contador:
-      // registrarClic();
-    
+      registrarClic();
+
       const c1 = parseFloat(document.getElementById('c1').value.trim());
       const c7 = parseFloat(document.getElementById('c7').value.trim());
       const c8 = parseFloat(document.getElementById('c8').value.trim());
@@ -347,13 +327,12 @@
       const c13 = document.getElementById('c13').value;
       const c14 = document.getElementById('c14').value;
       const motor = document.getElementById('motor').value;
-    
+
       if (!c1 || !c7 || !c8 || !e2 || !c13 || !c14 || (c13 === "OTROS" && !motor)) {
-        alert("Por favor, completa todos los campos. (Tipo de Motor sólo si VIN es OTROS).");
+        alert("Por favor completa todos los campos. El campo 'Tipo de Motor' solo aplica si el VIN es OTROS.");
         return;
       }
-    
-      // Cálculos en USD
+
       const c2 = 15;
       const c3 = buscarVirtualBidFee(c1);
       const c4 = buscarBuyerFee(c1);
@@ -361,12 +340,10 @@
       const c6 = c1 + c2 + c3 + c4 + c5;
       const c9 = c7 + c8;
       const c10 = c6 + c9;
-    
-      // Conversión a Lempiras
       const c11 = c10 * e2;
       const o3 = 50 * e2;
       const o4 = c6 * 0.015 * e2;
-    
+
       let c15 = 0;
       if (motor === "1.5 Inferior") {
         c15 = (c11 + o3 + o4 + c5) * 0.05;
@@ -375,27 +352,25 @@
       } else if (c13 === "OTROS") {
         c15 = (c11 + o3 + o4 + c5) * 0.15;
       }
-    
+
       let isc = 0;
-      if (c10 <= 7000)       isc = 0.10;
+      if (c10 <= 7000) isc = 0.10;
       else if (c10 <= 10000) isc = 0.15;
       else if (c10 <= 20000) isc = 0.20;
       else if (c10 <= 30000) isc = 0.30;
-      else                   isc = 0.45;
-    
+      else isc = 0.45;
+
       const c16 = (c14 === "OTROS") ? (c11 + o3 + o4 + c15) * isc : 0;
       const c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
       const c18 = c15 + c16 + c17;
-    
       let c20 = 5000;
       if (c1 > 15000 && c1 <= 25000) c20 = 7000;
-      else if (c1 > 25000)          c20 = 10000;
-    
+      else if (c1 > 25000) c20 = 10000;
+
       const c21 = 4000, c22 = 7500, c23 = 4000, c24 = 55 * e2;
       const c25 = c20 + c21 + c22 + c23 + c24;
       const c26 = c11 + c18 + c25 + o4 + o3;
-    
-      // Se arma la tabla de resultados
+
       const detalles = [
         ['MONTO DE OFERTA', c1, 'usd'],
         ['ENVIRONMENTAL FEE', c2, 'usd'],
@@ -420,52 +395,63 @@
         ['TOTAL DE GASTOS FIJOS', c25, 'hnl'],
         ['TOTAL FINAL', c26, 'hnl']
       ];
-    
-      // Se genera el HTML de resultados. (La función de WhatsApp NO se modifica)
-      let resultadosHTML = `<p><strong>Total Final: </strong>${formatear(c26)}</p>
-        <button class="styled-btn" onclick="descargarPDF()">📄 Descargar PDF</button>
-        <button class="styled-btn" onclick="compartirWhatsApp()">📲 Compartir por WhatsApp</button>
-        <table>
-          <tr><th>Concepto</th><th>Valor</th></tr>`;
-      detalles.forEach(([titulo, valor, tipo]) => {
-        resultadosHTML += `<tr>
-          <td>${titulo}</td>
-          <td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td>
-        </tr>`;
-      });
-      resultadosHTML += `</table>`;
-    
-      document.getElementById("results").innerHTML = resultadosHTML;
-    }
-    
-    // Función para generar y descargar el PDF
-    function descargarPDF() {
-      // Creamos un contenedor temporal con el contenido de #results
-      const contenedorPDF = document.createElement("div");
-      contenedorPDF.innerHTML = `
-        <h2>Detalle de Importación</h2>
-        ${document.getElementById("results").innerHTML}
+
+      document.getElementById('results').innerHTML = `
+        <p><strong>Total Final:</strong> ${formatear(c26)}</p>
+        <button onclick="mostrarDetalles()" id="toggleBtn" class="styled-btn">Ver detalles</button>
+        <button onclick="descargarPDF()" class="styled-btn">📄 Descargar PDF</button>
+        <button onclick="compartirWhatsApp()" class="styled-btn">📲 Compartir por WhatsApp</button>
+        <div id="detalleResultados" style="display:none;">
+          <table>
+            <tr><th>Concepto</th><th>Valor</th></tr>
+            ${detalles.map(([titulo, valor, tipo]) =>
+              `<tr><td>${titulo}</td><td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td></tr>`
+            ).join('')}
+          </table>
+        </div>
       `;
-      const opciones = {
-        margin: 10,
+    }
+
+    function mostrarDetalles() {
+      const tabla = document.getElementById("detalleResultados");
+      const btn = document.getElementById("toggleBtn");
+      tabla.style.display = tabla.style.display === "none" ? "block" : "none";
+      btn.textContent = tabla.style.display === "block" ? "Ocultar detalles" : "Ver detalles";
+    }
+
+    // Función modificar la descarga del PDF para asegurar que se guarde completo
+    function descargarPDF() {
+      const resultados = document.getElementById("results");
+      const detalles = document.getElementById("detalleResultados");
+      if (detalles.style.display === "none") mostrarDetalles();
+      const botones = resultados.querySelectorAll("button");
+      botones.forEach(btn => btn.style.display = "none");
+      const originalBg = document.body.style.backgroundColor;
+      document.body.style.backgroundColor = "white";
+
+      const opt = {
+        margin: 0.5,
         filename: 'detalle_importacion_completo.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       };
-      html2pdf().from(contenedorPDF).set(opciones).save();
+
+      html2pdf().from(resultados).set(opt).save().then(() => {
+        botones.forEach(btn => btn.style.display = "block");
+        document.body.style.backgroundColor = originalBg;
+      });
     }
-    
-    // La función para enviar por WhatsApp se mantiene sin cambios:
+
     function compartirWhatsApp() {
       let texto = "¡Hola! Aquí tienes el cálculo de importación de tu vehículo:\n\n";
-      const filas = document.querySelectorAll("#results table tr");
-      filas.forEach((fila, index) => {
-        if (index === 0) return; // Saltamos la cabecera de la tabla
-        const celdas = fila.querySelectorAll("td");
-        if (celdas.length === 2) {
-          const concepto = celdas[0].innerText.trim();
-          const valor = celdas[1].innerText.trim();
+      const filas = document.querySelectorAll("#detalleResultados table tr");
+      filas.forEach((fila) => {
+        const cols = fila.querySelectorAll("td, th");
+        if (cols.length === 2) {
+          const concepto = cols[0].innerText.trim();
+          const valor = cols[1].innerText.trim();
           texto += `${concepto}: ${valor}\n`;
         }
       });
@@ -473,8 +459,7 @@
       const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
       window.open(url, "_blank");
     }
-    
-    // Función para reiniciar los formularios y resultados
+
     function reiniciar() {
       document.getElementById('c1').value = "";
       document.getElementById('c7').value = "";
@@ -483,17 +468,40 @@
       document.getElementById('c13').value = "OTROS";
       document.getElementById('c14').value = "OTROS";
       document.getElementById('motor').value = "";
-      document.getElementById('results').innerHTML = "";
+      document.getElementById('results').innerHTML = '';
       bloquearMotorPorVin();
     }
-    
-    // Se asignan los event listeners cuando el DOM se haya cargado completamente.
+
+    document.getElementById('calculateBtn').addEventListener('click', calcular);
+    document.getElementById('resetBtn').addEventListener('click', reiniciar);
+
+    const endpoint = "https://contador-clics-backend.onrender.com/contador";
+
+    async function obtenerContador() {
+      try {
+        const res = await fetch(endpoint);
+        const data = await res.json();
+        document.getElementById('contadorClics').textContent = `Cálculos: ${data.clics}`;
+      } catch (e) {
+        console.error("Error al obtener el contador:", e);
+      }
+    }
+
+    async function registrarClic() {
+      try {
+        const res = await fetch(endpoint, { method: "POST" });
+        const data = await res.json();
+        document.getElementById('contadorClics').textContent = `Cálculos: ${data.clics}`;
+      } catch (e) {
+        console.error("Error al registrar clic:", e);
+      }
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("calculateBtn").addEventListener("click", calcular);
-      document.getElementById("resetBtn").addEventListener("click", reiniciar);
+      document.getElementById("c13").value = "OTROS";
       bloquearMotorPorVin();
-      obtenerTipoCambioAutomatico();
-      // Opcional: obtenerContador(); y registrarClic() si deseas usar el contador remoto.
+      obtenerContador();
+      obtenerTipoCambioAutomatico(); // Se invoca el backend para obtener el tipo de cambio con 4 decimales
     });
   </script>
 </body>
