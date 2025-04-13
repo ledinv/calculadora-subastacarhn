@@ -207,7 +207,6 @@
   <p style="text-align:center; font-weight:bold; margin: 10px 0;">
     ¿Necesitás ayuda? <a href="https://wa.me/50497330137" target="_blank" style="color:#004aad;">Soporte gratuito</a> al <span style="color:green;">+504 9733-0137</span>
   </p>
-
   <div class="layout">
     <div class="banner izquierda">
       <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20izquierdo.jpeg" alt="Banner Izquierdo">
@@ -224,7 +223,7 @@
       <input type="number" id="c8" />
 
       <label for="e2">Tipo de Cambio:</label>
-      <input type="number" id="e2" value="25.90"  />
+      <input type="number" id="e2" value="25.90" readonly />
 
       <label for="c13">VIN:</label>
       <select id="c13" onchange="bloquearMotorPorVin()">
@@ -255,7 +254,6 @@
   </div>
 
   <div id="results"></div>
-
   <a href="https://wa.me/50497330137" class="soporte-gratis" target="_blank" style="
     position: fixed;
     bottom: 80px;
@@ -291,19 +289,25 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script>
     async function obtenerTipoCambioAutomatico() {
-      const url = 'https://softcom.hn/dolar.php'; // Usando scrapping alternativo
+      const url = "https://servicios.bch.hn/TIPOCAMBIOBANCOCENTRAL/api/tipocambio";
 
       try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error('Error al obtener el tipo de cambio');
-        const tipoCambio = parseFloat(await response.text());
+        if (!response.ok) throw new Error("Error al obtener el tipo de cambio del BCH");
 
-        if (tipoCambio) {
-          console.log("actualizando tipo de cambio...");
-          document.getElementById('e2').value = tipoCambio.toFixed(2);
+        const data = await response.json();
+
+        // Filtrar el tipo de cambio de venta (IndicadorId 620)
+        const venta = data.find(item => item.IndicadorId === 620);
+
+        if (venta && venta.Valor) {
+          document.getElementById("e2").value = parseFloat(venta.Valor).toFixed(2);
+          document.getElementById("e2").readOnly = true;
+        } else {
+          console.warn("No se encontró el tipo de cambio de venta.");
         }
       } catch (error) {
-        console.error('Error al conectar con fuente alternativa de tipo de cambio:', error);
+        console.error("Error al conectar con la API del BCH:", error);
       }
     }
 
@@ -321,7 +325,6 @@
 
     const formatear = v => new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
     const formatearUSD = v => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
-
     const buyerFees = [[50,1],[100,25],[200,60],[350,90],[400,125],[450,135],[500,145],[550,155],[600,170],[700,195],
       [800,215],[900,215],[1000,250],[1200,270],[1300,285],[1400,300],[1500,315],[1600,330],[1700,350],[1800,370],[2000,390],
       [2400,425],[2500,460],[3000,505],[3500,555],[4000,600],[4500,625],[5000,650],[6000,700],[7000,755],[8000,800],
@@ -339,6 +342,7 @@
 
     const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
     const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
+
     function calcular() {
       registrarClic();
 
@@ -433,7 +437,6 @@
         </div>
       `;
     }
-
     function mostrarDetalles() {
       const tabla = document.getElementById("detalleResultados");
       const btn = document.getElementById("toggleBtn");
@@ -521,7 +524,7 @@
       document.getElementById("c13").value = "OTROS";
       bloquearMotorPorVin();
       obtenerContador();
-      obtenerTipoCambioAutomatico(); // Llama a la API del BCH automáticamente
+      obtenerTipoCambioAutomatico(); // Usando BCH
     });
   </script>
 </body>
