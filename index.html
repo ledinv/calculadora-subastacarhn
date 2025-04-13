@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SUBASTACARHN - Calculadora de Importación</title>
   <style>
     body {
@@ -40,16 +40,17 @@
       font-weight: bold;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
+    /* Botones más pequeños */
     .styled-btn {
       background-color: #ffc20e;
       color: #002f6c;
       font-weight: bold;
       border: none;
-      border-radius: 8px;
-      padding: 10px 15px;
-      margin: 5px 4px;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin: 4px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       transition: background-color 0.2s ease;
     }
@@ -127,8 +128,8 @@
       box-sizing: border-box;
     }
     button {
-      font-size: 15px;
-      padding: 10px;
+      font-size: 14px;
+      padding: 8px;
       border-radius: 8px;
       border: none;
       background-color: #ffc20e;
@@ -141,22 +142,25 @@
     button:hover {
       background-color: #e6ac00;
     }
-    /* Estilos para el botón de "Cotizalo ya" */
+    /* Botón "Cotizalo ya" */
     .soporte-gratis {
       position: fixed;
-      bottom: 80px;
+      bottom: 60px;
       right: 20px;
       background-color: rgba(0, 74, 173, 0.85);
       color: white;
       border-radius: 50px;
-      padding: 12px 20px;
+      padding: 10px 16px;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 13px;
       display: flex;
       align-items: center;
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       text-decoration: none;
       z-index: 999;
+    }
+    .soporte-gratis svg {
+      margin-right: 6px;
     }
     @media (max-width: 768px) {
       .layout {
@@ -177,14 +181,12 @@
         font-size: 13px;
       }
       button {
-        font-size: 14px;
-        padding: 8px;
+        font-size: 13px;
       }
-      /* Ajustes para que el botón no tape información en móvil */
       .soporte-gratis {
         bottom: 20px;
         right: 10px;
-        padding: 8px 12px;
+        padding: 6px 12px;
         font-size: 12px;
       }
     }
@@ -196,20 +198,24 @@
     SUBASTACARHN
     <span id="contadorClics">Cálculos: ...</span>
   </header>
+
   <ul id="menu-links">
     <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
     <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
     <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
     <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
   </ul>
+
   <h1>Calculadora de Importación de Vehículos</h1>
   <p style="text-align:center; font-weight:bold; margin: 10px 0;">
     ¿Necesitás ayuda? <a href="https://wa.me/50497330137" target="_blank" style="color:#004aad;">Soporte gratuito</a> al <span style="color:green;">+504 9733-0137</span>
   </p>
+
   <div class="layout">
     <div class="banner izquierda">
       <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20izquierdo.jpeg" alt="Banner Izquierdo">
     </div>
+
     <div class="contenido-central">
       <label for="c1">Monto de Oferta $:</label>
       <input type="number" id="c1" />
@@ -218,58 +224,72 @@
       <label for="c8">Precio de Grua $:</label>
       <input type="number" id="c8" />
       <label for="e2">Tipo de Cambio:</label>
-      <!-- Aseguramos que e2 quede de solo lectura -->
       <input type="number" id="e2" value="25.90" readonly />
+
       <label for="c13">VIN:</label>
       <select id="c13" onchange="bloquearMotorPorVin()">
         <option value="OTROS" selected>OTROS</option>
         <option value="1,4,5">1,4,5</option>
       </select>
+
       <label for="c14">Tipo de Vehículo:</label>
       <select id="c14">
         <option value="OTROS">OTROS</option>
         <option value="PICK UP">PICK UP</option>
       </select>
+
       <label for="motor">Tipo de Motor:</label>
       <select id="motor">
         <option value="">Seleccionar...</option>
         <option value="1.5 Inferior">1.5 Inferior</option>
         <option value="Superior 1.5">Superior 1.5</option>
       </select>
+
       <button id="calculateBtn" class="styled-btn">Calcular</button>
       <button id="resetBtn" class="styled-btn">Reiniciar</button>
     </div>
+
     <div class="banner derecha">
       <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20derecho.jpg" alt="Banner Derecho">
     </div>
   </div>
+
+  <!-- Contenedor que mostrará los resultados en pantalla -->
   <div id="results"></div>
+
   <!-- Botón de soporte modificado: se cambia el texto a "Cotizalo ya" -->
   <a href="https://wa.me/50497330137" class="soporte-gratis" target="_blank">
-    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="white" style="margin-right: 8px;">
+    <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18" fill="white">
       <path d="M0 0h24v24H0z" fill="none"/>
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
+               10-4.48 10-10S17.52 2 12 2zm0
+               18c-4.41 0-8-3.59-8-8s3.59-8
+               8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0
+               8h2v2h-2z"/>
     </svg>
     Cotizalo ya
   </a>
+
   <div class="marca-agua">SUBASTACARHN</div>
+
   <footer style="background: #002f6c; color: white; text-align: center; padding: 10px 0; margin-top: 40px;">
     Síguenos en:
     <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank" style="color: #ffc20e;">Facebook</a> |
     <a href="https://www.instagram.com/subastacar1/" target="_blank" style="color: #ffc20e;">Instagram</a> |
     <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank" style="color: #ffc20e;">TikTok</a>
   </footer>
+
+  <!-- Librería para generar PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <script>
-    // Actualizamos la función para obtener el tipo de cambio desde tu backend
+    // 1. Ajuste para obtener tipo de cambio
     async function obtenerTipoCambioAutomatico() {
-      // Reemplaza la URL con la de tu backend en Render
       const url = "https://subastacar-bch-api.onrender.com/api/tipo-cambio-bch";
       try {
         const response = await fetch(url);
         const data = await response.json();
         if (data.valor) {
-          // El valor ya viene formateado a 4 decimales como string desde el backend
           document.getElementById("e2").value = data.valor;
           document.getElementById("e2").readOnly = true;
         } else {
@@ -280,21 +300,25 @@
       }
     }
 
+    // 2. Toggle del menú
     function toggleMenu() {
       const menu = document.getElementById("menu-links");
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
+      menu.style.display = (menu.style.display === "block") ? "none" : "block";
     }
 
+    // 3. Bloquear o habilitar tipo de motor según VIN
     function bloquearMotorPorVin() {
       const vin = document.getElementById("c13").value;
       const motorSelect = document.getElementById("motor");
-      motorSelect.disabled = vin !== "OTROS";
+      motorSelect.disabled = (vin !== "OTROS");
       if (motorSelect.disabled) motorSelect.value = "";
     }
 
+    // 4. Funciones de formato
     const formatear = v => new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
     const formatearUSD = v => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
 
+    // 5. Tablas de tarifas
     const buyerFees = [
       [50,1],[100,25],[200,60],[350,90],[400,125],[450,135],[500,145],[550,155],[600,170],[700,195],
       [800,215],[900,215],[1000,250],[1200,270],[1300,285],[1400,300],[1500,315],[1600,330],[1700,350],[1800,370],[2000,390],
@@ -313,10 +337,10 @@
       }
       return 0;
     };
-
     const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
     const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
 
+    // 6. Cálculo principal
     function calcular() {
       registrarClic();
 
@@ -329,20 +353,21 @@
       const motor = document.getElementById('motor').value;
 
       if (!c1 || !c7 || !c8 || !e2 || !c13 || !c14 || (c13 === "OTROS" && !motor)) {
-        alert("Por favor completa todos los campos. El campo 'Tipo de Motor' solo aplica si el VIN es OTROS.");
+        alert("Por favor, completa todos los campos. (Tipo de Motor sólo si VIN es OTROS).");
         return;
       }
 
+      // Variables
       const c2 = 15;
       const c3 = buscarVirtualBidFee(c1);
       const c4 = buscarBuyerFee(c1);
       const c5 = 115;
-      const c6 = c1 + c2 + c3 + c4 + c5;
-      const c9 = c7 + c8;
-      const c10 = c6 + c9;
-      const c11 = c10 * e2;
-      const o3 = 50 * e2;
-      const o4 = c6 * 0.015 * e2;
+      const c6 = c1 + c2 + c3 + c4 + c5; // Subtotal en USD
+      const c9 = c7 + c8;               // Barco+Grúa
+      const c10 = c6 + c9;             // Total CIF en USD
+      const c11 = c10 * e2;            // Total CIF en Lempiras
+      const o3 = 50 * e2;              // Estimada
+      const o4 = c6 * 0.015 * e2;      // Seguro 1.5% en Lempiras
 
       let c15 = 0;
       if (motor === "1.5 Inferior") {
@@ -353,24 +378,28 @@
         c15 = (c11 + o3 + o4 + c5) * 0.15;
       }
 
+      // ISC
       let isc = 0;
-      if (c10 <= 7000) isc = 0.10;
+      if (c10 <= 7000)       isc = 0.10;
       else if (c10 <= 10000) isc = 0.15;
       else if (c10 <= 20000) isc = 0.20;
       else if (c10 <= 30000) isc = 0.30;
-      else isc = 0.45;
+      else                   isc = 0.45;
 
       const c16 = (c14 === "OTROS") ? (c11 + o3 + o4 + c15) * isc : 0;
       const c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
       const c18 = c15 + c16 + c17;
+
+      // Ecotasa
       let c20 = 5000;
       if (c1 > 15000 && c1 <= 25000) c20 = 7000;
-      else if (c1 > 25000) c20 = 10000;
+      else if (c1 > 25000)          c20 = 10000;
 
       const c21 = 4000, c22 = 7500, c23 = 4000, c24 = 55 * e2;
       const c25 = c20 + c21 + c22 + c23 + c24;
       const c26 = c11 + c18 + c25 + o4 + o3;
 
+      // Detalles
       const detalles = [
         ['MONTO DE OFERTA', c1, 'usd'],
         ['ENVIRONMENTAL FEE', c2, 'usd'],
@@ -393,14 +422,18 @@
         ['MATRÍCULA Y PLACAS', c23, 'hnl'],
         ['TRANSFERENCIA INTERNACIONAL', c24, 'hnl'],
         ['TOTAL DE GASTOS FIJOS', c25, 'hnl'],
-        ['TOTAL FINAL', c26, 'hnl']
+        ['TOTAL FINAL', c26, 'hnl'],
       ];
 
-      document.getElementById('results').innerHTML = `
-        <p><strong>Total Final:</strong> ${formatear(c26)}</p>
-        <button onclick="mostrarDetalles()" id="toggleBtn" class="styled-btn">Ver detalles</button>
-        <button onclick="descargarPDF()" class="styled-btn">📄 Descargar PDF</button>
-        <button onclick="compartirWhatsApp()" class="styled-btn">📲 Compartir por WhatsApp</button>
+      // Mostramos en pantalla
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = `
+        <p><strong>Total Final: </strong>${formatear(c26)}</p>
+        <div style="margin-bottom:10px;">
+          <button class="styled-btn" onclick="mostrarDetalles()">Ver detalles</button>
+          <button class="styled-btn" onclick="descargarPDF()">📄 Descargar PDF</button>
+          <button class="styled-btn" onclick="compartirWhatsApp()">📲 Compartir por WhatsApp</button>
+        </div>
         <div id="detalleResultados" style="display:none;">
           <table>
             <tr><th>Concepto</th><th>Valor</th></tr>
@@ -412,38 +445,48 @@
       `;
     }
 
+    // 7. Mostrar/ocultar detalles
     function mostrarDetalles() {
-      const tabla = document.getElementById("detalleResultados");
-      const btn = document.getElementById("toggleBtn");
-      tabla.style.display = tabla.style.display === "none" ? "block" : "none";
-      btn.textContent = tabla.style.display === "block" ? "Ocultar detalles" : "Ver detalles";
+      const detalle = document.getElementById("detalleResultados");
+      if (detalle.style.display === "none") {
+        detalle.style.display = "block";
+      } else {
+        detalle.style.display = "none";
+      }
     }
 
-    // Función modificar la descarga del PDF para asegurar que se guarde completo
+    // 8. Descargar PDF
     function descargarPDF() {
-      const resultados = document.getElementById("results");
-      const detalles = document.getElementById("detalleResultados");
-      if (detalles.style.display === "none") mostrarDetalles();
-      const botones = resultados.querySelectorAll("button");
-      botones.forEach(btn => btn.style.display = "none");
-      const originalBg = document.body.style.backgroundColor;
-      document.body.style.backgroundColor = "white";
+      // Generaremos el PDF desde un contenedor temporal
+      // para que sea más limpio y no tome todo el layout.
+      const pdfContainer = document.createElement("div");
+      
+      // Tomamos el "Total Final" y la tabla de detalles
+      const totalFinal = document.querySelector("#results p strong") 
+                           ? document.querySelector("#results p strong").parentNode.innerHTML 
+                           : "";
+      const tablaDetalles = document.querySelector("#detalleResultados").innerHTML;
 
+      pdfContainer.innerHTML = `
+        <h2>Detalle de Importación</h2>
+        <p>${totalFinal}</p>
+        <br/>
+        ${tablaDetalles}
+      `;
+
+      // Ajustes para html2pdf
       const opt = {
-        margin: 0.5,
+        margin: 10,
         filename: 'detalle_importacion_completo.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
-      html2pdf().from(resultados).set(opt).save().then(() => {
-        botones.forEach(btn => btn.style.display = "block");
-        document.body.style.backgroundColor = originalBg;
-      });
+      html2pdf().from(pdfContainer).set(opt).save();
     }
 
+    // 9. Compartir por WhatsApp
     function compartirWhatsApp() {
       let texto = "¡Hola! Aquí tienes el cálculo de importación de tu vehículo:\n\n";
       const filas = document.querySelectorAll("#detalleResultados table tr");
@@ -460,6 +503,7 @@
       window.open(url, "_blank");
     }
 
+    // 10. Reiniciar formulario
     function reiniciar() {
       document.getElementById('c1').value = "";
       document.getElementById('c7').value = "";
@@ -472,9 +516,7 @@
       bloquearMotorPorVin();
     }
 
-    document.getElementById('calculateBtn').addEventListener('click', calcular);
-    document.getElementById('resetBtn').addEventListener('click', reiniciar);
-
+    // 11. Contador remoto (puedes quitarlo si no lo usas)
     const endpoint = "https://contador-clics-backend.onrender.com/contador";
 
     async function obtenerContador() {
@@ -486,7 +528,6 @@
         console.error("Error al obtener el contador:", e);
       }
     }
-
     async function registrarClic() {
       try {
         const res = await fetch(endpoint, { method: "POST" });
@@ -497,11 +538,12 @@
       }
     }
 
+    // 12. Al cargar la página
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("c13").value = "OTROS";
       bloquearMotorPorVin();
-      obtenerContador();
-      obtenerTipoCambioAutomatico(); // Se invoca el backend para obtener el tipo de cambio con 4 decimales
+      obtenerContador();        // Obtener contador al iniciar
+      obtenerTipoCambioAutomatico(); // Obtener el tipo de cambio desde el backend
     });
   </script>
 </body>
