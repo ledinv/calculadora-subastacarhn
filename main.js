@@ -258,4 +258,4 @@ document.addEventListener("DOMContentLoaded", () => {
   bloquearMotorPorVin();
   obtenerContador();
   obtenerTipoCambioAutomatico();
-});
+});//hola
