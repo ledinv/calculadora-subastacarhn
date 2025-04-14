@@ -2,39 +2,23 @@ name: Obfuscate JS and Commit
 
 on:
   push:
-    branches: [ main ]
+    paths:
+      - 'main.js'
 
 jobs:
   obfuscate:
     runs-on: ubuntu-latest
     steps:
-      - name: Clona el repositorio
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Configura Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Instala el ofuscador
+      - name: Install JavaScript Obfuscator
         run: npm install -g javascript-obfuscator
 
-      - name: Ofusca el archivo main.js
-        run: |
-          javascript-obfuscator main.js --output main.js \
-          --compact true --control-flow-flattening true \
-          --control-flow-flattening-threshold 1 \
-          --dead-code-injection true --dead-code-injection-threshold 1 \
-          --debug-protection true --disable-console-output true \
-          --self-defending true --string-array true \
-          --string-array-encoding rc4 --string-array-threshold 1 \
-          --split-strings true --identifier-names-generator hexadecimal \
-          --rename-globals true --numbers-to-expressions true --simplify false
+      - name: Obfuscate main.js
+        run: javascript-obfuscator main.js --output main.js
 
-      - name: Guarda los cambios ofuscados
+      - name: Commit and push obfuscated file
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add main.js
-          git commit -m "🔐 Código JavaScript ofuscado automáticamente"
-          git push
+          git config --global user.name 'github-actions[bot]'
+          git config --global
