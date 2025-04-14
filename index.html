@@ -50,21 +50,19 @@
       font-weight: bold;
       border: none;
       border-radius: 8px;
-      /* ↑↑ Ajusta aquí el tamaño para que sean más grandes ↑↑ */
-      padding: 8px 14px;     /* Aumentar padding para verlos más grandes */
-      margin: 5px;          /* Espaciado entre botones */
-      font-size: 14px;      /* Aumenta el tamaño de letra */
+      /* Ajusta aquí el tamaño para que sean más grandes */
+      padding: 8px 14px;
+      margin: 5px;
+      font-size: 14px;
       cursor: pointer;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       transition: background-color 0.2s ease;
-
       /* Evitar que se extiendan al 100% */
       width: auto !important;
     }
     .styled-btn:hover {
       background-color: #e6ac00;
     }
-
     #menu-links {
       display: none;
       list-style: none;
@@ -177,13 +175,13 @@
     }
 
     /* ---------------------------------------
-       // Cambios: centrado de los botones
+       Centramos los botones en una sola fila
        --------------------------------------- */
     .botones-detalle {
-      display: flex;               /* Flexbox para poner los botones en fila */
-      justify-content: center;     /* Centra horizontalmente */
-      align-items: center;         /* Alinea verticalmente */
-      flex-wrap: wrap;            /* O wrap para que den el salto si hay poco espacio */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
       margin-top: 10px;
     }
   </style>
@@ -284,7 +282,6 @@
     <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank" style="color: #ffc20e;">TikTok</a>
   </footer>
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script>
     async function obtenerTipoCambioAutomatico() {
       const url = "https://subastacar-bch-api.onrender.com/api/tipo-cambio-bch";
@@ -418,14 +415,13 @@
         ['TOTAL FINAL', c26, 'hnl']
       ];
 
-      // Cambios: Centramos los botones (dentro de un div .botones-detalle)
       document.getElementById('results').innerHTML = `
         <div style="text-align:center;">
           <p><strong>Total Final:</strong> ${formatear(c26)}</p>
           <div class="botones-detalle">
             <button onclick="mostrarDetalles()" id="toggleBtn" class="styled-btn">Ver detalles</button>
-            <button onclick="descargarPDF()" class="styled-btn">📄 PDF</button>
-            <button onclick="compartirWhatsApp()" class="styled-btn">WhatsApp</button>
+            <button onclick="descargarPDF()" class="styled-btn">Descargar en PDF</button>
+            <button onclick="compartirWhatsApp()" class="styled-btn">Compartir por WhatsApp</button>
           </div>
           <div id="detalleResultados" style="display:none;">
             <table class="tabla-detalles">
@@ -449,27 +445,61 @@
       btn.textContent = tabla.style.display === "block" ? "Ocultar detalles" : "Ver detalles";
     }
 
+    // Función adaptada para usar window.print() en nueva ventana
     function descargarPDF() {
-      const resultados = document.getElementById("results");
-      const detalles = document.getElementById("detalleResultados");
-      if (detalles.style.display === "none") mostrarDetalles();
-      const botones = resultados.querySelectorAll("button");
-      botones.forEach(btn => btn.style.display = "none");
-      const originalBg = document.body.style.backgroundColor;
-      document.body.style.backgroundColor = "white";
-
-      const opt = {
-        margin: 0.5,
-        filename: 'detalle_importacion_completo.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-
-      html2pdf().from(resultados).set(opt).save().then(() => {
-        botones.forEach(btn => btn.style.display = "block");
-        document.body.style.backgroundColor = originalBg;
-      });
+      // Asegurarse de que se muestren los detalles
+      const detalleDiv = document.getElementById("detalleResultados");
+      if (detalleDiv.style.display === "none") {
+        mostrarDetalles();
+      }
+      // Obtener el contenido de resultados
+      const contenido = document.getElementById("results").innerHTML;
+      // Abrir una nueva ventana para impresión
+      const ventanaPrint = window.open('', '_blank', 'width=800,height=600');
+      ventanaPrint.document.open();
+      ventanaPrint.document.write(`
+        <html>
+          <head>
+            <title>Descargar en PDF</title>
+            <style>
+              body {
+                font-family: Helvetica, sans-serif;
+                margin: 20px;
+              }
+              .tabla-detalles {
+                margin: 20px auto;
+                border-collapse: collapse;
+                width: auto;
+                max-width: 600px;
+              }
+              .tabla-detalles th, 
+              .tabla-detalles td {
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+              }
+              .tabla-detalles th {
+                background-color: #f2f2f2;
+              }
+              .tabla-detalles th:first-child,
+              .tabla-detalles td:first-child {
+                text-align: left;
+              }
+              .tabla-detalles th:nth-child(2),
+              .tabla-detalles td:nth-child(2) {
+                text-align: right;
+              }
+            </style>
+          </head>
+          <body>
+            ${contenido}
+          </body>
+        </html>
+      `);
+      ventanaPrint.document.close();
+      // Esperar a que se cargue y abrir diálogo de impresión
+      setTimeout(function() {
+        ventanaPrint.print();
+      }, 500);
     }
 
     function compartirWhatsApp() {
