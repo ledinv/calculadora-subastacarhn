@@ -190,7 +190,7 @@
   <header>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
     SUBASTACARHN
-    <span id="contadorClics">Cálculos: ...</span>
+    <span id="contadorClics">Cotizaciones realizadas: ...</span>
   </header>
   <ul id="menu-links">
     <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
@@ -547,7 +547,7 @@
       try {
         const res = await fetch(endpoint, { method: "POST" });
         const data = await res.json();
-        document.getElementById('contadorClics').textContent = `Cálculos: ${data.clics}`;
+        document.getElementById('contadorClics').textContent = `Cotizaciones realizadas: ${data.clics}`;
       } catch (e) {
         console.error("Error al registrar clic:", e);
       }
