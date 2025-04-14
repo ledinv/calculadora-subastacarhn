@@ -48,18 +48,18 @@
       font-weight: bold;
       border: none;
       border-radius: 8px;
-      /* ↓↓↓ Ajustes para que se vean menos grandes ↓↓↓ */
       padding: 5px 10px;
       margin: 3px 2px;
       font-size: 12px;
       cursor: pointer;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       transition: background-color 0.2s ease;
+      /* Sobrescribimos el width para que no se extiendan a todo el contenedor */
+      width: auto !important;
     }
     .styled-btn:hover {
       background-color: #e6ac00;
     }
-
     #menu-links {
       display: none;
       list-style: none;
@@ -168,6 +168,30 @@
         padding: 8px;
       }
     }
+    /* Estilos para la tabla de detalles */
+    .tabla-detalles {
+      margin: 20px auto;            /* Centra la tabla horizontalmente y agrega espacio arriba y abajo */
+      border-collapse: collapse;    /* Quita el espacio entre celdas */
+      width: auto;
+      max-width: 600px;             /* Limita el ancho máximo de la tabla */
+    }
+    .tabla-detalles th, 
+    .tabla-detalles td {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+    }
+    .tabla-detalles th {
+      background-color: #f2f2f2;
+    }
+    /* Alineación: primera columna izquierda, segunda derecha */
+    .tabla-detalles th:first-child,
+    .tabla-detalles td:first-child {
+      text-align: left;
+    }
+    .tabla-detalles th:nth-child(2),
+    .tabla-detalles td:nth-child(2) {
+      text-align: right;
+    }
   </style>
 </head>
 <body>
@@ -225,7 +249,7 @@
   </div>
   <div id="results"></div>
 
-  <!-- ↓↓↓ Botón flotante menos invasivo y con nuevo texto ↓↓↓ -->
+  <!-- Botón flotante menos invasivo -->
   <a href="https://wa.me/50497330137"
     class="soporte-gratis"
     target="_blank"
@@ -236,7 +260,6 @@
       background-color: rgba(0, 74, 173, 0.85);
       color: white;
       border-radius: 50px;
-      /* ↓↓↓ Ajustes para ser menos grande ↓↓↓ */
       padding: 5px 10px;
       font-weight: bold;
       font-size: 13px;
@@ -254,7 +277,6 @@
     </svg>
     Cotízalo ya
   </a>
-  <!-- ↑↑↑ Fin del botón flotante con nuevo texto y estilo ↑↑↑ -->
 
   <div class="marca-agua">SUBASTACARHN</div>
   <footer style="background: #002f6c; color: white; text-align: center; padding: 10px 0; margin-top: 40px;">
@@ -265,7 +287,7 @@
   </footer>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script>
-    // Actualizamos la función para obtener el tipo de cambio desde tu backend
+    // Función para obtener el tipo de cambio desde el backend
     async function obtenerTipoCambioAutomatico() {
       const url = "https://subastacar-bch-api.onrender.com/api/tipo-cambio-bch";
       try {
@@ -400,17 +422,17 @@
 
       document.getElementById('results').innerHTML = `
         <p><strong>Total Final:</strong> ${formatear(c26)}</p>
-        <!-- ↓↓↓ Botones con clase .styled-btn para que sean más pequeños ↓↓↓ -->
         <button onclick="mostrarDetalles()" id="toggleBtn" class="styled-btn">Ver detalles</button>
         <button onclick="descargarPDF()" class="styled-btn">📄 Descargar PDF</button>
         <button onclick="compartirWhatsApp()" class="styled-btn">📲 WhatsApp</button>
-        <!-- ↑↑↑ Texto corto para no verse tan ancho ↑↑↑ -->
-        <!-- ↓↓↓ Se añade text-align:center y margin auto en la tabla para centrar detalles en pantallas grandes ↓↓↓ -->
-        <div id="detalleResultados" style="display:none; text-align:center;">
-          <table style="margin: 0 auto;">
+        <div id="detalleResultados" style="display:none;">
+          <table class="tabla-detalles">
             <tr><th>Concepto</th><th>Valor</th></tr>
             ${detalles.map(([titulo, valor, tipo]) =>
-              `<tr><td>${titulo}</td><td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td></tr>`
+              `<tr>
+                <td>${titulo}</td>
+                <td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td>
+              </tr>`
             ).join('')}
           </table>
         </div>
@@ -504,7 +526,7 @@
       document.getElementById("c13").value = "OTROS";
       bloquearMotorPorVin();
       obtenerContador();
-      obtenerTipoCambioAutomatico(); // Se invoca el backend para obtener el tipo de cambio con 4 decimales
+      obtenerTipoCambioAutomatico();
     });
   </script>
 </body>
