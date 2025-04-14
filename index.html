@@ -40,22 +40,26 @@
       font-weight: bold;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
+
+    /* Ajustamos el tamaño de los botones */
     .styled-btn {
       background-color: #ffc20e;
       color: #002f6c;
       font-weight: bold;
       border: none;
       border-radius: 8px;
-      padding: 10px 15px;
-      margin: 5px 4px;
+      /* ↓↓↓ Ajustes para que se vean menos grandes ↓↓↓ */
+      padding: 5px 10px;
+      margin: 3px 2px;
+      font-size: 12px;
       cursor: pointer;
-      font-size: 14px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       transition: background-color 0.2s ease;
     }
     .styled-btn:hover {
       background-color: #e6ac00;
     }
+
     #menu-links {
       display: none;
       list-style: none;
@@ -220,28 +224,38 @@
     </div>
   </div>
   <div id="results"></div>
-  <a href="https://wa.me/50497330137" class="soporte-gratis" target="_blank" style="
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    background-color: rgba(0, 74, 173, 0.85);
-    color: white;
-    border-radius: 50px;
-    padding: 12px 20px;
-    font-weight: bold;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    text-decoration: none;
-    z-index: 999;
-  ">
+
+  <!-- ↓↓↓ Botón flotante menos invasivo y con nuevo texto ↓↓↓ -->
+  <a href="https://wa.me/50497330137"
+    class="soporte-gratis"
+    target="_blank"
+    style="
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background-color: rgba(0, 74, 173, 0.85);
+      color: white;
+      border-radius: 50px;
+      /* ↓↓↓ Ajustes para ser menos grande ↓↓↓ */
+      padding: 5px 10px;
+      font-weight: bold;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      text-decoration: none;
+      z-index: 999;
+    "
+  >
     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="white" style="margin-right: 8px;">
       <path d="M0 0h24v24H0z" fill="none"/>
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41
+      0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
     </svg>
-    Soporte gratuito
+    Cotízalo ya
   </a>
+  <!-- ↑↑↑ Fin del botón flotante con nuevo texto y estilo ↑↑↑ -->
+
   <div class="marca-agua">SUBASTACARHN</div>
   <footer style="background: #002f6c; color: white; text-align: center; padding: 10px 0; margin-top: 40px;">
     Síguenos en:
@@ -253,13 +267,11 @@
   <script>
     // Actualizamos la función para obtener el tipo de cambio desde tu backend
     async function obtenerTipoCambioAutomatico() {
-      // Reemplaza la URL con la de tu backend en Render
       const url = "https://subastacar-bch-api.onrender.com/api/tipo-cambio-bch";
       try {
         const response = await fetch(url);
         const data = await response.json();
         if (data.valor) {
-          // El valor ya viene formateado a 4 decimales como string desde el backend
           document.getElementById("e2").value = data.valor;
           document.getElementById("e2").readOnly = true;
         } else {
@@ -388,11 +400,14 @@
 
       document.getElementById('results').innerHTML = `
         <p><strong>Total Final:</strong> ${formatear(c26)}</p>
+        <!-- ↓↓↓ Botones con clase .styled-btn para que sean más pequeños ↓↓↓ -->
         <button onclick="mostrarDetalles()" id="toggleBtn" class="styled-btn">Ver detalles</button>
         <button onclick="descargarPDF()" class="styled-btn">📄 Descargar PDF</button>
-        <button onclick="compartirWhatsApp()" class="styled-btn">📲 Compartir por WhatsApp</button>
-        <div id="detalleResultados" style="display:none;">
-          <table>
+        <button onclick="compartirWhatsApp()" class="styled-btn">📲 WhatsApp</button>
+        <!-- ↑↑↑ Texto corto para no verse tan ancho ↑↑↑ -->
+        <!-- ↓↓↓ Se añade text-align:center y margin auto en la tabla para centrar detalles en pantallas grandes ↓↓↓ -->
+        <div id="detalleResultados" style="display:none; text-align:center;">
+          <table style="margin: 0 auto;">
             <tr><th>Concepto</th><th>Valor</th></tr>
             ${detalles.map(([titulo, valor, tipo]) =>
               `<tr><td>${titulo}</td><td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td></tr>`
