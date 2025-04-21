@@ -84,16 +84,15 @@
     }
     input {
       font-size: 14px;
-      padding: 8px 40px 8px 12px; /* dejamos espacio para el icono */
+      padding: 8px 40px 8px 12px;
       border-radius: 8px;
       border: 1px solid #004aad;
       background: #f0f8ff;
       width: 100%;
       margin-top: 5px;
       box-sizing: border-box;
-      position: relative;
     }
-    /* Eye icon */
+    /* Icono ojo */
     .pass-wrapper {
       position: relative;
     }
@@ -145,10 +144,8 @@
     <span></span>
   </header>
   <ul id="menu-links">
-    <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
-    <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
-    <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
-    <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+    <li><a href="login.html">Iniciar Sesión</a></li>
+    <li><a href="calculadora.html">Calculadora</a></li>
   </ul>
 
   <!-- Formulario -->
@@ -165,14 +162,13 @@
         <label for="phone">Teléfono / Celular</label>
         <input type="tel" id="phone" placeholder="9xxxxxxxx" pattern="[923]\d{7}" required />
 
-        <!-- Contraseña con icono ojo -->
         <label for="password">Contraseña</label>
         <div class="pass-wrapper">
           <input type="password" id="password" minlength="8" required />
           <span class="toggle-eye" data-target="password">👁️</span>
         </div>
         <small id="passwordHelper" class="helper">
-          La contraseña debe tener al menos 8 caracteres, una letra mayúscula y un número.
+          La contraseña debe tener ≥8 caracteres, al menos 1 mayúscula y 1 número.
         </small>
 
         <label for="confirmPassword">Confirmar contraseña</label>
@@ -199,92 +195,4 @@
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
-      storageBucket: "subastacarhn-40554.firebasestorage.app",
-      messagingSenderId: "536785797974",
-      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
-      measurementId: "G-QM5N60K8C0"
-    };
-    // 2) Inicializa Firebase
-    firebase.initializeApp(firebaseConfig);
-
-    // Mostrar/ocultar menú
-    function toggleMenu() {
-      const m = document.getElementById('menu-links');
-      m.style.display = m.style.display === 'block' ? 'none' : 'block';
-    }
-
-    // Toggle de visibilidad de contraseña
-    document.querySelectorAll('.toggle-eye').forEach(icon => {
-      icon.addEventListener('click', () => {
-        const input = document.getElementById(icon.dataset.target);
-        input.type = input.type === 'password' ? 'text' : 'password';
-        icon.textContent = input.type === 'password' ? '👁️' : '🚫';
-      });
-    });
-
-    // Regex de validación de contraseña
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
-
-    document.getElementById('registerForm')
-      .addEventListener('submit', async e => {
-        e.preventDefault();
-
-        const name  = document.getElementById('fullName').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        const pass  = document.getElementById('password').value;
-        const conf  = document.getElementById('confirmPassword').value;
-
-        // 1) Comprobamos que la contraseña cumpla requisitos
-        if (!passwordRegex.test(pass)) {
-          document.getElementById('passwordHelper')
-            .classList.add('invalid');
-          return alert('⚠️ La contraseña no cumple los requisitos mínimos.');
-        }
-        document.getElementById('passwordHelper')
-          .classList.remove('invalid');
-
-        // 2) Comprobamos que coincidan
-        if (pass !== conf) {
-          document.getElementById('confirmHelper').textContent =
-            '⚠️ Las contraseñas no coinciden.';
-          return;
-        } else {
-          document.getElementById('confirmHelper').textContent = '';
-        }
-
-        // 3) Intentamos crear el usuario en Firebase
-        try {
-          const cred = await firebase.auth()
-            .createUserWithEmailAndPassword(email, pass);
-
-          // Guardamos el nombre en el perfil
-          await cred.user.updateProfile({ displayName: name });
-          // Enviamos verificación
-          await cred.user.sendEmailVerification();
-
-          alert('✅ Cuenta creada. Revisa tu correo para confirmar tu cuenta.');
-          window.location.href = 'login.html';
-
-        } catch(err) {
-          console.error('Error al crear cuenta:', err);
-          let msg;
-          switch(err.code) {
-            case 'auth/email-already-in-use':
-              msg = '⚠️ Ese correo ya está registrado.';
-              break;
-            case 'auth/invalid-email':
-              msg = '⚠️ El correo ingresado no es válido.';
-              break;
-            case 'auth/weak-password':
-              msg = '⚠️ La contraseña es demasiado débil.';
-              break;
-            default:
-              msg = 'Error inesperado: ' + err.message;
-          }
-          alert(msg);
-        }
-      });
-  </script>
-</body>
-</html>
+      storageBucket: "subastacarhn-40554.firebasestorage.app
