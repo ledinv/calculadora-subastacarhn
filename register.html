@@ -195,4 +195,89 @@
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
-      storageBucket: "subastacarhn-40554.firebasestorage.app
+      storageBucket: "subastacarhn-40554.firebasestorage.app",
+      messagingSenderId: "536785797974",
+      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+      measurementId: "G-QM5N60K8C0"
+    };
+    // 2) Inicializa Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Mostrar/ocultar menú
+    function toggleMenu() {
+      const m = document.getElementById('menu-links');
+      m.style.display = m.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Toggle de visibilidad de contraseña
+    document.querySelectorAll('.toggle-eye').forEach(icon => {
+      icon.addEventListener('click', () => {
+        const inp = document.getElementById(icon.dataset.target);
+        inp.type = inp.type === 'password' ? 'text' : 'password';
+        icon.textContent = inp.type === 'password' ? '👁️' : '🚫';
+      });
+    });
+
+    // Regex de validación de contraseña
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+    document.getElementById('registerForm')
+      .addEventListener('submit', async e => {
+        e.preventDefault();
+
+        const name  = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const pass  = document.getElementById('password').value;
+        const conf  = document.getElementById('confirmPassword').value;
+
+        // 1) Validar requisitos
+        if (!passwordRegex.test(pass)) {
+          document.getElementById('passwordHelper').classList.add('invalid');
+          return alert('⚠️ La contraseña no cumple los requisitos mínimos.');
+        }
+        document.getElementById('passwordHelper').classList.remove('invalid');
+
+        // 2) Validar confirmación
+        if (pass !== conf) {
+          document.getElementById('confirmHelper').textContent =
+            '⚠️ Las contraseñas no coinciden.';
+          return;
+        } else {
+          document.getElementById('confirmHelper').textContent = '';
+        }
+
+        // 3) Crear usuario en Firebase
+        try {
+          const cred = await firebase.auth()
+            .createUserWithEmailAndPassword(email, pass);
+
+          // Guardar nombre en perfil
+          await cred.user.updateProfile({ displayName: name });
+          // Enviar email de verificación
+          await cred.user.sendEmailVerification();
+
+          alert('✅ Cuenta creada. Revisa tu correo para confirmar tu cuenta.');
+          window.location.href = 'login.html';
+
+        } catch(err) {
+          let msg;
+          switch(err.code) {
+            case 'auth/email-already-in-use':
+              msg = '⚠️ Ese correo ya está registrado.';
+              break;
+            case 'auth/invalid-email':
+              msg = '⚠️ El correo ingresado no es válido.';
+              break;
+            case 'auth/weak-password':
+              msg = '⚠️ La contraseña es demasiado débil.';
+              break;
+            default:
+              msg = 'Error inesperado: ' + err.message;
+          }
+          alert(msg);
+        }
+      });
+  </script>
+</body>
+</html>
