@@ -161,20 +161,25 @@
         <input type="email" id="email" required />
 
         <label for="phone">Teléfono / Celular</label>
-        <input type="tel" id="phone" placeholder="9xxxxxxxx" pattern="[923]\d{7}" required />
+        <input type="tel" id="phone" placeholder="9xxxxxxxx"
+               pattern="[923]\d{7}" required />
 
         <!-- Contraseña con icono SVG -->
         <label for="password">Contraseña</label>
         <div class="pass-wrapper">
           <input type="password" id="password" minlength="8" required />
-          <!-- SVG Eye -->
           <span class="toggle-eye" data-target="password">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <!-- ojo cerrado por defecto -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7
-                       -1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    d="M2.458 12C3.732 7.943 7.523 5
+                       12 5c4.477 0 8.268 2.943
+                       9.542 7-1.274 4.057-5.065 7
+                       -9.542 7-4.477 0-8.268-2.943
+                       -9.542-7z" />
             </svg>
           </span>
         </div>
@@ -185,14 +190,17 @@
         <label for="confirmPassword">Confirmar contraseña</label>
         <div class="pass-wrapper">
           <input type="password" id="confirmPassword" minlength="8" required />
-          <!-- SVG Eye -->
           <span class="toggle-eye" data-target="confirmPassword">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7
-                       -1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    d="M2.458 12C3.732 7.943 7.523 5
+                       12 5c4.477 0 8.268 2.943
+                       9.542 7-1.274 4.057-5.065 7
+                       -9.542 7-4.477 0-8.268-2.943
+                       -9.542-7z" />
             </svg>
           </span>
         </div>
@@ -209,6 +217,7 @@
   <!-- Firebase v9 Compat -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script>
     // 1) Configuración de Firebase
     const firebaseConfig = {
@@ -220,64 +229,76 @@
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
       measurementId: "G-QM5N60K8C0"
     };
-    // 2) Inicializa Firebase
+    // 2) Inicializa Firebase y Firestore
     firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    // Toggle menú
+    // Mostrar/ocultar menú
     function toggleMenu() {
       const m = document.getElementById('menu-links');
       m.style.display = m.style.display === 'block' ? 'none' : 'block';
     }
 
-    // Toggle visibilidad de contraseña cambiando el SVG
+    // Toggle visibilidad de contraseña
     document.querySelectorAll('.toggle-eye').forEach(icon => {
       icon.addEventListener('click', () => {
         const inp = document.getElementById(icon.dataset.target);
         const isPwd = inp.type === 'password';
         inp.type = isPwd ? 'text' : 'password';
-
-        // Intercambia el SVG entre eye y eye-off
+        // Cambiar icono entre abierto/ cerrado
         icon.innerHTML = isPwd
-          ? `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          // ojo abierto
+          ? `<svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                     d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478
-                        0-8.27-2.94-9.543-7a9.97 9.97 0 012.214-3.518M6.12
-                        6.12a9.953 9.953 0 011.518-1.518M3 3l18 18" />
+                     d="M13.875 18.825A10.05 10.05 0 0112 19
+                        c-4.478 0-8.27-2.94-9.543-7
+                        a9.97 9.97 0 012.214-3.518
+                        M6.12 6.12a9.953 9.953 0 011.518-1.518
+                        M3 3l18 18" />
                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                     d="M10.477 10.477a3 3 0 104.243 4.243M9.88
-                        9.88l4.24 4.242" />
+                     d="M10.477 10.477a3 3 0 104.243 4.243
+                        M9.88 9.88l4.24 4.242" />
              </svg>`
-          : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          // ojo cerrado
+          : `<svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                     d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477
-                        0 8.268 2.943 9.542 7-1.274 4.057-5.065
-                        7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                     d="M2.458 12C3.732 7.943 7.523 5
+                        12 5c4.477 0 8.268 2.943
+                        9.542 7-1.274 4.057-5.065 7
+                        -9.542 7-4.477 0-8.268-2.943
+                        -9.542-7z" />
              </svg>`;
       });
     });
 
-    // Regex de validación
+    // Regex de validación de contraseña
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
 
+    // Lógica de registro
     document.getElementById('registerForm')
       .addEventListener('submit', async e => {
         e.preventDefault();
 
         const name  = document.getElementById('fullName').value.trim();
         const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
         const pass  = document.getElementById('password').value;
         const conf  = document.getElementById('confirmPassword').value;
 
-        // 1) Validar requisitos
+        // 1) requisitos de contraseña
         if (!passwordRegex.test(pass)) {
-          document.getElementById('passwordHelper').classList.add('invalid');
+          document.getElementById('passwordHelper')
+            .classList.add('invalid');
           return alert('⚠️ La contraseña no cumple los requisitos mínimos.');
         }
-        document.getElementById('passwordHelper').classList.remove('invalid');
+        document.getElementById('passwordHelper')
+          .classList.remove('invalid');
 
-        // 2) Confirmar
+        // 2) coincidan ambas
         if (pass !== conf) {
           document.getElementById('confirmHelper').textContent =
             '⚠️ Las contraseñas no coinciden.';
@@ -285,13 +306,25 @@
         }
         document.getElementById('confirmHelper').textContent = '';
 
-        // 3) Crear usuario
         try {
+          // 3) Auth
           const cred = await firebase.auth()
             .createUserWithEmailAndPassword(email, pass);
           await cred.user.updateProfile({ displayName: name });
           await cred.user.sendEmailVerification();
 
+          // 4) Firestore
+          await db
+            .collection('clients')
+            .doc(cred.user.uid)
+            .set({
+              fullName:  name,
+              email:     email,
+              phone:     phone,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+          // 5) éxito
           alert('✅ Cuenta creada. Revisa tu correo para confirmar tu cuenta.');
           window.location.href = 'login.html';
 
