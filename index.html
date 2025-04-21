@@ -7,26 +7,38 @@
   <style>
     body {
       font-family: Helvetica, sans-serif;
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       background: #f9f9f9;
     }
     header {
       background: linear-gradient(to right, #002f6c, #004aad);
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 15px;
+      padding: 10px 15px;
       position: sticky;
       top: 0;
       z-index: 999;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
     }
     .brand {
       color: white;
       font-size: 22px;
       font-weight: bold;
       text-decoration: none;
-      margin: 0 auto;
+    }
+    .saludo {
+      font-size: 13px;
+      color: #ffc20e;
+      font-weight: bold;
+      margin-top: 6px;
+    }
+    .saludo a {
+      color: #ffc20e;
+      text-decoration: underline;
     }
     .menu-icon {
       font-size: 20px;
@@ -37,16 +49,7 @@
       cursor: pointer;
       font-weight: bold;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-    .saludo {
-      font-size: 13px;
-      color: #ffc20e;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-    .saludo a {
-      color: #ffc20e;
-      text-decoration: underline;
+      margin-right: 10px;
     }
     #menu-links {
       display: none;
@@ -99,20 +102,35 @@
       margin: 0 5px;
       text-decoration: none;
     }
+    @media (max-width: 600px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .saludo {
+        margin-top: 8px;
+      }
+    }
   </style>
 </head>
 <body>
   <header>
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
-    <a href="index.html" class="brand">SUBASTACARHN</a>
-    <div id="userGreeting" class="saludo"></div>
+    <div class="header-inner">
+      <div style="display: flex; align-items: center;">
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <a href="index.html" class="brand">SUBASTACARHN</a>
+      </div>
+      <div id="userGreeting" class="saludo"></div>
+    </div>
   </header>
+
   <ul id="menu-links">
     <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
     <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
     <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
     <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
   </ul>
+
   <div class="center-btn" id="calculadoraBtnContainer" style="display:none;">
     <a href="calculadora.html" class="styled-btn">Ir a la Calculadora</a>
   </div>
@@ -124,7 +142,6 @@
     <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
   </footer>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
