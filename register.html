@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Registro – SubastaCarHN</title>
   <style>
+    /* Reset y tipografías */
     body {
       font-family: Helvetica, sans-serif;
       margin: 0; padding: 0;
       background: #f9f9f9;
     }
-    /* Header igual que la calculadora */
+    /* Header */
     header {
       background: linear-gradient(to right, #002f6c, #004aad);
       height: 70px;
@@ -28,6 +29,7 @@
       font-weight: bold;
       text-decoration: none;
     }
+    /* Menú hamburguesa */
     .menu-icon {
       font-size: 20px;
       background: #ffc20e;
@@ -82,24 +84,41 @@
     }
     input {
       font-size: 14px;
-      padding: 8px;
+      padding: 8px 40px 8px 12px; /* dejamos espacio para el icono */
       border-radius: 8px;
       border: 1px solid #004aad;
       background: #f0f8ff;
       width: 100%;
       margin-top: 5px;
       box-sizing: border-box;
+      position: relative;
     }
-    .show-pass {
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      font-size: 14px;
+    /* Eye icon */
+    .pass-wrapper {
+      position: relative;
     }
-    .show-pass input {
-      width: auto;
-      margin-right: 5px;
+    .toggle-eye {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 18px;
+      color: #555;
     }
+    .toggle-eye:hover {
+      color: #000;
+    }
+    /* Helper text */
+    .helper {
+      font-size: 13px;
+      color: #666;
+      margin-top: 4px;
+    }
+    .helper.invalid {
+      color: #c00;
+    }
+    /* Botón */
     .styled-btn {
       background-color: #ffc20e;
       color: #002f6c;
@@ -146,22 +165,27 @@
         <label for="phone">Teléfono / Celular</label>
         <input type="tel" id="phone" placeholder="9xxxxxxxx" pattern="[923]\d{7}" required />
 
+        <!-- Contraseña con icono ojo -->
         <label for="password">Contraseña</label>
-        <input type="password" id="password" minlength="8" required />
+        <div class="pass-wrapper">
+          <input type="password" id="password" minlength="8" required />
+          <span class="toggle-eye" data-target="password">👁️</span>
+        </div>
+        <small id="passwordHelper" class="helper">
+          La contraseña debe tener al menos 8 caracteres, una letra mayúscula y un número.
+        </small>
 
         <label for="confirmPassword">Confirmar contraseña</label>
-        <input type="password" id="confirmPassword" minlength="8" required />
-
-        <div class="show-pass">
-          <input type="checkbox" id="toggleShow" />
-          <label for="toggleShow">Ver contraseñas</label>
+        <div class="pass-wrapper">
+          <input type="password" id="confirmPassword" minlength="8" required />
+          <span class="toggle-eye" data-target="confirmPassword">👁️</span>
         </div>
+        <small id="confirmHelper" class="helper"></small>
 
         <button type="submit" class="styled-btn">Registrarse</button>
       </form>
       <p style="text-align:center; margin-top:15px;">
-        ¿Ya tienes cuenta?
-        <a href="login.html">Iniciar Sesión</a>
+        ¿Ya tienes cuenta? <a href="login.html">Iniciar Sesión</a>
       </p>
     </div>
   </div>
@@ -189,38 +213,78 @@
       m.style.display = m.style.display === 'block' ? 'none' : 'block';
     }
 
-    // Mostrar/ocultar contraseñas
-    document.getElementById('toggleShow').addEventListener('change', e => {
-      const tipo = e.target.checked ? 'text' : 'password';
-      document.getElementById('password').type = tipo;
-      document.getElementById('confirmPassword').type = tipo;
+    // Toggle de visibilidad de contraseña
+    document.querySelectorAll('.toggle-eye').forEach(icon => {
+      icon.addEventListener('click', () => {
+        const input = document.getElementById(icon.dataset.target);
+        input.type = input.type === 'password' ? 'text' : 'password';
+        icon.textContent = input.type === 'password' ? '👁️' : '🚫';
+      });
     });
 
-    // Lógica de registro con validación de contraseñas
-    document.getElementById('registerForm').addEventListener('submit', async e => {
-      e.preventDefault();
+    // Regex de validación de contraseña
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
 
-      const name  = document.getElementById('fullName').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const pass  = document.getElementById('password').value;
-      const conf  = document.getElementById('confirmPassword').value;
+    document.getElementById('registerForm')
+      .addEventListener('submit', async e => {
+        e.preventDefault();
 
-      // 1) Validar que coincidan las contraseñas
-      if (pass !== conf) {
-        alert('⚠️ Las contraseñas no coinciden.');
-        return;
-      }
+        const name  = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const pass  = document.getElementById('password').value;
+        const conf  = document.getElementById('confirmPassword').value;
 
-      try {
-        // 2) Crear usuario
-        const cred = await firebase.auth()
-          .createUserWithEmailAndPassword(email, pass);
+        // 1) Comprobamos que la contraseña cumpla requisitos
+        if (!passwordRegex.test(pass)) {
+          document.getElementById('passwordHelper')
+            .classList.add('invalid');
+          return alert('⚠️ La contraseña no cumple los requisitos mínimos.');
+        }
+        document.getElementById('passwordHelper')
+          .classList.remove('invalid');
 
-        // 3) Guardar nombre en perfil
-        await cred.user.updateProfile({ displayName: name });
+        // 2) Comprobamos que coincidan
+        if (pass !== conf) {
+          document.getElementById('confirmHelper').textContent =
+            '⚠️ Las contraseñas no coinciden.';
+          return;
+        } else {
+          document.getElementById('confirmHelper').textContent = '';
+        }
 
-        // 4) Enviar email de verificación
-        await cred.user.sendEmailVerification();
+        // 3) Intentamos crear el usuario en Firebase
+        try {
+          const cred = await firebase.auth()
+            .createUserWithEmailAndPassword(email, pass);
 
-        alert
+          // Guardamos el nombre en el perfil
+          await cred.user.updateProfile({ displayName: name });
+          // Enviamos verificación
+          await cred.user.sendEmailVerification();
+
+          alert('✅ Cuenta creada. Revisa tu correo para confirmar tu cuenta.');
+          window.location.href = 'login.html';
+
+        } catch(err) {
+          console.error('Error al crear cuenta:', err);
+          let msg;
+          switch(err.code) {
+            case 'auth/email-already-in-use':
+              msg = '⚠️ Ese correo ya está registrado.';
+              break;
+            case 'auth/invalid-email':
+              msg = '⚠️ El correo ingresado no es válido.';
+              break;
+            case 'auth/weak-password':
+              msg = '⚠️ La contraseña es demasiado débil.';
+              break;
+            default:
+              msg = 'Error inesperado: ' + err.message;
+          }
+          alert(msg);
+        }
+      });
+  </script>
+</body>
+</html>
