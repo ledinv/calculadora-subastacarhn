@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SubastaCarHN – Calculadora de Importación</title>
+
   <!-- Google Fonts Montserrat -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <!-- Tiny‑slider (para testimonios) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css"/>
+
   <style>
     :root {
       --blue: #002f6c;
@@ -17,7 +17,13 @@
       --light: #f9f9f9;
       --max-width: 1200px;
     }
-    *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+
+    /* Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: 'Montserrat', sans-serif;
       color: var(--dark);
@@ -26,194 +32,388 @@
     }
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
+
+    /* Container */
     .container {
-      width:100%; max-width: var(--max-width);
-      margin:0 auto; padding:0 1rem;
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1rem;
     }
+
     /* ===== HEADER ===== */
     header {
       background: linear-gradient(to right, var(--blue), var(--blue2));
-      position: sticky; top:0; z-index:999;
+      position: sticky;
+      top: 0;
+      z-index: 999;
     }
     .header-inner {
-      display: flex; align-items: center;
+      display: flex;
+      align-items: center;
       justify-content: space-between;
-      padding:0.75rem 0;
+      padding: 0.5rem 0;
     }
     .brand {
-      color:#fff; font-size:1.5rem; font-weight:700;
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 700;
     }
     .nav-links {
-      display:none; gap:1rem;
+      display: none;
+      gap: 1rem;
     }
-    .nav-links a { color: var(--yellow); font-weight:600; }
+    .nav-links a,
+    .nav-links span {
+      color: var(--yellow);
+      font-size: 0.9375rem;
+      font-weight: 600;
+    }
     .menu-icon {
-      background: var(--yellow); color: var(--blue);
-      border:none; font-size:1.25rem; padding:0.5rem;
-      border-radius:6px; cursor:pointer;
+      background: var(--yellow);
+      color: var(--blue);
+      border: none;
+      font-size: 1rem;
+      line-height: 1;
+      padding: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
+    /* Mobile dropdown */
     .mobile-nav {
-      display:none; flex-direction:column;
-      background:#fff; position:absolute;
-      top:100%; left:0; right:0; padding:1rem;
-      box-shadow:0 2px 8px rgba(0,0,0,0.2); z-index:998;
+      display: none;
+      flex-direction: column;
+      background: #fff;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 998;
     }
-    .mobile-nav li { margin-bottom:0.75rem; }
-    .mobile-nav a { color: var(--blue); font-weight:700; }
-    @media(min-width:768px) {
-      .menu-icon { display:none; }
-      .nav-links { display:flex; }
-      .mobile-nav { display:none !important; }
+    .mobile-nav li {
+      margin-bottom: 0.75rem;
+    }
+    .mobile-nav a,
+    .mobile-nav span {
+      display: block;
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 0.9375rem;
+    }
+
+    @media (min-width: 768px) {
+      .menu-icon { display: none; }
+      .nav-links { display: flex; }
+      .mobile-nav { display: none !important; }
+    }
+
+    /* ===== BOTÓN CALCULADORA (logueado) ===== */
+    .center-btn {
+      display: none;
+      justify-content: center;
+      margin: 2rem auto;
+      width: 100%;
+      max-width: 300px;
+      padding: 0 1rem;
+    }
+    .styled-btn {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      background: var(--yellow);
+      color: var(--blue);
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      padding: 0.875rem;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      transition: background-color 0.3s;
+    }
+    .styled-btn:hover {
+      background: #e6ac00;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: url('Img/hero-bg.jpg') center/cover no-repeat;
+      height: 70vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,47,108,0.7);
+    }
+    .hero-content {
+      position: relative;
+      color: #fff;
+      max-width: 600px;
+      padding: 0 1rem;
+    }
+    .hero-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .hero-content p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    /* ===== BENEFICIOS ===== */
+    .benefits {
+      padding: 3rem 1rem;
+    }
+    .benefits .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+    .benefit-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: var(--blue);
+    }
+    .benefit-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ===== CÓMO FUNCIONA ===== */
+    .how-it-works {
+      padding: 3rem 1rem;
+    }
+    .how-it-works h2 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .step {
+      flex: 1 1 200px;
+      text-align: center;
+    }
+    .step-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--yellow);
+      margin-bottom: 0.5rem;
+    }
+    .step-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ===== POR QUÉ ELEGIRNOS ===== */
+    .why-choose {
+      padding: 3rem 1rem;
+      background: #fff;
+    }
+    .why-choose h2 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .choose-list {
+      display: inline-block;
+      text-align: left;
+    }
+    .choose-list li {
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .choose-list li::before {
+      content: '✔️';
+      margin-right: 0.5rem;
+      color: var(--yellow);
+    }
+
+    /* ===== TESTIMONIOS ===== */
+    .testimonials {
+      padding: 3rem 1rem;
+    }
+    .testimonials h2 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .testimonial {
+      margin-bottom: 2rem;
+      font-style: italic;
+      text-align: center;
+    }
+    .testimonial strong {
+      display: block;
+      margin-top: 0.5rem;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* ===== CTA FINAL ===== */
+    .cta-final {
+      background: var(--blue);
+      color: #fff;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    .cta-final h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .cta-final .styled-btn {
+      background: var(--yellow);
+      color: var(--blue);
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--blue2);
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+    }
+    footer a {
+      color: var(--yellow);
+      margin: 0 0.5rem;
+    }
+
+    /* Responsive tweaks */
+    @media (min-width: 768px) {
+      .hero-content h1 { font-size: 3rem; }
+      .hero-content p { font-size: 1.25rem; }
+      .steps { gap: 4rem; }
+    }
+    @media (max-width: 600px) {
+      .steps { flex-direction: column; }
     }
   </style>
 </head>
+
 <body>
 
+  <!-- HEADER -->
   <header>
     <div class="container header-inner">
       <a href="index.html" class="brand">SubastaCarHN</a>
+
       <nav class="nav-links" aria-label="Menú principal">
         <a href="calculadora.html">Calculadora</a>
-        <a href="quienes-somos.html">Quiénes somos</a>
-        <a href="contacto.html">Contacto</a>
+        <span id="userGreeting"></span>
       </nav>
+
       <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
     </div>
+
     <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
       <li><a href="calculadora.html">Calculadora</a></li>
-      <li><a href="quienes-somos.html">Quiénes somos</a></li>
-      <li><a href="contacto.html">Contacto</a></li>
+      <li><span id="mobileGreeting"></span></li>
+      <li><a href=" https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
     </ul>
   </header>
-    <!-- HERO -->
-  <section class="hero">
-    <div class="hero-overlay"></div>
-    <div class="hero-content container">
-      <h1>Calcula tus <span>costos de importación</span> al instante</h1>
-      <p>Tarifas oficiales, desglose transparente y sin suscripciones.</p>
-      <a href="calculadora.html" class="btn-hero">Empieza ahora</a>
+
+  <!-- BOTÓN PARA USUARIOS LOGUEADOS -->
+  <div class="container center-btn" id="calculadoraBtnContainer">
+    <button class="styled-btn" onclick="location.href='calculadora.html'">
+      Ir a la Calculadora
+    </button>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>Calcula tus costos de importación en segundos</h1>
+      <p>Sin suscripciones, sin sorpresas, con total transparencia.</p>
+      <a href="calculadora.html" class="styled-btn">Empieza a calcular</a>
     </div>
   </section>
 
   <!-- BENEFICIOS -->
   <section class="benefits">
     <div class="container">
-      <h2>¿Por qué elegir SubastaCarHN?</h2>
-      <div class="benefits-grid">
-        <div class="benefit-card">
-          <img src="/icons/clock.svg" alt="Actualizado al momento">
-          <h3>Actualizado al momento</h3>
-          <p>Tipo de cambio en real‑time y tarifas oficiales.</p>
-        </div>
-        <div class="benefit-card">
-          <img src="/icons/chart.svg" alt="Transparencia total">
-          <h3>Transparencia total</h3>
-          <p>Desglose detallado de cada costo.</p>
-        </div>
-        <div class="benefit-card">
-          <img src="/icons/truck.svg" alt="Todo incluido">
-          <h3>Todo incluido</h3>
-          <p>De la subasta a tu puerta sin sorpresas.</p>
-        </div>
-        <div class="benefit-card">
-          <img src="/icons/shield.svg" alt="Sin sorpresas">
-          <h3>Sin sorpresas</h3>
-          <p>Ningún costo queda oculto.</p>
-        </div>
+      <div>
+        <div class="benefit-icon">🔄</div>
+        <div class="benefit-title">Actualizado al momento</div>
+        <div>Tipo de cambio real‑time y tarifas oficiales.</div>
+      </div>
+      <div>
+        <div class="benefit-icon">📊</div>
+        <div class="benefit-title">Cálculos 100 % transparentes</div>
+        <div>Desglose detallado de cada costo.</div>
+      </div>
+      <div>
+        <div class="benefit-icon">🚚</div>
+        <div class="benefit-title">Todo incluido</div>
+        <div>Desde la subasta en Copart/IAAI hasta llegada a tu puerta.</div>
+      </div>
+      <div>
+        <div class="benefit-icon">🛡️</div>
+        <div class="benefit-title">Sin sorpresas</div>
+        <div>Ninguno de nuestros costos se queda oculto.</div>
       </div>
     </div>
   </section>
 
-  <style>
-    /* ===== HERO ===== */
-    .hero {
-      position: relative;
-      background: url('Img/hero-bg.jpg') center/cover no-repeat;
-      min-height: 60vh;
-      display: flex; align-items:center; justify-content:center;
-      padding:4rem 1rem;
-    }
-    .hero-overlay {
-      position:absolute; inset:0;
-      background: linear-gradient(to bottom, rgba(0,47,108,0.7), rgba(0,47,108,0.3));
-    }
-    .hero-content {
-      position:relative; text-align:center; color:#fff;
-    }
-    .hero-content h1 {
-      font-size:2.75rem; line-height:1.2; margin-bottom:1rem;
-    }
-    .hero-content h1 span { color: var(--yellow); }
-    .hero-content p {
-      font-size:1.1rem; margin-bottom:2rem;
-    }
-    .btn-hero {
-      background: var(--yellow);
-      color: var(--blue);
-      padding:0.85rem 1.75rem;
-      font-size:1rem; font-weight:700;
-      border-radius:6px;
-      box-shadow:0 4px 12px rgba(0,0,0,0.25);
-      transition:transform .2s, box-shadow .2s;
-      display:inline-block;
-    }
-    .btn-hero:hover {
-      transform: translateY(-2px);
-      box-shadow:0 6px 16px rgba(0,0,0,0.35);
-    }
-    @media(min-width:768px) {
-      .hero-content h1 { font-size:3.5rem; }
-    }
-
-    /* ===== BENEFICIOS ===== */
-    .benefits h2 {
-      text-align:center; margin-bottom:2rem;
-      font-size:1.8rem; color: var(--blue2);
-    }
-    .benefits-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:1.5rem;
-    }
-    .benefit-card {
-      background:#fff; border-radius:8px;
-      padding:1.5rem;
-      box-shadow:0 4px 8px rgba(0,0,0,0.05);
-      text-align:center;
-    }
-    .benefit-card img {
-      width:40px; margin-bottom:1rem;
-    }
-    .benefit-card h3 {
-      margin-bottom:0.5rem;
-      font-size:1.1rem; color: var(--blue);
-    }
-    .benefit-card p {
-      font-size:0.95rem; color:#555;
-    }
-  </style>
-    <!-- CÓMO FUNCIONA -->
-  <section class="how-it-works">
+  <!-- CÓMO FUNCIONA -->
+  <section class="how-it-works" id="how">
     <div class="container">
       <h2>En solo 3 pasos</h2>
       <div class="steps">
-        <div class="step-card">
+        <div class="step">
           <div class="step-number">1</div>
-          <h4>Ingresa tus datos</h4>
-          <p>Monto, VIN y transporte.</p>
+          <div class="step-title">Ingresa tus datos</div>
+          <div>Monto de oferta, VIN y transporte.</div>
         </div>
-        <div class="step-card">
+        <div class="step">
           <div class="step-number">2</div>
-          <h4>Presiona “Calcular”</h4>
-          <p>Obtén al instante DAI, ISC, ISV y tarifas.</p>
+          <div class="step-title">Presiona “Calcular”</div>
+          <div>Obtén al instante los aranceles (DAI, ISC, ISV) y tarifas.</div>
         </div>
-        <div class="step-card">
+        <div class="step">
           <div class="step-number">3</div>
-          <h4>Descarga o comparte</h4>
-          <p>Guarda tu cotización en PDF o envíala por WhatsApp.</p>
+          <div class="step-title">Descarga o comparte</div>
+          <div>Guarda tu cotización en PDF o envíala por WhatsApp.</div>
         </div>
       </div>
+      <div style="margin-top:2rem; text-align:center;">
+        <a href="calculadora.html" class="styled-btn">Ver demo rápida</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- POR QUÉ ELEGIRNOS -->
+  <section class="why-choose" id="about">
+    <div class="container">
+      <h2>Confianza y agilidad para tu importación</h2>
+      <ul class="choose-list">
+        <li>Experiencia comprobada: +2,000 clientes satisfechos.</li>
+        <li>Soporte gratuito: Nuestro equipo te asesora paso a paso.</li>
+        <li>Precio fijo de comisión: Solo 5,000 LPS sobre el precio del vehículo.</li>
+        <li>100 % online: Desde tu celular o computador, donde quieras.</li>
+      </ul>
     </div>
   </section>
 
@@ -221,18 +421,13 @@
   <section class="testimonials">
     <div class="container">
       <h2>Historias de éxito</h2>
-      <div class="testimonial-slider">
-        <div class="testimonial-card">
-          <img src="/testimonios/carlos.jpg" alt="Carlos M." class="avatar">
-          <blockquote>“¡Importé mi Tacoma por 3,200 USD y ahorré 800 USD!”</blockquote>
-          <cite>Carlos M., Tegucigalpa</cite>
-        </div>
-        <div class="testimonial-card">
-          <img src="/testimonios/maria.jpg" alt="María G." class="avatar">
-          <blockquote>“El proceso fue tan fácil que lo recomendé a mis hermanos.”</blockquote>
-          <cite>María G., San Pedro Sula</cite>
-        </div>
-        <!-- Añade más .testimonial-card si lo deseas -->
+      <div class="testimonial">
+        “Gracias a SubastaCarHN importé mi Tacoma por 3,200 USD, ¡y ahorré más de 800 USD!”
+        <strong>Carlos M., Tegucigalpa</strong>
+      </div>
+      <div class="testimonial">
+        “El proceso fue tan fácil que lo recomendé a mis hermanos.”
+        <strong>María G., San Pedro Sula</strong>
       </div>
     </div>
   </section>
@@ -241,215 +436,65 @@
   <section class="cta-final">
     <div class="container">
       <h2>¿Listo para tu próxima importación?</h2>
-      <a href="calculadora.html" class="btn-hero">Calcular mi cotización</a>
+      <a href="calculadora.html" class="styled-btn">Calcular mi cotización</a>
     </div>
   </section>
 
-  <style>
-    /* ===== CÓMO FUNCIONA ===== */
-    .how-it-works {
-      background: var(--light); padding:3rem 1rem;
-    }
-    .how-it-works h2 {
-      text-align:center; margin-bottom:2rem;
-      font-size:1.9rem; color: var(--blue2);
-    }
-    .steps {
-      display:flex; gap:1rem;
-      overflow-x:auto;
-      scroll-snap-type: x mandatory;
-      padding-bottom:1rem;
-    }
-    .step-card {
-      flex:0 0 260px;
-      background:#fff; border-radius:8px;
-      padding:1.5rem;
-      box-shadow:0 3px 10px rgba(0,0,0,0.1);
-      scroll-snap-align:start;
-      text-align:center;
-    }
-    .step-number {
-      font-size:2rem; font-weight:700;
-      color: var(--yellow);
-      margin-bottom:0.5rem;
-    }
-    .step-card h4 {
-      margin-bottom:0.5rem; font-size:1.1rem;
-    }
-    .step-card p {
-      font-size:0.95rem; color:#444;
-    }
-    @media(min-width:768px) {
-      .steps { overflow:visible; justify-content:space-between; }
-      .step-card { flex:1 1 0; margin:0; }
-    }
-
-    /* ===== TESTIMONIOS ===== */
-    .testimonials {
-      padding:3rem 1rem;
-    }
-    .testimonials h2 {
-      text-align:center; margin-bottom:2rem;
-      font-size:1.8rem; color: var(--blue2);
-    }
-    .testimonial-slider {
-      display:flex; gap:1rem;
-      overflow-x:auto;
-      scroll-snap-type: x mandatory;
-    }
-    .testimonial-card {
-      flex:0 0 300px;
-      background:#fff; border-radius:8px;
-      padding:2rem;
-      box-shadow:0 4px 12px rgba(0,0,0,0.1);
-      scroll-snap-align:start;
-      text-align:center;
-    }
-    .avatar {
-      width:60px; height:60px;
-      border-radius:50%; object-fit:cover;
-      margin-bottom:1rem;
-    }
-    .testimonial-card blockquote {
-      font-style:italic; margin-bottom:1rem;
-    }
-    .testimonial-card cite {
-      display:block; font-weight:600; color:#333;
-    }
-
-    /* ===== CTA FINAL ===== */
-    .cta-final {
-      background: var(--blue); color:#fff;
-      text-align:center; padding:4rem 1rem;
-    }
-    .cta-final h2 {
-      font-size:2rem; margin-bottom:1.5rem;
-      font-weight:700;
-    }
-    .cta-final .btn-hero {
-      background: var(--yellow);
-      color: var(--blue);
-    }
-  </style>
-    <!-- FOOTER PROFESIONAL -->
-  <footer class="site-footer">
-    <div class="footer-top container">
-      <div class="footer-section">
-        <button class="footer-toggle">Enlaces ▼</button>
-        <ul class="footer-links">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="calculadora.html">Calculadora</a></li>
-          <li><a href="quienes-somos.html">Quiénes somos</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
-        </ul>
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
+      <div style="margin-top:0.5rem;">
+        <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
+        <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
+        <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
       </div>
-      <div class="footer-section">
-        <button class="footer-toggle">Síguenos ▼</button>
-        <ul class="footer-links social">
-          <li><a href="https://facebook.com/subastacarhn" aria-label="Facebook">Facebook</a></li>
-          <li><a href="https://instagram.com/subastacar1" aria-label="Instagram">Instagram</a></li>
-          <li><a href="https://tiktok.com/@tu_amigo_el_importador" aria-label="TikTok">TikTok</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <button class="footer-toggle">Apps ▼</button>
-        <ul class="footer-links">
-          <li><a href="#"><img src="/img/appstore-badge.svg" alt="App Store"></a></li>
-          <li><a href="#"><img src="/img/googleplay-badge.svg" alt="Google Play"></a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="footer-bottom container">
-      <nav class="legal-links">
-        <a href="sitemap.xml">Site Map</a>
-        <a href="contacto.html">Contacto</a>
-        <a href="terminos.html">Términos de Servicio</a>
-        <a href="privacidad.html">Privacy Policy</a>
-        <a href="cookies.html">Cookie Policy</a>
-      </nav>
-      <p>© <span id="year"></span> SubastaCarHN. Todos los derechos reservados.</p>
     </div>
   </footer>
 
-  <style>
-    /* ===== FOOTER ===== */
-    .site-footer {
-      background: var(--blue2);
-      color: #f9f9f9;
-      padding:40px 0 20px;
-      font-family:'Montserrat',sans-serif;
-    }
-    .footer-top {
-      display:flex; flex-wrap:wrap; gap:20px;
-      margin-bottom:30px;
-    }
-    .footer-section {
-      flex:1 1 150px;
-    }
-    .footer-toggle {
-      background:none; border:none; width:100%;
-      text-align:left; font-size:1rem; font-weight:600;
-      color: var(--yellow); cursor:pointer; padding:0;
-    }
-    .footer-links {
-      list-style:none; overflow:hidden;
-      max-height:0; transition:max-height .4s ease;
-      margin-top:0.5rem;
-    }
-    .footer-links.open { max-height:500px; }
-    .footer-links li { margin-bottom:0.75rem; }
-    .footer-links a { color:#f9f9f9; }
-    .footer-links.social a { display:inline-block; }
-
-    .footer-bottom {
-      border-top:1px solid rgba(255,255,255,0.2);
-      padding-top:20px; text-align:center;
-    }
-    .legal-links {
-      display:flex; flex-wrap:wrap;
-      justify-content:center; gap:15px;
-      margin-bottom:10px;
-    }
-    .legal-links a { font-size:0.85rem; color:#f9f9f9; }
-
-    @media(min-width:768px) {
-      .footer-links { max-height:none !important; }
-      .footer-toggle { display:none; }
-    }
-  </style>
-
-  <!-- SCRIPTS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+  <!-- Firebase + Autenticación y Menú -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+      authDomain: "subastacarhn-40554.firebaseapp.com",
+      projectId: "subastacarhn-40554",
+      storageBucket: "subastacarhn-40554.appspot.com",
+      messagingSenderId: "536785797974",
+      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+      measurementId: "G-QM5N60K8C0"
+    };
+    firebase.initializeApp(firebaseConfig);
+
     // Toggle móvil
     function toggleMenu() {
       const menu = document.getElementById('mobile-menu-links');
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
-    // Toggle footer
-    document.querySelectorAll('.footer-toggle').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const ul = btn.nextElementSibling;
-        ul.classList.toggle('open');
-        btn.textContent = btn.textContent.includes('▼')
-          ? btn.textContent.replace('▼','▲')
-          : btn.textContent.replace('▲','▼');
-      });
+
+    // Autenticación y saludos
+    firebase.auth().onAuthStateChanged(user => {
+      const desktop = document.getElementById('userGreeting');
+      const mobile  = document.getElementById('mobileGreeting');
+      const btnCont = document.getElementById('calculadoraBtnContainer');
+      if (user) {
+        const name = (user.displayName || user.email.split('@')[0])
+                       .replace(/^./, c => c.toUpperCase());
+        desktop.innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Cerrar sesión</a>`;
+        mobile .innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Salir</a>`;
+        btnCont.style.display = 'flex';
+      } else {
+        desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+        mobile .innerHTML = desktop.innerHTML;
+        btnCont.style.display = 'none';
+      }
     });
-    // Año dinámico
-    document.getElementById('year').textContent = new Date().getFullYear();
-    // Init testimonials slider
-    var testimonialSlider = tns({
-      container: '.testimonial-slider',
-      items: 1,
-      slideBy: 'page',
-      controls: false,
-      nav: true,
-      autoplay: true,
-      autoplayButtonOutput: false,
-      gutter: 20
-    });
+
+    function logout() {
+      firebase.auth().signOut().then(() => location.reload());
+    }
   </script>
 </body>
 </html>
