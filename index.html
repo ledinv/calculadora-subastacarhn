@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SUBASTACARHN - Inicio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inicio – SubastaCarHN</title>
   <style>
     body {
       font-family: Helvetica, sans-serif;
@@ -15,9 +15,6 @@
     header {
       background: linear-gradient(to right, #002f6c, #004aad);
       height: 70px;
-      color: white;
-      font-size: 22px;
-      font-weight: bold;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -27,16 +24,12 @@
       z-index: 999;
     }
 
-    header a {
-      text-decoration: none;
+    header a.brand {
       color: white;
+      font-size: 22px;
       font-weight: bold;
-    }
-
-    #contadorClics {
-      font-size: 12px;
-      color: #ffc20e;
-      font-weight: normal;
+      text-decoration: none;
+      margin: 0 auto;
     }
 
     .menu-icon {
@@ -48,6 +41,13 @@
       cursor: pointer;
       font-weight: bold;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .saludo {
+      color: #ffc20e;
+      font-size: 13px;
+      font-weight: bold;
+      margin-left: auto;
     }
 
     #menu-links {
@@ -74,27 +74,26 @@
       font-weight: bold;
     }
 
-    main {
-      padding: 40px 20px;
+    .contenido {
       text-align: center;
+      padding: 40px 20px;
     }
 
-    .styled-btn {
-      background: #ffc20e;
+    .btn-principal {
+      background-color: #ffc20e;
       color: #002f6c;
       font-weight: bold;
       border: none;
       border-radius: 8px;
       padding: 12px 20px;
-      margin: 10px;
       font-size: 16px;
       cursor: pointer;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.2s ease;
+      text-decoration: none;
     }
 
-    .styled-btn:hover {
-      background: #e6ac00;
+    .btn-principal:hover {
+      background-color: #e6ac00;
     }
 
     footer {
@@ -102,7 +101,7 @@
       color: white;
       text-align: center;
       padding: 15px 10px;
-      margin-top: 60px;
+      margin-top: 40px;
     }
 
     footer a {
@@ -110,62 +109,50 @@
       text-decoration: none;
     }
 
-    #userGreeting {
-      font-size: 18px;
-      font-weight: bold;
-      color: #004aad;
-      margin-top: 30px;
+    @media (max-width: 768px) {
+      .saludo {
+        font-size: 12px;
+      }
+
+      header a.brand {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="content">
+  <header>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <a href="index.html" class="brand">SUBASTACARHN</a>
+    <span class="saludo" id="saludoUsuario"></span>
+  </header>
 
-    <!-- ENCABEZADO CON REDES -->
-    <header>
-      <div class="menu-icon" onclick="toggleMenu()">☰</div>
-      <a href="index.html">SUBASTACARHN</a>
-      <span id="contadorClics">Cálculos: ...</span>
-    </header>
+  <ul id="menu-links">
+    <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
+    <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
+    <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
+    <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+  </ul>
 
-    <!-- MENÚ REDES -->
-    <ul id="menu-links">
-      <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
-      <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
-      <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
-      <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
-    </ul>
-
-    <!-- CONTENIDO PRINCIPAL -->
-    <main>
-      <div id="auth-buttons">
-        <a href="register.html" class="styled-btn">Registrarse</a>
-        <a href="login.html" class="styled-btn">Iniciar Sesión</a>
-        <a href="calculadora.html" class="styled-btn">Ir a la Calculadora</a>
-      </div>
-
-      <div id="userGreeting" style="display: none;"></div>
-    </main>
-
-    <!-- FOOTER -->
-    <footer>
-      Síguenos en:
-      <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/">Facebook</a> |
-      <a href="https://www.instagram.com/subastacar1/">Instagram</a> |
-      <a href="https://www.tiktok.com/@tu_amigo_el_importador">TikTok</a>
-    </footer>
+  <div class="contenido" id="contenidoPrincipal" style="display:none;">
+    <a href="calculadora.html" class="btn-principal">Ir a la Calculadora</a>
   </div>
-  <!-- Firebase SDKs -->
+
+  <footer>
+    Síguenos en:
+    <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
+    <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
+    <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+  </footer>
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-
   <script>
-    // Configuración de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
-      storageBucket: "subastacarhn-40554.appspot.com",
+      storageBucket: "subastacarhn-40554.firebasestorage.app",
       messagingSenderId: "536785797974",
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
       measurementId: "G-QM5N60K8C0"
@@ -174,40 +161,31 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Menú desplegable redes
-    function toggleMenu() {
-      const menu = document.getElementById("menu-links");
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
-    }
-
-    // Contador de cálculos
-    const endpoint = "https://contador-clics-backend.onrender.com/contador";
-    async function obtenerContador() {
-      try {
-        const res = await fetch(endpoint);
-        const data = await res.json();
-        document.getElementById('contadorClics').textContent = `Cálculos: ${data.clics}`;
-      } catch (e) {
-        console.error("Error al obtener el contador:", e);
-      }
-    }
-
-    // Detección de sesión y control de vista
+    // Mostrar u ocultar elementos según login
     auth.onAuthStateChanged(user => {
-      const authButtons = document.getElementById('auth-buttons');
-      const greeting = document.getElementById('userGreeting');
+      const saludo = document.getElementById("saludoUsuario");
+      const contenido = document.getElementById("contenidoPrincipal");
 
       if (user) {
-        authButtons.style.display = 'none';
-        greeting.style.display = 'block';
-        greeting.innerHTML = `¡Bienvenido, ${user.email}!`;
+        let nombre = user.displayName || user.email.split("@")[0];
+        nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+        saludo.innerHTML = `¡Hola, ${nombre}!`;
+        contenido.style.display = "block";
       } else {
-        authButtons.style.display = 'block';
-        greeting.style.display = 'none';
+        saludo.innerHTML = "";
+        contenido.innerHTML = `
+          <a href="login.html" class="btn-principal">Iniciar Sesión</a>
+          <br><br>
+          <a href="register.html" class="btn-principal">Registrarse</a>
+        `;
+        contenido.style.display = "block";
       }
-
-      obtenerContador();
     });
+
+    function toggleMenu() {
+      const m = document.getElementById("menu-links");
+      m.style.display = m.style.display === "block" ? "none" : "block";
+    }
   </script>
 </body>
 </html>
