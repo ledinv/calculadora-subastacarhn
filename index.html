@@ -14,28 +14,19 @@
     .navbar { background: linear-gradient(to right, #002f6c, #004aad); }
     .navbar .navbar-brand { color: #ffc20e; font-weight: bold; }
     .navbar .nav-link { color: white; }
-    .navbar .btn-calculadora { background: #ffc20e; color: #002f6c; font-weight:bold; }
+    .btn-calculadora { background: #ffc20e; color: #002f6c; font-weight:bold; }
     .hero { background: linear-gradient(to right, #002f6c, #004aad); color:white; padding:100px 15px; text-align:center; }
     .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
     .benefit-icon { font-size: 2rem; margin-bottom:0.5rem; color:#004aad; }
     .benefits .col { text-align:center; padding: 30px 15px; }
     footer { background: #002f6c; color: white; padding:20px 0; text-align:center; }
     footer a { color:#ffc20e; margin:0 8px; text-decoration:none; }
-    /* Para el botón de Cerrar sesión */
     #logoutBtn {
-      background: #ffc20e;
-      border: none;
-      color: #002f6c;
-      font-weight: bold;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-left:10px;
+      background: #ffc20e; border: none; color: #002f6c;
+      font-weight: bold; padding: 6px 12px; border-radius: 6px;
+      cursor: pointer; margin-left:10px;
     }
-    #userGreeting {
-      color: white;
-      margin-right: 10px;
-    }
+    #userGreeting { color: white; margin-right: 10px; }
   </style>
 </head>
 <body>
@@ -49,7 +40,7 @@
       </button>
       <div class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav ms-auto align-items-center" id="mainNavList">
-          <!-- Se llenará dinámicamente -->
+          <!-- Aquí insertaremos el menú -->
         </ul>
       </div>
     </div>
@@ -62,9 +53,9 @@
       <p class="lead mb-4">
         Calcula aranceles, costos de envío y todos los gastos con nuestra herramienta profesional.
       </p>
-      <a href="calculadora.html" class="btn btn-outline-light btn-lg">
+      <button id="btnCalcHero" class="btn btn-outline-light btn-lg">
         Ir a la Calculadora
-      </a>
+      </button>
     </div>
   </section>
 
@@ -106,12 +97,10 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <!-- Bootstrap JS bundle -->
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    // 1) Tu config de Firebase
+    // 1) Configura Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -123,32 +112,50 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // 2) Referencia al menú
+    const auth    = firebase.auth();
     const navList = document.getElementById('mainNavList');
+    const heroBtn = document.getElementById('btnCalcHero');
 
-    // 3) Escucha cambios de sesión
-    firebase.auth().onAuthStateChanged(user => {
+    // Función común para el botón de calculadora
+    function attachCalcHandler(button) {
+      button.addEventListener('click', () => {
+        if (auth.currentUser) {
+          window.location.href = 'calculadora.html';
+        } else {
+          alert('❗️ Debes iniciar sesión o registrarte para usar la calculadora.');
+        }
+      });
+    }
+
+    // Botón del hero
+    attachCalcHandler(heroBtn);
+
+    // 2) Ajustar menú según auth
+    auth.onAuthStateChanged(user => {
       navList.innerHTML = '';
 
       if (user) {
-        // Usuario autenticado:
+        // Usuario autenticado
         const name = user.displayName || user.email;
         navList.insertAdjacentHTML('beforeend', `
-          <li class="nav-item" id="userGreeting">Hola, ${ name }</li>
+          <li class="nav-item" id="userGreeting">Hola, ${name}</li>
           <li class="nav-item">
             <button id="logoutBtn">Cerrar sesión</button>
           </li>
           <li class="nav-item">
-            <a class="btn btn-calculadora ms-2" href="calculadora.html">Calculadora</a>
+            <button id="btnCalcNav" class="btn btn-calculadora ms-2">Calculadora</button>
           </li>
         `);
+        // Cerrar sesión
         document.getElementById('logoutBtn')
-          .addEventListener('click', () => {
-            firebase.auth().signOut()
-              .then(() => { window.location.href = 'index.html'; });
-          });
+          .addEventListener('click', () => auth.signOut().then(() => {
+            window.location.href = 'index.html';
+          }));
+        // Calculadora en nav
+        attachCalcHandler(document.getElementById('btnCalcNav'));
+
       } else {
-        // Ningún usuario:
+        // Ningún usuario
         navList.insertAdjacentHTML('beforeend', `
           <li class="nav-item">
             <a class="nav-link" href="register.html">Registrarse</a>
@@ -157,9 +164,11 @@
             <a class="nav-link" href="login.html">Iniciar Sesión</a>
           </li>
           <li class="nav-item">
-            <a class="btn btn-calculadora ms-2" href="calculadora.html">Calculadora</a>
+            <button id="btnCalcNav" class="btn btn-calculadora ms-2">Calculadora</button>
           </li>
         `);
+        // Handler para invitado
+        attachCalcHandler(document.getElementById('btnCalcNav'));
       }
     });
   </script>
