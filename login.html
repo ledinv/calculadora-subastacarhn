@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Iniciar Sesión – SubastaCarHN</title>
   <style>
+    /* ================================
+       Copia aquí el mismo CSS de tu 
+       register.html (header, menú,
+       layout, inputs, botones, etc.)
+       ================================ */
     body {
       font-family: Helvetica, sans-serif;
       margin: 0; padding: 0;
@@ -22,33 +27,23 @@
       z-index: 999;
     }
     header a.brand {
-      color: white;
-      font-size: 22px;
-      font-weight: bold;
+      color: white; font-size: 22px; font-weight: bold;
       text-decoration: none;
     }
     .menu-icon {
       font-size: 20px;
-      background: #ffc20e;
-      color: #002f6c;
-      padding: 8px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
+      background: #ffc20e; color: #002f6c;
+      padding: 8px 10px; border-radius: 6px;
+      cursor: pointer; font-weight: bold;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     #menu-links {
       display: none;
       list-style: none;
-      padding: 10px;
-      margin: 10px 0 0;
-      background: white;
-      border-radius: 8px;
+      padding: 10px; margin: 10px 0 0;
+      background: white; border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      position: absolute;
-      top: 70px;
-      left: 15px;
-      z-index: 1000;
+      position: absolute; top: 70px; left: 15px; z-index: 1000;
     }
     #menu-links li { margin-bottom: 10px; }
     #menu-links a { text-decoration: none; color: #002f6c; font-weight: bold; }
@@ -60,17 +55,13 @@
       padding: 40px 10px;
     }
     .contenido-central {
-      width: 100%;
-      max-width: 400px;
-      background: white;
-      border-radius: 15px;
+      width: 100%; max-width: 400px;
+      background: white; border-radius: 15px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       padding: 20px;
     }
     .contenido-central h1 {
-      text-align: center;
-      color: #002f6c;
-      margin-bottom: 20px;
+      text-align: center; color: #002f6c; margin-bottom: 20px;
     }
     label {
       font-weight: bold;
@@ -82,4 +73,116 @@
       font-size: 14px;
       padding: 8px;
       border-radius: 8px;
-      border: 1px solid
+      border: 1px solid #004aad;
+      background: #f0f8ff;
+      width: 100%;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    .styled-btn {
+      background-color: #ffc20e;
+      color: #002f6c;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 20px;
+      width: 100%;
+      cursor: pointer;
+      font-size: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .styled-btn:hover {
+      background-color: #e6ac00;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header + menú -->
+  <header>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <a href="index.html" class="brand">SUBASTACARHN</a>
+    <span></span>
+  </header>
+  <ul id="menu-links">
+    <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
+    <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
+    <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
+    <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+  </ul>
+
+  <!-- Formulario de Login -->
+  <div class="layout">
+    <div class="contenido-central">
+      <h1>Iniciar Sesión</h1>
+      <form id="loginForm">
+        <label for="emailL">Correo electrónico</label>
+        <input type="email" id="emailL" required />
+
+        <label for="passwordL">Contraseña</label>
+        <input type="password" id="passwordL" minlength="8" required />
+
+        <button type="submit" class="styled-btn">Entrar</button>
+      </form>
+      <p style="text-align:center; margin-top:15px;">
+        ¿No tienes cuenta?
+        <a href="register.html">Registrarse</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Firebase SDK v9 (sin compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
+  <script>
+    // 1) Tu configuración
+    const firebaseConfig = {
+      apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+      authDomain: "subastacarhn-40554.firebaseapp.com",
+      projectId: "subastacarhn-40554",
+      storageBucket: "subastacarhn-40554.firebasestorage.app",
+      messagingSenderId: "536785797974",
+      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+      measurementId: "G-QM5N60K8C0"
+    };
+    // 2) Inicializa
+    firebase.initializeApp(firebaseConfig);
+
+    function toggleMenu() {
+      const m = document.getElementById('menu-links');
+      m.style.display = m.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // 3) Debug al cargar
+    console.log('💡 Login script cargado');
+
+    // 4) Lógica de login
+    document.getElementById('loginForm').addEventListener('submit', e => {
+      e.preventDefault();
+      console.log('🔐 Intentando iniciar sesión');
+
+      const email = document.getElementById('emailL').value.trim();
+      const pass  = document.getElementById('passwordL').value;
+
+      firebase.auth()
+        .signInWithEmailAndPassword(email, pass)
+        .then(cred => {
+          console.log('✅ Login correcto', cred);
+          if (!cred.user.emailVerified) {
+            alert('⚠️ Verifica tu correo antes de continuar.');
+            return cred.user.sendEmailVerification();
+          }
+          window.location.href = 'calculadora.html';
+        })
+        .catch(err => {
+          console.error(err);
+          if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+            alert('⚠️ Email o contraseña incorrectos.');
+          } else {
+            alert('Error: ' + err.message);
+          }
+        });
+    });
+  </script>
+</body>
+</html>
