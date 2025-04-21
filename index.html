@@ -17,6 +17,7 @@
       --light: #f9f9f9;
       --max-width: 1200px;
     }
+
     /* Reset */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -32,6 +33,7 @@
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
 
+    /* Container */
     .container {
       width: 100%;
       max-width: var(--max-width);
@@ -39,7 +41,7 @@
       padding: 0 1rem;
     }
 
-    /* Header */
+    /* ===== HEADER ===== */
     header {
       background: linear-gradient(to right, var(--blue), var(--blue2));
       position: sticky;
@@ -50,58 +52,65 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      padding: 0.75rem 0;
+      padding: 0.5rem 0;
     }
     .brand {
       color: #fff;
-      font-size: 1.375rem;
-      font-weight: 700;
-    }
-    .saludo {
-      font-size: 0.8125rem;
-      color: var(--yellow);
+      font-size: 1.25rem;
       font-weight: 700;
     }
     .nav-links {
       display: none;
+      gap: 1rem;
     }
-    .nav-links a {
-      margin-left: 1rem;
+    .nav-links a,
+    .nav-links span {
       color: var(--yellow);
+      font-size: 0.9375rem;
       font-weight: 600;
     }
     .menu-icon {
-      font-size: 1.25rem;
       background: var(--yellow);
       color: var(--blue);
+      border: none;
+      font-size: 1rem;
+      line-height: 1;
       padding: 0.5rem;
       border-radius: 6px;
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
-    #menu-links {
+    /* Mobile dropdown */
+    .mobile-nav {
       display: none;
+      flex-direction: column;
+      background: #fff;
       position: absolute;
       top: 100%;
-      left: 1rem;
-      right: 1rem;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      flex-direction: column;
+      left: 0;
+      right: 0;
       padding: 1rem;
-      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 998;
     }
-    #menu-links li {
+    .mobile-nav li {
       margin-bottom: 0.75rem;
     }
-    #menu-links a {
+    .mobile-nav a,
+    .mobile-nav span {
+      display: block;
       color: var(--blue);
       font-weight: 700;
+      font-size: 0.9375rem;
     }
 
-    /* Botón calculadora */
+    @media (min-width: 768px) {
+      .menu-icon { display: none; }
+      .nav-links { display: flex; }
+      .mobile-nav { display: none !important; }
+    }
+
+    /* ===== BOTÓN CALCULADORA (logueado) ===== */
     .center-btn {
       display: none;
       justify-content: center;
@@ -111,8 +120,8 @@
       padding: 0 1rem;
     }
     .styled-btn {
-      width: 100%;
       display: inline-block;
+      width: 100%;
       text-align: center;
       background: var(--yellow);
       color: var(--blue);
@@ -129,9 +138,9 @@
       background: #e6ac00;
     }
 
-    /* Hero */
+    /* ===== HERO ===== */
     .hero {
-      background: url('img/hero-bg.jpg') center/cover no-repeat;
+      background: url('Img/hero-bg.jpg') center/cover no-repeat;
       height: 70vh;
       position: relative;
       display: flex;
@@ -161,7 +170,7 @@
       margin-bottom: 2rem;
     }
 
-    /* Beneficios */
+    /* ===== BENEFICIOS ===== */
     .benefits {
       padding: 3rem 1rem;
     }
@@ -181,7 +190,7 @@
       margin-bottom: 0.5rem;
     }
 
-    /* Cómo funciona */
+    /* ===== CÓMO FUNCIONA ===== */
     .how-it-works {
       padding: 3rem 1rem;
     }
@@ -212,7 +221,7 @@
       margin-bottom: 0.5rem;
     }
 
-    /* Por qué elegirnos */
+    /* ===== POR QUÉ ELEGIRNOS ===== */
     .why-choose {
       padding: 3rem 1rem;
       background: #fff;
@@ -237,7 +246,7 @@
       color: var(--yellow);
     }
 
-    /* Testimonios */
+    /* ===== TESTIMONIOS ===== */
     .testimonials {
       padding: 3rem 1rem;
     }
@@ -259,7 +268,7 @@
       font-weight: 600;
     }
 
-    /* CTA final */
+    /* ===== CTA FINAL ===== */
     .cta-final {
       background: var(--blue);
       color: #fff;
@@ -271,15 +280,16 @@
       margin-bottom: 1rem;
       font-weight: 700;
     }
-    .cta-final .btn {
+    .cta-final .styled-btn {
       background: var(--yellow);
       color: var(--blue);
       padding: 0.75rem 1.5rem;
       font-weight: 600;
       border-radius: 4px;
+      display: inline-block;
     }
 
-    /* Footer */
+    /* ===== FOOTER ===== */
     footer {
       background: var(--blue2);
       color: #fff;
@@ -291,11 +301,8 @@
       margin: 0 0.5rem;
     }
 
-    /* Responsive */
+    /* Responsive tweaks */
     @media (min-width: 768px) {
-      .menu-icon { display: none; }
-      .nav-links { display: flex; }
-      #menu-links { display: none !important; }
       .hero-content h1 { font-size: 3rem; }
       .hero-content p { font-size: 1.25rem; }
       .steps { gap: 4rem; }
@@ -313,25 +320,22 @@
     <div class="container header-inner">
       <a href="index.html" class="brand">SubastaCarHN</a>
 
-      <nav class="nav-links">
+      <nav class="nav-links" aria-label="Menú principal">
         <a href="calculadora.html">Calculadora</a>
-        <a href="login.html">Iniciar sesión</a>
-        <a href="register.html">Registrarse</a>
+        <span id="userGreeting"></span>
       </nav>
 
-      <div class="menu-icon" onclick="toggleMenu()">☰</div>
-      <div id="userGreeting" class="saludo"></div>
+      <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
     </div>
 
-    <ul id="menu-links" class="container">
+    <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
       <li><a href="calculadora.html">Calculadora</a></li>
-      <li><a href="login.html">Iniciar sesión</a></li>
-      <li><a href="register.html">Registrarse</a></li>
-      <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+      <li><span id="mobileGreeting"></span></li>
+      <li><a href=" https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
     </ul>
   </header>
 
-  <!-- BOTÓN CALCULADORA PARA USUARIOS LOGUEADOS -->
+  <!-- BOTÓN PARA USUARIOS LOGUEADOS -->
   <div class="container center-btn" id="calculadoraBtnContainer">
     <button class="styled-btn" onclick="location.href='calculadora.html'">
       Ir a la Calculadora
@@ -343,7 +347,7 @@
     <div class="hero-content">
       <h1>Calcula tus costos de importación en segundos</h1>
       <p>Sin suscripciones, sin sorpresas, con total transparencia.</p>
-      <a href="calculadora.html" class="btn">Empieza a calcular</a>
+      <a href="calculadora.html" class="styled-btn">Empieza a calcular</a>
     </div>
   </section>
 
@@ -432,7 +436,7 @@
   <section class="cta-final">
     <div class="container">
       <h2>¿Listo para tu próxima importación?</h2>
-      <a href="calculadora.html" class="btn">Calcular mi cotización</a>
+      <a href="calculadora.html" class="styled-btn">Calcular mi cotización</a>
     </div>
   </section>
 
@@ -452,7 +456,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
-    // Configuración de Firebase
+    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -464,27 +468,31 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // Toggle menú móvil
+    // Toggle móvil
     function toggleMenu() {
-      const m = document.getElementById('menu-links');
-      m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+      const menu = document.getElementById('mobile-menu-links');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    // Control de autenticación
+    // Autenticación y saludos
     firebase.auth().onAuthStateChanged(user => {
-      const saludoEl = document.getElementById('userGreeting');
+      const desktop = document.getElementById('userGreeting');
+      const mobile  = document.getElementById('mobileGreeting');
       const btnCont = document.getElementById('calculadoraBtnContainer');
       if (user) {
-        const nombre = user.displayName || user.email.split('@')[0];
-        saludoEl.innerHTML = `¡Hola, ${nombre.charAt(0).toUpperCase() + nombre.slice(1)}! <a href="#" onclick="cerrarSesion()" style="margin-left:.5rem;color:#fff;text-decoration:underline;">Cerrar sesión</a>`;
+        const name = (user.displayName || user.email.split('@')[0])
+                       .replace(/^./, c => c.toUpperCase());
+        desktop.innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Cerrar sesión</a>`;
+        mobile .innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Salir</a>`;
         btnCont.style.display = 'flex';
       } else {
-        saludoEl.innerHTML = `<a href="login.html" style="color:#fff;">Iniciar sesión</a> | <a href="register.html" style="color:#fff;">Registrarse</a>`;
+        desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+        mobile .innerHTML = desktop.innerHTML;
         btnCont.style.display = 'none';
       }
     });
 
-    function cerrarSesion() {
+    function logout() {
       firebase.auth().signOut().then(() => location.reload());
     }
   </script>
