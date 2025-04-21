@@ -21,24 +21,35 @@
     .benefits .col { text-align:center; padding: 30px 15px; }
     footer { background: #002f6c; color: white; padding:20px 0; text-align:center; }
     footer a { color:#ffc20e; margin:0 8px; text-decoration:none; }
+    /* Para el botón de Cerrar sesión */
+    #logoutBtn {
+      background: #ffc20e;
+      border: none;
+      color: #002f6c;
+      font-weight: bold;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left:10px;
+    }
+    #userGreeting {
+      color: white;
+      margin-right: 10px;
+    }
   </style>
 </head>
 <body>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-      <a class="navbar-brand" href="#">SubastaCarHN</a>
+      <a class="navbar-brand" href="index.html">SubastaCarHN</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
               data-bs-target="#mainNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav ms-auto align-items-center">
-          <li class="nav-item"><a class="nav-link" href="register.html">Registrarse</a></li>
-          <li class="nav-item"><a class="nav-link" href="login.html">Iniciar Sesión</a></li>
-          <li class="nav-item">
-            <a class="btn btn-calculadora ms-2" href="calculadora.html">Calculadora</a>
-          </li>
+        <ul class="navbar-nav ms-auto align-items-center" id="mainNavList">
+          <!-- Se llenará dinámicamente -->
         </ul>
       </div>
     </div>
@@ -56,6 +67,7 @@
       </a>
     </div>
   </section>
+
   <!-- Beneficios -->
   <section class="benefits py-5">
     <div class="container">
@@ -90,9 +102,66 @@
     </div>
   </footer>
 
+  <!-- Firebase compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <!-- Bootstrap JS bundle -->
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+  </script>
+
+  <script>
+    // 1) Tu config de Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+      authDomain: "subastacarhn-40554.firebaseapp.com",
+      projectId: "subastacarhn-40554",
+      storageBucket: "subastacarhn-40554.firebasestorage.app",
+      messagingSenderId: "536785797974",
+      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+      measurementId: "G-QM5N60K8C0"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // 2) Referencia al menú
+    const navList = document.getElementById('mainNavList');
+
+    // 3) Escucha cambios de sesión
+    firebase.auth().onAuthStateChanged(user => {
+      navList.innerHTML = '';
+
+      if (user) {
+        // Usuario autenticado:
+        const name = user.displayName || user.email;
+        navList.insertAdjacentHTML('beforeend', `
+          <li class="nav-item" id="userGreeting">Hola, ${ name }</li>
+          <li class="nav-item">
+            <button id="logoutBtn">Cerrar sesión</button>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-calculadora ms-2" href="calculadora.html">Calculadora</a>
+          </li>
+        `);
+        document.getElementById('logoutBtn')
+          .addEventListener('click', () => {
+            firebase.auth().signOut()
+              .then(() => { window.location.href = 'index.html'; });
+          });
+      } else {
+        // Ningún usuario:
+        navList.insertAdjacentHTML('beforeend', `
+          <li class="nav-item">
+            <a class="nav-link" href="register.html">Registrarse</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="login.html">Iniciar Sesión</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-calculadora ms-2" href="calculadora.html">Calculadora</a>
+          </li>
+        `);
+      }
+    });
   </script>
 </body>
 </html>
