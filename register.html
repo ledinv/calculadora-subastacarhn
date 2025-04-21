@@ -5,13 +5,155 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Registro – SubastaCarHN</title>
   <style>
-    /* … tu CSS actual (idéntico al tuyo) … */
+    /* Reset y tipografías */
+    body {
+      font-family: Helvetica, sans-serif;
+      margin: 0; padding: 0;
+      background: #f9f9f9;
+    }
+    /* Header */
+    header {
+      background: linear-gradient(to right, #002f6c, #004aad);
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+    header a.brand {
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    /* Menú hamburguesa */
+    .menu-icon {
+      font-size: 20px;
+      background: #ffc20e;
+      color: #002f6c;
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    #menu-links {
+      display: none;
+      list-style: none;
+      padding: 10px;
+      margin: 10px 0 0;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      position: absolute;
+      top: 70px;
+      left: 15px;
+      z-index: 1000;
+    }
+    #menu-links li { margin-bottom: 10px; }
+    #menu-links a { text-decoration: none; color: #002f6c; font-weight: bold; }
+    /* Contenedor del formulario */
+    .layout {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 10px;
+    }
+    .contenido-central {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      padding: 20px;
+    }
+    .contenido-central h1 {
+      text-align: center;
+      color: #002f6c;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      color: #002f6c;
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      font-size: 14px;
+      padding: 8px 40px 8px 12px; /* espacio para icono */
+      border-radius: 8px;
+      border: 1px solid #004aad;
+      background: #f0f8ff;
+      width: 100%;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    /* Wrapper para posicionar el ojo */
+    .pass-wrapper {
+      position: relative;
+    }
+    .toggle-eye {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      color: #555;
+    }
+    .toggle-eye:hover {
+      color: #000;
+    }
+    /* Helper text */
+    .helper {
+      font-size: 13px;
+      color: #666;
+      margin-top: 4px;
+    }
+    .helper.invalid {
+      color: #c00;
+    }
+    /* Botón */
+    .styled-btn {
+      background-color: #ffc20e;
+      color: #002f6c;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 20px;
+      width: 100%;
+      cursor: pointer;
+      font-size: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .styled-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    .styled-btn span.spinner {
+      margin-left: 8px;
+    }
   </style>
 </head>
 <body>
   <!-- Header + menú -->
-  <header>…</header>
-  <ul id="menu-links">…</ul>
+  <header>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <a href="index.html" class="brand">SUBASTACARHN</a>
+    <span></span>
+  </header>
+  <ul id="menu-links">
+    <li><a href="login.html">Iniciar Sesión</a></li>
+    <li><a href="calculadora.html">Calculadora</a></li>
+  </ul>
 
   <!-- Formulario -->
   <div class="layout">
@@ -25,16 +167,27 @@
         <input type="email" id="email" required />
 
         <label for="phone">Teléfono / Celular</label>
-        <input type="tel" id="phone"
-               placeholder="9xxxxxxxx"
-               pattern="[923]\d{7}"
-               required />
+        <input type="tel" id="phone" placeholder="9xxxxxxxx"
+               pattern="[923]\d{7}" required />
 
         <!-- Contraseña -->
         <label for="password">Contraseña</label>
         <div class="pass-wrapper">
           <input type="password" id="password" minlength="8" required />
-          <span class="toggle-eye" data-target="password">…SVG…</span>
+          <span class="toggle-eye" data-target="password">
+            <!-- ojo cerrado -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5
+                       12 5c4.477 0 8.268 2.943
+                       9.542 7-1.274 4.057-5.065 7
+                       -9.542 7-4.477 0-8.268-2.943
+                       -9.542-7z" />
+            </svg>
+          </span>
         </div>
         <small id="passwordHelper" class="helper">
           La contraseña debe tener ≥8 caracteres, 1 mayúscula y 1 número.
@@ -44,13 +197,26 @@
         <label for="confirmPassword">Confirmar contraseña</label>
         <div class="pass-wrapper">
           <input type="password" id="confirmPassword" minlength="8" required />
-          <span class="toggle-eye" data-target="confirmPassword">…SVG…</span>
+          <span class="toggle-eye" data-target="confirmPassword">
+            <!-- ojo cerrado -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5
+                       12 5c4.477 0 8.268 2.943
+                       9.542 7-1.274 4.057-5.065 7
+                       -9.542 7-4.477 0-8.268-2.943
+                       -9.542-7z" />
+            </svg>
+          </span>
         </div>
         <small id="confirmHelper" class="helper"></small>
 
         <button type="submit" class="styled-btn" id="submitBtn">
           <span id="btnText">Registrarse</span>
-          <span id="btnSpinner" style="display:none;">⏳</span>
+          <span class="spinner" id="btnSpinner" style="display:none;">⏳</span>
         </button>
       </form>
       <p style="text-align:center; margin-top:15px;">
@@ -64,12 +230,15 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script>
-    // — 1) Inicialización
+    // — 1) Inicializa Firebase
     const firebaseConfig = {
-      apiKey: "...",
-      authDomain: "...",
-      projectId: "...",
-      /* resto de tu config */
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_AUTH_DOMAIN",
+      projectId: "TU_PROJECT_ID",
+      storageBucket: "TU_STORAGE_BUCKET",
+      messagingSenderId: "TU_MESSAGING_SENDER_ID",
+      appId: "TU_APP_ID",
+      measurementId: "TU_MEASUREMENT_ID"
     };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
@@ -87,74 +256,38 @@
         const inp = document.getElementById(icon.dataset.target);
         const isPwd = inp.type === 'password';
         inp.type = isPwd ? 'text' : 'password';
-        // (Aquí intercambias tu SVG de ojo abierto / cerrado)
+        // intercambia SVG entre abierto/cerrado
+        icon.innerHTML = isPwd
+          ? `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478
+                        0-8.27-2.94-9.543-7a9.97 9.97 0 012.214-3.518M6.12
+                        6.12a9.953 9.953 0 011.518-1.518M3 3l18 18" />
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M10.477 10.477a3 3 0 104.243 4.243M9.88
+                        9.88l4.24 4.242" />
+             </svg>`
+          : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477
+                        0 8.268 2.943 9.542 7-1.274 4.057-5.065
+                        7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+             </svg>`;
       });
     });
 
-    // — 4) Regex
+    // — 4) Validación de contraseña
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
 
-    // — 5) Envío del formulario
+    // — 5) Manejo del submit
     document.getElementById('registerForm')
       .addEventListener('submit', async e => {
         e.preventDefault();
 
-        // Deshabilita botón + spinner
         const btn     = document.getElementById('submitBtn');
         const txt     = document.getElementById('btnText');
         const spinner = document.getElementById('btnSpinner');
-        btn.disabled = true; txt.style.display = 'none'; spinner.style.display = '';
-
-        const name  = document.getElementById('fullName').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        const pass  = document.getElementById('password').value;
-        const conf  = document.getElementById('confirmPassword').value;
-
-        // Validaciones
-        if (!passwordRegex.test(pass)) {
-          alert('⚠️ La contraseña no cumple los requisitos mínimos.');
-          document.getElementById('passwordHelper').classList.add('invalid');
-          btn.disabled = false; spinner.style.display = 'none'; txt.style.display = '';
-          return;
-        }
-        document.getElementById('passwordHelper').classList.remove('invalid');
-
-        if (pass !== conf) {
-          document.getElementById('confirmHelper').textContent = '⚠️ Las contraseñas no coinciden.';
-          btn.disabled = false; spinner.style.display = 'none'; txt.style.display = '';
-          return;
-        }
-        document.getElementById('confirmHelper').textContent = '';
-
-        // Crear usuario + Firestore
-        try {
-          const cred = await auth.createUserWithEmailAndPassword(email, pass);
-          await cred.user.updateProfile({ displayName: name });
-          await cred.user.sendEmailVerification();
-
-          // ** aquí usamos el UID como ID de documento **
-          await db.collection('clients')
-                  .doc(cred.user.uid)
-                  .set({
-                    fullName:  name,
-                    email:     email,
-                    phone:     phone,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                  });
-
-          alert('✅ Cuenta creada. Revisa tu correo para confirmar.');
-          window.location.href = 'login.html';
-
-        } catch(err) {
-          let msg = 'Error inesperado: ' + err.message;
-          if (err.code === 'auth/email-already-in-use')    msg = '⚠️ Ese correo ya está registrado.';
-          if (err.code === 'auth/invalid-email')           msg = '⚠️ Correo inválido.';
-          if (err.code === 'auth/weak-password')           msg = '⚠️ Contraseña demasiado débil.';
-          alert(msg);
-          btn.disabled = false; spinner.style.display = 'none'; txt.style.display = '';
-        }
-      });
-  </script>
-</body>
-</html>
+        btn.disabled = true;
+        txt
