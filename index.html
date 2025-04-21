@@ -337,6 +337,67 @@
     @media (max-width: 600px) {
       .steps { flex-direction: column; }
     }
+    /* ===== Sección de Cursos ===== */
+.courses {
+  padding: 3rem 1rem;
+  background: #fff;
+}
+.courses h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+.courses-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+}
+.video-wrapper,
+.courses-info {
+  flex: 1 1 300px;
+  max-width: 500px;
+}
+
+/* Lazy‑load video container */
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;              /* relación 16:9 */
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+}
+.video-container video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+}
+.play-button {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.8);
+  border: none;
+  border-radius: 50%;
+  width: 60px; height: 60px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Texto y botón */
+.courses-info p {
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+.courses-info .styled-btn {
+  max-width: 200px;
+  display: inline-block;
+}
+
   </style>
 </head>
 
@@ -463,7 +524,36 @@
       <a href="calculadora.html" class="styled-btn">Calcular mi cotización</a>
     </div>
   </section>
-
+  <!-- ================= CURSOS ================= -->
+<section class="courses" id="cursos">
+  <div class="container">
+    <h2>Formación y Cursos Especializados</h2>
+    <div class="courses-content">
+      
+      <!-- Video lazy-load -->
+      <div class="video-wrapper">
+        <div class="video-container"
+             data-video-src="videos/VIDEO-2025-04-21-14-26-34.mp4"
+             style="background-image:url('Img/course-poster.jpg')">
+          <button class="play-button" aria-label="Reproducir video de cursos">▶️</button>
+        </div>
+      </div>
+      
+      <!-- Info & CTA -->
+      <div class="courses-info">
+        <p>
+          Aprende todo el proceso de importación de vehículos: selección en subastas, 
+          cálculos de aranceles y logística.  
+          Imparto cursos presenciales y online adaptados a tu nivel.
+        </p>
+        <!-- Cambia a tu canal de contacto: puede ser contact.html o directamente WhatsApp -->
+        <a href="cursos.html" class="styled-btn">Más sobre mis cursos</a>
+      </div>
+      
+    </div>
+  </div>
+</section>
+<!-- =============== FIN CURSOS =============== -->
   <!-- FOOTER -->
   <footer>
     <div class="container">
@@ -520,5 +610,23 @@
       firebase.auth().signOut().then(() => location.reload());
     }
   </script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.querySelector('.video-container');
+    const btn       = container.querySelector('.play-button');
+    
+    btn.addEventListener('click', () => {
+      const src = container.dataset.videoSrc;
+      const vid = document.createElement('video');
+      vid.controls   = true;
+      vid.autoplay   = true;
+      vid.playsinline = true;
+      vid.src        = src;
+      
+      container.innerHTML = ''; // quita el póster y botón
+      container.appendChild(vid);
+    });
+  });
+</script>
 </body>
 </html>
