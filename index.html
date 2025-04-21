@@ -2,38 +2,11 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SubastaCarHN – Calculadora de Importación</title>
 
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="Calcula tus costos de importación de vehículos desde EE.UU. a Honduras en segundos con SubastaCarHN. Totalmente transparente, sin suscripciones ni sorpresas." />
-  <meta name="keywords" content="importación vehículos, SubastaCarHN, calculadora aranceles, Honduras, Copart, IAAI" />
-  <meta name="robots" content="index,follow" />
-
-  <!-- Open Graph / Facebook -->
-  <meta property="og:title" content="SubastaCarHN – Calculadora de Importación" />
-  <meta property="og:description" content="Calcula tus costos de importación de vehículos desde EE.UU. a Honduras en segundos. Transparencia total y sin sorpresas." />
-  <meta property="og:url" content="https://comocomprarcarros.com/" />
-  <meta property="og:image" content="https://comocomprarcarros.com/path/to/og-image.jpg" />
-  <meta property="og:type" content="website" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="SubastaCarHN – Calculadora de Importación" />
-  <meta name="twitter:description" content="Calcula tus costos de importación de vehículos desde EE.UU. a Honduras en segundos. Transparencia total y sin sorpresas." />
-  <meta name="twitter:image" content="https://comocomprarcarros.com/path/to/og-image.jpg" />
-
-  <!-- Google Analytics (GA4) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-QM5N60K8C0');
-  </script>
-
   <!-- Google Fonts Montserrat -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
 
   <style>
     :root {
@@ -44,7 +17,6 @@
       --light: #f9f9f9;
       --max-width: 1200px;
     }
-
     /* Reset */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -60,7 +32,6 @@
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
 
-    /* Container */
     .container {
       width: 100%;
       max-width: var(--max-width);
@@ -68,7 +39,7 @@
       padding: 0 1rem;
     }
 
-    /* ===== HEADER ===== */
+    /* Header */
     header {
       background: linear-gradient(to right, var(--blue), var(--blue2));
       position: sticky;
@@ -79,65 +50,58 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.5rem 0;
+      flex-wrap: wrap;
+      padding: 0.75rem 0;
     }
     .brand {
       color: #fff;
-      font-size: 1.25rem;
+      font-size: 1.375rem;
+      font-weight: 700;
+    }
+    .saludo {
+      font-size: 0.8125rem;
+      color: var(--yellow);
       font-weight: 700;
     }
     .nav-links {
       display: none;
-      gap: 1rem;
     }
-    .nav-links a,
-    .nav-links span {
+    .nav-links a {
+      margin-left: 1rem;
       color: var(--yellow);
-      font-size: 0.9375rem;
       font-weight: 600;
     }
     .menu-icon {
+      font-size: 1.25rem;
       background: var(--yellow);
       color: var(--blue);
-      border: none;
-      font-size: 1rem;
-      line-height: 1;
       padding: 0.5rem;
       border-radius: 6px;
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
-    /* Mobile dropdown */
-    .mobile-nav {
+    #menu-links {
       display: none;
-      flex-direction: column;
-      background: #fff;
       position: absolute;
       top: 100%;
-      left: 0;
-      right: 0;
-      padding: 1rem;
+      left: 1rem;
+      right: 1rem;
+      background: #fff;
+      border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      z-index: 998;
+      flex-direction: column;
+      padding: 1rem;
+      z-index: 1000;
     }
-    .mobile-nav li {
+    #menu-links li {
       margin-bottom: 0.75rem;
     }
-    .mobile-nav a,
-    .mobile-nav span {
-      display: block;
+    #menu-links a {
       color: var(--blue);
       font-weight: 700;
-      font-size: 0.9375rem;
     }
 
-    @media (min-width: 768px) {
-      .menu-icon { display: none; }
-      .nav-links { display: flex; }
-      .mobile-nav { display: none !important; }
-    }
-
-    /* ===== BOTÓN CALCULADORA (logueado) ===== */
+    /* Botón calculadora */
     .center-btn {
       display: none;
       justify-content: center;
@@ -147,8 +111,8 @@
       padding: 0 1rem;
     }
     .styled-btn {
-      display: inline-block;
       width: 100%;
+      display: inline-block;
       text-align: center;
       background: var(--yellow);
       color: var(--blue);
@@ -165,9 +129,9 @@
       background: #e6ac00;
     }
 
-    /* ===== HERO ===== */
+    /* Hero */
     .hero {
-      background: url('Img/hero-bg.jpg') center/cover no-repeat;
+      background: url('img/hero-bg.jpg') center/cover no-repeat;
       height: 70vh;
       position: relative;
       display: flex;
@@ -197,7 +161,7 @@
       margin-bottom: 2rem;
     }
 
-    /* ===== BENEFICIOS ===== */
+    /* Beneficios */
     .benefits {
       padding: 3rem 1rem;
     }
@@ -217,7 +181,7 @@
       margin-bottom: 0.5rem;
     }
 
-    /* ===== CÓMO FUNCIONA ===== */
+    /* Cómo funciona */
     .how-it-works {
       padding: 3rem 1rem;
     }
@@ -247,27 +211,127 @@
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
+
+    /* Por qué elegirnos */
+    .why-choose {
+      padding: 3rem 1rem;
+      background: #fff;
+    }
+    .why-choose h2 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .choose-list {
+      display: inline-block;
+      text-align: left;
+    }
+    .choose-list li {
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .choose-list li::before {
+      content: '✔️';
+      margin-right: 0.5rem;
+      color: var(--yellow);
+    }
+
+    /* Testimonios */
+    .testimonials {
+      padding: 3rem 1rem;
+    }
+    .testimonials h2 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .testimonial {
+      margin-bottom: 2rem;
+      font-style: italic;
+      text-align: center;
+    }
+    .testimonial strong {
+      display: block;
+      margin-top: 0.5rem;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* CTA final */
+    .cta-final {
+      background: var(--blue);
+      color: #fff;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    .cta-final h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .cta-final .btn {
+      background: var(--yellow);
+      color: var(--blue);
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-radius: 4px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--blue2);
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+    }
+    footer a {
+      color: var(--yellow);
+      margin: 0 0.5rem;
+    }
+
+    /* Responsive */
+    @media (min-width: 768px) {
+      .menu-icon { display: none; }
+      .nav-links { display: flex; }
+      #menu-links { display: none !important; }
+      .hero-content h1 { font-size: 3rem; }
+      .hero-content p { font-size: 1.25rem; }
+      .steps { gap: 4rem; }
+    }
+    @media (max-width: 600px) {
+      .steps { flex-direction: column; }
+    }
   </style>
 </head>
+
 <body>
+
   <!-- HEADER -->
   <header>
     <div class="container header-inner">
       <a href="index.html" class="brand">SubastaCarHN</a>
-      <nav class="nav-links" aria-label="Menú principal">
+
+      <nav class="nav-links">
         <a href="calculadora.html">Calculadora</a>
-        <span id="userGreeting"></span>
+        <a href="login.html">Iniciar sesión</a>
+        <a href="register.html">Registrarse</a>
       </nav>
-      <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
+
+      <div class="menu-icon" onclick="toggleMenu()">☰</div>
+      <div id="userGreeting" class="saludo"></div>
     </div>
-    <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
+
+    <ul id="menu-links" class="container">
       <li><a href="calculadora.html">Calculadora</a></li>
-      <li><span id="mobileGreeting"></span></li>
+      <li><a href="login.html">Iniciar sesión</a></li>
+      <li><a href="register.html">Registrarse</a></li>
       <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
     </ul>
   </header>
 
-  <!-- BOTÓN PARA USUARIOS LOGUEADOS -->
+  <!-- BOTÓN CALCULADORA PARA USUARIOS LOGUEADOS -->
   <div class="container center-btn" id="calculadoraBtnContainer">
     <button class="styled-btn" onclick="location.href='calculadora.html'">
       Ir a la Calculadora
@@ -279,7 +343,7 @@
     <div class="hero-content">
       <h1>Calcula tus costos de importación en segundos</h1>
       <p>Sin suscripciones, sin sorpresas, con total transparencia.</p>
-      <a href="calculadora.html" class="styled-btn">Empieza a calcular</a>
+      <a href="calculadora.html" class="btn">Empieza a calcular</a>
     </div>
   </section>
 
@@ -331,9 +395,7 @@
         </div>
       </div>
       <div style="margin-top:2rem; text-align:center;">
-        <a href="https://www.tiktok.com/@tu_amigo_el_importador/video/7491072175978384646" class="styled-btn" target="_blank" rel="noopener">
-          Ver demo rápida
-        </a>
+        <a href="calculadora.html" class="styled-btn">Ver demo rápida</a>
       </div>
     </div>
   </section>
@@ -356,11 +418,11 @@
     <div class="container">
       <h2>Historias de éxito</h2>
       <div class="testimonial">
-        “Gracias a SubastaCarHN importé mi Tacoma 2012 por 160,000 LPS, ¡y ahorré más de 30,000 LPS!”
+        “Gracias a SubastaCarHN importé mi Tacoma por 3,200 USD, ¡y ahorré más de 800 USD!”
         <strong>Carlos M., Tegucigalpa</strong>
       </div>
       <div class="testimonial">
-        “Otro importador perdio el titulo de mi carro y ellos lo recuperaron y logre traer mi vehiculo sin problemas.”
+        “El proceso fue tan fácil que lo recomendé a mis hermanos.”
         <strong>María G., San Pedro Sula</strong>
       </div>
     </div>
@@ -370,7 +432,7 @@
   <section class="cta-final">
     <div class="container">
       <h2>¿Listo para tu próxima importación?</h2>
-      <a href="calculadora.html" class="styled-btn">Calcular mi cotización</a>
+      <a href="calculadora.html" class="btn">Calcular mi cotización</a>
     </div>
   </section>
 
@@ -390,7 +452,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
-    // Firebase config
+    // Configuración de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -402,31 +464,27 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // Toggle móvil
+    // Toggle menú móvil
     function toggleMenu() {
-      const menu = document.getElementById('mobile-menu-links');
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+      const m = document.getElementById('menu-links');
+      m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    // Autenticación y saludos
+    // Control de autenticación
     firebase.auth().onAuthStateChanged(user => {
-      const desktop = document.getElementById('userGreeting');
-      const mobile  = document.getElementById('mobileGreeting');
+      const saludoEl = document.getElementById('userGreeting');
       const btnCont = document.getElementById('calculadoraBtnContainer');
       if (user) {
-        const name = (user.displayName || user.email.split('@')[0])
-                         .replace(/^./, c => c.toUpperCase());
-        desktop.innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Cerrar sesión</a>`;
-        mobile.innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Salir</a>`;
+        const nombre = user.displayName || user.email.split('@')[0];
+        saludoEl.innerHTML = `¡Hola, ${nombre.charAt(0).toUpperCase() + nombre.slice(1)}! <a href="#" onclick="cerrarSesion()" style="margin-left:.5rem;color:#fff;text-decoration:underline;">Cerrar sesión</a>`;
         btnCont.style.display = 'flex';
       } else {
-        desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
-        mobile.innerHTML = desktop.innerHTML;
+        saludoEl.innerHTML = `<a href="login.html" style="color:#fff;">Iniciar sesión</a> | <a href="register.html" style="color:#fff;">Registrarse</a>`;
         btnCont.style.display = 'none';
       }
     });
 
-    function logout() {
+    function cerrarSesion() {
       firebase.auth().signOut().then(() => location.reload());
     }
   </script>
