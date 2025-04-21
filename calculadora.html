@@ -4,8 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SUBASTACARHN - Calculadora de Importación</title>
+
+  <!-- Tipografía moderna -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    /* Nav de “Inicio” */
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f7fa;
+      color: #333;
+    }
+
     .calculator-nav {
       background: #002f6c;
       color: #ffc20e;
@@ -15,73 +26,214 @@
       z-index: 1000;
       font-weight: bold;
     }
-    .calculator-nav a { color: #ffc20e; text-decoration: none; }
 
-    /* Ocultamos todo hasta verificar auth */
-    #content { display: none; }
+    .calculator-nav a {
+      color: #ffc20e;
+      text-decoration: none;
+    }
 
-    /* ---------------------------------------
-       Estilos originales de la calculadora
-       --------------------------------------- */
-    body { font-family: Helvetica, sans-serif; margin:0; padding:0; background:#f9f9f9; }
     header {
       background: linear-gradient(to right, #002f6c, #004aad);
-      height: 70px; color: white; font-size:22px; font-weight:bold;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:0 15px; position: sticky; top:40px; z-index:999;
+      height: 70px;
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+      position: sticky;
+      top: 40px;
+      z-index: 999;
     }
-    header span#contadorClics { font-size:13px; color:#ffc20e; }
+
+    header span#contadorClics {
+      font-size: 13px;
+      color: #ffc20e;
+    }
+
     .menu-icon {
-      font-size:20px; background:#ffc20e; color:#002f6c;
-      padding:8px 10px; border-radius:6px; cursor:pointer;
-      font-weight:bold; box-shadow:0 2px 8px rgba(0,0,0,0.3);
+      font-size: 20px;
+      background: #ffc20e;
+      color: #002f6c;
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
-    .styled-btn {
-      background:#ffc20e; color:#002f6c; font-weight:bold; border:none;
-      border-radius:8px; padding:8px 14px; margin:5px; font-size:14px;
-      cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.2);
-      transition:background-color .2s ease; width:auto !important;
-    }
-    .styled-btn:hover { background:#e6ac00; }
+
     #menu-links {
-      display:none; list-style:none; padding:10px; margin:10px 0 0;
-      background:white; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.2);
-      position:absolute; top:70px; left:15px; z-index:1000;
+      display: none;
+      list-style: none;
+      padding: 10px;
+      margin: 10px 0 0;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      position: absolute;
+      top: 70px;
+      left: 15px;
+      z-index: 1000;
     }
-    #menu-links li { margin-bottom:10px; }
-    #menu-links a { text-decoration:none; color:#002f6c; font-weight:bold; }
-    h1 { text-align:center; color:#002f6c; margin-top:20px; font-size:20px; }
+
+    #menu-links li {
+      margin-bottom: 10px;
+    }
+
+    #menu-links a {
+      text-decoration: none;
+      color: #002f6c;
+      font-weight: bold;
+    }
+
+    h1 {
+      text-align: center;
+      color: #002f6c;
+      margin-top: 20px;
+      font-size: 22px;
+    }
+
     .layout {
-      display:flex; justify-content:center; align-items:flex-start;
-      padding:20px 10px; gap:20px; flex-wrap:wrap;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px 10px;
+      gap: 20px;
+      flex-wrap: wrap;
     }
-    .banner { flex-shrink:0; }
+
+    .banner {
+      flex-shrink: 0;
+    }
+
     .banner img {
-      width:400px; height:400px; object-fit:cover;
-      border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.15);
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     }
+
     .contenido-central {
-      max-width:380px; width:100%; background:#fff;
-      border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,0.08);
-      padding:20px;
+      max-width: 400px;
+      width: 100%;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      padding: 20px;
     }
-    label { font-weight:bold; color:#002f6c; display:block; margin-top:10px; }
-    input, select {
-      font-size:14px; padding:8px; border-radius:8px; border:1px solid #004aad;
-      background:#f0f8ff; width:100%; margin-top:5px; box-sizing:border-box;
+
+    label {
+      font-weight: 600;
+      color: #002f6c;
+      display: block;
+      margin-top: 10px;
     }
+
+    input,
+    select {
+      font-size: 14px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      background: #fff;
+      width: 100%;
+      margin-top: 6px;
+      box-sizing: border-box;
+      transition: border-color 0.2s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #004aad;
+      outline: none;
+    }
+
+    .styled-btn {
+      background: #004aad;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 16px;
+      margin: 6px 0;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .styled-btn:hover {
+      background: #002f6c;
+    }
+
     .tabla-detalles {
-      margin:20px auto; border-collapse:collapse; width:auto; max-width:600px;
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 600px;
     }
-    .tabla-detalles th, .tabla-detalles td {
-      padding:8px 12px; border:1px solid #ddd;
+
+    .tabla-detalles th,
+    .tabla-detalles td {
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      font-size: 14px;
     }
-    .tabla-detalles th { background:#f2f2f2; }
+
+    .tabla-detalles th {
+      background: #004aad;
+      color: white;
+    }
+
     .botones-detalle {
-      display:flex; justify-content:center; align-items:center; flex-wrap:wrap;
-      margin-top:10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      gap: 10px;
     }
-    @media (max-width:768px) { .banner { display:none !important; } }
+
+    footer {
+      background: #002f6c;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: #ffc20e;
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .layout {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+      }
+
+      .contenido-central {
+        box-shadow: none;
+        border-radius: 0;
+      }
+
+      .banner {
+        display: none !important;
+      }
+
+      .styled-btn {
+        width: 100%;
+      }
+    }
+
+    #content {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -100,6 +252,8 @@
       SUBASTACARHN
       <span id="contadorClics">Cotizaciones realizadas: ...</span>
     </header>
+
+    <!-- Menú lateral desplegable -->
     <ul id="menu-links">
       <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
       <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
@@ -107,7 +261,10 @@
       <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
     </ul>
 
+    <!-- Título -->
     <h1>Calculadora de Importación de Vehículos</h1>
+
+    <!-- Soporte flotante arriba -->
     <p style="text-align:center; font-weight:bold; margin:10px 0;">
       ¿Necesitás ayuda?
       <a href="https://wa.me/50497330137" style="color:#004aad;" target="_blank">
@@ -116,29 +273,40 @@
       al <span style="color:green;">+504 9733-0137</span>
     </p>
 
+    <!-- Layout principal -->
     <div class="layout">
+
+      <!-- Imagen izquierda -->
       <div class="banner izquierda">
         <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20izquierdo.jpeg" alt="Banner Izquierdo">
       </div>
+
+      <!-- Formulario -->
       <div class="contenido-central">
         <label for="c1">Monto de Oferta $:</label>
         <input type="number" id="c1" />
+
         <label for="c7">Precio de Barco $:</label>
         <input type="number" id="c7" />
+
         <label for="c8">Precio de Grua $:</label>
         <input type="number" id="c8" />
+
         <label for="e2">Tipo de Cambio:</label>
         <input type="number" id="e2" value="25.90" readonly />
+
         <label for="c13">VIN:</label>
         <select id="c13" onchange="bloquearMotorPorVin()">
           <option value="OTROS" selected>OTROS</option>
           <option value="1,4,5">1,4,5</option>
         </select>
+
         <label for="c14">Tipo de Vehículo:</label>
         <select id="c14">
           <option value="OTROS">OTROS</option>
           <option value="PICK UP">PICK UP</option>
         </select>
+
         <label for="motor">Tipo de Motor:</label>
         <select id="motor">
           <option value="">Seleccionar...</option>
@@ -146,16 +314,21 @@
           <option value="Superior 1.5">Superior 1.5</option>
         </select>
 
+        <!-- Botones -->
         <button type="button" id="calculateBtn" class="styled-btn" onclick="calcular()">Calcular</button>
-        <button type="button" id="resetBtn"   class="styled-btn" onclick="reiniciar()">Reiniciar</button>
+        <button type="button" id="resetBtn" class="styled-btn" onclick="reiniciar()">Reiniciar</button>
       </div>
+
+      <!-- Imagen derecha -->
       <div class="banner derecha">
         <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20derecho.jpg" alt="Banner Derecho">
       </div>
     </div>
 
+    <!-- Resultados dinámicos -->
     <div id="results"></div>
 
+    <!-- Soporte flotante inferior -->
     <a href="https://wa.me/50497330137"
        class="soporte-gratis"
        style="position:fixed; bottom:80px; right:20px;
@@ -168,34 +341,37 @@
       Cotízalo ya
     </a>
 
+    <!-- Marca de agua -->
     <div class="marca-agua">SUBASTACARHN</div>
-    <footer style="background:#002f6c; color:white; text-align:center; padding:10px 0; margin-top:40px;">
+
+    <!-- Pie de página -->
+    <footer>
       Síguenos en:
-      <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" style="color:#ffc20e">Facebook</a> |
-      <a href="https://www.instagram.com/subastacar1/"                     style="color:#ffc20e">Instagram</a> |
-      <a href="https://www.tiktok.com/@tu_amigo_el_importador"             style="color:#ffc20e">TikTok</a>
+      <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
+      <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
+      <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
     </footer>
   </div>
-
-  <!-- Firebase SDKs para auth -->
+  <!-- Firebase SDKs para autenticación -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 
   <script>
-    // Inicializa Firebase
+    // Inicialización de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
-      storageBucket: "subastacarhn-40554.firebasestorage.app",
+      storageBucket: "subastacarhn-40554.appspot.com",
       messagingSenderId: "536785797974",
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
       measurementId: "G-QM5N60K8C0"
     };
+
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Protege la calculadora: muestra #content sólo si hay sesión
+    // Verifica autenticación
     auth.onAuthStateChanged(user => {
       if (user) {
         document.getElementById('content').style.display = 'block';
@@ -204,29 +380,14 @@
         window.location.href = 'login.html';
       }
     });
-  </script>
 
-  <!-- Tu lógica EXACTA de calculadora (404 líneas) -->
-  <script>
-    async function obtenerTipoCambioAutomatico() {
-      const url = "https://subastacar-bch-api.onrender.com/api/tipo-cambio-bch";
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        if (data.valor) {
-          document.getElementById("e2").value = data.valor;
-          document.getElementById("e2").readOnly = true;
-        }
-      } catch (error) {
-        console.error("Error al conectar con el backend:", error);
-      }
-    }
-
+    // Despliega el menú
     function toggleMenu() {
       const menu = document.getElementById("menu-links");
       menu.style.display = menu.style.display === "block" ? "none" : "block";
     }
 
+    // Habilita o bloquea el campo "motor"
     function bloquearMotorPorVin() {
       const vin = document.getElementById("c13").value;
       const motorSelect = document.getElementById("motor");
@@ -234,9 +395,19 @@
       if (motorSelect.disabled) motorSelect.value = "";
     }
 
-    const formatear = v => new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
-    const formatearUSD = v => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
+    // Formato moneda HNL
+    const formatear = v => new Intl.NumberFormat("es-HN", {
+      style: "currency",
+      currency: "HNL"
+    }).format(v);
 
+    // Formato moneda USD
+    const formatearUSD = v => new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD"
+    }).format(v);
+  </script>
+  <script>
     const buyerFees = [
       [50,1],[100,25],[200,60],[350,90],[400,125],[450,135],[500,145],[550,155],[600,170],[700,195],
       [800,215],[900,215],[1000,250],[1200,270],[1300,285],[1400,300],[1500,315],[1600,330],[1700,350],[1800,370],[2000,390],
@@ -363,7 +534,7 @@
 
     function mostrarDetalles() {
       const tabla = document.getElementById("detalleResultados");
-      const btn   = document.getElementById("toggleBtn");
+      const btn = document.getElementById("toggleBtn");
       tabla.style.display = tabla.style.display === "none" ? "block" : "none";
       btn.textContent = tabla.style.display === "block" ? "Ocultar detalles" : "Ver detalles";
     }
@@ -377,17 +548,21 @@
       w.document.write(`
         <html><head><title>Descargar en PDF</title>
         <style>
-          body { font-family: Helvetica; margin:20px; }
+          body { font-family: Inter, sans-serif; margin: 20px; }
           .tabla-detalles {
-            margin:20px auto; border-collapse:collapse; width:auto; max-width:600px;
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 600px;
           }
-          .tabla-detalles th,
-          .tabla-detalles td {
-            padding:8px 12px; border:1px solid #ddd;
+          .tabla-detalles th, .tabla-detalles td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
           }
-          .tabla-detalles th { background:#f2f2f2; }
-          th:first-child, td:first-child { text-align:left; }
-          th:nth-child(2), td:nth-child(2) { text-align:right; }
+          .tabla-detalles th {
+            background: #004aad;
+            color: white;
+          }
         </style>
         </head><body>${contenido}</body></html>
       `);
@@ -419,6 +594,7 @@
     }
 
     const endpoint = "https://contador-clics-backend.onrender.com/contador";
+
     async function obtenerContador() {
       try {
         const res = await fetch(endpoint);
@@ -428,6 +604,7 @@
         console.error("Error al obtener el contador:", e);
       }
     }
+
     async function registrarClic() {
       try {
         const res = await fetch(endpoint, { method: "POST" });
@@ -438,7 +615,20 @@
       }
     }
 
-    // Inicialización
+    async function obtenerTipoCambioAutomatico() {
+      const url = "https://subastacar-bch-api.onrender.com/api/tipo-cambio-bch";
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.valor) {
+          document.getElementById("e2").value = data.valor;
+          document.getElementById("e2").readOnly = true;
+        }
+      } catch (error) {
+        console.error("Error al conectar con el backend:", error);
+      }
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("c13").value = "OTROS";
       bloquearMotorPorVin();
