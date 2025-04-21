@@ -120,9 +120,7 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       z-index: 998;
     }
-    .mobile-nav li {
-      margin-bottom: 0.75rem;
-    }
+    .mobile-nav li { margin-bottom: 0.75rem; }
     .mobile-nav a,
     .mobile-nav span {
       display: block;
@@ -130,7 +128,6 @@
       font-weight: 700;
       font-size: 0.9375rem;
     }
-
     @media (min-width: 768px) {
       .menu-icon { display: none; }
       .nav-links { display: flex; }
@@ -161,9 +158,7 @@
       box-shadow: 0 3px 6px rgba(0,0,0,0.2);
       transition: background-color 0.3s;
     }
-    .styled-btn:hover {
-      background: #e6ac00;
-    }
+    .styled-btn:hover { background: #e6ac00; }
 
     /* ===== HERO ===== */
     .hero {
@@ -196,6 +191,13 @@
       font-size: 1.1rem;
       margin-bottom: 2rem;
     }
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
 
     /* ===== BENEFICIOS ===== */
     .benefits {
@@ -212,10 +214,7 @@
       margin-bottom: 0.5rem;
       color: var(--blue);
     }
-    .benefit-title {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
+    .benefit-title { font-weight: 600; margin-bottom: 0.5rem; }
 
     /* ===== CÓMO FUNCIONA ===== */
     .how-it-works {
@@ -243,10 +242,7 @@
       color: var(--yellow);
       margin-bottom: 0.5rem;
     }
-    .step-title {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
+    .step-title { font-weight: 600; margin-bottom: 0.5rem; }
 
     /* ===== POR QUÉ ELEGIRNOS ===== */
     .why-choose {
@@ -323,84 +319,76 @@
       text-align: center;
       padding: 1rem;
     }
-    footer a {
-      color: var(--yellow);
-      margin: 0 0.5rem;
-    }
+    footer a { color: var(--yellow); margin: 0 0.5rem; }
 
     /* Responsive tweaks */
     @media (min-width: 768px) {
       .hero-content h1 { font-size: 3rem; }
-      .hero-content p { font-size: 1.25rem; }
+      .hero-content p  { font-size: 1.25rem; }
       .steps { gap: 4rem; }
     }
     @media (max-width: 600px) {
       .steps { flex-direction: column; }
     }
+
     /* ===== Sección de Cursos ===== */
-.courses {
-  padding: 3rem 1rem;
-  background: #fff;
-}
-.courses h2 {
-  text-align: center;
-  font-size: 1.8rem;
-  margin-bottom: 2rem;
-  font-weight: 700;
-}
-.courses-content {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  align-items: center;
-  justify-content: center;
-}
-.video-wrapper,
-.courses-info {
-  flex: 1 1 300px;
-  max-width: 500px;
-}
-
-/* Lazy‑load video container */
-.video-container {
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%;              /* relación 16:9 */
-  background-size: cover;
-  background-position: center;
-  cursor: pointer;
-}
-.video-container video {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-}
-.play-button {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(255,255,255,0.8);
-  border: none;
-  border-radius: 50%;
-  width: 60px; height: 60px;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-/* Texto y botón */
-.courses-info p {
-  margin-bottom: 1.5rem;
-  line-height: 1.5;
-}
-.courses-info .styled-btn {
-  max-width: 200px;
-  display: inline-block;
-}
-
+    .courses {
+      padding: 3rem 1rem;
+      background: #fff;
+    }
+    .courses h2 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+    }
+    .courses-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: center;
+      justify-content: center;
+    }
+    .video-wrapper,
+    .courses-info {
+      flex: 1 1 300px;
+      max-width: 500px;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 */
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+    }
+    .video-container video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .play-button {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.8);
+      border: none;
+      border-radius: 50%;
+      width: 60px; height: 60px;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .courses-info p {
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .courses-info .styled-btn {
+      max-width: 200px;
+      display: inline-block;
+    }
   </style>
 </head>
-
 <body>
 
   <!-- HEADER -->
@@ -410,6 +398,7 @@
 
       <nav class="nav-links" aria-label="Menú principal">
         <a href="calculadora.html">Calculadora</a>
+        <a href="#cursos" id="linkCursos">Cursos</a>
         <span id="userGreeting"></span>
       </nav>
 
@@ -418,8 +407,9 @@
 
     <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
       <li><a href="calculadora.html">Calculadora</a></li>
+      <li><a href="#cursos" id="linkCursosMobile">Cursos</a></li>
       <li><span id="mobileGreeting"></span></li>
-      <li><a href=" https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+      <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
     </ul>
   </header>
 
@@ -428,7 +418,10 @@
     <div class="hero-content">
       <h1>Calcula tus costos de importación en segundos</h1>
       <p>Sin suscripciones, sin sorpresas, con total transparencia.</p>
-      <a href="calculadora.html" class="styled-btn">Empieza a calcular</a>
+      <div class="hero-ctas">
+        <a href="calculadora.html" class="styled-btn">Empieza a calcular</a>
+        <a href="#cursos" class="styled-btn">Ver cursos</a>
+      </div>
     </div>
   </section>
 
@@ -503,16 +496,16 @@
     <div class="container">
       <h2>Historias de éxito</h2>
       <div class="testimonial">
-        “Gracias a SubastaCarHN importé mi Tacoma 2012 por 150 Mil LPS, ¡y ahorré más de 40 Mil LPS!”
-        <strong>Carlos M., Tegucigalpa</strong>
+        “Gracias a SubastaCarHN importé mi Tacoma 2012 por 150 Mil LPS, ¡y ahorré más de 40 Mil LPS!”  
+        <strong>Carlos M., Tegucigalpa</strong>
       </div>
       <div class="testimonial">
-        “Queria comenzar mi negocio pero siempre ganaban mas los importadores que yo, ahora obtengo ganancias verdaderas!”
-        <strong>Mario Z., Tegucigalpa</strong>
+        “Quería comenzar mi negocio pero siempre ganaban más los importadores que yo, ahora obtengo ganancias verdaderas!”  
+        <strong>Mario Z., Tegucigalpa</strong>
       </div>
       <div class="testimonial">
-        “Tengo Autolote y me sale mejor trabajar con ellos que lidiar con problemas de licencia.”
-        <strong>Roberto S., San Pedro Sula</strong>
+        “Tengo Autolote y me sale mejor trabajar con ellos que lidiar con problemas de licencia.”  
+        <strong>Roberto S., San Pedro Sula</strong>
       </div>
     </div>
   </section>
@@ -524,36 +517,32 @@
       <a href="calculadora.html" class="styled-btn">Calcular mi cotización</a>
     </div>
   </section>
-  <!-- ================= CURSOS ================= -->
-<section class="courses" id="cursos">
-  <div class="container">
-    <h2>Formación y Cursos Especializados</h2>
-    <div class="courses-content">
-      
-      <!-- Video lazy-load -->
-      <div class="video-wrapper">
-        <div class="video-container"
-             data-video-src="videos/VIDEO-2025-04-21-14-26-34.mp4"
-             style="background-image:url('Img/course-poster.jpg')">
-          <button class="play-button" aria-label="Reproducir video de cursos">▶️</button>
+
+  <!-- CURSOS -->
+  <section class="courses" id="cursos">
+    <div class="container">
+      <h2>Formación y Cursos Especializados</h2>
+      <div class="courses-content">
+        <!-- Video lazy-load -->
+        <div class="video-wrapper">
+          <div id="videoCursos" class="video-container"
+               data-video-src="videos/VIDEO-2025-04-21-14-26-34.mp4"
+               style="background-image:url('Img/course-poster.jpg')">
+            <button class="play-button" aria-label="Reproducir video de cursos">▶️</button>
+          </div>
+        </div>
+        <!-- Info & CTA -->
+        <div class="courses-info">
+          <p>
+            Aprende todo el proceso de importación de vehículos: selección en subastas,  
+            cálculos de aranceles y logística. Imparto cursos presenciales y online adaptados a tu nivel.
+          </p>
+          <a href="cursos.html" class="styled-btn">Más sobre mis cursos</a>
         </div>
       </div>
-      
-      <!-- Info & CTA -->
-      <div class="courses-info">
-        <p>
-          Aprende todo el proceso de importación de vehículos: selección en subastas, 
-          cálculos de aranceles y logística.  
-          Imparto cursos presenciales y online adaptados a tu nivel.
-        </p>
-        <!-- Cambia a tu canal de contacto: puede ser contact.html o directamente WhatsApp -->
-        <a href="cursos.html" class="styled-btn">Más sobre mis cursos</a>
-      </div>
-      
     </div>
-  </div>
-</section>
-<!-- =============== FIN CURSOS =============== -->
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <div class="container">
@@ -597,11 +586,11 @@
         const name = (user.displayName || user.email.split('@')[0])
                        .replace(/^./, c => c.toUpperCase());
         desktop.innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Cerrar sesión</a>`;
-        mobile .innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Salir</a>`;
+        mobile.innerHTML  = `Hola, ${name} | <a href="#" onclick="logout()">Salir</a>`;
         btnCont.style.display = 'flex';
       } else {
         desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
-        mobile .innerHTML = desktop.innerHTML;
+        mobile.innerHTML  = desktop.innerHTML;
         btnCont.style.display = 'none';
       }
     });
@@ -610,23 +599,41 @@
       firebase.auth().signOut().then(() => location.reload());
     }
   </script>
+
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('.video-container');
-    const btn       = container.querySelector('.play-button');
-    
-    btn.addEventListener('click', () => {
-      const src = container.dataset.videoSrc;
-      const vid = document.createElement('video');
-      vid.controls   = true;
-      vid.autoplay   = true;
-      vid.playsinline = true;
-      vid.src        = src;
-      
-      container.innerHTML = ''; // quita el póster y botón
-      container.appendChild(vid);
+    // Lazy‑load video play
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('videoCursos');
+      const btn       = container.querySelector('.play-button');
+      btn.addEventListener('click', () => {
+        const vid = document.createElement('video');
+        vid.controls   = true;
+        vid.autoplay   = true;
+        vid.playsinline = true;
+        vid.src        = container.dataset.videoSrc;
+        container.innerHTML = '';
+        container.appendChild(vid);
+      });
     });
-  });
-</script>
+
+    // Scroll + auto-play on header link click
+    function scrollYPlay() {
+      const vc = document.getElementById('videoCursos');
+      vc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => {
+        const btn = vc.querySelector('.play-button');
+        if (btn) btn.click();
+      }, 600);
+    }
+    document.getElementById('linkCursos')
+      .addEventListener('click', e => { e.preventDefault(); scrollYPlay(); });
+    document.getElementById('linkCursosMobile')
+      .addEventListener('click', e => {
+        e.preventDefault();
+        document.getElementById('mobile-menu-links').style.display = 'none';
+        scrollYPlay();
+      });
+  </script>
+
 </body>
 </html>
