@@ -3,17 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inicio – SubastaCarHN</title>
+  <title>SubastaCarHN – Calculadora de Importación</title>
+
+  <!-- Google Fonts Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
+
   <style>
-    body {
-      font-family: Helvetica, sans-serif;
+    :root {
+      --blue: #002f6c;
+      --blue2: #004aad;
+      --yellow: #ffc20e;
+      --dark: #333;
+      --light: #f9f9f9;
+      --max-width: 1200px;
+    }
+    /* Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background: #f9f9f9;
     }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--dark);
+      background: var(--light);
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Header */
     header {
-      background: linear-gradient(to right, #002f6c, #004aad);
-      padding: 10px 15px;
+      background: linear-gradient(to right, var(--blue), var(--blue2));
       position: sticky;
       top: 0;
       z-index: 999;
@@ -23,128 +51,408 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
+      padding: 0.75rem 0;
     }
     .brand {
-      color: white;
-      font-size: 22px;
-      font-weight: bold;
-      text-decoration: none;
+      color: #fff;
+      font-size: 1.375rem;
+      font-weight: 700;
     }
     .saludo {
-      font-size: 13px;
-      color: #ffc20e;
-      font-weight: bold;
-      margin-top: 6px;
+      font-size: 0.8125rem;
+      color: var(--yellow);
+      font-weight: 700;
     }
-    .saludo a {
-      color: #ffc20e;
-      text-decoration: underline;
+    .nav-links {
+      display: none;
+    }
+    .nav-links a {
+      margin-left: 1rem;
+      color: var(--yellow);
+      font-weight: 600;
     }
     .menu-icon {
-      font-size: 20px;
-      background: #ffc20e;
-      color: #002f6c;
-      padding: 8px 10px;
+      font-size: 1.25rem;
+      background: var(--yellow);
+      color: var(--blue);
+      padding: 0.5rem;
       border-radius: 6px;
       cursor: pointer;
-      font-weight: bold;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      margin-right: 10px;
     }
     #menu-links {
       display: none;
-      list-style: none;
-      padding: 10px;
-      margin: 10px 0 0;
-      background: white;
+      position: absolute;
+      top: 100%;
+      left: 1rem;
+      right: 1rem;
+      background: #fff;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      position: absolute;
-      top: 70px;
-      left: 15px;
+      flex-direction: column;
+      padding: 1rem;
       z-index: 1000;
     }
-    #menu-links li { margin-bottom: 10px; }
-    #menu-links a {
-      text-decoration: none;
-      color: #002f6c;
-      font-weight: bold;
+    #menu-links li {
+      margin-bottom: 0.75rem;
     }
+    #menu-links a {
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    /* Botón calculadora */
     .center-btn {
-      display: flex;
+      display: none;
       justify-content: center;
-      margin: 60px auto;
+      margin: 2rem auto;
+      width: 100%;
+      max-width: 300px;
+      padding: 0 1rem;
     }
     .styled-btn {
-      background-color: #ffc20e;
-      color: #002f6c;
-      font-weight: bold;
+      width: 100%;
+      display: inline-block;
+      text-align: center;
+      background: var(--yellow);
+      color: var(--blue);
+      font-weight: 700;
       border: none;
       border-radius: 8px;
-      padding: 14px 20px;
-      font-size: 16px;
+      padding: 0.875rem;
+      font-size: 1rem;
       cursor: pointer;
       box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s;
     }
     .styled-btn:hover {
-      background-color: #e6ac00;
+      background: #e6ac00;
     }
-    footer {
-      background: #002f6c;
-      color: white;
+
+    /* Hero */
+    .hero {
+      background: url('img/hero-bg.jpg') center/cover no-repeat;
+      height: 70vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      padding: 10px 0;
-      margin-top: 40px;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,47,108,0.7);
+    }
+    .hero-content {
+      position: relative;
+      color: #fff;
+      max-width: 600px;
+      padding: 0 1rem;
+    }
+    .hero-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .hero-content p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Beneficios */
+    .benefits {
+      padding: 3rem 1rem;
+    }
+    .benefits .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+    .benefit-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: var(--blue);
+    }
+    .benefit-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Cómo funciona */
+    .how-it-works {
+      padding: 3rem 1rem;
+    }
+    .how-it-works h2 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .step {
+      flex: 1 1 200px;
+      text-align: center;
+    }
+    .step-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--yellow);
+      margin-bottom: 0.5rem;
+    }
+    .step-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Por qué elegirnos */
+    .why-choose {
+      padding: 3rem 1rem;
+      background: #fff;
+    }
+    .why-choose h2 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .choose-list {
+      display: inline-block;
+      text-align: left;
+    }
+    .choose-list li {
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .choose-list li::before {
+      content: '✔️';
+      margin-right: 0.5rem;
+      color: var(--yellow);
+    }
+
+    /* Testimonios */
+    .testimonials {
+      padding: 3rem 1rem;
+    }
+    .testimonials h2 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .testimonial {
+      margin-bottom: 2rem;
+      font-style: italic;
+      text-align: center;
+    }
+    .testimonial strong {
+      display: block;
+      margin-top: 0.5rem;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* CTA final */
+    .cta-final {
+      background: var(--blue);
+      color: #fff;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    .cta-final h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .cta-final .btn {
+      background: var(--yellow);
+      color: var(--blue);
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-radius: 4px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--blue2);
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
     }
     footer a {
-      color: #ffc20e;
-      margin: 0 5px;
-      text-decoration: none;
+      color: var(--yellow);
+      margin: 0 0.5rem;
+    }
+
+    /* Responsive */
+    @media (min-width: 768px) {
+      .menu-icon { display: none; }
+      .nav-links { display: flex; }
+      #menu-links { display: none !important; }
+      .hero-content h1 { font-size: 3rem; }
+      .hero-content p { font-size: 1.25rem; }
+      .steps { gap: 4rem; }
     }
     @media (max-width: 600px) {
-      .header-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .saludo {
-        margin-top: 8px;
-      }
+      .steps { flex-direction: column; }
     }
   </style>
 </head>
+
 <body>
+
+  <!-- HEADER -->
   <header>
-    <div class="header-inner">
-      <div style="display: flex; align-items: center;">
-        <div class="menu-icon" onclick="toggleMenu()">☰</div>
-        <a href="index.html" class="brand">SUBASTACARHN</a>
-      </div>
+    <div class="container header-inner">
+      <a href="index.html" class="brand">SubastaCarHN</a>
+
+      <nav class="nav-links">
+        <a href="calculadora.html">Calculadora</a>
+        <a href="login.html">Iniciar sesión</a>
+        <a href="register.html">Registrarse</a>
+      </nav>
+
+      <div class="menu-icon" onclick="toggleMenu()">☰</div>
       <div id="userGreeting" class="saludo"></div>
     </div>
+
+    <ul id="menu-links" class="container">
+      <li><a href="calculadora.html">Calculadora</a></li>
+      <li><a href="login.html">Iniciar sesión</a></li>
+      <li><a href="register.html">Registrarse</a></li>
+      <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+    </ul>
   </header>
 
-  <ul id="menu-links">
-    <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
-    <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
-    <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
-    <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
-  </ul>
-
-  <div class="center-btn" id="calculadoraBtnContainer" style="display:none;">
-    <a href="calculadora.html" class="styled-btn">Ir a la Calculadora</a>
+  <!-- BOTÓN CALCULADORA PARA USUARIOS LOGUEADOS -->
+  <div class="container center-btn" id="calculadoraBtnContainer">
+    <button class="styled-btn" onclick="location.href='calculadora.html'">
+      Ir a la Calculadora
+    </button>
   </div>
 
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>Calcula tus costos de importación en segundos</h1>
+      <p>Sin suscripciones, sin sorpresas, con total transparencia.</p>
+      <a href="calculadora.html" class="btn">Empieza a calcular</a>
+    </div>
+  </section>
+
+  <!-- BENEFICIOS -->
+  <section class="benefits">
+    <div class="container">
+      <div>
+        <div class="benefit-icon">🔄</div>
+        <div class="benefit-title">Actualizado al momento</div>
+        <div>Tipo de cambio real‑time y tarifas oficiales.</div>
+      </div>
+      <div>
+        <div class="benefit-icon">📊</div>
+        <div class="benefit-title">Cálculos 100 % transparentes</div>
+        <div>Desglose detallado de cada costo.</div>
+      </div>
+      <div>
+        <div class="benefit-icon">🚚</div>
+        <div class="benefit-title">Todo incluido</div>
+        <div>Desde la subasta en Copart/IAAI hasta llegada a tu puerta.</div>
+      </div>
+      <div>
+        <div class="benefit-icon">🛡️</div>
+        <div class="benefit-title">Sin sorpresas</div>
+        <div>Ninguno de nuestros costos se queda oculto.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section class="how-it-works" id="how">
+    <div class="container">
+      <h2>En solo 3 pasos</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-title">Ingresa tus datos</div>
+          <div>Monto de oferta, VIN y transporte.</div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-title">Presiona “Calcular”</div>
+          <div>Obtén al instante los aranceles (DAI, ISC, ISV) y tarifas.</div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-title">Descarga o comparte</div>
+          <div>Guarda tu cotización en PDF o envíala por WhatsApp.</div>
+        </div>
+      </div>
+      <div style="margin-top:2rem; text-align:center;">
+        <a href="calculadora.html" class="styled-btn">Ver demo rápida</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- POR QUÉ ELEGIRNOS -->
+  <section class="why-choose" id="about">
+    <div class="container">
+      <h2>Confianza y agilidad para tu importación</h2>
+      <ul class="choose-list">
+        <li>Experiencia comprobada: +2,000 clientes satisfechos.</li>
+        <li>Soporte gratuito: Nuestro equipo te asesora paso a paso.</li>
+        <li>Precio fijo de comisión: Solo 5,000 LPS sobre el precio del vehículo.</li>
+        <li>100 % online: Desde tu celular o computador, donde quieras.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="testimonials">
+    <div class="container">
+      <h2>Historias de éxito</h2>
+      <div class="testimonial">
+        “Gracias a SubastaCarHN importé mi Tacoma por 3,200 USD, ¡y ahorré más de 800 USD!”
+        <strong>Carlos M., Tegucigalpa</strong>
+      </div>
+      <div class="testimonial">
+        “El proceso fue tan fácil que lo recomendé a mis hermanos.”
+        <strong>María G., San Pedro Sula</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-final">
+    <div class="container">
+      <h2>¿Listo para tu próxima importación?</h2>
+      <a href="calculadora.html" class="btn">Calcular mi cotización</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
   <footer>
-    Síguenos en:
-    <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
-    <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
-    <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+    <div class="container">
+      <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
+      <div style="margin-top:0.5rem;">
+        <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
+        <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
+        <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+      </div>
+    </div>
   </footer>
 
+  <!-- Firebase + Autenticación y Menú -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
+    // Configuración de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -156,27 +464,28 @@
     };
     firebase.initializeApp(firebaseConfig);
 
+    // Toggle menú móvil
     function toggleMenu() {
       const m = document.getElementById('menu-links');
-      m.style.display = m.style.display === 'block' ? 'none' : 'block';
+      m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
     }
 
+    // Control de autenticación
     firebase.auth().onAuthStateChanged(user => {
-      const saludo = document.getElementById('userGreeting');
-      const btnContainer = document.getElementById('calculadoraBtnContainer');
+      const saludoEl = document.getElementById('userGreeting');
+      const btnCont = document.getElementById('calculadoraBtnContainer');
       if (user) {
         const nombre = user.displayName || user.email.split('@')[0];
-        saludo.innerHTML = `¡Hola, ${nombre.charAt(0).toUpperCase() + nombre.slice(1)}! <a href="#" onclick="cerrarSesion()"> (Cerrar sesión)</a>`;
-        btnContainer.style.display = 'flex';
+        saludoEl.innerHTML = `¡Hola, ${nombre.charAt(0).toUpperCase() + nombre.slice(1)}! <a href="#" onclick="cerrarSesion()" style="margin-left:.5rem;color:#fff;text-decoration:underline;">Cerrar sesión</a>`;
+        btnCont.style.display = 'flex';
       } else {
-        saludo.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+        saludoEl.innerHTML = `<a href="login.html" style="color:#fff;">Iniciar sesión</a> | <a href="register.html" style="color:#fff;">Registrarse</a>`;
+        btnCont.style.display = 'none';
       }
     });
 
     function cerrarSesion() {
-      firebase.auth().signOut().then(() => {
-        location.reload();
-      });
+      firebase.auth().signOut().then(() => location.reload());
     }
   </script>
 </body>
