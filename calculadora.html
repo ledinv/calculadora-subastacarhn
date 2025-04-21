@@ -4,34 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SUBASTACARHN - Calculadora de Importación</title>
-
-  <!-- Tipografía moderna -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
   <style>
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: Helvetica, sans-serif;
       margin: 0;
       padding: 0;
-      background: #f4f7fa;
-      color: #333;
+      background: #f9f9f9;
     }
-
-    .calculator-nav {
-      background: #002f6c;
-      color: #ffc20e;
-      padding: 10px 15px;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      font-weight: bold;
-    }
-
-    .calculator-nav a {
-      color: #ffc20e;
-      text-decoration: none;
-    }
-
     header {
       background: linear-gradient(to right, #002f6c, #004aad);
       height: 70px;
@@ -43,15 +22,19 @@
       justify-content: space-between;
       padding: 0 15px;
       position: sticky;
-      top: 40px;
+      top: 0;
       z-index: 999;
     }
-
-    header span#contadorClics {
-      font-size: 13px;
-      color: #ffc20e;
+    header a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
     }
-
+    header span#contadorClics {
+      font-size: 12px;
+      color: #ffc20e;
+      font-weight: normal;
+    }
     .menu-icon {
       font-size: 20px;
       background: #ffc20e;
@@ -62,7 +45,23 @@
       font-weight: bold;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
-
+    .styled-btn {
+      background: #ffc20e;
+      color: #002f6c;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      margin: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.2s ease;
+      width: auto !important;
+    }
+    .styled-btn:hover {
+      background: #e6ac00;
+    }
     #menu-links {
       display: none;
       list-style: none;
@@ -76,24 +75,20 @@
       left: 15px;
       z-index: 1000;
     }
-
     #menu-links li {
       margin-bottom: 10px;
     }
-
     #menu-links a {
       text-decoration: none;
       color: #002f6c;
       font-weight: bold;
     }
-
     h1 {
       text-align: center;
       color: #002f6c;
       margin-top: 20px;
-      font-size: 22px;
+      font-size: 20px;
     }
-
     .layout {
       display: flex;
       justify-content: center;
@@ -102,158 +97,82 @@
       gap: 20px;
       flex-wrap: wrap;
     }
-
     .banner {
       flex-shrink: 0;
     }
-
     .banner img {
-      width: 100%;
-      max-width: 400px;
-      height: auto;
+      width: 400px;
+      height: 400px;
       object-fit: cover;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     }
-
     .contenido-central {
-      max-width: 400px;
+      max-width: 380px;
       width: 100%;
       background: #fff;
       border-radius: 15px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       padding: 20px;
     }
-
     label {
-      font-weight: 600;
+      font-weight: bold;
       color: #002f6c;
       display: block;
       margin-top: 10px;
     }
-
     input,
     select {
       font-size: 14px;
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      background: #fff;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #004aad;
+      background: #f0f8ff;
       width: 100%;
-      margin-top: 6px;
+      margin-top: 5px;
       box-sizing: border-box;
-      transition: border-color 0.2s ease;
     }
-
-    input:focus,
-    select:focus {
-      border-color: #004aad;
-      outline: none;
-    }
-
-    .styled-btn {
-      background: #004aad;
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 16px;
-      margin: 6px 0;
-      font-size: 15px;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s ease;
-    }
-
-    .styled-btn:hover {
-      background: #002f6c;
-    }
-
     .tabla-detalles {
       margin: 20px auto;
       border-collapse: collapse;
-      width: 100%;
+      width: auto;
       max-width: 600px;
     }
-
     .tabla-detalles th,
     .tabla-detalles td {
-      padding: 10px 14px;
+      padding: 8px 12px;
       border: 1px solid #ddd;
-      font-size: 14px;
     }
-
     .tabla-detalles th {
-      background: #004aad;
-      color: white;
+      background: #f2f2f2;
     }
-
     .botones-detalle {
       display: flex;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
       margin-top: 10px;
-      gap: 10px;
     }
-
-    footer {
-      background: #002f6c;
-      color: white;
-      text-align: center;
-      padding: 15px 0;
-      margin-top: 40px;
-    }
-
-    footer a {
-      color: #ffc20e;
-      text-decoration: none;
-    }
-
     @media (max-width: 768px) {
-      .layout {
-        flex-direction: column;
-        align-items: center;
-        padding: 10px;
-      }
-
-      .contenido-central {
-        box-shadow: none;
-        border-radius: 0;
-      }
-
       .banner {
         display: none !important;
       }
-
-      .styled-btn {
-        width: 100%;
-      }
-    }
-
-    #content {
-      display: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- 1) Enlace siempre visible -->
-  <nav class="calculator-nav">
-    <a href="index.html">← Inicio</a>
-  </nav>
-
-  <!-- 2) TODO el contenido queda oculto hasta auth -->
+  <!-- Contenido de la app, visible solo con sesión activa -->
   <div id="content">
 
-    <!-- Header y menú original -->
+    <!-- Encabezado -->
     <header>
       <div class="menu-icon" onclick="toggleMenu()">☰</div>
-      SUBASTACARHN
-      <span id="contadorClics">Cotizaciones realizadas: ...</span>
+      <a href="index.html">SUBASTACARHN</a>
+      <span id="contadorClics">Cálculos: ...</span>
     </header>
 
-    <!-- Menú lateral desplegable -->
+    <!-- Menú desplegable -->
     <ul id="menu-links">
       <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
       <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
@@ -264,24 +183,22 @@
     <!-- Título -->
     <h1>Calculadora de Importación de Vehículos</h1>
 
-    <!-- Soporte flotante arriba -->
+    <!-- Ayuda / soporte -->
     <p style="text-align:center; font-weight:bold; margin:10px 0;">
       ¿Necesitás ayuda?
-      <a href="https://wa.me/50497330137" style="color:#004aad;" target="_blank">
-        Soporte gratuito
-      </a>
+      <a href="https://wa.me/50497330137" style="color:#004aad;" target="_blank">Soporte gratuito</a>
       al <span style="color:green;">+504 9733-0137</span>
     </p>
 
-    <!-- Layout principal -->
+    <!-- Contenido y formulario -->
     <div class="layout">
 
-      <!-- Imagen izquierda -->
+      <!-- Imagen lateral izquierda -->
       <div class="banner izquierda">
         <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20izquierdo.jpeg" alt="Banner Izquierdo">
       </div>
 
-      <!-- Formulario -->
+      <!-- Calculadora -->
       <div class="contenido-central">
         <label for="c1">Monto de Oferta $:</label>
         <input type="number" id="c1" />
@@ -319,16 +236,16 @@
         <button type="button" id="resetBtn" class="styled-btn" onclick="reiniciar()">Reiniciar</button>
       </div>
 
-      <!-- Imagen derecha -->
+      <!-- Imagen lateral derecha -->
       <div class="banner derecha">
         <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20derecho.jpg" alt="Banner Derecho">
       </div>
     </div>
 
-    <!-- Resultados dinámicos -->
+    <!-- Resultados -->
     <div id="results"></div>
 
-    <!-- Soporte flotante inferior -->
+    <!-- Botón flotante de soporte -->
     <a href="https://wa.me/50497330137"
        class="soporte-gratis"
        style="position:fixed; bottom:80px; right:20px;
@@ -341,15 +258,15 @@
       Cotízalo ya
     </a>
 
-    <!-- Marca de agua -->
+    <!-- Marca -->
     <div class="marca-agua">SUBASTACARHN</div>
 
-    <!-- Pie de página -->
-    <footer>
+    <!-- Footer -->
+    <footer style="background:#002f6c; color:white; text-align:center; padding:10px 0; margin-top:40px;">
       Síguenos en:
-      <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
-      <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
-      <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+      <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" style="color:#ffc20e">Facebook</a> |
+      <a href="https://www.instagram.com/subastacar1/" style="color:#ffc20e">Instagram</a> |
+      <a href="https://www.tiktok.com/@tu_amigo_el_importador" style="color:#ffc20e">TikTok</a>
     </footer>
   </div>
   <!-- Firebase SDKs para autenticación -->
@@ -357,7 +274,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 
   <script>
-    // Inicialización de Firebase
+    // Inicializa Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -367,11 +284,10 @@
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
       measurementId: "G-QM5N60K8C0"
     };
-
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Verifica autenticación
+    // Protege la calculadora: muestra #content solo si hay sesión
     auth.onAuthStateChanged(user => {
       if (user) {
         document.getElementById('content').style.display = 'block';
@@ -381,13 +297,13 @@
       }
     });
 
-    // Despliega el menú
+    // Menú desplegable móvil
     function toggleMenu() {
       const menu = document.getElementById("menu-links");
       menu.style.display = menu.style.display === "block" ? "none" : "block";
     }
 
-    // Habilita o bloquea el campo "motor"
+    // Habilita o bloquea selección de motor
     function bloquearMotorPorVin() {
       const vin = document.getElementById("c13").value;
       const motorSelect = document.getElementById("motor");
@@ -395,19 +311,30 @@
       if (motorSelect.disabled) motorSelect.value = "";
     }
 
-    // Formato moneda HNL
+    // Formato monetario
     const formatear = v => new Intl.NumberFormat("es-HN", {
-      style: "currency",
-      currency: "HNL"
+      style: "currency", currency: "HNL"
     }).format(v);
 
-    // Formato moneda USD
     const formatearUSD = v => new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD"
+      style: "currency", currency: "USD"
     }).format(v);
   </script>
   <script>
+    async function obtenerTipoCambioAutomatico() {
+      const url = "https://subastacar-bch-api.onrender.com/api/tipo-cambio-bch";
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.valor) {
+          document.getElementById("e2").value = data.valor;
+          document.getElementById("e2").readOnly = true;
+        }
+      } catch (error) {
+        console.error("Error al conectar con el backend:", error);
+      }
+    }
+
     const buyerFees = [
       [50,1],[100,25],[200,60],[350,90],[400,125],[450,135],[500,145],[550,155],[600,170],[700,195],
       [800,215],[900,215],[1000,250],[1200,270],[1300,285],[1400,300],[1500,315],[1600,330],[1700,350],[1800,370],[2000,390],
@@ -432,7 +359,6 @@
 
     function calcular() {
       registrarClic();
-
       const c1 = parseFloat(document.getElementById('c1').value.trim());
       const c7 = parseFloat(document.getElementById('c7').value.trim());
       const c8 = parseFloat(document.getElementById('c8').value.trim());
@@ -476,6 +402,7 @@
       const c16 = (c14 === "OTROS") ? (c11 + o3 + o4 + c15) * isc : 0;
       const c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
       const c18 = c15 + c16 + c17;
+
       let c20 = 5000;
       if (c1 > 15000 && c1 <= 25000) c20 = 7000;
       else if (c1 > 25000) c20 = 10000;
@@ -520,12 +447,11 @@
           <div id="detalleResultados" style="display:none;">
             <table class="tabla-detalles">
               <tr><th>Concepto</th><th>Valor</th></tr>
-              ${detalles.map(([titulo, valor, tipo]) =>
-                `<tr>
+              ${detalles.map(([titulo, valor, tipo]) => `
+                <tr>
                   <td>${titulo}</td>
                   <td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td>
-                </tr>`
-              ).join('')}
+                </tr>`).join('')}
             </table>
           </div>
         </div>
@@ -548,21 +474,20 @@
       w.document.write(`
         <html><head><title>Descargar en PDF</title>
         <style>
-          body { font-family: Inter, sans-serif; margin: 20px; }
+          body { font-family: Helvetica; margin: 20px; }
           .tabla-detalles {
             margin: 20px auto;
             border-collapse: collapse;
-            width: 100%;
+            width: auto;
             max-width: 600px;
           }
           .tabla-detalles th, .tabla-detalles td {
             padding: 8px 12px;
             border: 1px solid #ddd;
           }
-          .tabla-detalles th {
-            background: #004aad;
-            color: white;
-          }
+          .tabla-detalles th { background: #f2f2f2; }
+          th:first-child, td:first-child { text-align: left; }
+          th:nth-child(2), td:nth-child(2) { text-align: right; }
         </style>
         </head><body>${contenido}</body></html>
       `);
@@ -594,12 +519,11 @@
     }
 
     const endpoint = "https://contador-clics-backend.onrender.com/contador";
-
     async function obtenerContador() {
       try {
         const res = await fetch(endpoint);
         const data = await res.json();
-        document.getElementById('contadorClics').textContent = `Cotizaciones realizadas: ${data.clics}`;
+        document.getElementById('contadorClics').textContent = `Cálculos: ${data.clics}`;
       } catch (e) {
         console.error("Error al obtener el contador:", e);
       }
@@ -609,26 +533,13 @@
       try {
         const res = await fetch(endpoint, { method: "POST" });
         const data = await res.json();
-        document.getElementById('contadorClics').textContent = `Cotizaciones realizadas: ${data.clics}`;
+        document.getElementById('contadorClics').textContent = `Cálculos: ${data.clics}`;
       } catch (e) {
         console.error("Error al registrar clic:", e);
       }
     }
 
-    async function obtenerTipoCambioAutomatico() {
-      const url = "https://subastacar-bch-api.onrender.com/api/tipo-cambio-bch";
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        if (data.valor) {
-          document.getElementById("e2").value = data.valor;
-          document.getElementById("e2").readOnly = true;
-        }
-      } catch (error) {
-        console.error("Error al conectar con el backend:", error);
-      }
-    }
-
+    // Inicialización al cargar la página
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("c13").value = "OTROS";
       bloquearMotorPorVin();
