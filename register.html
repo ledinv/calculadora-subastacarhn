@@ -10,7 +10,7 @@
       margin: 0; padding: 0;
       background: #f9f9f9;
     }
-    /* Header igual a la calculadora */
+    /* Header igual que la calculadora */
     header {
       background: linear-gradient(to right, #002f6c, #004aad);
       height: 70px;
@@ -154,22 +154,20 @@
     </div>
   </div>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
+  <!-- Firebase v9 Compat -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
-    // 1) Pega aquí tu configuración de Firebase:
-    // 1) Configuración de Firebase (tuya)
-const firebaseConfig = {
-  apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
-  authDomain: "subastacarhn-40554.firebaseapp.com",
-  projectId: "subastacarhn-40554",
-  storageBucket: "subastacarhn-40554.firebasestorage.app",
-  messagingSenderId: "536785797974",
-  appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
-  measurementId: "G-QM5N60K8C0"
-};
-
+    // 1) Configuración de Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+      authDomain: "subastacarhn-40554.firebaseapp.com",
+      projectId: "subastacarhn-40554",
+      storageBucket: "subastacarhn-40554.firebasestorage.app",
+      messagingSenderId: "536785797974",
+      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+      measurementId: "G-QM5N60K8C0"
+    };
     // 2) Inicializa Firebase
     firebase.initializeApp(firebaseConfig);
 
@@ -182,6 +180,7 @@ const firebaseConfig = {
     // Lógica de registro con Firebase Auth
     document.getElementById('registerForm').addEventListener('submit', async e => {
       e.preventDefault();
+      console.log('Llegó al submit'); // <-- verifica que funcione el listener
 
       const name  = document.getElementById('fullName').value.trim();
       const email = document.getElementById('email').value.trim();
@@ -189,19 +188,20 @@ const firebaseConfig = {
       const pass  = document.getElementById('password').value;
 
       try {
-        // Crear usuario
+        // 3) Crear usuario
         const cred = await firebase.auth()
           .createUserWithEmailAndPassword(email, pass);
 
-        // Guardar nombre en perfil
+        // 4) Guardar nombre en perfil
         await cred.user.updateProfile({ displayName: name });
 
-        // Enviar email de verificación
+        // 5) Enviar email de verificación
         await cred.user.sendEmailVerification();
 
         alert('✅ Cuenta creada. Revisa tu correo para confirmar tu cuenta.');
         window.location.href = 'login.html';
       } catch(err) {
+        console.error(err);
         if (err.code === 'auth/email-already-in-use') {
           alert('⚠️ Ese correo ya está registrado.');
         } else if (err.code === 'auth/invalid-email') {
