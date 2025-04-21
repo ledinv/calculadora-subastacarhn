@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inicio – SubastaCarHN</title>
+  <title>SubastaCarHN</title>
   <style>
     body {
       font-family: Helvetica, sans-serif;
@@ -11,28 +11,26 @@
       padding: 0;
       background: #f9f9f9;
     }
-
     header {
       background: linear-gradient(to right, #002f6c, #004aad);
       height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 15px;
       position: sticky;
       top: 0;
       z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
     }
-
     header a.brand {
       color: white;
       font-size: 22px;
       font-weight: bold;
       text-decoration: none;
-      margin: 0 auto;
     }
-
     .menu-icon {
+      position: absolute;
+      left: 15px;
       font-size: 20px;
       background: #ffc20e;
       color: #002f6c;
@@ -40,16 +38,15 @@
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
-
-    .saludo {
+    #saludoUsuario {
+      position: absolute;
+      right: 15px;
       color: #ffc20e;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: bold;
-      margin-left: auto;
     }
-
     #menu-links {
       display: none;
       list-style: none;
@@ -57,66 +54,50 @@
       margin: 10px 0 0;
       background: white;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       position: absolute;
       top: 70px;
       left: 15px;
       z-index: 1000;
     }
-
-    #menu-links li {
-      margin-bottom: 10px;
-    }
-
+    #menu-links li { margin-bottom: 10px; }
     #menu-links a {
       text-decoration: none;
       color: #002f6c;
       font-weight: bold;
     }
-
     .contenido {
       text-align: center;
-      padding: 40px 20px;
+      padding: 40px 10px;
     }
-
     .btn-principal {
       background-color: #ffc20e;
       color: #002f6c;
       font-weight: bold;
       border: none;
       border-radius: 8px;
-      padding: 12px 20px;
-      font-size: 16px;
+      padding: 10px 20px;
+      margin: 10px;
       cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      font-size: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       text-decoration: none;
+      display: inline-block;
     }
-
     .btn-principal:hover {
       background-color: #e6ac00;
     }
-
     footer {
       background: #002f6c;
       color: white;
       text-align: center;
-      padding: 15px 10px;
-      margin-top: 40px;
+      padding: 15px;
+      font-size: 14px;
     }
-
     footer a {
       color: #ffc20e;
       text-decoration: none;
-    }
-
-    @media (max-width: 768px) {
-      .saludo {
-        font-size: 12px;
-      }
-
-      header a.brand {
-        font-size: 18px;
-      }
+      margin: 0 10px;
     }
   </style>
 </head>
@@ -124,7 +105,7 @@
   <header>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
     <a href="index.html" class="brand">SUBASTACARHN</a>
-    <span class="saludo" id="saludoUsuario"></span>
+    <span id="saludoUsuario"></span>
   </header>
 
   <ul id="menu-links">
@@ -133,9 +114,8 @@
     <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
     <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
   </ul>
-
-  <div class="contenido" id="contenidoPrincipal" style="display:none;">
-    <a href="calculadora.html" class="btn-principal">Ir a la Calculadora</a>
+  <div class="contenido" id="contenidoIndex">
+    <!-- Aquí se mostrará dinámicamente según si está logueado o no -->
   </div>
 
   <footer>
@@ -152,7 +132,7 @@
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
-      storageBucket: "subastacarhn-40554.firebasestorage.app",
+      storageBucket: "subastacarhn-40554.appspot.com",
       messagingSenderId: "536785797974",
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
       measurementId: "G-QM5N60K8C0"
@@ -161,31 +141,38 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Mostrar u ocultar elementos según login
-    auth.onAuthStateChanged(user => {
-      const saludo = document.getElementById("saludoUsuario");
-      const contenido = document.getElementById("contenidoPrincipal");
-
-      if (user) {
-        let nombre = user.displayName || user.email.split("@")[0];
-        nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
-        saludo.innerHTML = `¡Hola, ${nombre}!`;
-        contenido.style.display = "block";
-      } else {
-        saludo.innerHTML = "";
-        contenido.innerHTML = `
-          <a href="login.html" class="btn-principal">Iniciar Sesión</a>
-          <br><br>
-          <a href="register.html" class="btn-principal">Registrarse</a>
-        `;
-        contenido.style.display = "block";
-      }
-    });
-
     function toggleMenu() {
       const m = document.getElementById("menu-links");
       m.style.display = m.style.display === "block" ? "none" : "block";
     }
+
+    function cerrarSesion() {
+      firebase.auth().signOut().then(() => {
+        window.location.href = "index.html";
+      }).catch(error => {
+        console.error("Error al cerrar sesión:", error);
+      });
+    }
+
+    auth.onAuthStateChanged(user => {
+      const saludo = document.getElementById("saludoUsuario");
+      const contenido = document.getElementById("contenidoIndex");
+
+      if (user) {
+        let nombre = user.displayName || user.email.split("@")[0];
+        nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+        saludo.innerHTML = `¡Hola, ${nombre}! <a href="#" onclick="cerrarSesion()" style="color:#ffc20e;">(Cerrar sesión)</a>`;
+        contenido.innerHTML = `
+          <a href="calculadora.html" class="btn-principal">Ir a la Calculadora</a>
+        `;
+      } else {
+        saludo.innerHTML = "";
+        contenido.innerHTML = `
+          <a href="login.html" class="btn-principal">Iniciar Sesión</a>
+          <a href="register.html" class="btn-principal">Registrarse</a>
+        `;
+      }
+    });
   </script>
 </body>
 </html>
