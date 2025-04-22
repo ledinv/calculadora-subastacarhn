@@ -12,6 +12,7 @@
   <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
   <meta name="theme-color" content="#002f6c">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
+
   <style>
     :root {
       --blue: #002f6c;
@@ -30,12 +31,14 @@
     }
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
+
     .container {
       width: 100%;
       max-width: var(--max-width);
       margin: 0 auto;
       padding: 0 1rem;
     }
+
     header {
       background: linear-gradient(to right, var(--blue), var(--blue2));
       position: sticky;
@@ -96,6 +99,7 @@
       .nav-links { display: flex; }
       .mobile-nav { display: none !important; }
     }
+
     main.layout {
       padding: 2rem 1rem;
     }
@@ -148,6 +152,7 @@
       margin-bottom: 0.75rem;
     }
     .styled-btn:hover { background: #e6ac00; }
+
     .success-msg {
       background: #d4edda;
       color: #155724;
@@ -157,19 +162,7 @@
       margin-top: 10px;
       text-align: center;
     }
-    .edit-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin: 10px 0;
-    }
-    .edit-title input {
-      flex: 1;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 5px;
-    }
+
     footer {
       background: var(--blue2);
       color: #fff;
@@ -221,10 +214,10 @@
         <button type="button" class="styled-btn" onclick="logout()">Cerrar sesión</button>
         <div id="successMsg" class="success-msg" style="display:none;">✅ Tus datos han sido actualizados con éxito.</div>
       </form>
-
       <hr style="margin: 2rem 0; border: none; border-top: 2px dashed #ccc;" />
-      <h2 style="text-align:center; color:#002f6c;">Historial de Cálculos</h2>
-      <div id="historialContainer" style="margin-top: 1rem;"></div>
+<h2 style="text-align:center; color:#002f6c;">Historial de Cálculos</h2>
+<div id="historialContainer" style="margin-top: 1rem;"></div>
+
     </div>
   </main>
 
@@ -238,58 +231,124 @@
       </div>
     </div>
   </footer>
-<script>
-  let historialAbiertoId = null;
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+      authDomain: "subastacarhn-40554.firebaseapp.com",
+      projectId: "subastacarhn-40554",
+      storageBucket: "subastacarhn-40554.appspot.com",
+      messagingSenderId: "536785797974",
+      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+      measurementId: "G-QM5N60K8C0"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-  async function cargarHistorial() {
-    const user = firebase.auth().currentUser;
-    if (!user) return;
-
-    const historialRef = db.collection("clients").doc(user.uid).collection("historial").orderBy("fecha", "desc").limit(100);
-    const snapshot = await historialRef.get();
-    const container = document.getElementById("historialContainer");
-
-    if (snapshot.empty) {
-      container.innerHTML = "<p style='text-align:center;'>Aún no hay cálculos guardados.</p>";
-      return;
-    }
-
-    let html = "";
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      const id = doc.id;
-      const nombre = data.nombre || "Sin título";
-      const total = data.total || "-";
-      const fecha = data.fecha?.toDate().toLocaleString("es-HN") || "Fecha desconocida";
-
-      html += `
-        <div id="card-${id}" style="background:#f0f8ff; padding:1rem; border-radius:10px; margin-bottom:1rem; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-          <input value="${nombre}" onchange="renombrarHistorial('${id}', this.value)" style="font-weight:bold; font-size:16px; border:none; background:transparent; width:100%; margin-bottom:5px;" />
-          <small>${fecha}</small><br>
-          <strong style="color:#004aad;">${total}</strong><br><br>
-          <button class="styled-btn" onclick="toggleDetalles('${id}')">Ver/Ocultar detalles</button>
-          <button class="styled-btn" onclick="descargarHistorialPDF('${id}')">Descargar PDF</button>
-          <button class="styled-btn" onclick="eliminarHistorial('${id}')">🗑️ Eliminar</button>
-          <div id="detalles-${id}" style="display:none; margin-top:1rem;"></div>
-        </div>
-      `;
+    auth.onAuthStateChanged(async user => {
+      if (!user) return window.location.href = "login.html";
+      const docRef = db.collection('clients').doc(user.uid);
+      const docSnap = await docRef.get();
+      if (docSnap.exists) {
+        const data = docSnap.data();
+        document.getElementById('name').value = data.fullName || "";
+        document.getElementById('email').value = data.email || user.email;
+        document.getElementById('phone').value = data.phone || "";
+        document.getElementById('address').value = data.address || "";
+        document.getElementById('dni').value = data.dni || "";
+        document.getElementById('birthYear').value = data.birthYear || "";
+      } else {
+        alert("⚠️ No se encontró el perfil.");
+      }
     });
 
-    container.innerHTML = html;
-  }
+    document.getElementById('profileForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const user = auth.currentUser;
+      if (!user) return;
+      try {
+        await db.collection('clients').doc(user.uid).update({
+          fullName: document.getElementById('name').value.trim(),
+          address: document.getElementById('address').value.trim(),
+          dni: document.getElementById('dni').value.trim(),
+          birthYear: document.getElementById('birthYear').value.trim()
+        });
+        document.getElementById('successMsg').style.display = 'block';
+      } catch (error) {
+        console.error("Error al guardar:", error);
+        alert("❌ Error al guardar los cambios.");
+      }
+    });
 
-  async function toggleDetalles(id) {
-    if (historialAbiertoId && historialAbiertoId !== id) {
-      document.getElementById(`detalles-${historialAbiertoId}`).style.display = "none";
+    function logout() {
+      auth.signOut().then(() => window.location.href = "login.html");
     }
 
-    const detallesDiv = document.getElementById(`detalles-${id}`);
-    const yaVisible = detallesDiv.style.display === "block";
-    detallesDiv.innerHTML = "";
-    detallesDiv.style.display = yaVisible ? "none" : "block";
+    function sendPasswordReset() {
+      const email = document.getElementById('email').value;
+      auth.sendPasswordResetEmail(email)
+        .then(() => alert('📧 Se ha enviado un enlace de restablecimiento a tu correo.'))
+        .catch(err => alert('❌ No se pudo enviar el enlace.'));
+    }
 
-    if (!yaVisible) {
-      historialAbiertoId = id;
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu-links');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+        firebase.auth().onAuthStateChanged(user => {
+      const desktop = document.getElementById('userGreeting');
+      const mobile = document.getElementById('mobileGreeting');
+      if (user) {
+        const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
+        desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
+        mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
+        cargarHistorial(); // 👈 Aseguramos que también cargue el historial
+      } else {
+        desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+        mobile.innerHTML  = desktop.innerHTML;
+      }
+    });
+
+    async function cargarHistorial() {
+      const user = firebase.auth().currentUser;
+      if (!user) return;
+      const historialRef = db.collection("clients").doc(user.uid).collection("historial").orderBy("fecha", "desc").limit(100);
+      const snapshot = await historialRef.get();
+
+      const container = document.getElementById("historialContainer");
+      if (snapshot.empty) {
+        container.innerHTML = "<p style='text-align:center;'>Aún no hay cálculos guardados.</p>";
+        return;
+      }
+
+      let html = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const id = doc.id;
+        const nombre = data.nombre || "Sin título";
+        const total = data.total || "-";
+        const fecha = data.fecha?.toDate().toLocaleString("es-HN") || "Fecha desconocida";
+
+        html += `
+          <div style="background:#f0f8ff; padding:1rem; border-radius:10px; margin-bottom:1rem; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+            <strong>${nombre}</strong><br>
+            <small>${fecha}</small><br>
+            <strong style="color:#004aad;">${total}</strong>
+            <br><br>
+            <button class="styled-btn" onclick="verDetallesHistorial('${id}')">Ver detalles</button>
+            <button class="styled-btn" onclick="descargarHistorialPDF('${id}')">Descargar PDF</button>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    async function verDetallesHistorial(id) {
       const user = firebase.auth().currentUser;
       const ref = db.collection("clients").doc(user.uid).collection("historial").doc(id);
       const doc = await ref.get();
@@ -306,79 +365,49 @@
             </tr>`).join('')}
         </table>
       `;
-      detallesDiv.innerHTML = tabla;
-    } else {
-      historialAbiertoId = null;
+      const div = document.createElement("div");
+      div.innerHTML = tabla;
+      document.getElementById("historialContainer").appendChild(div);
     }
-  }
 
-  async function renombrarHistorial(id, nuevoNombre) {
-    const user = firebase.auth().currentUser;
-    if (!user) return;
-    try {
-      await db.collection("clients").doc(user.uid).collection("historial").doc(id).update({ nombre: nuevoNombre });
-    } catch (e) {
-      console.error("Error al renombrar historial:", e);
-      alert("❌ No se pudo cambiar el nombre.");
+    async function descargarHistorialPDF(id) {
+      const user = firebase.auth().currentUser;
+      const ref = db.collection("clients").doc(user.uid).collection("historial").doc(id);
+      const doc = await ref.get();
+      if (!doc.exists) return alert("❌ No se encontró este cálculo.");
+      const data = doc.data();
+
+      const tabla = `
+        <h2 style="text-align:center;">${data.nombre}</h2>
+        <p><strong>Total Final:</strong> ${data.total}</p>
+        <table class="tabla-detalles" style="margin-top:1rem;">
+          <tr><th>Concepto</th><th>Valor</th></tr>
+          ${data.detalles.map(item => `
+            <tr>
+              <td>${item.titulo}</td>
+              <td>${item.valor}</td>
+            </tr>`).join('')}
+        </table>
+      `;
+
+      const w = window.open('', '_blank', 'width=800,height=600');
+      w.document.open();
+      w.document.write(`
+        <html><head><title>Descargar Historial</title>
+        <style>
+          body { font-family: Helvetica; margin: 20px; }
+          .tabla-detalles { border-collapse: collapse; width: 100%; max-width: 600px; margin: auto; }
+          .tabla-detalles th, .tabla-detalles td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+          }
+          .tabla-detalles th { background: #f2f2f2; }
+        </style>
+        </head><body>${tabla}</body></html>
+      `);
+      w.document.close();
+      setTimeout(() => w.print(), 500);
     }
-  }
-
-  async function eliminarHistorial(id) {
-    if (!confirm("¿Seguro que deseas eliminar este cálculo guardado?")) return;
-    const user = firebase.auth().currentUser;
-    if (!user) return;
-    try {
-      await db.collection("clients").doc(user.uid).collection("historial").doc(id).delete();
-      document.getElementById(`card-${id}`).remove();
-    } catch (e) {
-      console.error("Error al eliminar:", e);
-      alert("❌ No se pudo eliminar el historial.");
-    }
-  }
-
-  async function descargarHistorialPDF(id) {
-    const user = firebase.auth().currentUser;
-    const ref = db.collection("clients").doc(user.uid).collection("historial").doc(id);
-    const doc = await ref.get();
-    if (!doc.exists) return alert("❌ No se encontró este cálculo.");
-    const data = doc.data();
-
-    const tabla = `
-      <h2 style="text-align:center;">${data.nombre}</h2>
-      <p><strong>Total Final:</strong> ${data.total}</p>
-      <table class="tabla-detalles" style="margin-top:1rem;">
-        <tr><th>Concepto</th><th>Valor</th></tr>
-        ${data.detalles.map(item => `
-          <tr>
-            <td>${item.titulo}</td>
-            <td>${item.valor}</td>
-          </tr>`).join('')}
-      </table>
-    `;
-
-    const w = window.open('', '_blank', 'width=800,height=600');
-    w.document.open();
-    w.document.write(`
-      <html><head><title>Descargar Historial</title>
-      <style>
-        body { font-family: Helvetica; margin: 20px; }
-        .tabla-detalles { border-collapse: collapse; width: 100%; max-width: 600px; margin: auto; }
-        .tabla-detalles th, .tabla-detalles td {
-          padding: 8px 12px;
-          border: 1px solid #ddd;
-        }
-        .tabla-detalles th { background: #f2f2f2; }
-      </style>
-      </head><body>${tabla}</body></html>
-    `);
-    w.document.close();
-    setTimeout(() => w.print(), 500);
-  }
-
-  // Cargar historial automáticamente al iniciar sesión
-  document.addEventListener("DOMContentLoaded", () => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) cargarHistorial();
-    });
-  });
-</script>
+  </script>
+</body>
+</html>
