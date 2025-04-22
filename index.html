@@ -3,50 +3,409 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mi Perfil – SubastaCarHN</title>
+  <title>SUBASTACARHN</title>
   <link rel="manifest" href="Img/site.webmanifest">
-  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
+
+  <link rel="apple-touch-icon"
+        sizes="180x180"
+        href="Img/apple-touch-icon.png">
+
+  <link rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="Img/favicon-32x32.png">
+  <link rel="icon"
+        type="image/png"
+        sizes="16x16"
+        href="Img/favicon-16x16.png">
+
+  <link rel="icon"
+        type="image/png"
+        sizes="192x192"
+        href="Img/android-chrome-192x192.png">
+  <link rel="icon"
+        type="image/png"
+        sizes="512x512"
+        href="Img/android-chrome-512x512.png">
+
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="Img/favicon-32x32.png">
+
   <meta name="theme-color" content="#002f6c">
+  <!-- Google Fonts Montserrat -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="estilos.css">
+
   <style>
-    .readonly {
-      background: #e4e4e4;
-      color: #555;
+    :root {
+      --blue: #002f6c;
+      --blue2: #004aad;
+      --yellow: #ffc20e;
+      --dark: #333;
+      --light: #f9f9f9;
+      --max-width: 1200px;
     }
-    small.note {
-      font-size: 12px;
-      color: #666;
-      display: block;
-      margin-top: 5px;
+
+    /* Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    .success-msg {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-      padding: 10px;
+    body {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--dark);
+      background: var(--light);
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      background: linear-gradient(to right, var(--blue), var(--blue2));
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+    }
+    .brand {
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .nav-links {
+      display: none;
+      gap: 1rem;
+    }
+    .nav-links a,
+    .nav-links span {
+      color: var(--yellow);
+      font-size: 0.9375rem;
+      font-weight: 600;
+    }
+    .menu-icon {
+      background: var(--yellow);
+      color: var(--blue);
+      border: none;
+      font-size: 1rem;
+      line-height: 1;
+      padding: 0.5rem;
       border-radius: 6px;
-      margin-top: 10px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    /* Mobile dropdown */
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background: #fff;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 998;
+    }
+    .mobile-nav li { margin-bottom: 0.75rem; }
+    .mobile-nav a,
+    .mobile-nav span {
+      display: block;
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 0.9375rem;
+    }
+    @media (min-width: 768px) {
+      .menu-icon { display: none; }
+      .nav-links { display: flex; }
+      .mobile-nav { display: none !important; }
+    }
+
+    /* ===== BOTÓN CALCULADORA (logueado) ===== */
+    .center-btn {
+      display: none;
+      justify-content: center;
+      margin: 2rem auto;
+      width: 100%;
+      max-width: 300px;
+      padding: 0 1rem;
+    }
+    .styled-btn {
+      display: inline-block;
+      width: 100%;
       text-align: center;
+      background: var(--yellow);
+      color: var(--blue);
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      padding: 0.875rem;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      transition: background-color 0.3s;
+    }
+    .styled-btn:hover { background: #e6ac00; }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: url('Img/hero-bg.jpg') center/cover no-repeat;
+      height: 70vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,47,108,0.7);
+    }
+    .hero-content {
+      position: relative;
+      color: #fff;
+      max-width: 600px;
+      padding: 0 1rem;
+    }
+    .hero-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .hero-content p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    /* ===== BENEFICIOS ===== */
+    .benefits {
+      padding: 3rem 1rem;
+    }
+    .benefits .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+    .benefit-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: var(--blue);
+    }
+    .benefit-title { font-weight: 600; margin-bottom: 0.5rem; }
+
+    /* ===== CÓMO FUNCIONA ===== */
+    .how-it-works {
+      padding: 3rem 1rem;
+    }
+    .how-it-works h2 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .step {
+      flex: 1 1 200px;
+      text-align: center;
+    }
+    .step-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--yellow);
+      margin-bottom: 0.5rem;
+    }
+    .step-title { font-weight: 600; margin-bottom: 0.5rem; }
+
+    /* ===== POR QUÉ ELEGIRNOS ===== */
+    .why-choose {
+      padding: 3rem 1rem;
+      background: #fff;
+    }
+    .why-choose h2 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .choose-list {
+      display: inline-block;
+      text-align: left;
+    }
+    .choose-list li {
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .choose-list li::before {
+      content: '✔️';
+      margin-right: 0.5rem;
+      color: var(--yellow);
+    }
+
+    /* ===== TESTIMONIOS ===== */
+    .testimonials {
+      padding: 3rem 1rem;
+    }
+    .testimonials h2 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .testimonial {
+      margin-bottom: 2rem;
+      font-style: italic;
+      text-align: center;
+    }
+    .testimonial strong {
+      display: block;
+      margin-top: 0.5rem;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* ===== CTA FINAL ===== */
+    .cta-final {
+      background: var(--blue);
+      color: #fff;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    .cta-final h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .cta-final .styled-btn {
+      background: var(--yellow);
+      color: var(--blue);
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--blue2);
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+    }
+    footer a { color: var(--yellow); margin: 0 0.5rem; }
+
+    /* Responsive tweaks */
+    @media (min-width: 768px) {
+      .hero-content h1 { font-size: 3rem; }
+      .hero-content p  { font-size: 1.25rem; }
+      .steps { gap: 4rem; }
+    }
+    @media (max-width: 600px) {
+      .steps { flex-direction: column; }
+    }
+
+    /* ===== Sección de Cursos ===== */
+    .courses {
+      padding: 3rem 1rem;
+      background: #fff;
+    }
+    .courses h2 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+    }
+    .courses-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: center;
+      justify-content: center;
+    }
+    .video-wrapper,
+    .courses-info {
+      flex: 1 1 300px;
+      max-width: 500px;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 */
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+    }
+    .video-container video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .play-button {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.8);
+      border: none;
+      border-radius: 50%;
+      width: 60px; height: 60px;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .courses-info p {
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .courses-info .styled-btn {
+      max-width: 200px;
+      display: inline-block;
     }
   </style>
 </head>
 <body>
+
+  <!-- HEADER -->
   <header>
     <div class="container header-inner">
       <a href="index.html" class="brand">SubastaCarHN</a>
+
       <nav class="nav-links" aria-label="Menú principal">
         <a href="calculadora.html">Calculadora</a>
         <a href="#cursos" id="linkCursos">Cursos</a>
         <span id="userGreeting"></span>
       </nav>
-      <button class="menu-icon" onclick="toggleMenu()">☰</button>
+
+      <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
     </div>
-    <ul id="mobile-menu-links" class="mobile-nav">
+
+    <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
       <li><a href="calculadora.html">Calculadora</a></li>
       <li><a href="#cursos" id="linkCursosMobile">Cursos</a></li>
       <li><span id="mobileGreeting"></span></li>
@@ -54,38 +413,137 @@
     </ul>
   </header>
 
-  <main class="layout">
-    <div class="contenido-central">
-      <h1 style="text-align:center; color:#002f6c;">Mi Perfil</h1>
-      <form id="profileForm">
-        <label for="name">Nombre completo</label>
-        <input type="text" id="name" required />
-
-        <label for="email">Correo electrónico</label>
-        <input type="email" id="email" class="readonly" readonly />
-
-        <label for="phone">Teléfono</label>
-        <input type="tel" id="phone" class="readonly" readonly />
-
-        <label for="address">Dirección</label>
-        <input type="text" id="address" />
-
-        <label for="dni">DNI</label>
-        <input type="text" id="dni" />
-
-        <label for="birthYear">Año de nacimiento</label>
-        <input type="number" id="birthYear" min="1900" max="2100" />
-
-        <small class="note">El DNI y el año de nacimiento te ayudarán a recuperar tu cuenta si pierdes el acceso.</small>
-
-        <button type="submit" class="styled-btn">Guardar cambios</button>
-        <button type="button" class="styled-btn" onclick="sendPasswordReset()">Cambiar contraseña</button>
-        <button type="button" class="styled-btn" onclick="logout()">Cerrar sesión</button>
-        <div id="successMsg" class="success-msg" style="display:none;">✅ Tus datos han sido actualizados con éxito.</div>
-      </form>
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>Calcula tus costos de importación en segundos</h1>
+      <p>Sin suscripciones, sin sorpresas, con total transparencia.</p>
+      <div class="hero-ctas">
+        <a href="calculadora.html" class="styled-btn">Empieza a calcular</a>
+        <a href="cursos.html" class="styled-btn">Ver cursos</a>
+      </div>
     </div>
-  </main>
+  </section>
 
+  <!-- BENEFICIOS -->
+  <section class="benefits">
+    <div class="container">
+      <div>
+        <div class="benefit-icon">🔄</div>
+        <div class="benefit-title">Actualizado al momento</div>
+        <div>Tipo de cambio real‑time y tarifas oficiales.</div>
+      </div>
+      <div>
+        <div class="benefit-icon">📊</div>
+        <div class="benefit-title">Cálculos 100 % transparentes</div>
+        <div>Desglose detallado de cada costo.</div>
+      </div>
+      <div>
+        <div class="benefit-icon">🚚</div>
+        <div class="benefit-title">Todo incluido</div>
+        <div>Desde la subasta en Copart/IAAI hasta llegada a tu puerta.</div>
+      </div>
+      <div>
+        <div class="benefit-icon">🛡️</div>
+        <div class="benefit-title">Sin sorpresas</div>
+        <div>Ninguno de nuestros costos se queda oculto.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section class="how-it-works" id="how">
+    <div class="container">
+      <h2>En solo 3 pasos</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-title">Ingresa tus datos</div>
+          <div>Monto de oferta, VIN y transporte.</div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-title">Presiona “Calcular”</div>
+          <div>Obtén al instante los aranceles (DAI, ISC, ISV) y tarifas.</div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-title">Descarga o comparte</div>
+          <div>Guarda tu cotización en PDF o envíala por WhatsApp.</div>
+        </div>
+      </div>
+      <div style="margin-top:2rem; text-align:center;">
+        <a href="calculadora.html" class="styled-btn">Ver demo rápida</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- POR QUÉ ELEGIRNOS -->
+  <section class="why-choose" id="about">
+    <div class="container">
+      <h2>Confianza y agilidad para tu importación</h2>
+      <ul class="choose-list">
+        <li>Experiencia comprobada: +2,000 clientes satisfechos.</li>
+        <li>Soporte gratuito: Nuestro equipo te asesora paso a paso.</li>
+        <li>Precio fijo de comisión: Solo 5,000 LPS sobre el precio del vehículo.</li>
+        <li>100 % online: Desde tu celular o computador, donde quieras.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="testimonials">
+    <div class="container">
+      <h2>Historias de éxito</h2>
+      <div class="testimonial">
+        “Gracias a SubastaCarHN importé mi Tacoma 2012 por 150 Mil LPS, ¡y ahorré más de 40 Mil LPS!”  
+        <strong>Carlos M., Tegucigalpa</strong>
+      </div>
+      <div class="testimonial">
+        “Quería comenzar mi negocio pero siempre ganaban más los importadores que yo, ahora obtengo ganancias verdaderas!”  
+        <strong>Mario Z., Tegucigalpa</strong>
+      </div>
+      <div class="testimonial">
+        “Tengo Autolote y me sale mejor trabajar con ellos que lidiar con problemas de licencia.”  
+        <strong>Roberto S., San Pedro Sula</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-final">
+    <div class="container">
+      <h2>¿Listo para tu próxima importación?</h2>
+      <a href="calculadora.html" class="styled-btn">Calcular mi cotización</a>
+    </div>
+  </section>
+
+  <!-- CURSOS -->
+  <section class="courses" id="cursos">
+    <div class="container">
+      <h2>Formación y Cursos Especializados</h2>
+      <div class="courses-content">
+        <!-- Video lazy-load -->
+        <div class="video-wrapper">
+          <div id="videoCursos" class="video-container"
+               data-video-src="videos/VIDEO-2025-04-21-14-26-34.mp4"
+               style="background-image:url('Img/course-poster.jpg')">
+            <button class="play-button" aria-label="Reproducir video de cursos">▶️</button>
+          </div>
+        </div>
+        <!-- Info & CTA -->
+        <div class="courses-info">
+          <p>
+            Aprende todo el proceso de importación de vehículos: selección en subastas,  
+            cálculos de aranceles y logística. Imparto cursos presenciales y online adaptados a tu nivel.
+          </p>
+          <a href="cursos.html" class="styled-btn">Más sobre mis cursos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
   <footer>
     <div class="container">
       <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
@@ -97,81 +555,83 @@
     </div>
   </footer>
 
+  <!-- Firebase + Autenticación y Menú -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script>
+    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
-      storageBucket: "subastacarhn-40554.firebasestorage.app",
+      storageBucket: "subastacarhn-40554.appspot.com",
       messagingSenderId: "536785797974",
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
       measurementId: "G-QM5N60K8C0"
     };
     firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
 
-    auth.onAuthStateChanged(async user => {
-      if (!user) {
-        window.location.href = "login.html";
-        return;
-      }
-      const docRef = db.collection('clients').doc(user.uid);
-      const docSnap = await docRef.get();
-      if (docSnap.exists) {
-        const data = docSnap.data();
-        document.getElementById('name').value = data.fullName || "";
-        document.getElementById('email').value = data.email || user.email;
-        document.getElementById('phone').value = data.phone || "";
-        document.getElementById('address').value = data.address || "";
-        document.getElementById('dni').value = data.dni || "";
-        document.getElementById('birthYear').value = data.birthYear || "";
-      } else {
-        alert("⚠️ No se encontró el perfil.");
-      }
-    });
-
-    document.getElementById('profileForm').addEventListener('submit', async e => {
-      e.preventDefault();
-      const user = auth.currentUser;
-      if (!user) return;
-      try {
-        await db.collection('clients').doc(user.uid).update({
-          fullName: document.getElementById('name').value.trim(),
-          address: document.getElementById('address').value.trim(),
-          dni: document.getElementById('dni').value.trim(),
-          birthYear: document.getElementById('birthYear').value.trim()
-        });
-        document.getElementById('successMsg').style.display = 'block';
-      } catch (error) {
-        console.error("Error al guardar:", error);
-        alert("❌ Error al guardar los cambios.");
-      }
-    });
-
-    function logout() {
-      auth.signOut().then(() => {
-        window.location.href = "login.html";
-      });
-    }
-
-    function sendPasswordReset() {
-      const email = document.getElementById('email').value;
-      firebase.auth().sendPasswordResetEmail(email)
-        .then(() => alert('📧 Se ha enviado un enlace de restablecimiento a tu correo.'))
-        .catch(err => {
-          console.error(err);
-          alert('❌ No se pudo enviar el enlace.');
-        });
-    }
-
+    // Toggle móvil
     function toggleMenu() {
       const menu = document.getElementById('mobile-menu-links');
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
+
+    // Autenticación y saludos
+    firebase.auth().onAuthStateChanged(user => {
+  const desktop = document.getElementById('userGreeting');
+  const mobile  = document.getElementById('mobileGreeting');
+  if (user) {
+    const name = (user.displayName || user.email.split('@')[0])
+                   .replace(/^./, c => c.toUpperCase());
+    // Saludo convertido en enlace a profile.html
+    desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
+    mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
+  } else {
+    desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+    mobile.innerHTML  = desktop.innerHTML;
+  }
+});
+
+    function logout() {
+      firebase.auth().signOut().then(() => location.reload());
+    }
   </script>
+
+  <script>
+    // Lazy‑load video play
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('videoCursos');
+      const btn       = container.querySelector('.play-button');
+      btn.addEventListener('click', () => {
+        const vid = document.createElement('video');
+        vid.controls   = true;
+        vid.autoplay   = true;
+        vid.playsinline = true;
+        vid.src        = container.dataset.videoSrc;
+        container.innerHTML = '';
+        container.appendChild(vid);
+      });
+    });
+
+    // Scroll + auto-play on header link click
+    function scrollYPlay() {
+      const vc = document.getElementById('videoCursos');
+      vc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => {
+        const btn = vc.querySelector('.play-button');
+        if (btn) btn.click();
+      }, 600);
+    }
+    document.getElementById('linkCursos')
+      .addEventListener('click', e => { e.preventDefault(); scrollYPlay(); });
+    document.getElementById('linkCursosMobile')
+      .addEventListener('click', e => {
+        e.preventDefault();
+        document.getElementById('mobile-menu-links').style.display = 'none';
+        scrollYPlay();
+      });
+  </script>
+
 </body>
 </html>
