@@ -3,10 +3,86 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Perfil de Usuario</title>
+  <title>SubastaCarHN – Perfil de Usuario</title>
+  <link rel="manifest" href="Img/site.webmanifest">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="Img/favicon-32x32.png">
+  <meta name="theme-color" content="#002f6c">
+  <!-- Google Fonts Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --blue: #002f6c;
+      --blue2: #004aad;
+      --yellow: #ffc20e;
+      --dark: #333;
+      --light: #f9f9f9;
+      --max-width: 1200px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+    body { font-family:'Montserrat',sans-serif; color:var(--dark); background:var(--light); line-height:1.6; }
+    a { text-decoration:none; color: inherit; }
+    ul { list-style:none; }
+    .container { width:100%; max-width:var(--max-width); margin:0 auto; padding:1rem; }
+
+    /* Header */
+    header { background: linear-gradient(to right, var(--blue), var(--blue2)); position:sticky; top:0; z-index:999; }
+    .header-inner { display:flex; align-items:center; justify-content:space-between; padding:.5rem 1rem; }
+    .brand { color:#fff; font-size:1.25rem; font-weight:700; }
+    .nav-links { display:flex; gap:1rem; }
+    .nav-links a, .nav-links span { color:var(--yellow); font-weight:600; }
+    .menu-icon { display:none; }
+    @media (max-width:768px){
+      .nav-links { display:none; }
+      .menu-icon { display:block; background:var(--yellow); color:var(--blue); border:none; padding:.5rem; border-radius:6px; cursor:pointer; }
+      .mobile-nav { display:none; flex-direction:column; background:#fff; position:absolute; top:100%; left:0; right:0; padding:1rem; box-shadow:0 2px 8px rgba(0,0,0,0.2); }
+      .mobile-nav li { margin-bottom:.75rem; }
+      .mobile-nav a, .mobile-nav span { color:var(--blue); font-weight:700; }
+    }
+
+    /* Formulario Perfil */
+    #profile-container { background:#fff; padding:2rem; margin:2rem auto; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); max-width:600px; }
+    #profile-container h1 { margin-bottom:1.5rem; font-size:1.8rem; color:var(--blue); }
+    #profile-container label { display:block; margin-top:1rem; font-weight:600; }
+    #profile-container input { width:100%; padding:.5rem; margin-top:.5rem; border:1px solid #ccc; border-radius:4px; }
+    #profile-container button { margin-top:1.5rem; background:var(--yellow); color:var(--blue); padding:.75rem 1.5rem; border:none; border-radius:6px; font-weight:700; cursor:pointer; }
+    #profile-container button:hover { background:#e6ac00; }
+
+    /* Footer */
+    footer { background:var(--blue2); color:#fff; text-align:center; padding:1rem; margin-top:2rem; }
+    footer a { color:var(--yellow); margin:0 .5rem; }
+  </style>
 </head>
 <body>
-  <div id="profile-container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner container">
+      <a href="index.html" class="brand">SubastaCarHN</a>
+      <nav class="nav-links">
+        <a href="calculadora.html">Calculadora</a>
+        <a href="cursos.html">Cursos</a>
+        <span id="userGreeting"></span>
+      </nav>
+      <button class="menu-icon" onclick="toggleMenu()">☰</button>
+    </div>
+    <ul id="mobile-menu-links" class="mobile-nav">
+      <li><a href="calculadora.html">Calculadora</a></li>
+      <li><a href="cursos.html">Cursos</a></li>
+      <li><span id="mobileGreeting"></span></li>
+      <li><a href="login.html">Iniciar Sesión</a></li>
+    </ul>
+  </header>
+
+  <!-- PERFIL -->
+  <div id="profile-container" class="container">
     <h1>Perfil de Usuario</h1>
 
     <form id="profile-form">
@@ -22,24 +98,34 @@
       <button type="submit">Actualizar Perfil</button>
     </form>
 
-    <h2>Cambiar Contraseña</h2>
+    <h2 style="margin-top:2rem; color:var(--blue);">Cambiar Contraseña</h2>
     <form id="password-form">
       <label for="newPassword">Nueva Contraseña:</label>
       <input type="password" id="newPassword" name="newPassword" required />
       <button type="submit">Cambiar Contraseña</button>
     </form>
 
-    <h2>Historial de Cálculos</h2>
+    <h2 style="margin-top:2rem; color:var(--blue);">Historial de Cálculos</h2>
     <ul id="calculations-list"></ul>
   </div>
 
-  <!-- Firebase SDKs -->
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      SubastaCarHN — Importaciones claras, seguras y al mejor precio  
+      <div style="margin-top:.5rem;">
+        <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
+        <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
+        <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase + Lógica de Perfil -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-
   <script>
-    // 1) Configuración real (la misma que en tu index.html)
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -53,72 +139,74 @@
     const auth = firebase.auth();
     const db   = firebase.firestore();
 
-    // 2) Forzar persistencia local
-    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-      .then(() => console.log('Persistencia: LOCAL'))
-      .catch(err => console.error('Error persistencia:', err));
+    // Mostrar menú móvil
+    function toggleMenu() {
+      const m = document.getElementById('mobile-menu-links');
+      m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+    }
 
-    // 3) Escuchar cambios de estado
+    // Saludo en el header
     auth.onAuthStateChanged(user => {
-      console.log('onAuthStateChanged → user =', user);
-      if (!user) {
-        console.warn('No hay usuario activo, redirigiendo a login.html');
-        window.location.href = 'login.html';
-        return;
-      }
+      const desktop = document.getElementById('userGreeting');
+      const mobile  = document.getElementById('mobileGreeting');
+      if (user) {
+        const name = (user.displayName || user.email.split('@')[0])
+                       .replace(/^./, c => c.toUpperCase());
+        desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> | <a href="#" onclick="logout()">Cerrar sesión</a>`;
+        mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> | <a href="#" onclick="logout()">Salir</a>`;
 
-      console.log('Usuario detectado, uid =', user.uid);
-      const uid = user.uid;
-      const userDocRef = db.collection('users').doc(uid);
-
-      // 4) Cargar perfil
-      userDocRef.get()
-        .then(doc => {
-          console.log('doc.exists?', doc.exists);
+        // Cargar datos de perfil
+        const uid = user.uid;
+        const userRef = db.collection('users').doc(uid);
+        userRef.get().then(doc => {
           if (doc.exists) {
             const data = doc.data();
             document.getElementById('displayName').value = data.displayName || '';
             document.getElementById('email').value       = user.email;
             document.getElementById('phone').value       = data.phone || '';
           }
-        })
-        .catch(err => console.error('Error cargando perfil:', err));
-
-      // 5) Formularios
-      document.getElementById('profile-form').addEventListener('submit', e => {
-        e.preventDefault();
-        const displayName = document.getElementById('displayName').value;
-        const phone       = document.getElementById('phone').value;
-
-        user.updateProfile({ displayName })
-          .then(() => userDocRef.set({ displayName, phone }, { merge: true }))
-          .then(() => alert('Perfil actualizado correctamente.'))
-          .catch(error => alert('Error al actualizar el perfil: ' + error.message));
-      });
-
-      document.getElementById('password-form').addEventListener('submit', e => {
-        e.preventDefault();
-        const newPassword = document.getElementById('newPassword').value;
-
-        user.updatePassword(newPassword)
-          .then(() => alert('Contraseña actualizada correctamente.'))
-          .catch(error => alert('Error al cambiar la contraseña: ' + error.message));
-      });
-
-      // 6) Historial de cálculos
-      const calculationsList = document.getElementById('calculations-list');
-      userDocRef.collection('calculations')
-        .orderBy('timestamp', 'desc')
-        .onSnapshot(snapshot => {
-          calculationsList.innerHTML = '';
-          snapshot.forEach(doc => {
-            const calc = doc.data();
-            const li   = document.createElement('li');
-            li.textContent = `${calc.name} - ${new Date(calc.timestamp.toDate()).toLocaleString()}`;
-            calculationsList.appendChild(li);
-          });
         });
+
+        // Historial
+        const list = document.getElementById('calculations-list');
+        userRef.collection('calculations')
+          .orderBy('timestamp','desc')
+          .onSnapshot(snap => {
+            list.innerHTML = '';
+            snap.forEach(d => {
+              const c = d.data();
+              const li = document.createElement('li');
+              li.textContent = `${c.name} — ${new Date(c.timestamp.toDate()).toLocaleString()}`;
+              list.appendChild(li);
+            });
+          });
+
+        // Formularios
+        document.getElementById('profile-form').addEventListener('submit', e => {
+          e.preventDefault();
+          const dn = document.getElementById('displayName').value;
+          const ph = document.getElementById('phone').value;
+          user.updateProfile({displayName: dn})
+            .then(() => userRef.set({displayName: dn, phone: ph},{merge:true}))
+            .then(() => alert('Perfil actualizado.'))
+            .catch(err => alert(err.message));
+        });
+        document.getElementById('password-form').addEventListener('submit', e => {
+          e.preventDefault();
+          const np = document.getElementById('newPassword').value;
+          user.updatePassword(np)
+            .then(() => alert('Contraseña actualizada.'))
+            .catch(err => alert(err.message));
+        });
+      } else {
+        // Si no hay sesión activa
+        window.location.href = 'login.html';
+      }
     });
+
+    function logout() {
+      auth.signOut().then(() => location.href = 'login.html');
+    }
   </script>
 </body>
 </html>
