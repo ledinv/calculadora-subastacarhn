@@ -579,21 +579,31 @@
 
     // Autenticación y saludos
     firebase.auth().onAuthStateChanged(user => {
-      const desktop = document.getElementById('userGreeting');
-      const mobile  = document.getElementById('mobileGreeting');
-      const btnCont = document.getElementById('calculadoraBtnContainer');
-      if (user) {
-        const name = (user.displayName || user.email.split('@')[0])
-                       .replace(/^./, c => c.toUpperCase());
-        desktop.innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Cerrar sesión</a>`;
-        mobile.innerHTML  = `Hola, ${name} | <a href="#" onclick="logout()">Salir</a>`;
-        btnCont.style.display = 'flex';
-      } else {
-        desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
-        mobile.innerHTML  = desktop.innerHTML;
-        btnCont.style.display = 'none';
-      }
-    });
+  const desktop = document.getElementById('userGreeting');
+  const mobile  = document.getElementById('mobileGreeting');
+  const btnCont = document.getElementById('calculadoraBtnContainer');
+  if (user) {
+    const name = (user.displayName || user.email.split('@')[0])
+                   .replace(/^./, c => c.toUpperCase());
+    // Convertimos el saludo en un enlace a profile.html
+    desktop.innerHTML = `
+      <a href="profile.html">Hola, ${name}</a>
+      &nbsp;|&nbsp;
+      <a href="#" onclick="logout()">Cerrar sesión</a>
+    `;
+    mobile.innerHTML  = `
+      <a href="profile.html">Hola, ${name}</a>
+      &nbsp;|&nbsp;
+      <a href="#" onclick="logout()">Salir</a>
+    `;
+    if (btnCont) btnCont.style.display = 'flex';
+  } else {
+    desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+    mobile.innerHTML  = desktop.innerHTML;
+    if (btnCont) btnCont.style.display = 'none';
+  }
+});
+
 
     function logout() {
       firebase.auth().signOut().then(() => location.reload());
