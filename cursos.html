@@ -107,7 +107,7 @@
     }
     .styled-btn:hover { background: #e6ac00; }
 
-    /* ===== HERO CURSOS ===== */
+    /* HERO */
     .hero-curso {
       background: url('Img/curso-hero.jpg') center/cover no-repeat;
       height: 70vh;
@@ -125,54 +125,31 @@
       max-width: 600px;
     }
 
-    .benefits-curso, .course-types, .cta-negocio {
+    /* SECCIONES */
+    section {
       padding: 3rem 1rem;
-      max-width: 1000px;
-      margin: auto;
     }
-    .benefits-curso h2,
-    .cta-negocio h2 {
+    .video-presentacion, .info-curso, .beneficios {
+      background: #fff;
       text-align: center;
-      font-size: 2rem;
-      color: var(--blue);
-      margin-bottom: 1rem;
     }
-    .benefits-curso ul {
+    .beneficios ul {
       list-style: none;
       padding: 0;
-      text-align: center;
+      margin-top: 1rem;
     }
-    .benefits-curso li {
+    .beneficios li {
       margin-bottom: 1rem;
       font-weight: 600;
     }
-    .course-types {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      justify-content: center;
-    }
-    .course-card {
-      background: #fff;
-      border: 2px solid var(--blue);
-      padding: 1.5rem;
-      border-radius: 10px;
-      flex: 1 1 280px;
+    .cta-wsp {
       text-align: center;
-    }
-    .course-card h3 {
-      color: var(--blue2);
-      margin-bottom: 0.75rem;
-    }
-    .cta-negocio {
-      background: var(--blue);
+      background: var(--blue2);
       color: white;
-      text-align: center;
-      border-radius: 10px;
+      padding: 3rem 1rem;
     }
-    .cta-negocio p {
-      margin: 1rem auto;
-      max-width: 600px;
+    .cta-wsp a {
+      font-size: 1.1rem;
     }
 
     footer {
@@ -208,44 +185,53 @@
   <!-- HERO -->
   <section class="hero-curso">
     <div class="overlay">
-      <h1>Aprende Importación Vehicular</h1>
-      <p>Capacítate y aprende a importar legal y exitosamente desde subastas internacionales.</p>
-      <a href="https://wa.me/50497330137" class="styled-btn">Inscribirme ahora</a>
+      <h1>Curso de Importación Vehicular</h1>
+      <p>10 días de formación intensiva, de lunes a viernes. Aprende a importar como un profesional.</p>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <section class="video-presentacion">
+    <div class="container">
+      <h2 style="color: var(--blue); margin-bottom: 1rem;">Conoce el Curso en 60 segundos</h2>
+      <video controls style="max-width: 100%; border-radius: 12px;">
+        <source src="videos/VIDEO-2025-04-21-14-26-34.mp4" type="video/mp4">
+        Tu navegador no soporta video HTML5.
+      </video>
+    </div>
+  </section>
+
+  <!-- INFO -->
+  <section class="info-curso">
+    <div class="container">
+      <h2 style="color: var(--blue);">¿Qué incluye el curso?</h2>
+      <p>Desde cómo buscar vehículos en subastas hasta calcular impuestos y coordinar envíos. Todo 100% práctico y explicado paso a paso.</p>
     </div>
   </section>
 
   <!-- BENEFICIOS -->
-  <section class="benefits-curso">
-    <h2>¿Por qué capacitarte con nosotros?</h2>
-    <p style="text-align:center;">Te damos herramientas reales para importar y emprender.</p>
-    <ul>
-      <li>✔️ Aprende el paso a paso del proceso</li>
-      <li>✔️ Conoce tus impuestos y cómo calcularlos</li>
-      <li>✔️ Accede a plataformas como Copart, IAAI y más</li>
-    </ul>
-  </section>
-
-  <!-- TIPOS DE CAPACITACIÓN -->
-  <section class="course-types">
-    <div class="course-card">
-      <img src="Img/curso-online.jpg" alt="Curso Online" style="width:100%; border-radius: 6px; margin-bottom: 1rem;">
-      <h3>Capacitación Online (2 hrs)</h3>
-      <p>Curso virtual enfocado en impuestos y tablas de importación vehicular.</p>
-      <a href="https://wa.me/50497330137" class="styled-btn">Inscribirme</a>
-    </div>
-    <div class="course-card">
-      <img src="Img/curso-negocio.jpg" alt="Curso de Negocio" style="width:100%; border-radius: 6px; margin-bottom: 1rem;">
-      <h3>Curso Presencial</h3>
-      <p>Ideal para emprendedores. Aprende desde cero y empieza tu negocio.</p>
-      <a href="https://wa.me/50497330137" class="styled-btn">Solicitar cupo</a>
+  <section class="beneficios">
+    <div class="container">
+      <h2 style="color: var(--blue);">Beneficios para ti</h2>
+      <ul>
+        <li>✔️ Aprende a usar Copart e IAAI</li>
+        <li>✔️ Crea tus propias tablas de costos</li>
+        <li>✔️ Ahorra dinero evitando intermediarios</li>
+        <li>✔️ Recibe asesoría directa del instructor</li>
+      </ul>
     </div>
   </section>
 
   <!-- CTA -->
-  <section class="cta-negocio">
-    <h2>¡Comienza tu negocio de importación hoy!</h2>
-    <p>Formamos importadores reales. Únete a más de 2,000 alumnos que ya dieron el paso.</p>
-    <a href="https://wa.me/50497330137" class="styled-btn">Hablar con un asesor</a>
+  <section class="cta-wsp">
+    <h2>¿Listo para comenzar?</h2>
+    <p>Haz clic para confirmar tu inscripción y recibir detalles del próximo curso.</p>
+    <a 
+      href="https://wa.me/50497330137?text=¡Hola!%20Estoy%20interesado%20en%20el%20curso%20de%20importación%20de%20vehículos.%20Vengo%20desde%20la%20página%20de%20cursos%20y%20me%20gustaría%20conocer%20la%20próxima%20fecha%20disponible."
+      target="_blank" 
+      class="styled-btn">
+      Confirmar mi inscripción vía WhatsApp
+    </a>
   </section>
 
   <!-- FOOTER -->
@@ -260,7 +246,7 @@
     </div>
   </footer>
 
-  <!-- Firebase & Menú -->
+  <!-- Firebase + Menú -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
