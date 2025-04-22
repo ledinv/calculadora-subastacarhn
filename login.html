@@ -4,28 +4,161 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Iniciar Sesión – SubastaCarHN</title>
-  <link rel="manifest" href="Img/site.webmanifest">
-  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="msapplication-TileImage" content="Img/favicon-32x32.png">
-  <meta name="theme-color" content="#002f6c">
   <style>
-    /* Aquí van tus estilos tal como estaban */
-    body { font-family: Helvetica, sans-serif; margin:0; padding:0; background:#f9f9f9; }
-    /* …el resto de tu CSS… */
+    /* --- Estilos idénticos a register.html y calculadora --- */
+    body {
+      font-family: Helvetica, sans-serif;
+      margin: 0; padding: 0;
+      background: #f9f9f9;
+    }
+    header {
+      background: linear-gradient(to right, #002f6c, #004aad);
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+    /* marca centrada */
+    header a.brand {
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+      text-decoration: none;
+      margin: 0 auto;
+    }
+    /* botón hamburguesa */
+    .menu-icon {
+      font-size: 20px;
+      background: #ffc20e;
+      color: #002f6c;
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    /* menú desplegable */
+    #menu-links {
+      display: none;
+      list-style: none;
+      padding: 10px;
+      margin: 10px 0 0;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      position: absolute;
+      top: 70px;
+      left: 15px;
+      z-index: 1000;
+    }
+    #menu-links li { margin-bottom: 10px; }
+    #menu-links a { text-decoration: none; color: #002f6c; font-weight: bold; }
+
+    /* contenedor central */
+    .layout {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 10px;
+    }
+    .contenido-central {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      padding: 20px;
+    }
+    .contenido-central h1 {
+      text-align: center;
+      color: #002f6c;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      color: #002f6c;
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      font-size: 14px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #004aad;
+      background: #f0f8ff;
+      width: 100%;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    .styled-btn {
+      background-color: #ffc20e;
+      color: #002f6c;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 20px;
+      width: 100%;
+      cursor: pointer;
+      font-size: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .styled-btn:hover {
+      background-color: #e6ac00;
+    }
+    /* estilos para el enlace de recuperación */
+    .forgot {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .forgot a {
+      color: #004aad;
+      text-decoration: underline;
+      font-size: 0.9rem;
+    }
+    /* estilos del modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      max-width: 400px;
+      width: 90%;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .modal-content .close {
+      position: absolute;
+      top: 0.5rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
     <a href="index.html" class="brand">SUBASTACARHN</a>
+    <span></span>
   </header>
   <ul id="menu-links">
-    <!-- tus enlaces sociales -->
+    <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
+    <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
+    <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
+    <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
   </ul>
 
   <div class="layout">
@@ -50,16 +183,25 @@
     </div>
   </div>
 
-  <!-- Modal de recuperación -->
+  <!-- Modal Recuperación -->
   <div id="resetModal" class="modal">
-    <!-- …contenido del modal… -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Recuperar contraseña</h2>
+      <form id="reset-form">
+        <label for="reset-email">Correo electrónico</label>
+        <input type="email" id="reset-email" required />
+        <button type="submit" class="styled-btn">Enviar enlace</button>
+      </form>
+      <p id="reset-msg" style="margin-top:10px; text-align:center;"></p>
+    </div>
   </div>
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase compat SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
-    // 1) Tu configuración de Firebase
+    // Tu configuración
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -71,48 +213,40 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // 2) Función para abrir/cerrar menú
     function toggleMenu() {
       const m = document.getElementById('menu-links');
       m.style.display = m.style.display === 'block' ? 'none' : 'block';
     }
 
-    // 3) Lógica de login y recuperación
     window.addEventListener('DOMContentLoaded', () => {
-      // — LOGIN —
-      document.getElementById('loginForm').addEventListener('submit', async e => {
+      // Login
+      const form = document.getElementById('loginForm');
+      form.addEventListener('submit', async e => {
         e.preventDefault();
         const email = document.getElementById('emailL').value.trim();
         const pass  = document.getElementById('passwordL').value;
         try {
-          // Inicia sesión con correo y contraseña
-          await firebase.auth().signInWithEmailAndPassword(email, pass);
-
-          // Forzamos recarga del estado de emailVerified
-          await firebase.auth().currentUser.reload();
-          const user = firebase.auth().currentUser;
-
-          if (!user.emailVerified) {
+          const cred = await firebase.auth()
+            .signInWithEmailAndPassword(email, pass);
+          if (!cred.user.emailVerified) {
             alert('⚠️ Verifica tu correo antes de continuar.');
             return;
           }
-          // Si todo está OK, redirigimos
           window.location.href = 'index.html';
-
         } catch(err) {
-          const msg = (err.code==='auth/user-not-found' || err.code==='auth/wrong-password')
+          const msg = (err.code==='auth/user-not-found'||err.code==='auth/wrong-password')
             ? '⚠️ Email o contraseña incorrectos.'
             : err.message;
           alert(msg);
         }
       });
 
-      // — RECUPERAR CONTRASEÑA —
+      // Recuperación de contraseña
       const forgotLink = document.getElementById('forgot-link');
-      const modal      = document.getElementById('resetModal');
-      const closeBtn   = modal.querySelector('.close');
-      const resetForm  = document.getElementById('reset-form');
-      const resetMsg   = document.getElementById('reset-msg');
+      const modal = document.getElementById('resetModal');
+      const closeBtn = modal.querySelector('.close');
+      const resetForm = document.getElementById('reset-form');
+      const resetMsg = document.getElementById('reset-msg');
 
       forgotLink.addEventListener('click', e => {
         e.preventDefault();
@@ -120,10 +254,12 @@
         resetMsg.textContent = '';
         modal.style.display = 'flex';
       });
+
       closeBtn.addEventListener('click', () => modal.style.display = 'none');
       window.addEventListener('click', e => {
         if (e.target === modal) modal.style.display = 'none';
       });
+
       resetForm.addEventListener('submit', async e => {
         e.preventDefault();
         const email = document.getElementById('reset-email').value.trim();
@@ -131,9 +267,14 @@
           await firebase.auth().sendPasswordResetEmail(email);
           resetMsg.textContent = `✅ Enviado enlace a ${email}. Revisa tu bandeja.`;
         } catch (err) {
-          if (err.code==='auth/user-not-found')      resetMsg.textContent = '❌ Cuenta no encontrada.';
-          else if (err.code==='auth/invalid-email')  resetMsg.textContent = '❌ Correo inválido.';
-          else                                       resetMsg.textContent = '❌ Error al enviar el correo.';
+          console.error(err);
+          if (err.code === 'auth/user-not-found') {
+            resetMsg.textContent = '❌ Cuenta no encontrada.';
+          } else if (err.code === 'auth/invalid-email') {
+            resetMsg.textContent = '❌ Correo inválido.';
+          } else {
+            resetMsg.textContent = '❌ Error al enviar el correo.';
+          }
         }
       });
     });
