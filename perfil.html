@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil de Usuario</title>
+  <!-- Agrega aquí tus enlaces a CSS y otros recursos -->
+</head>
+<body>
+  <div id="profile-container">
+    <h1>Perfil de Usuario</h1>
+    <form id="profile-form">
+      <label for="displayName">Nombre:</label>
+      <input type="text" id="displayName" name="displayName" required />
+
+      <label for="email">Correo Electrónico:</label>
+      <input type="email" id="email" name="email" required disabled />
+
+      <label for="phone">Número de Celular:</label>
+      <input type="tel" id="phone" name="phone" required />
+
+      <button type="submit">Actualizar Perfil</button>
+    </form>
+
+    <h2>Cambiar Contraseña</h2>
+    <form id="password-form">
+      <label for="newPassword">Nueva Contraseña:</label>
+      <input type="password" id="newPassword" name="newPassword" required />
+
+      <button type="submit">Cambiar Contraseña</button>
+    </form>
+
+    <h2>Historial de Cálculos</h2>
+    <ul id="calculations-list">
+      <!-- Los cálculos se cargarán aquí dinámicamente -->
+    </ul>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <script>
+    // Tu configuración de Firebase
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_AUTH_DOMAIN",
+      projectId: "TU_PROJECT_ID",
+      // ...otros campos según tu configuración
+    };
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Verificar autenticación del usuario
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        const uid = user.uid;
+        const userDocRef = db.collection('users').doc(uid);
+
+        // Cargar datos del perfil
+        userDocRef.get().then(doc => {
+          if (doc.exists) {
+            const data = doc.data();
+            document.getElementById('displayName').value = data.displayName || '';
+            document.getElementById('email').value = user.email;
+            document.getElementById('phone').value = data.phone || '';
+          }
+        });
+
+        // Manejar actualización del perfil
+        document.getElementById('profile-form').addEventListener('submit', e => {
+          e.preventDefault();
+          const displayName = document.getElementById('displayName').value;
+          const phone = document.getElementById('phone').value;
+
+          user.updateProfile({ displayName })
+            .then(() => userDocRef.set({ displayName, phone }, { merge: true }))
+            .then(() => alert('Perfil actualizado correctamente.'))
+            .catch(error => alert('Error al actualizar el perfil: ' + error.message));
+        });
+
+        // Manejar cambio de contraseña
+        document.getElementById('password-form').addEventListener('submit', e => {
+          e.preventDefault();
+          const newPassword = document.getElementById('newPassword').value;
+
+          user.updatePassword(newPassword)
+            .then(() => alert('Contraseña actualizada correctamente.'))
+            .catch(error => alert('Error al cambiar la contraseña: ' + error.message));
+        });
+
+        // Cargar historial de cálculos
+        const calculationsList = document.getElementById('calculations-list');
+        userDocRef.collection('calculations').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+          calculationsList.innerHTML = '';
+          snapshot.forEach(doc => {
+            const calc = doc.data();
+            const li = document.createElement('li');
+            li.textContent = `${calc.name} - ${new Date(calc.timestamp.toDate()).toLocaleString()}`;
+            // Agrega botones para ver detalles, renombrar y eliminar según sea necesario
+            calculationsList.appendChild(li);
+          });
+        });
+
+      } else {
+        // Redirigir al inicio de sesión si no hay usuario autenticado
+        window.location.href = 'login.html';
+      }
+    });
+  </script>
+</body>
+</html>
