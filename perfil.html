@@ -12,8 +12,122 @@
   <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
   <meta name="theme-color" content="#002f6c">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="estilos.css">
+
   <style>
+    :root {
+      --blue: #002f6c;
+      --blue2: #004aad;
+      --yellow: #ffc20e;
+      --dark: #333;
+      --light: #f9f9f9;
+      --max-width: 1200px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--dark);
+      background: var(--light);
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    header {
+      background: linear-gradient(to right, var(--blue), var(--blue2));
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+    }
+    .brand {
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .nav-links {
+      display: none;
+      gap: 1rem;
+    }
+    .nav-links a, .nav-links span {
+      color: var(--yellow);
+      font-size: 0.9375rem;
+      font-weight: 600;
+    }
+    .menu-icon {
+      background: var(--yellow);
+      color: var(--blue);
+      border: none;
+      font-size: 1rem;
+      line-height: 1;
+      padding: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background: #fff;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 998;
+    }
+    .mobile-nav li { margin-bottom: 0.75rem; }
+    .mobile-nav a, .mobile-nav span {
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 0.9375rem;
+    }
+    @media (min-width: 768px) {
+      .menu-icon { display: none; }
+      .nav-links { display: flex; }
+      .mobile-nav { display: none !important; }
+    }
+
+    main.layout {
+      padding: 2rem 1rem;
+    }
+    .contenido-central {
+      max-width: 500px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .contenido-central h1 {
+      text-align: center;
+      color: var(--blue);
+      margin-bottom: 1.5rem;
+    }
+    form label {
+      display: block;
+      margin: 0.5rem 0 0.25rem;
+      font-weight: 600;
+    }
+    form input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
     .readonly {
       background: #e4e4e4;
       color: #555;
@@ -22,8 +136,23 @@
       font-size: 12px;
       color: #666;
       display: block;
-      margin-top: 5px;
+      margin-top: -0.75rem;
+      margin-bottom: 1rem;
     }
+    .styled-btn {
+      background: var(--yellow);
+      color: var(--blue);
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 0.75rem;
+    }
+    .styled-btn:hover { background: #e6ac00; }
+
     .success-msg {
       background: #d4edda;
       color: #155724;
@@ -33,6 +162,15 @@
       margin-top: 10px;
       text-align: center;
     }
+
+    footer {
+      background: var(--blue2);
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    footer a { color: var(--yellow); margin: 0 0.5rem; }
   </style>
 </head>
 <body>
@@ -56,28 +194,21 @@
 
   <main class="layout">
     <div class="contenido-central">
-      <h1 style="text-align:center; color:#002f6c;">Mi Perfil</h1>
+      <h1>Mi Perfil</h1>
       <form id="profileForm">
         <label for="name">Nombre completo</label>
         <input type="text" id="name" required />
-
         <label for="email">Correo electrónico</label>
         <input type="email" id="email" class="readonly" readonly />
-
         <label for="phone">Teléfono</label>
         <input type="tel" id="phone" class="readonly" readonly />
-
         <label for="address">Dirección</label>
         <input type="text" id="address" />
-
         <label for="dni">DNI</label>
         <input type="text" id="dni" />
-
         <label for="birthYear">Año de nacimiento</label>
         <input type="number" id="birthYear" min="1900" max="2100" />
-
         <small class="note">El DNI y el año de nacimiento te ayudarán a recuperar tu cuenta si pierdes el acceso.</small>
-
         <button type="submit" class="styled-btn">Guardar cambios</button>
         <button type="button" class="styled-btn" onclick="sendPasswordReset()">Cambiar contraseña</button>
         <button type="button" class="styled-btn" onclick="logout()">Cerrar sesión</button>
@@ -96,7 +227,7 @@
       </div>
     </div>
   </footer>
-
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -105,7 +236,7 @@
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
-      storageBucket: "subastacarhn-40554.firebasestorage.app",
+      storageBucket: "subastacarhn-40554.appspot.com",
       messagingSenderId: "536785797974",
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
       measurementId: "G-QM5N60K8C0"
@@ -115,10 +246,7 @@
     const db = firebase.firestore();
 
     auth.onAuthStateChanged(async user => {
-      if (!user) {
-        window.location.href = "login.html";
-        return;
-      }
+      if (!user) return window.location.href = "login.html";
       const docRef = db.collection('clients').doc(user.uid);
       const docSnap = await docRef.get();
       if (docSnap.exists) {
@@ -153,25 +281,33 @@
     });
 
     function logout() {
-      auth.signOut().then(() => {
-        window.location.href = "login.html";
-      });
+      auth.signOut().then(() => window.location.href = "login.html");
     }
 
     function sendPasswordReset() {
       const email = document.getElementById('email').value;
-      firebase.auth().sendPasswordResetEmail(email)
+      auth.sendPasswordResetEmail(email)
         .then(() => alert('📧 Se ha enviado un enlace de restablecimiento a tu correo.'))
-        .catch(err => {
-          console.error(err);
-          alert('❌ No se pudo enviar el enlace.');
-        });
+        .catch(err => alert('❌ No se pudo enviar el enlace.'));
     }
 
     function toggleMenu() {
       const menu = document.getElementById('mobile-menu-links');
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
+
+    firebase.auth().onAuthStateChanged(user => {
+      const desktop = document.getElementById('userGreeting');
+      const mobile = document.getElementById('mobileGreeting');
+      if (user) {
+        const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
+        desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
+        mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
+      } else {
+        desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+        mobile.innerHTML  = desktop.innerHTML;
+      }
+    });
   </script>
 </body>
 </html>
