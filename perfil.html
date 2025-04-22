@@ -133,12 +133,11 @@
       </form>
     </div>
   </div>
-  <!-- Firebase SDKs -->
+
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script>
-    // Configuración Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -152,21 +151,19 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // Protección de acceso
     auth.onAuthStateChanged(async user => {
       if (!user) {
         window.location.href = "login.html";
         return;
       }
 
-      // Cargar datos del perfil desde Firestore
       const docRef = db.collection('clients').doc(user.uid);
       const docSnap = await docRef.get();
 
       if (docSnap.exists) {
         const data = docSnap.data();
         document.getElementById('name').value = data.fullName || "";
-        document.getElementById('email').value = data.email || "";
+        document.getElementById('email').value = data.email || user.email;
         document.getElementById('phone').value = data.phone || "";
         document.getElementById('address').value = data.address || "";
         document.getElementById('dni').value = data.dni || "";
@@ -176,7 +173,6 @@
       }
     });
 
-    // Guardar cambios
     document.getElementById('profileForm').addEventListener('submit', async e => {
       e.preventDefault();
       const user = auth.currentUser;
@@ -189,14 +185,13 @@
           dni: document.getElementById('dni').value.trim(),
           birthYear: document.getElementById('birthYear').value.trim()
         });
-        alert("✅ Cambios guardados.");
+        alert("✅ Tus datos han sido actualizados con éxito.");
       } catch (error) {
         console.error("Error al guardar:", error);
         alert("❌ Error al guardar los cambios.");
       }
     });
 
-    // Cerrar sesión
     function logout() {
       auth.signOut().then(() => {
         window.location.href = "login.html";
