@@ -1,170 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SubastaCarHN – Perfil de Usuario</title>
-  <!-- favicon, manifest, etc. -->
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>SubastaCarHN – Perfil de Usuario</title>
   <link rel="manifest" href="Img/site.webmanifest">
   <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
   <meta name="theme-color" content="#002f6c">
-
-  <!-- Google Fonts Montserrat -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
-
   <style>
-    :root {
-      --blue: #002f6c;
-      --blue2: #004aad;
-      --yellow: #ffc20e;
-      --dark: #333;
-      --light: #f9f9f9;
-      --max-width: 1200px;
-    }
-    *, *::before, *::after {
-      box-sizing: border-box; margin:0; padding:0;
-    }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      color: var(--dark);
-      background: var(--light);
-      line-height: 1.6;
-    }
-    a { text-decoration: none; color: inherit; }
-    ul { list-style: none; }
-
-    .container {
-      width: 100%;
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 1rem;
-    }
-
-    /* ===== HEADER ===== */
-    header {
-      background: linear-gradient(to right, var(--blue), var(--blue2));
-      position: sticky; top: 0; z-index: 1000;
-    }
-    .header-inner {
-      display: flex; align-items: center;
-      justify-content: space-between; padding: .75rem 1rem;
-    }
-    .brand {
-      color: #fff; font-size: 1.25rem; font-weight: 700;
-    }
-    .nav-links {
-      display: flex; gap: 1rem;
-    }
-    .nav-links a, .nav-links span {
-      color: var(--yellow); font-weight: 600;
-    }
-    .menu-icon {
-      display: none;
-      background: var(--yellow); color: var(--blue);
-      border: none; padding: .5rem; border-radius: 6px;
-      font-size: 1.25rem; cursor: pointer;
-    }
-    /* Mobile nav */
-    .mobile-nav {
-      display: none;
-      background: var(--blue);
-      flex-direction: column;
-      position: absolute; top: 100%; left: 0; right: 0;
-    }
-    .mobile-nav.open { display: flex; }
-    .mobile-nav a, .mobile-nav span {
-      padding: .75rem 1rem; color: #fff; border-top: 1px solid rgba(255,255,255,0.2);
-    }
-
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .menu-icon { display: block; }
-    }
-
-    /* ===== CARDS ===== */
-    .card {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 2rem;
-      margin-bottom: 2rem;
-    }
-    .card h2 {
-      margin-bottom: 1rem;
-      color: var(--blue);
-      font-size: 1.5rem;
-    }
-
-    /* ===== FORM GROUP ===== */
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1rem;
-    }
-    .form-group label {
-      font-weight: 600;
-      margin-bottom: .5rem;
-    }
-    .form-group input {
-      padding: .75rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1rem;
-    }
-    .btn {
-      display: inline-block;
-      background: var(--yellow);
-      color: var(--blue);
-      border: none;
-      border-radius: 6px;
-      padding: .75rem 1.5rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color .3s;
-    }
-    .btn:hover {
-      background: #e6ac00;
-    }
-
-    /* ===== HISTORIAL ===== */
-    .table-container {
-      overflow-x: auto;
-      margin-top: 1rem;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: .75rem;
-      text-align: left;
-      border-bottom: 1px solid #eee;
-    }
-    th {
-      background: var(--blue2);
-      color: #fff;
-      font-weight: 600;
-    }
-    .actions button {
-      background: none;
-      border: none;
-      color: var(--blue);
-      cursor: pointer;
-    }
-
-    /* ===== FOOTER ===== */
-    footer {
-      background: var(--blue2);
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-    footer a { color: var(--yellow); margin: 0 .5rem; }
+    :root {--blue:#002f6c;--blue2:#004aad;--yellow:#ffc20e;--dark:#333;--light:#f9f9f9;--max-width:1200px;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Montserrat',sans-serif;color:var(--dark);background:var(--light);line-height:1.6;}
+    a{color:inherit;text-decoration:none;}
+    .container{max-width:var(--max-width);margin:0 auto;padding:1rem;}
+    header{background:linear-gradient(to right,var(--blue),var(--blue2));position:sticky;top:0;z-index:1000;}
+    .header-inner{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem;}
+    .brand{color:#fff;font-weight:700;font-size:1.25rem;}
+    .nav-links{display:flex;gap:1rem;}
+    .nav-links a, .nav-links span{color:var(--yellow);font-weight:600;}
+    .menu-icon{display:none;background:var(--yellow);color:var(--blue);border:none;padding:.5rem;border-radius:6px;font-size:1.25rem;cursor:pointer;}
+    @media(max-width:768px){.nav-links{display:none;}.menu-icon{display:block;}}
+    .mobile-nav{display:none;flex-direction:column;background:var(--blue2);}
+    .mobile-nav.open{display:flex;}
+    .mobile-nav a,.mobile-nav span{padding:.75rem 1rem;color:#fff;border-top:1px solid rgba(255,255,255,.2);}
+    .card{background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);padding:2rem;margin:2rem 0;}
+    .card h2{margin-bottom:1rem;color:var(--blue);font-size:1.5rem;}
+    .form-group{margin-bottom:1rem;}
+    .form-group label{display:block;font-weight:600;margin-bottom:.5rem;}
+    .form-group input{width:100%;padding:.75rem;border:1px solid #ccc;border-radius:4px;font-size:1rem;}
+    .btn{background:var(--yellow);color:var(--blue);border:none;border-radius:6px;padding:.75rem 1.5rem;font-weight:700;cursor:pointer;transition:.3s;}
+    .btn:hover{background:#e6ac00;}
+    .table-container{overflow-x:auto;}
+    table{width:100%;border-collapse:collapse;}
+    th,td{padding:.75rem;text-align:left;border-bottom:1px solid #eee;}
+    th{background:var(--blue2);color:#fff;font-weight:600;}
+    footer{background:var(--blue2);color:#fff;text-align:center;padding:1rem;margin-top:2rem;}
+    footer a{color:var(--yellow);margin:0 .5rem;}
   </style>
 </head>
 <body>
@@ -173,12 +46,12 @@
   <header>
     <div class="header-inner container">
       <a href="index.html" class="brand">SubastaCarHN</a>
-      <nav class="nav-links" aria-label="Menú principal">
+      <nav class="nav-links">
         <a href="calculadora.html">Calculadora</a>
         <a href="cursos.html">Cursos</a>
         <span id="userGreeting"></span>
       </nav>
-      <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
+      <button class="menu-icon" onclick="toggleMenu()">☰</button>
     </div>
     <div id="mobile-menu-links" class="mobile-nav">
       <a href="calculadora.html">Calculadora</a>
@@ -188,52 +61,88 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
   <main class="container">
+    <!-- DATOS BÁSICOS + DIRECCIÓN -->
     <section class="card">
-      <h2>Datos de Usuario</h2>
+      <h2>Mis Datos</h2>
       <form id="profile-form">
         <div class="form-group">
           <label for="displayName">Nombre completo</label>
-          <input type="text" id="displayName" name="displayName" required />
+          <input type="text" id="displayName" required />
         </div>
         <div class="form-group">
           <label for="email">Correo electrónico</label>
-          <input type="email" id="email" name="email" disabled />
+          <input type="email" id="email" disabled />
         </div>
         <div class="form-group">
-          <label for="phone">Número de celular</label>
-          <input type="tel" id="phone" name="phone" pattern="[0-9]{8}" maxlength="8" required placeholder="8 dígitos" />
+          <label for="phone">Teléfono (8 dígitos)</label>
+          <input type="tel" id="phone" pattern="[0-9]{8}" maxlength="8" required />
         </div>
-        <button type="submit" class="btn">Actualizar Perfil</button>
+        <!-- Dirección opcional -->
+        <div class="form-group">
+          <label for="street">Calle / Dirección</label>
+          <input type="text" id="street" placeholder="Col. Centro, Av. Siempre Viva 123" />
+        </div>
+        <div style="display:flex;gap:1rem;">
+          <div class="form-group" style="flex:1;">
+            <label for="city">Ciudad</label>
+            <input type="text" id="city" placeholder="Tegucigalpa" />
+          </div>
+          <div class="form-group" style="flex:1;">
+            <label for="country">País</label>
+            <input type="text" id="country" placeholder="Honduras" />
+          </div>
+        </div>
+        <button type="submit" class="btn">Guardar Cambios</button>
       </form>
     </section>
 
+    <!-- RECUPERAR ACCESO POR SMS -->
+    <section class="card">
+      <h2>Recuperar acceso si olvidé mi correo</h2>
+      <p>Envíate un código SMS a tu número registrado para autenticarte sin usar tu correo:</p>
+      <div id="recaptcha-container"></div>
+      <div style="display:flex;gap:1rem;align-items:flex-end;">
+        <div style="flex:1;">
+          <label for="phoneRecovery">Teléfono (8 dígitos)</label>
+          <input type="tel" id="phoneRecovery" pattern="[0-9]{8}" maxlength="8" />
+        </div>
+        <button id="send-code-btn" class="btn">Enviar código</button>
+      </div>
+      <div id="verify-section" style="display:none; margin-top:1rem;">
+        <label for="smsCode">Código recibido</label>
+        <input type="text" id="smsCode" maxlength="6" placeholder="123456" />
+        <button id="verify-code-btn" class="btn">Verificar y entrar</button>
+      </div>
+    </section>
+
+    <!-- CAMBIO DE CONTRASEÑA -->
     <section class="card">
       <h2>Cambiar Contraseña</h2>
       <form id="password-form">
         <div class="form-group">
-          <label for="newPassword">Nueva contraseña</label>
-          <input type="password" id="newPassword" name="newPassword" minlength="6" required placeholder="Al menos 6 caracteres" />
+          <label for="currentPassword">Contraseña Actual</label>
+          <input type="password" id="currentPassword" required/>
         </div>
-        <button type="submit" class="btn">Cambiar Contraseña</button>
+        <div class="form-group">
+          <label for="newPassword">Nueva Contraseña</label>
+          <input type="password" id="newPassword" minlength="6" required/>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirmar Contraseña</label>
+          <input type="password" id="confirmPassword" minlength="6" required/>
+        </div>
+        <button type="submit" class="btn">Actualizar Contraseña</button>
       </form>
     </section>
 
+    <!-- HISTORIAL DE CÁLCULOS -->
     <section class="card">
       <h2>Historial de Cálculos</h2>
       <div class="table-container">
         <table id="history-table">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Fecha</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Se llenará dinámicamente -->
-          </tbody>
+          <thead><tr><th>Nombre</th><th>Fecha</th></tr></thead>
+          <tbody></tbody>
         </table>
       </div>
     </section>
@@ -244,9 +153,9 @@
     <div class="container">
       SubastaCarHN — Importaciones claras, seguras y al mejor precio  
       <div style="margin-top:.5rem;">
-        <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
-        <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
-        <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+        <a href="https://www.facebook.com/...">Facebook</a> |
+        <a href="https://www.instagram.com/...">Instagram</a> |
+        <a href="https://www.tiktok.com/...">TikTok</a>
       </div>
     </div>
   </footer>
@@ -256,7 +165,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script>
-    // Configuración real (idéntica a tu index.html)
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -270,58 +178,104 @@
     const auth = firebase.auth();
     const db   = firebase.firestore();
 
+    // Menú móvil
     function toggleMenu() {
       document.getElementById('mobile-menu-links').classList.toggle('open');
     }
 
-    auth.onAuthStateChanged(user => {
-      const desktop = document.getElementById('userGreeting');
-      const mobile  = document.getElementById('mobileGreeting');
-      if (!user) {
-        return window.location.href = 'login.html';
-      }
-      const name = (user.displayName || user.email.split('@')[0])
-                     .replace(/^./, c => c.toUpperCase());
-      desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> | <a href="#" onclick="logout()">Cerrar sesión</a>`;
-      mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> | <a href="#" onclick="logout()">Salir</a>`;
+    let confirmationResult; 
 
+    // Phone Auth Recaptcha
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+      'recaptcha-container',
+      { size: 'invisible' }
+    );
+
+    document.getElementById('send-code-btn').addEventListener('click', () => {
+      const phone = '+504' + document.getElementById('phoneRecovery').value;
+      confirmationResult = null;
+      auth.signInWithPhoneNumber(phone, window.recaptchaVerifier)
+        .then(cr => {
+          confirmationResult = cr;
+          document.getElementById('verify-section').style.display = 'block';
+          alert('Código enviado por SMS.');
+        })
+        .catch(err => alert('Error enviando SMS: ' + err.message));
+    });
+
+    document.getElementById('verify-code-btn').addEventListener('click', () => {
+      const code = document.getElementById('smsCode').value;
+      confirmationResult.confirm(code)
+        .then(userCred => {
+          // Ingreso exitoso con phone auth
+          window.location.reload();
+        })
+        .catch(err => alert('Código incorrecto: ' + err.message));
+    });
+
+    auth.onAuthStateChanged(async user => {
+      if (!user) {
+        // No auth → quedamos en perfil sms
+        return;
+      }
+      // Autenticado con correo o con teléfono
       const uid = user.uid;
       const userRef = db.collection('users').doc(uid);
 
-      // Cargar perfil
-      userRef.get().then(doc => {
-        if (doc.exists) {
-          const data = doc.data();
-          document.getElementById('displayName').value = data.displayName || '';
-          document.getElementById('email').value       = user.email;
-          document.getElementById('phone').value       = data.phone || '';
+      // Saludo header
+      const name = (user.displayName || user.email?.split('@')[0] || 'Usuario')
+                     .replace(/^./, c=>c.toUpperCase());
+      document.getElementById('userGreeting').innerHTML =
+        `<a href="perfil.html">Hola, ${name}</a> | <a href="#" onclick="logout()">Cerrar sesión</a>`;
+      document.getElementById('mobileGreeting').innerHTML =
+        document.getElementById('userGreeting').innerHTML;
+
+      // Cargar datos básicos
+      const doc = await userRef.get();
+      if (doc.exists) {
+        const d = doc.data();
+        document.getElementById('displayName').value = d.displayName || '';
+        document.getElementById('phone').value       = d.phone || '';
+        document.getElementById('street').value      = d.street || '';
+        document.getElementById('city').value        = d.city || '';
+        document.getElementById('country').value     = d.country || '';
+      }
+      document.getElementById('email').value = user.email || '';
+
+      // Guardar cambios
+      document.getElementById('profile-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const dn     = document.getElementById('displayName').value;
+        const ph     = document.getElementById('phone').value;
+        const st     = document.getElementById('street').value;
+        const ci     = document.getElementById('city').value;
+        const co     = document.getElementById('country').value;
+        await user.updateProfile({ displayName: dn });
+        await userRef.set({ displayName: dn, phone: ph, street: st, city: ci, country: co },{ merge:true });
+        alert('Datos actualizados.');
+      });
+
+      // Cambio de contraseña
+      document.getElementById('password-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const current = document.getElementById('currentPassword').value;
+        const next    = document.getElementById('newPassword').value;
+        const confirm = document.getElementById('confirmPassword').value;
+        if (next !== confirm) return alert('La nueva contraseña y su confirmación no coinciden.');
+        // Re-autenticar
+        const cred = firebase.auth.EmailAuthProvider.credential(user.email, current);
+        try {
+          await user.reauthenticateWithCredential(cred);
+          await user.updatePassword(next);
+          alert('Contraseña actualizada.');
+        } catch(err) {
+          alert('Error: ' + err.message);
         }
       });
 
-      // Actualizar perfil
-      document.getElementById('profile-form').addEventListener('submit', e => {
-        e.preventDefault();
-        const dn = document.getElementById('displayName').value;
-        const ph = document.getElementById('phone').value;
-        user.updateProfile({ displayName: dn })
-          .then(() => userRef.set({ displayName: dn, phone: ph }, { merge: true }))
-          .then(() => alert('Perfil actualizado correctamente.'))
-          .catch(err => alert('Error: ' + err.message));
-      });
-
-      // Cambiar contraseña
-      document.getElementById('password-form').addEventListener('submit', e => {
-        e.preventDefault();
-        const np = document.getElementById('newPassword').value;
-        user.updatePassword(np)
-          .then(() => alert('Contraseña actualizada correctamente.'))
-          .catch(err => alert('Error: ' + err.message));
-      });
-
-      // Historial de cálculos
+      // Historial
       const tbody = document.querySelector('#history-table tbody');
-      userRef.collection('calculations')
-        .orderBy('timestamp','desc')
+      userRef.collection('calculations').orderBy('timestamp','desc')
         .onSnapshot(snap => {
           tbody.innerHTML = '';
           snap.forEach(d => {
@@ -330,25 +284,14 @@
             tr.innerHTML = `
               <td>${c.name}</td>
               <td>${new Date(c.timestamp.toDate()).toLocaleString()}</td>
-              <td class="actions">
-                <button onclick="viewCalc('${d.id}')">Ver</button>
-                <button onclick="deleteCalc('${d.id}')">Eliminar</button>
-              </td>`;
+            `;
             tbody.appendChild(tr);
           });
         });
     });
 
     function logout() {
-      auth.signOut().then(() => location.href = 'login.html');
-    }
-    // Funciones placeholder para las acciones:
-    function viewCalc(id) { alert('Ver cálculo ' + id); }
-    function deleteCalc(id) { 
-      if (confirm('¿Eliminar este cálculo?')) {
-        const uid = auth.currentUser.uid;
-        db.collection('users').doc(uid).collection('calculations').doc(id).delete();
-      }
+      auth.signOut().then(()=> location.href='login.html');
     }
   </script>
 </body>
