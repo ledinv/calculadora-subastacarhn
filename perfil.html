@@ -391,5 +391,13 @@
       });
     }
   </script>
+  <script>
+  function toggleMenu() {
+    const menu = document.getElementById("mobile-menu-links");
+    const isOpen = menu.style.display === "flex";
+    menu.style.display = isOpen ? "none" : "flex";
+  }
+</script>
+
 </body>
 </html>
