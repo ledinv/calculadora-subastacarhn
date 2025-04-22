@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Perfil de Usuario</title>
-  <!-- Aquí puedes agregar tus enlaces a CSS y otros recursos -->
 </head>
 <body>
   <div id="profile-container">
@@ -27,14 +26,11 @@
     <form id="password-form">
       <label for="newPassword">Nueva Contraseña:</label>
       <input type="password" id="newPassword" name="newPassword" required />
-
       <button type="submit">Cambiar Contraseña</button>
     </form>
 
     <h2>Historial de Cálculos</h2>
-    <ul id="calculations-list">
-      <!-- Los cálculos se cargarán aquí dinámicamente -->
-    </ul>
+    <ul id="calculations-list"></ul>
   </div>
 
   <!-- Firebase SDKs -->
@@ -43,7 +39,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
   <script>
-    // Configuración real de Firebase (cópiala de tu index.html)
+    // 1) Configuración real (la misma que en tu index.html)
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -53,25 +49,32 @@
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
       measurementId: "G-QM5N60K8C0"
     };
-    // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db   = firebase.firestore();
 
-    // Verificar autenticación del usuario
+    // 2) Forzar persistencia local
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      .then(() => console.log('Persistencia: LOCAL'))
+      .catch(err => console.error('Error persistencia:', err));
+
+    // 3) Escuchar cambios de estado
     auth.onAuthStateChanged(user => {
+      console.log('onAuthStateChanged → user =', user);
       if (!user) {
-        // Si no está logueado, redirige al login
+        console.warn('No hay usuario activo, redirigiendo a login.html');
         window.location.href = 'login.html';
         return;
       }
 
+      console.log('Usuario detectado, uid =', user.uid);
       const uid = user.uid;
       const userDocRef = db.collection('users').doc(uid);
 
-      // Cargar datos del perfil
+      // 4) Cargar perfil
       userDocRef.get()
         .then(doc => {
+          console.log('doc.exists?', doc.exists);
           if (doc.exists) {
             const data = doc.data();
             document.getElementById('displayName').value = data.displayName || '';
@@ -81,7 +84,7 @@
         })
         .catch(err => console.error('Error cargando perfil:', err));
 
-      // Actualizar perfil
+      // 5) Formularios
       document.getElementById('profile-form').addEventListener('submit', e => {
         e.preventDefault();
         const displayName = document.getElementById('displayName').value;
@@ -93,7 +96,6 @@
           .catch(error => alert('Error al actualizar el perfil: ' + error.message));
       });
 
-      // Cambiar contraseña
       document.getElementById('password-form').addEventListener('submit', e => {
         e.preventDefault();
         const newPassword = document.getElementById('newPassword').value;
@@ -103,7 +105,7 @@
           .catch(error => alert('Error al cambiar la contraseña: ' + error.message));
       });
 
-      // Cargar historial de cálculos
+      // 6) Historial de cálculos
       const calculationsList = document.getElementById('calculations-list');
       userDocRef.collection('calculations')
         .orderBy('timestamp', 'desc')
