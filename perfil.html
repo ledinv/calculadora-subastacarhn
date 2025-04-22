@@ -11,66 +11,9 @@
   <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
   <meta name="theme-color" content="#002f6c">
-
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="estilos.css">
   <style>
-    body {
-      font-family: Helvetica, sans-serif;
-      margin: 0; padding: 0;
-      background: #f9f9f9;
-    }
-    header {
-      background: linear-gradient(to right, #002f6c, #004aad);
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 15px;
-      position: sticky;
-      top: 0;
-      z-index: 999;
-    }
-    header a.brand {
-      color: white;
-      font-size: 22px;
-      font-weight: bold;
-      text-decoration: none;
-      margin: 0 auto;
-    }
-    .layout {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px 10px;
-    }
-    .contenido-central {
-      width: 100%;
-      max-width: 400px;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      padding: 20px;
-    }
-    .contenido-central h1 {
-      text-align: center;
-      color: #002f6c;
-      margin-bottom: 20px;
-    }
-    label {
-      font-weight: bold;
-      color: #002f6c;
-      display: block;
-      margin-top: 10px;
-    }
-    input {
-      font-size: 14px;
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid #004aad;
-      background: #f0f8ff;
-      width: 100%;
-      margin-top: 5px;
-      box-sizing: border-box;
-    }
     .readonly {
       background: #e4e4e4;
       color: #555;
@@ -81,32 +24,39 @@
       display: block;
       margin-top: 5px;
     }
-    .styled-btn {
-      background-color: #ffc20e;
-      color: #002f6c;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
+    .success-msg {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
       padding: 10px;
-      margin-top: 20px;
-      width: 100%;
-      cursor: pointer;
-      font-size: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    .styled-btn:hover {
-      background-color: #e6ac00;
+      border-radius: 6px;
+      margin-top: 10px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <header>
-    <a href="index.html" class="brand">SUBASTACARHN</a>
+    <div class="container header-inner">
+      <a href="index.html" class="brand">SubastaCarHN</a>
+      <nav class="nav-links" aria-label="Menú principal">
+        <a href="calculadora.html">Calculadora</a>
+        <a href="#cursos" id="linkCursos">Cursos</a>
+        <span id="userGreeting"></span>
+      </nav>
+      <button class="menu-icon" onclick="toggleMenu()">☰</button>
+    </div>
+    <ul id="mobile-menu-links" class="mobile-nav">
+      <li><a href="calculadora.html">Calculadora</a></li>
+      <li><a href="#cursos" id="linkCursosMobile">Cursos</a></li>
+      <li><span id="mobileGreeting"></span></li>
+      <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+    </ul>
   </header>
 
-  <div class="layout">
+  <main class="layout">
     <div class="contenido-central">
-      <h1>Mi Perfil</h1>
+      <h1 style="text-align:center; color:#002f6c;">Mi Perfil</h1>
       <form id="profileForm">
         <label for="name">Nombre completo</label>
         <input type="text" id="name" required />
@@ -129,10 +79,23 @@
         <small class="note">El DNI y el año de nacimiento te ayudarán a recuperar tu cuenta si pierdes el acceso.</small>
 
         <button type="submit" class="styled-btn">Guardar cambios</button>
+        <button type="button" class="styled-btn" onclick="sendPasswordReset()">Cambiar contraseña</button>
         <button type="button" class="styled-btn" onclick="logout()">Cerrar sesión</button>
+        <div id="successMsg" class="success-msg" style="display:none;">✅ Tus datos han sido actualizados con éxito.</div>
       </form>
     </div>
-  </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
+      <div style="margin-top:0.5rem;">
+        <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
+        <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
+        <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+      </div>
+    </div>
+  </footer>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
@@ -156,10 +119,8 @@
         window.location.href = "login.html";
         return;
       }
-
       const docRef = db.collection('clients').doc(user.uid);
       const docSnap = await docRef.get();
-
       if (docSnap.exists) {
         const data = docSnap.data();
         document.getElementById('name').value = data.fullName || "";
@@ -177,7 +138,6 @@
       e.preventDefault();
       const user = auth.currentUser;
       if (!user) return;
-
       try {
         await db.collection('clients').doc(user.uid).update({
           fullName: document.getElementById('name').value.trim(),
@@ -185,7 +145,7 @@
           dni: document.getElementById('dni').value.trim(),
           birthYear: document.getElementById('birthYear').value.trim()
         });
-        alert("✅ Tus datos han sido actualizados con éxito.");
+        document.getElementById('successMsg').style.display = 'block';
       } catch (error) {
         console.error("Error al guardar:", error);
         alert("❌ Error al guardar los cambios.");
@@ -196,6 +156,21 @@
       auth.signOut().then(() => {
         window.location.href = "login.html";
       });
+    }
+
+    function sendPasswordReset() {
+      const email = document.getElementById('email').value;
+      firebase.auth().sendPasswordResetEmail(email)
+        .then(() => alert('📧 Se ha enviado un enlace de restablecimiento a tu correo.'))
+        .catch(err => {
+          console.error(err);
+          alert('❌ No se pudo enviar el enlace.');
+        });
+    }
+
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu-links');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
   </script>
 </body>
