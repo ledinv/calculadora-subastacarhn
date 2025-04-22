@@ -297,6 +297,7 @@
   <!-- Firebase SDKs para autenticación -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
   <script>
     // Inicializa Firebase
@@ -381,107 +382,143 @@
 
     const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
     const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
+    const db = firebase.firestore();
+
+async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  try {
+    const historialRef = db.collection("clients").doc(user.uid).collection("historial");
+    const snapshot = await historialRef.orderBy("fecha", "desc").get();
+
+    // Limitar a 100 entradas
+    if (snapshot.size >= 100) {
+      const ultimo = snapshot.docs[snapshot.size - 1];
+      await historialRef.doc(ultimo.id).delete();
+    }
+
+    await historialRef.add({
+      nombre: "Sin título",
+      fecha: firebase.firestore.FieldValue.serverTimestamp(),
+      detalles: detallesFormateados,
+      total: totalFinalFormateado
+    });
+
+  } catch (error) {
+    console.error("❌ Error al guardar historial:", error);
+  }
+}
 
     function calcular() {
-      registrarClic();
-      const c1 = parseFloat(document.getElementById('c1').value.trim());
-      const c7 = parseFloat(document.getElementById('c7').value.trim());
-      const c8 = parseFloat(document.getElementById('c8').value.trim());
-      const e2 = parseFloat(document.getElementById('e2').value.trim());
-      const c13 = document.getElementById('c13').value;
-      const c14 = document.getElementById('c14').value;
-      const motor = document.getElementById('motor').value;
+  registrarClic();
+  const c1 = parseFloat(document.getElementById('c1').value.trim());
+  const c7 = parseFloat(document.getElementById('c7').value.trim());
+  const c8 = parseFloat(document.getElementById('c8').value.trim());
+  const e2 = parseFloat(document.getElementById('e2').value.trim());
+  const c13 = document.getElementById('c13').value;
+  const c14 = document.getElementById('c14').value;
+  const motor = document.getElementById('motor').value;
 
-      if (!c1 || !c7 || !c8 || !e2 || !c13 || !c14 || (c13 === "OTROS" && !motor)) {
-        alert("Por favor completa todos los campos. El campo 'Tipo de Motor' solo aplica si el VIN es OTROS.");
-        return;
-      }
+  if (!c1 || !c7 || !c8 || !e2 || !c13 || !c14 || (c13 === "OTROS" && !motor)) {
+    alert("Por favor completa todos los campos. El campo 'Tipo de Motor' solo aplica si el VIN es OTROS.");
+    return;
+  }
 
-      const c2 = 15;
-      const c3 = buscarVirtualBidFee(c1);
-      const c4 = buscarBuyerFee(c1);
-      const c5 = 115;
-      const c6 = c1 + c2 + c3 + c4 + c5;
-      const c9 = c7 + c8;
-      const c10 = c6 + c9;
-      const c11 = c10 * e2;
-      const o3 = 50 * e2;
-      const o4 = c6 * 0.015 * e2;
+  const c2 = 15;
+  const c3 = buscarVirtualBidFee(c1);
+  const c4 = buscarBuyerFee(c1);
+  const c5 = 115;
+  const c6 = c1 + c2 + c3 + c4 + c5;
+  const c9 = c7 + c8;
+  const c10 = c6 + c9;
+  const c11 = c10 * e2;
+  const o3 = 50 * e2;
+  const o4 = c6 * 0.015 * e2;
 
-      let c15 = 0;
-      if (motor === "1.5 Inferior") {
-        c15 = (c11 + o3 + o4 + c5) * 0.05;
-      } else if (c13 === "OTROS" && c14 === "PICK UP") {
-        c15 = (c11 + o3 + o4 + c5) * 0.10;
-      } else if (c13 === "OTROS") {
-        c15 = (c11 + o3 + o4 + c5) * 0.15;
-      }
+  let c15 = 0;
+  if (motor === "1.5 Inferior") {
+    c15 = (c11 + o3 + o4 + c5) * 0.05;
+  } else if (c13 === "OTROS" && c14 === "PICK UP") {
+    c15 = (c11 + o3 + o4 + c5) * 0.10;
+  } else if (c13 === "OTROS") {
+    c15 = (c11 + o3 + o4 + c5) * 0.15;
+  }
 
-      let isc = 0;
-      if (c10 <= 7000) isc = 0.10;
-      else if (c10 <= 10000) isc = 0.15;
-      else if (c10 <= 20000) isc = 0.20;
-      else if (c10 <= 30000) isc = 0.30;
-      else isc = 0.45;
+  let isc = 0;
+  if (c10 <= 7000) isc = 0.10;
+  else if (c10 <= 10000) isc = 0.15;
+  else if (c10 <= 20000) isc = 0.20;
+  else if (c10 <= 30000) isc = 0.30;
+  else isc = 0.45;
 
-      const c16 = (c14 === "OTROS") ? (c11 + o3 + o4 + c15) * isc : 0;
-      const c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
-      const c18 = c15 + c16 + c17;
+  const c16 = (c14 === "OTROS") ? (c11 + o3 + o4 + c15) * isc : 0;
+  const c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
+  const c18 = c15 + c16 + c17;
 
-      let c20 = 5000;
-      if (c1 > 15000 && c1 <= 25000) c20 = 7000;
-      else if (c1 > 25000) c20 = 10000;
+  let c20 = 5000;
+  if (c1 > 15000 && c1 <= 25000) c20 = 7000;
+  else if (c1 > 25000) c20 = 10000;
 
-      const c21 = 4000, c22 = 7500, c23 = 4000, c24 = 55 * e2;
-      const c25 = c20 + c21 + c22 + c23 + c24;
-      const c26 = c11 + c18 + c25 + o4 + o3;
+  const c21 = 4000, c22 = 7500, c23 = 4000, c24 = 55 * e2;
+  const c25 = c20 + c21 + c22 + c23 + c24;
+  const c26 = c11 + c18 + c25 + o4 + o3;
 
-      const detalles = [
-        ['MONTO DE OFERTA', c1, 'usd'],
-        ['ENVIRONMENTAL FEE', c2, 'usd'],
-        ['VIRTUAL BID FEE', c3, 'usd'],
-        ['BUYER FEE', c4, 'usd'],
-        ['GATE Y TITLE PICK FEE', c5, 'usd'],
-        ['TOTAL PRECIO SUBASTA', c6, 'usd'],
-        ['VALOR DE BARCO', c7, 'usd'],
-        ['PRECIO DE GRÚA', c8, 'usd'],
-        ['TOTAL DE ENVÍO MARÍTIMO', c9, 'usd'],
-        ['TOTAL CIF EN DÓLARES', c10, 'usd'],
-        ['TOTAL CIF EN LEMPIRAS', c11, 'hnl'],
-        ['DAI', c15, 'hnl'],
-        ['ISC', c16, 'hnl'],
-        ['ISV', c17, 'hnl'],
-        ['TOTAL DE IMPUESTOS HONDURAS', c18, 'hnl'],
-        ['ECOTASA', c20, 'hnl'],
-        ['ADUANERO', c21, 'hnl'],
-        ['VOTAINER - CONSOLIDADOS HN', c22, 'hnl'],
-        ['MATRÍCULA Y PLACAS', c23, 'hnl'],
-        ['TRANSFERENCIA INTERNACIONAL', c24, 'hnl'],
-        ['TOTAL DE GASTOS FIJOS', c25, 'hnl'],
-        ['TOTAL FINAL', c26, 'hnl']
-      ];
+  const detalles = [
+    ['MONTO DE OFERTA', c1, 'usd'],
+    ['ENVIRONMENTAL FEE', c2, 'usd'],
+    ['VIRTUAL BID FEE', c3, 'usd'],
+    ['BUYER FEE', c4, 'usd'],
+    ['GATE Y TITLE PICK FEE', c5, 'usd'],
+    ['TOTAL PRECIO SUBASTA', c6, 'usd'],
+    ['VALOR DE BARCO', c7, 'usd'],
+    ['PRECIO DE GRÚA', c8, 'usd'],
+    ['TOTAL DE ENVÍO MARÍTIMO', c9, 'usd'],
+    ['TOTAL CIF EN DÓLARES', c10, 'usd'],
+    ['TOTAL CIF EN LEMPIRAS', c11, 'hnl'],
+    ['DAI', c15, 'hnl'],
+    ['ISC', c16, 'hnl'],
+    ['ISV', c17, 'hnl'],
+    ['TOTAL DE IMPUESTOS HONDURAS', c18, 'hnl'],
+    ['ECOTASA', c20, 'hnl'],
+    ['ADUANERO', c21, 'hnl'],
+    ['VOTAINER - CONSOLIDADOS HN', c22, 'hnl'],
+    ['MATRÍCULA Y PLACAS', c23, 'hnl'],
+    ['TRANSFERENCIA INTERNACIONAL', c24, 'hnl'],
+    ['TOTAL DE GASTOS FIJOS', c25, 'hnl'],
+    ['TOTAL FINAL', c26, 'hnl']
+  ];
 
-      document.getElementById('results').innerHTML = `
-        <div style="text-align:center;">
-          <p><strong>Total Final:</strong> ${formatear(c26)}</p>
-          <div class="botones-detalle">
-            <button onclick="mostrarDetalles()" id="toggleBtn" class="styled-btn">Ver detalles</button>
-            <button onclick="descargarPDF()" class="styled-btn">Descargar en PDF</button>
-            <button onclick="compartirWhatsApp()" class="styled-btn">Compartir por WhatsApp</button>
-          </div>
-          <div id="detalleResultados" style="display:none;">
-            <table class="tabla-detalles">
-              <tr><th>Concepto</th><th>Valor</th></tr>
-              ${detalles.map(([titulo, valor, tipo]) => `
-                <tr>
-                  <td>${titulo}</td>
-                  <td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td>
-                </tr>`).join('')}
-            </table>
-          </div>
-        </div>
-      `;
-    }
+  document.getElementById('results').innerHTML = `
+    <div style="text-align:center;">
+      <p><strong>Total Final:</strong> ${formatear(c26)}</p>
+      <div class="botones-detalle">
+        <button onclick="mostrarDetalles()" id="toggleBtn" class="styled-btn">Ver detalles</button>
+        <button onclick="descargarPDF()" class="styled-btn">Descargar en PDF</button>
+        <button onclick="compartirWhatsApp()" class="styled-btn">Compartir por WhatsApp</button>
+      </div>
+      <div id="detalleResultados" style="display:none;">
+        <table class="tabla-detalles">
+          <tr><th>Concepto</th><th>Valor</th></tr>
+          ${detalles.map(([titulo, valor, tipo]) => `
+            <tr>
+              <td>${titulo}</td>
+              <td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td>
+            </tr>`).join('')}
+        </table>
+      </div>
+    </div>
+  `;
+
+  // GUARDAR EN HISTORIAL
+  const detallesFormateados = detalles.map(([titulo, valor, tipo]) => ({
+    titulo,
+    valor: tipo === 'usd' ? formatearUSD(valor) : formatear(valor)
+  }));
+
+  guardarHistorial(detallesFormateados, formatear(c26));
+}
+
 
     function mostrarDetalles() {
       const tabla = document.getElementById("detalleResultados");
