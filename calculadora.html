@@ -3,191 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SUBASTACARHN</title>
+  <title>Calculadora – SubastaCarHN</title>
   <link rel="manifest" href="Img/site.webmanifest">
-
-  <link rel="apple-touch-icon"
-        sizes="180x180"
-        href="Img/apple-touch-icon.png">
-
-  <link rel="icon"
-        type="image/png"
-        sizes="32x32"
-        href="Img/favicon-32x32.png">
-  <link rel="icon"
-        type="image/png"
-        sizes="16x16"
-        href="Img/favicon-16x16.png">
-
-  <link rel="icon"
-        type="image/png"
-        sizes="192x192"
-        href="Img/android-chrome-192x192.png">
-  <link rel="icon"
-        type="image/png"
-        sizes="512x512"
-        href="Img/android-chrome-512x512.png">
-
+  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
   <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="msapplication-TileImage" content="Img/favicon-32x32.png">
-
   <meta name="theme-color" content="#002f6c">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
+
   <style>
-    body {
-      font-family: Helvetica, sans-serif;
+    :root {
+      --blue: #002f6c;
+      --blue2: #004aad;
+      --yellow: #ffc20e;
+      --dark: #333;
+      --light: #f9f9f9;
+    }
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background: #f9f9f9;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--light);
+      color: var(--dark);
     }
     header {
-      background: linear-gradient(to right, #002f6c, #004aad);
-      height: 70px;
-      color: white;
-      font-size: 22px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 15px;
+      background: linear-gradient(to right, var(--blue), var(--blue2));
       position: sticky;
       top: 0;
       z-index: 999;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    header a {
+    .brand {
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 700;
       text-decoration: none;
-      color: white;
-      font-weight: bold;
     }
-    header span#contadorClics {
-      font-size: 12px;
-      color: #ffc20e;
+    .nav {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .nav a {
+      color: var(--yellow);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    #contadorClics {
+      font-size: 0.8rem;
+      color: var(--yellow);
       font-weight: normal;
     }
-    .menu-icon {
-      font-size: 20px;
-      background: #ffc20e;
-      color: #002f6c;
-      padding: 8px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    }
-    .styled-btn {
-      background: #ffc20e;
-      color: #002f6c;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 14px;
-      margin: 5px;
-      font-size: 14px;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.2s ease;
-      width: auto !important;
-    }
-    .styled-btn:hover {
-      background: #e6ac00;
-    }
-    #menu-links {
-      display: none;
-      list-style: none;
-      padding: 10px;
-      margin: 10px 0 0;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      position: absolute;
-      top: 70px;
-      left: 15px;
-      z-index: 1000;
-    }
-    #menu-links li {
-      margin-bottom: 10px;
-    }
-    #menu-links a {
-      text-decoration: none;
-      color: #002f6c;
-      font-weight: bold;
-    }
-    h1 {
+    footer {
+      background: var(--blue2);
+      color: white;
       text-align: center;
-      color: #002f6c;
-      margin-top: 20px;
-      font-size: 20px;
+      padding: 1rem 0;
+      margin-top: 3rem;
     }
-    .layout {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 20px 10px;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-    .banner {
-      flex-shrink: 0;
-    }
-    .banner img {
-      width: 400px;
-      height: 400px;
-      object-fit: cover;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-    }
-    .contenido-central {
-      max-width: 380px;
-      width: 100%;
-      background: #fff;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      padding: 20px;
-    }
-    label {
-      font-weight: bold;
-      color: #002f6c;
-      display: block;
-      margin-top: 10px;
-    }
-    input,
-    select {
-      font-size: 14px;
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid #004aad;
-      background: #f0f8ff;
-      width: 100%;
-      margin-top: 5px;
-      box-sizing: border-box;
-    }
-    .tabla-detalles {
-      margin: 20px auto;
-      border-collapse: collapse;
-      width: auto;
-      max-width: 600px;
-    }
-    .tabla-detalles th,
-    .tabla-detalles td {
-      padding: 8px 12px;
-      border: 1px solid #ddd;
-    }
-    .tabla-detalles th {
-      background: #f2f2f2;
-    }
-    .botones-detalle {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-    @media (max-width: 768px) {
-      .banner {
-        display: none !important;
-      }
+    footer a {
+      color: var(--yellow);
+      text-decoration: none;
+      margin: 0 0.5rem;
     }
   </style>
 </head>
+
 <body>
 
   <!-- Contenido de la app, visible solo con sesión activa -->
@@ -195,10 +86,14 @@
 
     <!-- Encabezado -->
     <header>
-      <div class="menu-icon" onclick="toggleMenu()">☰</div>
-      <a href="index.html">SUBASTACARHN</a>
-      <span id="contadorClics">Cálculos: ...</span>
-    </header>
+  <a href="index.html" class="brand">SubastaCarHN</a>
+  <div class="nav">
+    <a href="calculadora.html">Calculadora</a>
+    <a href="cursos.html">Cursos</a>
+    <span id="contadorClics">Cálculos: ...</span>
+  </div>
+</header>
+
 
     <!-- Menú desplegable -->
     <ul id="menu-links">
@@ -287,12 +182,14 @@
     </a>
 
     <!-- Footer -->
-    <footer style="background:#002f6c; color:white; text-align:center; padding:10px 0; margin-top:40px;">
-      Síguenos en:
-      <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" style="color:#ffc20e">Facebook</a> |
-      <a href="https://www.instagram.com/subastacar1/" style="color:#ffc20e">Instagram</a> |
-      <a href="https://www.tiktok.com/@tu_amigo_el_importador" style="color:#ffc20e">TikTok</a>
-    </footer>
+    <footer>
+  <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
+  <div style="margin-top:0.5rem;">
+    <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
+    <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
+    <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+  </div>
+</footer>
   </div>
   <!-- Firebase SDKs para autenticación -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
