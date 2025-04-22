@@ -107,10 +107,9 @@
     }
     .styled-btn:hover { background: #e6ac00; }
 
-    /* HERO */
     .hero-curso {
       background: url('Img/curso-hero.jpg') center/cover no-repeat;
-      height: 70vh;
+      height: 50vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -125,10 +124,7 @@
       max-width: 600px;
     }
 
-    /* SECCIONES */
-    section {
-      padding: 3rem 1rem;
-    }
+    section { padding: 3rem 1rem; }
     .video-presentacion, .info-curso, .beneficios {
       background: #fff;
       text-align: center;
@@ -150,6 +146,34 @@
     }
     .cta-wsp a {
       font-size: 1.1rem;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+    }
+    .video-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.8);
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+      cursor: pointer;
     }
 
     footer {
@@ -194,10 +218,13 @@
   <section class="video-presentacion">
     <div class="container">
       <h2 style="color: var(--blue); margin-bottom: 1rem;">Conoce el Curso en 60 segundos</h2>
-      <video controls style="max-width: 100%; border-radius: 12px;">
-        <source src="videos/VIDEO-2025-04-21-14-26-34.mp4" type="video/mp4">
-        Tu navegador no soporta video HTML5.
-      </video>
+      <div class="video-wrapper" style="max-width: 600px; margin: auto;">
+        <div id="cursoVideoLazy" class="video-container"
+             data-video-src="videos/VIDEO-2025-04-21-14-26-34.mp4"
+             style="background-image: url('Img/curso-hero.jpg');">
+          <button class="play-button" aria-label="Reproducir video">▶️</button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -246,7 +273,7 @@
     </div>
   </footer>
 
-  <!-- Firebase + Menú -->
+  <!-- Firebase + Lazy Video Script -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
@@ -283,5 +310,23 @@
       firebase.auth().signOut().then(() => location.reload());
     }
   </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('cursoVideoLazy');
+      const btn = container.querySelector('.play-button');
+      btn.addEventListener('click', () => {
+        const vid = document.createElement('video');
+        vid.controls = true;
+        vid.autoplay = true;
+        vid.playsInline = true;
+        vid.src = container.dataset.videoSrc;
+        vid.style.borderRadius = '12px';
+        container.innerHTML = '';
+        container.appendChild(vid);
+      });
+    });
+  </script>
+
 </body>
 </html>
