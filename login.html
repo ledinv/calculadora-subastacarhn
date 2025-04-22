@@ -99,40 +99,48 @@
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
       measurementId: "G-QM5N60K8C0"
     };
-    firebase.initializeApp(firebaseConfig);
+    <script>
+  // Configuración Firebase (lo de arriba queda igual)
+  firebase.initializeApp(firebaseConfig);
 
-    function toggleMenu() {
-      const m = document.getElementById('menu-links');
-      m.style.display = m.style.display === 'block' ? 'none' : 'block';
-    }
+  window.addEventListener('DOMContentLoaded', () => {
+    // — LOGIN —
+    document.getElementById('loginForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const email = document.getElementById('emailL').value.trim();
+      const pass  = document.getElementById('passwordL').value;
+      try {
+        // 1) Inicia sesión
+        await firebase.auth().signInWithEmailAndPassword(email, pass);
 
-    window.addEventListener('DOMContentLoaded', () => {
-      // — LOGIN —
-      document.getElementById('loginForm').addEventListener('submit', async e => {
-        e.preventDefault();
-        const email = document.getElementById('emailL').value.trim();
-        const pass  = document.getElementById('passwordL').value;
-        try {
-          // 1) Inicia sesión
-          const cred = await firebase.auth()
-            .signInWithEmailAndPassword(email, pass);
-          const user = cred.user;
-          // 2) Fuerza recarga del estado de verificación
-          await user.reload();
-          // 3) Comprueba de nuevo
-          if (!user.emailVerified) {
-            alert('⚠️ Verifica tu correo antes de continuar.');
-            return;
-          }
-          // 4) Redirige si OK
-          window.location.href = 'index.html';
-        } catch(err) {
-          const msg = (err.code==='auth/user-not-found'||err.code==='auth/wrong-password')
-            ? '⚠️ Email o contraseña incorrectos.'
-            : err.message;
-          alert(msg);
+        // 2) Forzamos una recarga del objeto currentUser
+        await firebase.auth().currentUser.reload();
+
+        // 3) Sacamos el usuario actualizado
+        const user = firebase.auth().currentUser;
+
+        // 4) Si no está verificado, cortamos aquí
+        if (!user.emailVerified) {
+          alert('⚠️ Verifica tu correo antes de continuar.');
+          return;
         }
-      });
+
+        // 5) Si todo ok, redirigimos
+        window.location.href = 'index.html';
+
+      } catch(err) {
+        const msg = (err.code==='auth/user-not-found' || err.code==='auth/wrong-password')
+          ? '⚠️ Email o contraseña incorrectos.'
+          : err.message;
+        alert(msg);
+      }
+    });
+
+    // — RECUPERAR CONTRASEÑA — (lo tuyo queda igual)
+    …
+  });
+</script>
+
 
       // — RECUPERAR CONTRASEÑA —
       const forgotLink = document.getElementById('forgot-link');
