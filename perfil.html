@@ -12,7 +12,6 @@
   <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
   <meta name="theme-color" content="#002f6c">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
-
   <style>
     :root {
       --blue: #002f6c;
@@ -99,7 +98,6 @@
       .nav-links { display: flex; }
       .mobile-nav { display: none !important; }
     }
-
     main.layout {
       padding: 2rem 1rem;
     }
@@ -215,9 +213,8 @@
         <div id="successMsg" class="success-msg" style="display:none;">✅ Tus datos han sido actualizados con éxito.</div>
       </form>
       <hr style="margin: 2rem 0; border: none; border-top: 2px dashed #ccc;" />
-<h2 style="text-align:center; color:#002f6c;">Historial de Cálculos</h2>
-<div id="historialContainer" style="margin-top: 1rem;"></div>
-
+      <h2 style="text-align:center; color:#002f6c;">Historial de Cálculos</h2>
+      <div id="historialContainer" style="margin-top: 1rem;"></div>
     </div>
   </main>
 
@@ -231,6 +228,7 @@
       </div>
     </div>
   </footer>
+
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
@@ -248,7 +246,6 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-
     auth.onAuthStateChanged(async user => {
       if (!user) return window.location.href = "login.html";
       const docRef = db.collection('clients').doc(user.uid);
@@ -261,56 +258,9 @@
         document.getElementById('address').value = data.address || "";
         document.getElementById('dni').value = data.dni || "";
         document.getElementById('birthYear').value = data.birthYear || "";
+        cargarHistorial();
       } else {
         alert("⚠️ No se encontró el perfil.");
-      }
-    });
-
-    document.getElementById('profileForm').addEventListener('submit', async e => {
-      e.preventDefault();
-      const user = auth.currentUser;
-      if (!user) return;
-      try {
-        await db.collection('clients').doc(user.uid).update({
-          fullName: document.getElementById('name').value.trim(),
-          address: document.getElementById('address').value.trim(),
-          dni: document.getElementById('dni').value.trim(),
-          birthYear: document.getElementById('birthYear').value.trim()
-        });
-        document.getElementById('successMsg').style.display = 'block';
-      } catch (error) {
-        console.error("Error al guardar:", error);
-        alert("❌ Error al guardar los cambios.");
-      }
-    });
-
-    function logout() {
-      auth.signOut().then(() => window.location.href = "login.html");
-    }
-
-    function sendPasswordReset() {
-      const email = document.getElementById('email').value;
-      auth.sendPasswordResetEmail(email)
-        .then(() => alert('📧 Se ha enviado un enlace de restablecimiento a tu correo.'))
-        .catch(err => alert('❌ No se pudo enviar el enlace.'));
-    }
-
-    function toggleMenu() {
-      const menu = document.getElementById('mobile-menu-links');
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-    }
-
-        firebase.auth().onAuthStateChanged(user => {
-      const desktop = document.getElementById('userGreeting');
-      const mobile = document.getElementById('mobileGreeting');
-      if (user) {
-        const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
-        desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
-        mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
-        cargarHistorial(); // 👈 Aseguramos que también cargue el historial
-      } else {
-        desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
-        mobile.innerHTML  = desktop.innerHTML;
       }
     });
 
@@ -335,13 +285,14 @@
         const fecha = data.fecha?.toDate().toLocaleString("es-HN") || "Fecha desconocida";
 
         html += `
-          <div style="background:#f0f8ff; padding:1rem; border-radius:10px; margin-bottom:1rem; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-            <strong>${nombre}</strong><br>
+          <div id="historial-${id}" style="background:#f0f8ff; padding:1rem; border-radius:10px; margin-bottom:1rem; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+            <input type="text" value="${nombre}" onchange="renombrarHistorial('${id}', this.value)" style="font-weight:bold; border:none; background:transparent; color:#002f6c; width:100%;"/>
             <small>${fecha}</small><br>
             <strong style="color:#004aad;">${total}</strong>
             <br><br>
             <button class="styled-btn" onclick="verDetallesHistorial('${id}')">Ver detalles</button>
             <button class="styled-btn" onclick="descargarHistorialPDF('${id}')">Descargar PDF</button>
+            <button class="styled-btn" onclick="eliminarHistorial('${id}')">Eliminar</button>
           </div>
         `;
       });
@@ -349,64 +300,95 @@
     }
 
     async function verDetallesHistorial(id) {
+      // Ocultar otros detalles abiertos
+      document.querySelectorAll(".detalle-abierto").forEach(el => el.remove());
+
       const user = firebase.auth().currentUser;
       const ref = db.collection("clients").doc(user.uid).collection("historial").doc(id);
       const doc = await ref.get();
       if (!doc.exists) return alert("❌ No se encontró este cálculo.");
       const data = doc.data();
 
-      let tabla = `
-        <table class="tabla-detalles" style="margin-top:1rem;">
-          <tr><th>Concepto</th><th>Valor</th></tr>
-          ${data.detalles.map(item => `
-            <tr>
-              <td>${item.titulo}</td>
-              <td>${item.valor}</td>
-            </tr>`).join('')}
-        </table>
+      const detalle = document.createElement("div");
+      detalle.classList.add("detalle-abierto");
+      detalle.innerHTML = `
+        <div style="margin-top: 1rem; border: 1px dashed #ccc; border-radius: 10px; padding: 10px;">
+          <table class="tabla-detalles">
+            <tr><th>Concepto</th><th>Valor</th></tr>
+            ${data.detalles.map(item => `
+              <tr>
+                <td>${item.titulo}</td>
+                <td>${item.valor}</td>
+              </tr>`).join('')}
+          </table>
+          <button class="styled-btn" onclick="this.parentElement.remove()">Cerrar</button>
+        </div>
       `;
-      const div = document.createElement("div");
-      div.innerHTML = tabla;
-      document.getElementById("historialContainer").appendChild(div);
+      document.getElementById(`historial-${id}`).appendChild(detalle);
     }
 
-    async function descargarHistorialPDF(id) {
+    async function renombrarHistorial(id, nuevoNombre) {
       const user = firebase.auth().currentUser;
-      const ref = db.collection("clients").doc(user.uid).collection("historial").doc(id);
-      const doc = await ref.get();
-      if (!doc.exists) return alert("❌ No se encontró este cálculo.");
-      const data = doc.data();
+      if (!user) return;
+      try {
+        await db.collection("clients").doc(user.uid).collection("historial").doc(id).update({
+          nombre: nuevoNombre
+        });
+      } catch (e) {
+        alert("❌ No se pudo renombrar.");
+        console.error(e);
+      }
+    }
 
-      const tabla = `
-        <h2 style="text-align:center;">${data.nombre}</h2>
-        <p><strong>Total Final:</strong> ${data.total}</p>
-        <table class="tabla-detalles" style="margin-top:1rem;">
-          <tr><th>Concepto</th><th>Valor</th></tr>
-          ${data.detalles.map(item => `
-            <tr>
-              <td>${item.titulo}</td>
-              <td>${item.valor}</td>
-            </tr>`).join('')}
-        </table>
-      `;
+    async function eliminarHistorial(id) {
+      const confirmacion = confirm("¿Seguro que deseas eliminar este historial?");
+      if (!confirmacion) return;
+      const user = firebase.auth().currentUser;
+      if (!user) return;
+      try {
+        await db.collection("clients").doc(user.uid).collection("historial").doc(id).delete();
+        cargarHistorial(); // Recargar lista
+      } catch (e) {
+        alert("❌ No se pudo eliminar.");
+        console.error(e);
+      }
+    }
 
-      const w = window.open('', '_blank', 'width=800,height=600');
-      w.document.open();
-      w.document.write(`
-        <html><head><title>Descargar Historial</title>
-        <style>
-          body { font-family: Helvetica; margin: 20px; }
-          .tabla-detalles { border-collapse: collapse; width: 100%; max-width: 600px; margin: auto; }
-          .tabla-detalles th, .tabla-detalles td {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-          }
-          .tabla-detalles th { background: #f2f2f2; }
-        </style>
-        </head><body>${tabla}</body></html>
-      `);
-      w.document.close();
-      setTimeout(() => w.print(), 500);
+    function descargarHistorialPDF(id) {
+      const user = firebase.auth().currentUser;
+      db.collection("clients").doc(user.uid).collection("historial").doc(id).get().then(doc => {
+        if (!doc.exists) return alert("❌ No se encontró este cálculo.");
+        const data = doc.data();
+        const tabla = `
+          <h2 style="text-align:center;">${data.nombre}</h2>
+          <p><strong>Total Final:</strong> ${data.total}</p>
+          <table class="tabla-detalles" style="margin-top:1rem;">
+            <tr><th>Concepto</th><th>Valor</th></tr>
+            ${data.detalles.map(item => `
+              <tr>
+                <td>${item.titulo}</td>
+                <td>${item.valor}</td>
+              </tr>`).join('')}
+          </table>
+        `;
+        const w = window.open('', '_blank', 'width=800,height=600');
+        w.document.open();
+        w.document.write(`
+          <html><head><title>Descargar Historial</title>
+          <style>
+            body { font-family: Helvetica; margin: 20px; }
+            .tabla-detalles { border-collapse: collapse; width: 100%; max-width: 600px; margin: auto; }
+            .tabla-detalles th, .tabla-detalles td {
+              padding: 8px 12px;
+              border: 1px solid #ddd;
+            }
+            .tabla-detalles th { background: #f2f2f2; }
+          </style>
+          </head><body>${tabla}</body></html>
+        `);
+        w.document.close();
+        setTimeout(() => w.print(), 500);
+      });
     }
   </script>
 </body>
