@@ -3,312 +3,314 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mi Perfil – SubastaCarHN</title>
+  <title>Iniciar Sesión</title>
   <link rel="manifest" href="Img/site.webmanifest">
-  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
+
+  <link rel="apple-touch-icon"
+        sizes="180x180"
+        href="Img/apple-touch-icon.png">
+
+  <link rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="Img/favicon-32x32.png">
+  <link rel="icon"
+        type="image/png"
+        sizes="16x16"
+        href="Img/favicon-16x16.png">
+
+  <link rel="icon"
+        type="image/png"
+        sizes="192x192"
+        href="Img/android-chrome-192x192.png">
+  <link rel="icon"
+        type="image/png"
+        sizes="512x512"
+        href="Img/android-chrome-512x512.png">
+
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="Img/favicon-32x32.png">
+
   <meta name="theme-color" content="#002f6c">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
-
   <style>
-    :root {
-      --blue: #002f6c;
-      --blue2: #004aad;
-      --yellow: #ffc20e;
-      --dark: #333;
-      --light: #f9f9f9;
-      --max-width: 1200px;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* --- Estilos idénticos a register.html y calculadora --- */
     body {
-      font-family: 'Montserrat', sans-serif;
-      color: var(--dark);
-      background: var(--light);
-      line-height: 1.6;
+      font-family: Helvetica, sans-serif;
+      margin: 0; padding: 0;
+      background: #f9f9f9;
     }
-    a { text-decoration: none; color: inherit; }
-    ul { list-style: none; }
-
-    .container {
-      width: 100%;
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-
     header {
-      background: linear-gradient(to right, var(--blue), var(--blue2));
+      background: linear-gradient(to right, #002f6c, #004aad);
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
       position: sticky;
       top: 0;
       z-index: 999;
     }
-    .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.5rem 0;
+    /* marca centrada */
+    header a.brand {
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+      text-decoration: none;
+      margin: 0 auto;
     }
-    .brand {
-      color: #fff;
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-    .nav-links {
-      display: none;
-      gap: 1rem;
-    }
-    .nav-links a, .nav-links span {
-      color: var(--yellow);
-      font-size: 0.9375rem;
-      font-weight: 600;
-    }
+    /* botón hamburguesa */
     .menu-icon {
-      background: var(--yellow);
-      color: var(--blue);
-      border: none;
-      font-size: 1rem;
-      line-height: 1;
-      padding: 0.5rem;
+      font-size: 20px;
+      background: #ffc20e;
+      color: #002f6c;
+      padding: 8px 10px;
       border-radius: 6px;
       cursor: pointer;
+      font-weight: bold;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
-    .mobile-nav {
+    /* menú desplegable */
+    #menu-links {
       display: none;
-      flex-direction: column;
-      background: #fff;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      padding: 1rem;
+      list-style: none;
+      padding: 10px;
+      margin: 10px 0 0;
+      background: white;
+      border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      z-index: 998;
+      position: absolute;
+      top: 70px;
+      left: 15px;
+      z-index: 1000;
     }
-    .mobile-nav li { margin-bottom: 0.75rem; }
-    .mobile-nav a, .mobile-nav span {
-      color: var(--blue);
-      font-weight: 700;
-      font-size: 0.9375rem;
-    }
-    @media (min-width: 768px) {
-      .menu-icon { display: none; }
-      .nav-links { display: flex; }
-      .mobile-nav { display: none !important; }
-    }
+    #menu-links li { margin-bottom: 10px; }
+    #menu-links a { text-decoration: none; color: #002f6c; font-weight: bold; }
 
-    main.layout {
-      padding: 2rem 1rem;
+    /* contenedor central */
+    .layout {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 10px;
     }
     .contenido-central {
-      max-width: 500px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      padding: 20px;
     }
     .contenido-central h1 {
       text-align: center;
-      color: var(--blue);
-      margin-bottom: 1.5rem;
+      color: #002f6c;
+      margin-bottom: 20px;
     }
-    form label {
+    label {
+      font-weight: bold;
+      color: #002f6c;
       display: block;
-      margin: 0.5rem 0 0.25rem;
-      font-weight: 600;
+      margin-top: 10px;
     }
-    form input {
+    input {
+      font-size: 14px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #004aad;
+      background: #f0f8ff;
       width: 100%;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-bottom: 1rem;
-    }
-    .readonly {
-      background: #e4e4e4;
-      color: #555;
-    }
-    small.note {
-      font-size: 12px;
-      color: #666;
-      display: block;
-      margin-top: -0.75rem;
-      margin-bottom: 1rem;
+      margin-top: 5px;
+      box-sizing: border-box;
     }
     .styled-btn {
-      background: var(--yellow);
-      color: var(--blue);
-      font-weight: 700;
+      background-color: #ffc20e;
+      color: #002f6c;
+      font-weight: bold;
       border: none;
       border-radius: 8px;
-      padding: 0.75rem;
-      font-size: 1rem;
-      cursor: pointer;
-      width: 100%;
-      margin-bottom: 0.75rem;
-    }
-    .styled-btn:hover { background: #e6ac00; }
-
-    .success-msg {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
       padding: 10px;
-      border-radius: 6px;
+      margin-top: 20px;
+      width: 100%;
+      cursor: pointer;
+      font-size: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .styled-btn:hover {
+      background-color: #e6ac00;
+    }
+    /* estilos para el enlace de recuperación */
+    .forgot {
+      text-align: center;
       margin-top: 10px;
-      text-align: center;
     }
-
-    footer {
-      background: var(--blue2);
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
+    .forgot a {
+      color: #004aad;
+      text-decoration: underline;
+      font-size: 0.9rem;
     }
-    footer a { color: var(--yellow); margin: 0 0.5rem; }
+    /* estilos del modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      max-width: 400px;
+      width: 90%;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .modal-content .close {
+      position: absolute;
+      top: 0.5rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <header>
-    <div class="container header-inner">
-      <a href="index.html" class="brand">SubastaCarHN</a>
-      <nav class="nav-links" aria-label="Menú principal">
-        <a href="calculadora.html">Calculadora</a>
-        <a href="#cursos" id="linkCursos">Cursos</a>
-        <span id="userGreeting"></span>
-      </nav>
-      <button class="menu-icon" onclick="toggleMenu()">☰</button>
-    </div>
-    <ul id="mobile-menu-links" class="mobile-nav">
-      <li><a href="calculadora.html">Calculadora</a></li>
-      <li><a href="#cursos" id="linkCursosMobile">Cursos</a></li>
-      <li><span id="mobileGreeting"></span></li>
-      <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
-    </ul>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <a href="index.html" class="brand">SUBASTACARHN</a>
+    <span></span>
   </header>
+  <ul id="menu-links">
+    <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
+    <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
+    <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
+    <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+  </ul>
 
-  <main class="layout">
+  <div class="layout">
     <div class="contenido-central">
-      <h1>Mi Perfil</h1>
-      <form id="profileForm">
-        <label for="name">Nombre completo</label>
-        <input type="text" id="name" required />
-        <label for="email">Correo electrónico</label>
-        <input type="email" id="email" class="readonly" readonly />
-        <label for="phone">Teléfono</label>
-        <input type="tel" id="phone" class="readonly" readonly />
-        <label for="address">Dirección</label>
-        <input type="text" id="address" />
-        <label for="dni">DNI</label>
-        <input type="text" id="dni" />
-        <label for="birthYear">Año de nacimiento</label>
-        <input type="number" id="birthYear" min="1900" max="2100" />
-        <small class="note">El DNI y el año de nacimiento te ayudarán a recuperar tu cuenta si pierdes el acceso.</small>
-        <button type="submit" class="styled-btn">Guardar cambios</button>
-        <button type="button" class="styled-btn" onclick="sendPasswordReset()">Cambiar contraseña</button>
-        <button type="button" class="styled-btn" onclick="logout()">Cerrar sesión</button>
-        <div id="successMsg" class="success-msg" style="display:none;">✅ Tus datos han sido actualizados con éxito.</div>
+      <h1>Iniciar Sesión</h1>
+      <form id="loginForm">
+        <label for="emailL">Correo electrónico</label>
+        <input type="email" id="emailL" required />
+
+        <label for="passwordL">Contraseña</label>
+        <input type="password" id="passwordL" minlength="8" required />
+
+        <button type="submit" class="styled-btn">Entrar</button>
+
+        <p class="forgot">
+          <a href="#" id="forgot-link">¿Olvidaste tu contraseña?</a>
+        </p>
       </form>
+      <p style="text-align:center; margin-top:15px;">
+        ¿No tienes cuenta? <a href="register.html">Registrarse</a>
+      </p>
     </div>
-  </main>
+  </div>
 
-  <footer>
-    <div class="container">
-      <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
-      <div style="margin-top:0.5rem;">
-        <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
-        <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
-        <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
-      </div>
+  <!-- Modal Recuperación -->
+  <div id="resetModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Recuperar contraseña</h2>
+      <form id="reset-form">
+        <label for="reset-email">Correo electrónico</label>
+        <input type="email" id="reset-email" required />
+        <button type="submit" class="styled-btn">Enviar enlace</button>
+      </form>
+      <p id="reset-msg" style="margin-top:10px; text-align:center;"></p>
     </div>
-  </footer>
+  </div>
 
-  <!-- Firebase -->
+  <!-- Firebase compat SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
-      authDomain: "subastacarhn-40554.firebaseapp.com",
-      projectId: "subastacarhn-40554",
-      storageBucket: "subastacarhn-40554.appspot.com",
-      messagingSenderId: "536785797974",
-      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
-      measurementId: "G-QM5N60K8C0"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    // Tu configuración<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+    authDomain: "subastacarhn-40554.firebaseapp.com",
+    projectId: "subastacarhn-40554",
+    storageBucket: "subastacarhn-40554.firebasestorage.app",
+    messagingSenderId: "536785797974",
+    appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+    measurementId: "G-QM5N60K8C0"
+  };
+  firebase.initializeApp(firebaseConfig);
 
-    auth.onAuthStateChanged(async user => {
-      if (!user) return window.location.href = "login.html";
-      const docRef = db.collection('clients').doc(user.uid);
-      const docSnap = await docRef.get();
-      if (docSnap.exists) {
-        const data = docSnap.data();
-        document.getElementById('name').value = data.fullName || "";
-        document.getElementById('email').value = data.email || user.email;
-        document.getElementById('phone').value = data.phone || "";
-        document.getElementById('address').value = data.address || "";
-        document.getElementById('dni').value = data.dni || "";
-        document.getElementById('birthYear').value = data.birthYear || "";
-      } else {
-        alert("⚠️ No se encontró el perfil.");
-      }
-    });
+  function toggleMenu() {
+    const m = document.getElementById('menu-links');
+    m.style.display = m.style.display === 'block' ? 'none' : 'block';
+  }
 
-    document.getElementById('profileForm').addEventListener('submit', async e => {
+  window.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('loginForm');
+    form.addEventListener('submit', async e => {
       e.preventDefault();
-      const user = auth.currentUser;
-      if (!user) return;
+      const email = document.getElementById('emailL').value.trim();
+      const pass  = document.getElementById('passwordL').value;
       try {
-        await db.collection('clients').doc(user.uid).update({
-          fullName: document.getElementById('name').value.trim(),
-          address: document.getElementById('address').value.trim(),
-          dni: document.getElementById('dni').value.trim(),
-          birthYear: document.getElementById('birthYear').value.trim()
-        });
-        document.getElementById('successMsg').style.display = 'block';
-      } catch (error) {
-        console.error("Error al guardar:", error);
-        alert("❌ Error al guardar los cambios.");
+        const cred = await firebase.auth().signInWithEmailAndPassword(email, pass);
+
+        // 🔁 Recargar usuario para obtener datos actualizados
+        await cred.user.reload();
+
+        if (!cred.user.emailVerified) {
+          alert('⚠️ Verifica tu correo antes de continuar.');
+          await firebase.auth().signOut(); // opcional, cerrar sesión si no verifica
+          return;
+        }
+
+        window.location.href = 'index.html';
+      } catch(err) {
+        const msg = (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password')
+          ? '⚠️ Email o contraseña incorrectos.'
+          : err.message;
+        alert(msg);
       }
     });
 
-    function logout() {
-      auth.signOut().then(() => window.location.href = "login.html");
-    }
+    // Recuperación de contraseña
+    const forgotLink = document.getElementById('forgot-link');
+    const modal = document.getElementById('resetModal');
+    const closeBtn = modal.querySelector('.close');
+    const resetForm = document.getElementById('reset-form');
+    const resetMsg = document.getElementById('reset-msg');
 
-    function sendPasswordReset() {
-      const email = document.getElementById('email').value;
-      auth.sendPasswordResetEmail(email)
-        .then(() => alert('📧 Se ha enviado un enlace de restablecimiento a tu correo.'))
-        .catch(err => alert('❌ No se pudo enviar el enlace.'));
-    }
+    forgotLink.addEventListener('click', e => {
+      e.preventDefault();
+      resetForm.reset();
+      resetMsg.textContent = '';
+      modal.style.display = 'flex';
+    });
 
-    function toggleMenu() {
-      const menu = document.getElementById('mobile-menu-links');
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-    }
+    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+    window.addEventListener('click', e => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
 
-    firebase.auth().onAuthStateChanged(user => {
-      const desktop = document.getElementById('userGreeting');
-      const mobile = document.getElementById('mobileGreeting');
-      if (user) {
-        const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
-        desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
-        mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
-      } else {
-        desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
-        mobile.innerHTML  = desktop.innerHTML;
+    resetForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const email = document.getElementById('reset-email').value.trim();
+      try {
+        await firebase.auth().sendPasswordResetEmail(email);
+        resetMsg.textContent = `✅ Enviado enlace a ${email}. Revisa tu bandeja.`;
+      } catch (err) {
+        console.error(err);
+        if (err.code === 'auth/user-not-found') {
+          resetMsg.textContent = '❌ Cuenta no encontrada.';
+        } else if (err.code === 'auth/invalid-email') {
+          resetMsg.textContent = '❌ Correo inválido.';
+        } else {
+          resetMsg.textContent = '❌ Error al enviar el correo.';
+        }
       }
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>
