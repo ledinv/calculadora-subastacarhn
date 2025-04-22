@@ -4,11 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Perfil de Usuario</title>
-  <!-- Agrega aquí tus enlaces a CSS y otros recursos -->
+  <!-- Aquí puedes agregar tus enlaces a CSS y otros recursos -->
 </head>
 <body>
   <div id="profile-container">
     <h1>Perfil de Usuario</h1>
+
     <form id="profile-form">
       <label for="displayName">Nombre:</label>
       <input type="text" id="displayName" name="displayName" required />
@@ -42,74 +43,79 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
   <script>
-    // Tu configuración de Firebase
+    // Configuración real de Firebase (cópiala de tu index.html)
     const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_AUTH_DOMAIN",
-      projectId: "TU_PROJECT_ID",
-      // ...otros campos según tu configuración
+      apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+      authDomain: "subastacarhn-40554.firebaseapp.com",
+      projectId: "subastacarhn-40554",
+      storageBucket: "subastacarhn-40554.appspot.com",
+      messagingSenderId: "536785797974",
+      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+      measurementId: "G-QM5N60K8C0"
     };
-
     // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-    const db = firebase.firestore();
+    const db   = firebase.firestore();
 
     // Verificar autenticación del usuario
     auth.onAuthStateChanged(user => {
-      if (user) {
-        const uid = user.uid;
-        const userDocRef = db.collection('users').doc(uid);
+      if (!user) {
+        // Si no está logueado, redirige al login
+        window.location.href = 'login.html';
+        return;
+      }
 
-        // Cargar datos del perfil
-        userDocRef.get().then(doc => {
+      const uid = user.uid;
+      const userDocRef = db.collection('users').doc(uid);
+
+      // Cargar datos del perfil
+      userDocRef.get()
+        .then(doc => {
           if (doc.exists) {
             const data = doc.data();
             document.getElementById('displayName').value = data.displayName || '';
-            document.getElementById('email').value = user.email;
-            document.getElementById('phone').value = data.phone || '';
+            document.getElementById('email').value       = user.email;
+            document.getElementById('phone').value       = data.phone || '';
           }
-        });
+        })
+        .catch(err => console.error('Error cargando perfil:', err));
 
-        // Manejar actualización del perfil
-        document.getElementById('profile-form').addEventListener('submit', e => {
-          e.preventDefault();
-          const displayName = document.getElementById('displayName').value;
-          const phone = document.getElementById('phone').value;
+      // Actualizar perfil
+      document.getElementById('profile-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const displayName = document.getElementById('displayName').value;
+        const phone       = document.getElementById('phone').value;
 
-          user.updateProfile({ displayName })
-            .then(() => userDocRef.set({ displayName, phone }, { merge: true }))
-            .then(() => alert('Perfil actualizado correctamente.'))
-            .catch(error => alert('Error al actualizar el perfil: ' + error.message));
-        });
+        user.updateProfile({ displayName })
+          .then(() => userDocRef.set({ displayName, phone }, { merge: true }))
+          .then(() => alert('Perfil actualizado correctamente.'))
+          .catch(error => alert('Error al actualizar el perfil: ' + error.message));
+      });
 
-        // Manejar cambio de contraseña
-        document.getElementById('password-form').addEventListener('submit', e => {
-          e.preventDefault();
-          const newPassword = document.getElementById('newPassword').value;
+      // Cambiar contraseña
+      document.getElementById('password-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const newPassword = document.getElementById('newPassword').value;
 
-          user.updatePassword(newPassword)
-            .then(() => alert('Contraseña actualizada correctamente.'))
-            .catch(error => alert('Error al cambiar la contraseña: ' + error.message));
-        });
+        user.updatePassword(newPassword)
+          .then(() => alert('Contraseña actualizada correctamente.'))
+          .catch(error => alert('Error al cambiar la contraseña: ' + error.message));
+      });
 
-        // Cargar historial de cálculos
-        const calculationsList = document.getElementById('calculations-list');
-        userDocRef.collection('calculations').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+      // Cargar historial de cálculos
+      const calculationsList = document.getElementById('calculations-list');
+      userDocRef.collection('calculations')
+        .orderBy('timestamp', 'desc')
+        .onSnapshot(snapshot => {
           calculationsList.innerHTML = '';
           snapshot.forEach(doc => {
             const calc = doc.data();
-            const li = document.createElement('li');
+            const li   = document.createElement('li');
             li.textContent = `${calc.name} - ${new Date(calc.timestamp.toDate()).toLocaleString()}`;
-            // Agrega botones para ver detalles, renombrar y eliminar según sea necesario
             calculationsList.appendChild(li);
           });
         });
-
-      } else {
-        // Redirigir al inicio de sesión si no hay usuario autenticado
-        window.location.href = 'login.html';
-      }
     });
   </script>
 </body>
