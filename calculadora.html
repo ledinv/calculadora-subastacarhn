@@ -22,6 +22,66 @@
       --dark: #333;
       --light: #f9f9f9;
     }
+    .container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+}
+.nav-links {
+  display: none;
+  gap: 1rem;
+}
+.nav-links a,
+.nav-links span {
+  color: var(--yellow);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+.menu-icon {
+  background: var(--yellow);
+  color: var(--blue);
+  border: none;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  background: #fff;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 998;
+}
+.mobile-nav li {
+  margin-bottom: 0.75rem;
+}
+.mobile-nav a,
+.mobile-nav span {
+  display: block;
+  color: var(--blue);
+  font-weight: 700;
+  font-size: 0.9375rem;
+}
+@media (min-width: 768px) {
+  .menu-icon { display: none; }
+  .nav-links { display: flex; }
+  .mobile-nav { display: none !important; }
+}
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -86,13 +146,25 @@
 
     <!-- Encabezado -->
     <header>
-  <a href="index.html" class="brand">SubastaCarHN</a>
-  <div class="nav">
-    <a href="calculadora.html">Calculadora</a>
-    <a href="cursos.html">Cursos</a>
-    <span id="contadorClics">Cálculos: ...</span>
+  <div class="container header-inner">
+    <a href="index.html" class="brand">SubastaCarHN</a>
+
+    <nav class="nav-links" aria-label="Menú principal">
+      <a href="cursos.html">Cursos</a>
+      <span id="userGreeting"></span>
+      <span id="contadorClics" style="font-size: 0.8rem; color: var(--yellow); font-weight: normal;"></span>
+    </nav>
+
+    <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
   </div>
+
+  <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
+    <li><a href="cursos.html">Cursos</a></li>
+    <li><span id="mobileGreeting"></span></li>
+    <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+  </ul>
 </header>
+
 
 
     <!-- Menú desplegable -->
@@ -505,6 +577,29 @@ async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
       obtenerContador();
       obtenerTipoCambioAutomatico();
     });
-  </script>
+  function toggleMenu() {
+    const menu = document.getElementById("mobile-menu-links");
+    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+  }
+
+  firebase.auth().onAuthStateChanged(user => {
+    const desktop = document.getElementById('userGreeting');
+    const mobile  = document.getElementById('mobileGreeting');
+    if (user) {
+      const name = (user.displayName || user.email.split('@')[0])
+                     .replace(/^./, c => c.toUpperCase());
+
+      desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
+      mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
+    } else {
+      desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+      mobile.innerHTML  = desktop.innerHTML;
+    }
+  });
+
+  function logout() {
+    firebase.auth().signOut().then(() => location.reload());
+  }
+</script>
 </body>
 </html>
