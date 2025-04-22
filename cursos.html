@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cursos | SubastaCarHN</title>
+  <link rel="icon" href="Img/favicon-32x32.png" type="image/png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --blue: #002f6c;
+      --blue2: #004aad;
+      --yellow: #ffc20e;
+      --dark: #333;
+      --light: #f9f9f9;
+      --max-width: 1200px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--dark);
+      background: var(--light);
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    header {
+      background: linear-gradient(to right, var(--blue), var(--blue2));
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+    }
+    .brand {
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .nav-links {
+      display: none;
+      gap: 1rem;
+    }
+    .nav-links a, .nav-links span {
+      color: var(--yellow);
+      font-size: 0.9375rem;
+      font-weight: 600;
+    }
+    .menu-icon {
+      background: var(--yellow);
+      color: var(--blue);
+      border: none;
+      font-size: 1rem;
+      line-height: 1;
+      padding: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background: #fff;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 998;
+    }
+    .mobile-nav li { margin-bottom: 0.75rem; }
+    .mobile-nav a, .mobile-nav span {
+      display: block;
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 0.9375rem;
+    }
+    @media (min-width: 768px) {
+      .menu-icon { display: none; }
+      .nav-links { display: flex; }
+      .mobile-nav { display: none !important; }
+    }
+
+    .styled-btn {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--blue);
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      padding: 0.875rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background-color 0.3s;
+    }
+    .styled-btn:hover { background: #e6ac00; }
+
+    /* ===== HERO CURSOS ===== */
+    .hero-curso {
+      background: url('Img/curso-hero.jpg') center/cover no-repeat;
+      height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      color: #fff;
+    }
+    .hero-curso .overlay {
+      background: rgba(0,47,108,0.8);
+      padding: 2rem;
+      border-radius: 10px;
+      max-width: 600px;
+    }
+
+    .benefits-curso, .course-types, .cta-negocio {
+      padding: 3rem 1rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .benefits-curso h2,
+    .cta-negocio h2 {
+      text-align: center;
+      font-size: 2rem;
+      color: var(--blue);
+      margin-bottom: 1rem;
+    }
+    .benefits-curso ul {
+      list-style: none;
+      padding: 0;
+      text-align: center;
+    }
+    .benefits-curso li {
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .course-types {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .course-card {
+      background: #fff;
+      border: 2px solid var(--blue);
+      padding: 1.5rem;
+      border-radius: 10px;
+      flex: 1 1 280px;
+      text-align: center;
+    }
+    .course-card h3 {
+      color: var(--blue2);
+      margin-bottom: 0.75rem;
+    }
+    .cta-negocio {
+      background: var(--blue);
+      color: white;
+      text-align: center;
+      border-radius: 10px;
+    }
+    .cta-negocio p {
+      margin: 1rem auto;
+      max-width: 600px;
+    }
+
+    footer {
+      background: var(--blue2);
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+    }
+    footer a { color: var(--yellow); margin: 0 0.5rem; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container header-inner">
+      <a href="index.html" class="brand">SubastaCarHN</a>
+      <nav class="nav-links" aria-label="Menú principal">
+        <a href="calculadora.html">Calculadora</a>
+        <a href="cursos.html">Cursos</a>
+        <span id="userGreeting"></span>
+      </nav>
+      <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
+    </div>
+    <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
+      <li><a href="calculadora.html">Calculadora</a></li>
+      <li><a href="cursos.html">Cursos</a></li>
+      <li><span id="mobileGreeting"></span></li>
+      <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+    </ul>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero-curso">
+    <div class="overlay">
+      <h1>Aprende Importación Vehicular</h1>
+      <p>Capacítate y aprende a importar legal y exitosamente desde subastas internacionales.</p>
+      <a href="https://wa.me/50497330137" class="styled-btn">Inscribirme ahora</a>
+    </div>
+  </section>
+
+  <!-- BENEFICIOS -->
+  <section class="benefits-curso">
+    <h2>¿Por qué capacitarte con nosotros?</h2>
+    <p style="text-align:center;">Te damos herramientas reales para importar y emprender.</p>
+    <ul>
+      <li>✔️ Aprende el paso a paso del proceso</li>
+      <li>✔️ Conoce tus impuestos y cómo calcularlos</li>
+      <li>✔️ Accede a plataformas como Copart, IAAI y más</li>
+    </ul>
+  </section>
+
+  <!-- TIPOS DE CAPACITACIÓN -->
+  <section class="course-types">
+    <div class="course-card">
+      <img src="Img/curso-online.jpg" alt="Curso Online" style="width:100%; border-radius: 6px; margin-bottom: 1rem;">
+      <h3>Capacitación Online (2 hrs)</h3>
+      <p>Curso virtual enfocado en impuestos y tablas de importación vehicular.</p>
+      <a href="https://wa.me/50497330137" class="styled-btn">Inscribirme</a>
+    </div>
+    <div class="course-card">
+      <img src="Img/curso-negocio.jpg" alt="Curso de Negocio" style="width:100%; border-radius: 6px; margin-bottom: 1rem;">
+      <h3>Curso Presencial</h3>
+      <p>Ideal para emprendedores. Aprende desde cero y empieza tu negocio.</p>
+      <a href="https://wa.me/50497330137" class="styled-btn">Solicitar cupo</a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-negocio">
+    <h2>¡Comienza tu negocio de importación hoy!</h2>
+    <p>Formamos importadores reales. Únete a más de 2,000 alumnos que ya dieron el paso.</p>
+    <a href="https://wa.me/50497330137" class="styled-btn">Hablar con un asesor</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
+      <div style="margin-top:0.5rem;">
+        <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
+        <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
+        <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase & Menú -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+      authDomain: "subastacarhn-40554.firebaseapp.com",
+      projectId: "subastacarhn-40554",
+      storageBucket: "subastacarhn-40554.appspot.com",
+      messagingSenderId: "536785797974",
+      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+      measurementId: "G-QM5N60K8C0"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu-links');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    firebase.auth().onAuthStateChanged(user => {
+      const desktop = document.getElementById('userGreeting');
+      const mobile = document.getElementById('mobileGreeting');
+      if (user) {
+        const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
+        desktop.innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Cerrar sesión</a>`;
+        mobile.innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Salir</a>`;
+      } else {
+        desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+        mobile.innerHTML = desktop.innerHTML;
+      }
+    });
+
+    function logout() {
+      firebase.auth().signOut().then(() => location.reload());
+    }
+  </script>
+</body>
+</html>
