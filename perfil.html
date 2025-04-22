@@ -214,6 +214,10 @@
         <button type="button" class="styled-btn" onclick="logout()">Cerrar sesión</button>
         <div id="successMsg" class="success-msg" style="display:none;">✅ Tus datos han sido actualizados con éxito.</div>
       </form>
+      <hr style="margin: 2rem 0; border: none; border-top: 2px dashed #ccc;" />
+<h2 style="text-align:center; color:#002f6c;">Historial de Cálculos</h2>
+<div id="historialContainer" style="margin-top: 1rem;"></div>
+
     </div>
   </main>
 
@@ -296,18 +300,114 @@
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    firebase.auth().onAuthStateChanged(user => {
+        firebase.auth().onAuthStateChanged(user => {
       const desktop = document.getElementById('userGreeting');
       const mobile = document.getElementById('mobileGreeting');
       if (user) {
         const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
         desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
         mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
+        cargarHistorial(); // 👈 Aseguramos que también cargue el historial
       } else {
         desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
         mobile.innerHTML  = desktop.innerHTML;
       }
     });
+
+    async function cargarHistorial() {
+      const user = firebase.auth().currentUser;
+      if (!user) return;
+      const historialRef = db.collection("clients").doc(user.uid).collection("historial").orderBy("fecha", "desc").limit(100);
+      const snapshot = await historialRef.get();
+
+      const container = document.getElementById("historialContainer");
+      if (snapshot.empty) {
+        container.innerHTML = "<p style='text-align:center;'>Aún no hay cálculos guardados.</p>";
+        return;
+      }
+
+      let html = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const id = doc.id;
+        const nombre = data.nombre || "Sin título";
+        const total = data.total || "-";
+        const fecha = data.fecha?.toDate().toLocaleString("es-HN") || "Fecha desconocida";
+
+        html += `
+          <div style="background:#f0f8ff; padding:1rem; border-radius:10px; margin-bottom:1rem; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+            <strong>${nombre}</strong><br>
+            <small>${fecha}</small><br>
+            <strong style="color:#004aad;">${total}</strong>
+            <br><br>
+            <button class="styled-btn" onclick="verDetallesHistorial('${id}')">Ver detalles</button>
+            <button class="styled-btn" onclick="descargarHistorialPDF('${id}')">Descargar PDF</button>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    async function verDetallesHistorial(id) {
+      const user = firebase.auth().currentUser;
+      const ref = db.collection("clients").doc(user.uid).collection("historial").doc(id);
+      const doc = await ref.get();
+      if (!doc.exists) return alert("❌ No se encontró este cálculo.");
+      const data = doc.data();
+
+      let tabla = `
+        <table class="tabla-detalles" style="margin-top:1rem;">
+          <tr><th>Concepto</th><th>Valor</th></tr>
+          ${data.detalles.map(item => `
+            <tr>
+              <td>${item.titulo}</td>
+              <td>${item.valor}</td>
+            </tr>`).join('')}
+        </table>
+      `;
+      const div = document.createElement("div");
+      div.innerHTML = tabla;
+      document.getElementById("historialContainer").appendChild(div);
+    }
+
+    async function descargarHistorialPDF(id) {
+      const user = firebase.auth().currentUser;
+      const ref = db.collection("clients").doc(user.uid).collection("historial").doc(id);
+      const doc = await ref.get();
+      if (!doc.exists) return alert("❌ No se encontró este cálculo.");
+      const data = doc.data();
+
+      const tabla = `
+        <h2 style="text-align:center;">${data.nombre}</h2>
+        <p><strong>Total Final:</strong> ${data.total}</p>
+        <table class="tabla-detalles" style="margin-top:1rem;">
+          <tr><th>Concepto</th><th>Valor</th></tr>
+          ${data.detalles.map(item => `
+            <tr>
+              <td>${item.titulo}</td>
+              <td>${item.valor}</td>
+            </tr>`).join('')}
+        </table>
+      `;
+
+      const w = window.open('', '_blank', 'width=800,height=600');
+      w.document.open();
+      w.document.write(`
+        <html><head><title>Descargar Historial</title>
+        <style>
+          body { font-family: Helvetica; margin: 20px; }
+          .tabla-detalles { border-collapse: collapse; width: 100%; max-width: 600px; margin: auto; }
+          .tabla-detalles th, .tabla-detalles td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+          }
+          .tabla-detalles th { background: #f2f2f2; }
+        </style>
+        </head><body>${tabla}</body></html>
+      `);
+      w.document.close();
+      setTimeout(() => w.print(), 500);
+    }
   </script>
 </body>
 </html>
