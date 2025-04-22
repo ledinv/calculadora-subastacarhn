@@ -135,7 +135,76 @@
       color: var(--yellow);
       text-decoration: none;
       margin: 0 0.5rem;
-    }
+      }
+    .layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px 10px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.banner {
+  flex-shrink: 0;
+}
+.banner img {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+.contenido-central {
+  max-width: 380px;
+  width: 100%;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+}
+label {
+  font-weight: bold;
+  color: #002f6c;
+  display: block;
+  margin-top: 10px;
+}
+input,
+select {
+  font-size: 14px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #004aad;
+  background: #f0f8ff;
+  width: 100%;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+.tabla-detalles {
+  margin: 20px auto;
+  border-collapse: collapse;
+  width: auto;
+  max-width: 600px;
+}
+.tabla-detalles th,
+.tabla-detalles td {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+}
+.tabla-detalles th {
+  background: #f2f2f2;
+}
+.botones-detalle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+@media (max-width: 768px) {
+  .banner {
+    display: none !important;
+  }
+}  
   </style>
 </head>
 
