@@ -585,8 +585,8 @@
     const name = (user.displayName || user.email.split('@')[0])
                    .replace(/^./, c => c.toUpperCase());
     // Saludo convertido en enlace a profile.html
-    desktop.innerHTML = `<a href="profile.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
-    mobile.innerHTML  = `<a href="profile.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
+    desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
+    mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
   } else {
     desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
     mobile.innerHTML  = desktop.innerHTML;
