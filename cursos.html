@@ -186,8 +186,7 @@
   </style>
 </head>
 <body>
-
-  <!-- HEADER -->
+    <!-- HEADER -->
   <header>
     <div class="container header-inner">
       <a href="index.html" class="brand">SubastaCarHN</a>
@@ -228,11 +227,50 @@
     </div>
   </section>
 
-  <!-- INFO -->
+  <!-- CURSO DETALLES (NUEVO) -->
   <section class="info-curso">
     <div class="container">
-      <h2 style="color: var(--blue);">¿Qué incluye el curso?</h2>
-      <p>Desde cómo buscar vehículos en subastas hasta calcular impuestos y coordinar envíos. Todo 100% práctico y explicado paso a paso.</p>
+      <h2 style="color: var(--blue);">Curso Virtual de Importación de Autos</h2>
+      <ul style="text-align: left; max-width: 600px; margin: auto;">
+        <li><strong>Inicio:</strong> 18 de Junio 2025</li>
+        <li><strong>Modalidad:</strong> Online (Google Meet)</li>
+        <li><strong>Horario:</strong> 9:00 PM a 10:00 PM</li>
+        <li><strong>Duración:</strong> 10 días intensivos</li>
+        <li><strong>Cupos Limitados</strong></li>
+      </ul>
+
+      <h3 style="margin-top: 2rem; color: var(--blue);">¿Qué incluye este curso?</h3>
+      <ul style="text-align: left; max-width: 600px; margin: auto;">
+        <li>Asesoría personalizada en tu primera importación.</li>
+        <li>Guía de contactos confiables (aduanas, grúas, transporte).</li>
+        <li>Estrategias para ahorrar dinero y evitar errores costosos.</li>
+        <li>Aprende a convertir este conocimiento en tu negocio.</li>
+      </ul>
+
+      <h3 style="margin-top: 2rem; color: var(--blue);">Temario del curso</h3>
+      <ul id="temario-lista" style="text-align: left; max-width: 600px; margin: auto;">
+        <li>1. Cómo importar legalmente sin errores</li>
+        <li>2. Dominio total de Copart (cuentas básicas y premium)</li>
+        <li>3. Evaluación de vehículos y cálculo de daños</li>
+        <li>4. Cálculo de impuestos y derechos de importación</li>
+      </ul>
+      <button onclick="document.getElementById('temario-completo').style.display='block'; this.style.display='none';" class="styled-btn">
+        Ver temario completo
+      </button>
+      <ul id="temario-completo" style="display:none; text-align: left; max-width: 600px; margin: auto; margin-top: 1rem;">
+        <li>5. Coordinación de grúa, embarque y desaduanaje</li>
+        <li>6. Estrategias de reparación y compra de repuestos</li>
+        <li>7. Técnicas de venta y maximización de ganancias</li>
+        <li>8. Registro e inscripción legal de tu negocio (SAR y más)</li>
+        <li>9. Uso de plataformas digitales para tu empresa</li>
+        <li>10. ¡Y mucho más!</li>
+      </ul>
+
+      <h3 style="margin-top: 2rem; color: var(--blue);">Inversión</h3>
+      <p><strong>Precio total:</strong> L. 3,600</p>
+      <p><strong>Reserva tu cupo con solo L. 500</strong></p>
+      <p><strong>Formas de pago:</strong> Cuenta BAC y Atlántida</p>
+      <p><strong>Solicita los datos por WhatsApp: <a href="https://wa.me/50497330137">97330137</a></strong></p>
     </div>
   </section>
 
@@ -273,7 +311,7 @@
     </div>
   </footer>
 
-  <!-- Firebase + Lazy Video Script -->
+  <!-- Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
@@ -287,12 +325,10 @@
       measurementId: "G-QM5N60K8C0"
     };
     firebase.initializeApp(firebaseConfig);
-
     function toggleMenu() {
       const menu = document.getElementById('mobile-menu-links');
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
-
     firebase.auth().onAuthStateChanged(user => {
       const desktop = document.getElementById('userGreeting');
       const mobile = document.getElementById('mobileGreeting');
@@ -305,12 +341,10 @@
         mobile.innerHTML = desktop.innerHTML;
       }
     });
-
     function logout() {
       firebase.auth().signOut().then(() => location.reload());
     }
   </script>
-
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const container = document.getElementById('cursoVideoLazy');
@@ -327,6 +361,5 @@
       });
     });
   </script>
-
 </body>
 </html>
