@@ -3,27 +3,222 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Automóviles en Venta | SubastaCarHN</title>
+  <title>Inventario de Vehículos | SubastaCarHN</title>
 
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  
+
   <style>
-    /* Estilos mínimos para ver el grid */
-    body { font-family: sans-serif; margin: 2rem; }
-    #autosGrid { 
-      display: grid; 
-      gap: 1rem; 
-      grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+    :root {
+      --blue: #002f6c;
+      --blue2: #004aad;
+      --yellow: #ffc20e;
+      --dark: #333;
+      --light: #f9f9f9;
+      --max-width: 1200px;
     }
-    .card { border:1px solid #ccc; border-radius:6px; overflow:hidden; cursor:pointer; }
-    .card img { width:100%; height:150px; object-fit:cover; }
-    .card h3, .card p { margin:0.5rem; }
+    /* Reset & base */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--dark);
+      background: var(--light);
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* ===== HEADER ===== */
+    .site-header {
+      background: linear-gradient(to right, var(--blue), var(--blue2));
+      position: sticky; top: 0; z-index: 1000;
+    }
+    .site-header .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 0;
+    }
+    .site-header .brand {
+      color: #fff; font-size: 1.5rem; font-weight: 700;
+    }
+    .site-header .nav-list {
+      display: flex; gap: 1.5rem;
+    }
+    .site-header .nav-list a,
+    .site-header .nav-list span {
+      color: var(--yellow); font-weight: 600; font-size: 0.95rem;
+    }
+    .menu-icon {
+      background: var(--yellow); color: var(--blue);
+      border: none; padding: 0.5rem; border-radius: 6px;
+      cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .mobile-nav {
+      display: none; flex-direction: column;
+      background: #fff; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    @media (max-width: 767px) {
+      .site-header .nav-list { display: none; }
+      .mobile-nav { display: flex; gap: 1rem; }
+    }
+    @media (min-width: 768px) {
+      .menu-icon { display: none; }
+    }
+
+    /* ===== INVENTARIO ===== */
+    .inventory-section {
+      padding: 3rem 0;
+      background: #fff;
+    }
+    .inventory-section h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      color: var(--blue);
+    }
+    #autosGrid {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+    .card-content {
+      flex: 1;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card-content h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+    .card-content p {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      color: var(--blue);
+      font-weight: 600;
+    }
+    .card-content .styled-btn {
+      background: var(--yellow);
+      color: var(--blue);
+      padding: 0.5rem;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: background 0.2s;
+    }
+    .card-content .styled-btn:hover {
+      background: #e6ac00;
+    }
+
+    /* ===== FOOTER ===== */
+    .site-footer {
+      background: var(--blue2);
+      color: #fff;
+      text-align: center;
+      padding: 2rem 0;
+    }
+    .site-footer .footer-list {
+      display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem;
+    }
+    .site-footer .footer-list a {
+      color: var(--yellow); font-weight: 500;
+    }
+    .site-footer .social-links a {
+      color: var(--yellow); margin: 0 0.5rem; font-weight: 500;
+    }
+    .site-footer .footer-copy {
+      font-size: 0.85rem; opacity: 0.8;
+    }
   </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">SubastaCarHN</a>
+      <ul class="nav-list">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="calculadora.html">Calculadora</a></li>
+        <li><a href="inventario.html">Vehículos</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="https://wa.me/50497330137" target="_blank">Soporte</a></li>
+        <li><span id="userGreeting"></span></li>
+      </ul>
+      <button class="menu-icon" onclick="toggleMenu()">☰</button>
+    </div>
+    <nav id="mobile-menu-links" class="mobile-nav">
+      <a href="index.html">Inicio</a>
+      <a href="calculadora.html">Calculadora</a>
+      <a href="inventario.html">Vehículos</a>
+      <a href="cursos.html">Cursos</a>
+      <a href="https://wa.me/50497330137" target="_blank">Soporte</a>
+      <span id="mobileGreeting"></span>
+    </nav>
+  </header>
+
+  <!-- INVENTARIO -->
+  <section class="inventory-section">
+    <div class="container">
+      <h1>Inventario de Vehículos</h1>
+      <div id="autosGrid"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <ul class="footer-list">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="calculadora.html">Calculadora</a></li>
+        <li><a href="inventario.html">Vehículos</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+      <div class="social-links">
+        <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a>|
+        <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a>|
+        <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+      </div>
+      <div class="footer-copy">&copy; 2025 SubastaCarHN. Todos los derechos reservados.</div>
+    </div>
+  </footer>
 
   <script>
-    // 1) Inicializa Firebase
+    // Configuración & Init Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -34,65 +229,71 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-  </script>
-</head>
 
-<body>
-  <h1>Automóviles en Venta</h1>
-  <div id="autosGrid"></div>
+    // Toggle menú móvil
+    function toggleMenu() {
+      const m = document.getElementById('mobile-menu-links');
+      m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+    }
 
-  <script>
+    // Autenticación & saludos
+    firebase.auth().onAuthStateChanged(user => {
+      const d = document.getElementById('userGreeting');
+      const m = document.getElementById('mobileGreeting');
+      if (user) {
+        const name = (user.displayName || user.email.split('@')[0])
+                     .replace(/^./, c => c.toUpperCase());
+        d.innerHTML = `<a href="perfil.html">Hola, ${name}</a> | <a href="#" onclick="logout()">Cerrar sesión</a>`;
+        m.innerHTML = d.innerHTML;
+      } else {
+        d.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+        m.innerHTML = d.innerHTML;
+      }
+    });
+    function logout() {
+      firebase.auth().signOut().then(() => location.reload());
+    }
+
+    // Carga & muestra inventario
     const autosGrid = document.getElementById('autosGrid');
-
-    // 2) Carga inventario desde Firestore
     async function cargarInventario() {
       try {
         const snapshot = await db.collection('inventario').get();
-        const inventario = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        
-        // <-- Debug: mira qué trae Firestore
-        console.log("Datos recibidos de Firestore:", inventario);
-        
-        mostrarAutos(inventario);
+        const lista = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        mostrarAutos(lista);
       } catch (e) {
-        console.error("Error leyendo Firestore:", e);
+        console.error(e);
         autosGrid.innerHTML = "<p>Error al cargar inventario.</p>";
       }
     }
-
-    // 3) Renderiza cada auto en un card
     function mostrarAutos(autos) {
-      autosGrid.innerHTML = "";
-      if (autos.length === 0) {
-        autosGrid.innerHTML = "<p>No hay vehículos para mostrar.</p>";
+      autosGrid.innerHTML = '';
+      if (!autos.length) {
+        autosGrid.innerHTML = "<p>No hay vehículos disponibles.</p>";
         return;
       }
-      autos.forEach(auto => {
-        const imgUrl = Array.isArray(auto.imagenes) && auto.imagenes.length
-          ? auto.imagenes[0]
-          : "";
-
-        // Protegemos el precio por si falta en algún doc
-        const precioFormateado = (typeof auto.precio === 'number')
-          ? auto.precio.toLocaleString()
+      autos.forEach(a => {
+        const img = Array.isArray(a.imagenes) && a.imagenes[0] ? a.imagenes[0] : 'Img/placeholder.jpg';
+        const precio = typeof a.precio === 'number'
+          ? a.precio.toLocaleString('es-HN', { style: 'currency', currency: 'HNL' })
           : 'N/A';
-
         const card = document.createElement('div');
-        card.className = "card";
+        card.className = 'card';
         card.innerHTML = `
-          <img src="${imgUrl}" alt="${auto.marca} ${auto.modelo}" />
-          <h3>${auto.marca} ${auto.modelo} (${auto.anio})</h3>
-          <p>L ${precioFormateado}</p>
-        `;
+          <img src="${img}" alt="${a.marca} ${a.modelo}">
+          <div class="card-content">
+            <h3>${a.marca} ${a.modelo} (${a.anio})</h3>
+            <p>${precio}</p>
+            <div class="styled-btn">Ver detalle</div>
+          </div>`;
         card.addEventListener('click', () => {
-          window.location.href = `vehiculo.html?id=${auto.id}`;
+          window.location.href = `vehiculo.html?id=${a.id}`;
         });
         autosGrid.appendChild(card);
       });
     }
-
-    // 4) Arranca todo al cargar la página
     document.addEventListener('DOMContentLoaded', cargarInventario);
   </script>
+
 </body>
 </html>
