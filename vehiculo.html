@@ -16,12 +16,11 @@
       --max-width: 1200px;
     }
     *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
-    html, body {
+    body {
       font-family: 'Montserrat', sans-serif;
       background: var(--light);
       color: var(--text);
-      overflow: auto;
-      height: auto;
+      overflow-x: hidden;
     }
     a { text-decoration: none; color: inherit; }
     .container { max-width: var(--max-width); margin: 0 auto; padding: 1rem; }
@@ -36,9 +35,7 @@
       padding: 0.75rem;
     }
     .brand { color: #fff; font-size: 1.5rem; font-weight: 700; }
-    .nav-list {
-      display: flex; gap: 1rem; margin-left: auto;
-    }
+    .nav-list { display: flex; gap: 1rem; margin-left: auto; }
     .nav-list a, .nav-list span {
       color: var(--yellow); font-weight: 600; font-size: 0.95rem;
     }
@@ -60,15 +57,10 @@
     .mobile-nav a:hover, .mobile-nav span:hover {
       background: rgba(0,47,108,0.1);
     }
-    @media (max-width: 767px) {
-      .nav-list { display: none; }
-      .mobile-nav { display: flex; }
-    }
-    @media (min-width: 768px) {
-      .menu-icon { display: none; }
-    }
+    @media (max-width: 767px) { .nav-list { display: none; } }
+    @media (min-width: 768px) { .menu-icon { display: none; } }
 
-    /* ===== DETALLE ===== */
+    /* ===== DETALLE VEHÍCULO ===== */
     main.vehicle-detail {
       text-align: center;
       padding: 2rem 1rem;
@@ -107,6 +99,16 @@
       margin: 0.25rem 0;
     }
 
+    /* descripción */
+    .description {
+      margin: 1rem auto 0;
+      max-width: 700px;
+      text-align: left;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: var(--text);
+    }
+
     .btns {
       display: flex;
       gap: 1rem;
@@ -137,15 +139,12 @@
       padding: 0 1rem;
     }
     .gallery-track {
-      display: flex;
-      gap: 0.5rem;
+      display: flex; gap: 0.5rem;
       transition: transform 0.3s ease;
     }
     .gallery-track img {
       width: 80px; height: 50px;
-      object-fit: cover;
-      border-radius: 4px;
-      cursor: pointer;
+      object-fit: cover; border-radius: 4px; cursor: pointer;
     }
 
     /* ===== FOOTER ===== */
@@ -253,7 +252,7 @@
     });
     function logout() { firebase.auth().signOut().then(() => location.reload()); }
 
-    // Parámetro ID y elemento contenedor
+    // Parámetro ID y contenedor
     const id = new URLSearchParams(location.search).get('id'),
           detEl = document.getElementById('detalleVehiculo');
     let carouselIndex = 0, carouselImages = [];
@@ -266,11 +265,9 @@
         const a = { id: doc.id, ...doc.data() };
         carouselImages = Array.isArray(a.imagenes) ? a.imagenes : [];
 
-        // Miniaturas
         const thumbs = carouselImages.map((url,i) =>
           `<img src="${url}" onclick="goTo(${i})">`
         ).join('');
-
         const gallery = carouselImages.length
           ? `<div class="gallery-container"><div class="gallery-track">${thumbs}</div></div>`
           : '';
@@ -289,6 +286,10 @@
             <p><strong>Tipo:</strong> ${a.tipo||'–'}</p>
             <p><strong>Kilometraje:</strong> ${(typeof a.kilometraje==='number') ? a.kilometraje.toLocaleString()+' km' : '–'}</p>
           </div>
+          ${ a.descripcion
+             ? `<div class="description">${a.descripcion}</div>`
+             : ''
+          }
           <div class="btns">
             <button class="btn" onclick="shareWhatsAppContact()">
               🤝 ¡Me interesa este vehículo!
@@ -305,7 +306,7 @@
       }
     }
 
-    // Funciones carrusel
+    // Carrusel
     function updateCarousel(){
       document.querySelector('.gallery-track')
         .style.transform = `translateX(-${carouselIndex * 88}px)`;
@@ -315,11 +316,9 @@
     function goTo(i){ carouselIndex = i; updateCarousel(); setMain(); }
     function setMain(){ document.getElementById('mainImage').src = carouselImages[carouselIndex]; }
 
-    // Compartir por WhatsApp
+    // Compartir WhatsApp
     function shareWhatsAppContact(){
-      const msg = encodeURIComponent(
-        `¡Hola! Me interesa este vehículo: ${location.href}`
-      );
+      const msg = encodeURIComponent(`¡Hola! Me interesa este vehículo: ${location.href}`);
       window.open(`https://wa.me/50497330137?text=${msg}`, '_blank');
     }
     function shareWhatsAppLink(){
