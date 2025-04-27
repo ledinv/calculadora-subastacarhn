@@ -87,5 +87,19 @@
     // 4) Arranca todo al cargar la página
     document.addEventListener('DOMContentLoaded', cargarInventario);
   </script>
+  async function cargarInventario() {
+  try {
+    const snapshot = await db.collection('inventario').get();
+    const inventario = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    
+    // <-- Aquí añadimos el log:
+    console.log("Datos recibidos de Firestore:", inventario);
+    
+    mostrarAutos(inventario);
+  } catch (error) {
+    console.error('Error cargando inventario:', error);
+    autosGrid.innerHTML = '<p>Error al cargar inventario.</p>';
+  }
+}
 </body>
 </html>
