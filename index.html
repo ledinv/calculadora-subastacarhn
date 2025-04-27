@@ -396,6 +396,35 @@
     @media (max-width: 600px) {
       .steps { flex-direction: column; }
     }
+    /* — Menú móvil: oculto por defecto */
+.mobile-nav {
+  display: none !important;
+  flex-direction: column;
+  background: #fff;
+  padding: 1rem;              /* espacio interior extra */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* — Cuando tenga la clase .open, lo mostramos */
+.mobile-nav.open {
+  display: flex !important;
+}
+
+/* — Enlaces del menú móvil más potentes */
+.mobile-nav a,
+.mobile-nav span {
+  display: block;             /* toda la línea clicable */
+  font-weight: 700;           /* negrita */
+  font-size: 1rem;            /* igual que escritorio */
+  padding: 0.75rem 1rem;      /* espaciado mayor */
+  border-radius: 4px;         /* feedback al pasar el dedo */
+  transition: background 0.2s;
+}
+
+.mobile-nav a:hover,
+.mobile-nav span:hover {
+  background: rgba(0,47,108,0.1);
+}
   </style>
 </head>
 <body>
@@ -408,17 +437,19 @@
         <a href="calculadora.html">Calculadora</a>
         <a href="#cursos" id="linkCursos">Cursos</a>
         <a href="inventario.html">Vehículos</a>
+        <a href="https://wa.me/50497330137" target="_blank">Soporte</a>
         <span id="userGreeting"></span>
       </nav>
-      <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
-    </div>
-    <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
-      <li><a href="calculadora.html">Calculadora</a></li>
-      <li><a href="#cursos" id="linkCursosMobile">Cursos</a></li>
-      <li><a href="inventario.html">Vehículos</a></li>
-      <li><span id="mobileGreeting"></span></li>
-      <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
-    </ul>
+      <button class="menu-icon" onclick="toggleMenu()">☰</button>
+
+  <!-- Menú móvil: oculto por defecto -->
+  <ul id="mobile-menu-links" class="mobile-nav">
+    <li><a href="calculadora.html">Calculadora</a></li>
+    <li><a href="#cursos">Cursos</a></li>
+    <li><a href="inventario.html">Vehículos</a></li>
+    <li><a href="https://wa.me/50497330137" target="_blank">Soporte</a></li>
+    <li><span id="mobileGreeting"></span></li>
+  </ul
   </header>
   <!-- /HEADER -->
 
@@ -591,9 +622,10 @@
 
     // Toggle móvil
     function toggleMenu() {
-      const menu = document.getElementById('mobile-menu-links');
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-    }
+  const menu = document.getElementById('mobile-menu-links');
+- menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
++ menu.classList.toggle('open');
+}
 
     // Autenticación y saludos
     firebase.auth().onAuthStateChanged(user => {
