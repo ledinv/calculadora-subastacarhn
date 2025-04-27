@@ -69,29 +69,27 @@
     }
 
     /* ===== HEADER ===== */
-    header {
+    .site-header {
       background: linear-gradient(to right, var(--blue), var(--blue2));
-      position: sticky;
-      top: 0;
-      z-index: 999;
+      position: sticky; top: 0; z-index: 1000;
     }
-    .header-inner {
+    .site-header .header-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0.5rem 0;
     }
-    .brand {
+    .site-header .brand {
       color: #fff;
       font-size: 1.25rem;
       font-weight: 700;
     }
-    .nav-links {
+    .site-header .nav-links {
       display: none;
-      gap: 1rem;
+      gap: 1.5rem;
     }
-    .nav-links a,
-    .nav-links span {
+    .site-header .nav-links a,
+    .site-header .nav-links span {
       color: var(--yellow);
       font-size: 0.9375rem;
       font-weight: 600;
@@ -107,7 +105,6 @@
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
-    /* Mobile dropdown */
     .mobile-nav {
       display: none;
       flex-direction: column;
@@ -120,18 +117,14 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       z-index: 998;
     }
-    .mobile-nav li { margin-bottom: 0.75rem; }
-    .mobile-nav a,
-    .mobile-nav span {
-      display: block;
-      color: var(--blue);
-      font-weight: 700;
-      font-size: 0.9375rem;
-    }
     @media (min-width: 768px) {
-      .menu-icon { display: none; }
-      .nav-links { display: flex; }
+      .site-header .nav-links { display: flex; }
       .mobile-nav { display: none !important; }
+      .menu-icon { display: none; }
+    }
+    @media (max-width: 767px) {
+      .site-header .nav-links { display: none; }
+      .mobile-nav { display: flex; }
     }
 
     /* ===== BOTÓN CALCULADORA (logueado) ===== */
@@ -312,25 +305,6 @@
       display: inline-block;
     }
 
-    /* ===== FOOTER ===== */
-    footer {
-      background: var(--blue2);
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
-    }
-    footer a { color: var(--yellow); margin: 0 0.5rem; }
-
-    /* Responsive tweaks */
-    @media (min-width: 768px) {
-      .hero-content h1 { font-size: 3rem; }
-      .hero-content p  { font-size: 1.25rem; }
-      .steps { gap: 4rem; }
-    }
-    @media (max-width: 600px) {
-      .steps { flex-direction: column; }
-    }
-
     /* ===== Sección de Cursos ===== */
     .courses {
       padding: 3rem 1rem;
@@ -381,37 +355,72 @@
     }
     .courses-info p {
       margin-bottom: 1.5rem;
+  
       line-height: 1.5;
     }
     .courses-info .styled-btn {
       max-width: 200px;
       display: inline-block;
     }
+
+    /* ===== FOOTER ===== */
+    .site-footer {
+      background: var(--blue2);
+      color: #fff;
+      text-align: center;
+      padding: 2rem 0;
+    }
+    .site-footer .footer-nav .footer-list {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .site-footer .footer-list li a,
+    .site-footer .social-links a {
+      color: var(--yellow);
+      font-weight: 500;
+    }
+    .site-footer .footer-copy {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      margin-top: 1rem;
+    }
+
+    /* Responsive tweaks */
+    @media (min-width: 768px) {
+      .hero-content h1 { font-size: 3rem; }
+      .hero-content p  { font-size: 1.25rem; }
+      .steps { gap: 4rem; }
+    }
+    @media (max-width: 600px) {
+      .steps { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
 
   <!-- HEADER -->
-  <header>
+  <header class="site-header">
     <div class="container header-inner">
       <a href="index.html" class="brand">SubastaCarHN</a>
-
       <nav class="nav-links" aria-label="Menú principal">
         <a href="calculadora.html">Calculadora</a>
         <a href="#cursos" id="linkCursos">Cursos</a>
+        <a href="inventario.html">Vehículos</a>
         <span id="userGreeting"></span>
       </nav>
-
       <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
     </div>
-
     <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
       <li><a href="calculadora.html">Calculadora</a></li>
       <li><a href="#cursos" id="linkCursosMobile">Cursos</a></li>
+      <li><a href="inventario.html">Vehículos</a></li>
       <li><span id="mobileGreeting"></span></li>
       <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
     </ul>
   </header>
+  <!-- /HEADER -->
 
   <!-- HERO -->
   <section class="hero" id="home">
@@ -431,11 +440,11 @@
       <div>
         <div class="benefit-icon">🔄</div>
         <div class="benefit-title">Actualizado al momento</div>
-        <div>Tipo de cambio real‑time y tarifas oficiales.</div>
+        <div>Tipo de cambio real-time y tarifas oficiales.</div>
       </div>
       <div>
         <div class="benefit-icon">📊</div>
-        <div class="benefit-title">Cálculos 100 % transparentes</div>
+        <div class="benefit-title">Cálculos 100 % transparentes</div>
         <div>Desglose detallado de cada costo.</div>
       </div>
       <div>
@@ -485,8 +494,8 @@
       <ul class="choose-list">
         <li>Experiencia comprobada: +2,000 clientes satisfechos.</li>
         <li>Soporte gratuito: Nuestro equipo te asesora paso a paso.</li>
-        <li>Precio fijo de comisión: Solo 5,000 LPS sobre el precio del vehículo.</li>
-        <li>100 % online: Desde tu celular o computador, donde quieras.</li>
+        <li>Precio fijo de comisión: Solo 5,000 LPS sobre el precio del vehículo.</li>
+        <li>100 % online: Desde tu celular o computador, donde quieras.</li>
       </ul>
     </div>
   </section>
@@ -496,16 +505,16 @@
     <div class="container">
       <h2>Historias de éxito</h2>
       <div class="testimonial">
-        “Gracias a SubastaCarHN importé mi Tacoma 2012 por 150 Mil LPS, ¡y ahorré más de 40 Mil LPS!”  
-        <strong>Carlos M., Tegucigalpa</strong>
+        “Gracias a SubastaCarHN importé mi Tacoma 2012 por 150 Mil LPS, ¡y ahorré más de 40 Mil LPS!”  
+        <strong>Carlos M., Tegucigalpa</strong>
       </div>
       <div class="testimonial">
         “Quería comenzar mi negocio pero siempre ganaban más los importadores que yo, ahora obtengo ganancias verdaderas!”  
-        <strong>Mario Z., Tegucigalpa</strong>
+        <strong>Mario Z., Tegucigalpa</strong>
       </div>
       <div class="testimonial">
         “Tengo Autolote y me sale mejor trabajar con ellos que lidiar con problemas de licencia.”  
-        <strong>Roberto S., San Pedro Sula</strong>
+        <strong>Roberto S., San Pedro Sula</strong>
       </div>
     </div>
   </section>
@@ -523,7 +532,6 @@
     <div class="container">
       <h2>Formación y Cursos Especializados</h2>
       <div class="courses-content">
-        <!-- Video lazy-load -->
         <div class="video-wrapper">
           <div id="videoCursos" class="video-container"
                data-video-src="videos/VIDEO-2025-04-21-14-26-34.mp4"
@@ -531,7 +539,6 @@
             <button class="play-button" aria-label="Reproducir video de cursos">▶️</button>
           </div>
         </div>
-        <!-- Info & CTA -->
         <div class="courses-info">
           <p>
             Aprende todo el proceso de importación de vehículos: selección en subastas,  
@@ -544,16 +551,27 @@
   </section>
 
   <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
-      <div style="margin-top:0.5rem;">
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <nav class="footer-nav" aria-label="Enlaces de pie de página">
+        <ul class="footer-list">
+          <li><a href="calculadora.html">Calculadora</a></li>
+          <li><a href="inventario.html">Vehículos</a></li>
+          <li><a href="#cursos">Cursos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="social-links">
         <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
         <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
         <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
       </div>
+      <div class="footer-copy">
+        &copy; 2025 SubastaCarHN. Todos los derechos reservados.
+      </div>
     </div>
   </footer>
+  <!-- /FOOTER -->
 
   <!-- Firebase + Autenticación y Menú -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -579,19 +597,18 @@
 
     // Autenticación y saludos
     firebase.auth().onAuthStateChanged(user => {
-  const desktop = document.getElementById('userGreeting');
-  const mobile  = document.getElementById('mobileGreeting');
-  if (user) {
-    const name = (user.displayName || user.email.split('@')[0])
-                   .replace(/^./, c => c.toUpperCase());
-    // Saludo convertido en enlace a profile.html
-    desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
-    mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
-  } else {
-    desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
-    mobile.innerHTML  = desktop.innerHTML;
-  }
-});
+      const desktop = document.getElementById('userGreeting');
+      const mobile  = document.getElementById('mobileGreeting');
+      if (user) {
+        const name = (user.displayName || user.email.split('@')[0])
+                       .replace(/^./, c => c.toUpperCase());
+        desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
+        mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
+      } else {
+        desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+        mobile.innerHTML  = desktop.innerHTML;
+      }
+    });
 
     function logout() {
       firebase.auth().signOut().then(() => location.reload());
@@ -599,22 +616,22 @@
   </script>
 
   <script>
-    // Lazy‑load video play
+    // Lazy-load video play
     document.addEventListener('DOMContentLoaded', () => {
       const container = document.getElementById('videoCursos');
       const btn       = container.querySelector('.play-button');
       btn.addEventListener('click', () => {
         const vid = document.createElement('video');
-        vid.controls   = true;
-        vid.autoplay   = true;
+        vid.controls    = true;
+        vid.autoplay    = true;
         vid.playsinline = true;
-        vid.src        = container.dataset.videoSrc;
+        vid.src         = container.dataset.videoSrc;
         container.innerHTML = '';
         container.appendChild(vid);
       });
     });
 
-    // Scroll + auto-play on header link click
+    // Scroll + auto-play on “Cursos” click
     function scrollYPlay() {
       const vc = document.getElementById('videoCursos');
       vc.scrollIntoView({ behavior: 'smooth', block: 'center' });
