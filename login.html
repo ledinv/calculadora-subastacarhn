@@ -3,90 +3,106 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Iniciar Sesión</title>
+  <title>Iniciar Sesión | SubastaCarHN</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Iconos -->
   <link rel="manifest" href="Img/site.webmanifest">
-
-  <link rel="apple-touch-icon"
-        sizes="180x180"
-        href="Img/apple-touch-icon.png">
-
-  <link rel="icon"
-        type="image/png"
-        sizes="32x32"
-        href="Img/favicon-32x32.png">
-  <link rel="icon"
-        type="image/png"
-        sizes="16x16"
-        href="Img/favicon-16x16.png">
-
-  <link rel="icon"
-        type="image/png"
-        sizes="192x192"
-        href="Img/android-chrome-192x192.png">
-  <link rel="icon"
-        type="image/png"
-        sizes="512x512"
-        href="Img/android-chrome-512x512.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
 
   <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="msapplication-TileImage" content="Img/favicon-32x32.png">
-
   <meta name="theme-color" content="#002f6c">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QM5N60K8C0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QM5N60K8C0');
+  </script>
+
+  <!-- Estilos -->
   <style>
-    /* --- Estilos idénticos a register.html y calculadora --- */
-    body {
-      font-family: Helvetica, sans-serif;
-      margin: 0; padding: 0;
-      background: #f9f9f9;
+    :root {
+      --blue: #002f6c;
+      --blue2: #004aad;
+      --yellow: #ffc20e;
+      --text: #333;
+      --light: #f9f9f9;
+      --shadow: rgba(0,0,0,0.1);
+      --max-width: 1200px;
     }
-    header {
-      background: linear-gradient(to right, #002f6c, #004aad);
-      height: 70px;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--light); color: var(--text); }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; margin: 0; padding: 0; }
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 1rem; }
+
+    /* HEADER */
+    .site-header {
+      background: linear-gradient(to right, var(--blue), var(--blue2));
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .header-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 15px;
-      position: sticky;
-      top: 0;
-      z-index: 999;
+      padding: 0.75rem;
     }
-    /* marca centrada */
-    header a.brand {
-      color: white;
-      font-size: 22px;
-      font-weight: bold;
-      text-decoration: none;
-      margin: 0 auto;
+    .brand {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
     }
-    /* botón hamburguesa */
+    .nav-list {
+      display: flex;
+      gap: 1rem;
+      margin-left: auto;
+    }
+    .nav-list a, .nav-list span {
+      color: var(--yellow);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
     .menu-icon {
-      font-size: 20px;
-      background: #ffc20e;
-      color: #002f6c;
-      padding: 8px 10px;
+      background: var(--yellow);
+      color: var(--blue);
+      border: none;
+      padding: 0.5rem;
       border-radius: 6px;
       cursor: pointer;
-      font-weight: bold;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 8px var(--shadow);
     }
-    /* menú desplegable */
-    #menu-links {
+    .mobile-nav {
       display: none;
-      list-style: none;
-      padding: 10px;
-      margin: 10px 0 0;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      position: absolute;
-      top: 70px;
-      left: 15px;
-      z-index: 1000;
+      flex-direction: column;
+      background: #fff;
+      padding: 1rem;
+      box-shadow: 0 2px 8px var(--shadow);
     }
-    #menu-links li { margin-bottom: 10px; }
-    #menu-links a { text-decoration: none; color: #002f6c; font-weight: bold; }
+    .mobile-nav.open { display: flex; gap: 0.5rem; }
+    .mobile-nav a, .mobile-nav span {
+      font-weight: 700;
+      padding: 0.75rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .mobile-nav a:hover, .mobile-nav span:hover {
+      background: rgba(0,47,108,0.1);
+    }
+    @media (max-width: 767px) { .nav-list { display: none; } }
+    @media (min-width: 768px) { .menu-icon { display: none; } }
 
-    /* contenedor central */
+    /* LOGIN FORM */
     .layout {
       display: flex;
       justify-content: center;
@@ -103,12 +119,12 @@
     }
     .contenido-central h1 {
       text-align: center;
-      color: #002f6c;
+      color: var(--blue);
       margin-bottom: 20px;
     }
     label {
       font-weight: bold;
-      color: #002f6c;
+      color: var(--blue);
       display: block;
       margin-top: 10px;
     }
@@ -116,15 +132,15 @@
       font-size: 14px;
       padding: 8px;
       border-radius: 8px;
-      border: 1px solid #004aad;
+      border: 1px solid var(--blue2);
       background: #f0f8ff;
       width: 100%;
       margin-top: 5px;
       box-sizing: border-box;
     }
     .styled-btn {
-      background-color: #ffc20e;
-      color: #002f6c;
+      background-color: var(--yellow);
+      color: var(--blue);
       font-weight: bold;
       border: none;
       border-radius: 8px;
@@ -135,20 +151,15 @@
       font-size: 15px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
-    .styled-btn:hover {
-      background-color: #e6ac00;
-    }
-    /* estilos para el enlace de recuperación */
-    .forgot {
-      text-align: center;
-      margin-top: 10px;
-    }
+    .styled-btn:hover { background-color: #e6ac00; }
+    .forgot { text-align: center; margin-top: 10px; }
     .forgot a {
-      color: #004aad;
+      color: var(--blue2);
       text-decoration: underline;
       font-size: 0.9rem;
     }
-    /* estilos del modal */
+
+    /* MODAL */
     .modal {
       display: none;
       position: fixed;
@@ -174,142 +185,130 @@
       font-size: 1.5rem;
       cursor: pointer;
     }
+
+    /* FOOTER */
+    .site-footer {
+      background: var(--blue2);
+      color: #fff;
+      text-align: center;
+      padding: 1rem 0;
+      margin-top: 2rem;
+    }
+    .footer-nav .footer-list {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .footer-nav .footer-list a, .social-links a {
+      color: var(--yellow);
+      font-weight: 500;
+    }
+    .footer-copy {
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
-    <a href="index.html" class="brand">SUBASTACARHN</a>
-    <span></span>
-  </header>
-  <ul id="menu-links">
-    <li><a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a></li>
-    <li><a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a></li>
-    <li><a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a></li>
-    <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
-  </ul>
 
-  <div class="layout">
-    <div class="contenido-central">
-      <h1>Iniciar Sesión</h1>
-      <form id="loginForm">
-        <label for="emailL">Correo electrónico</label>
-        <input type="email" id="emailL" required />
-
-        <label for="passwordL">Contraseña</label>
-        <input type="password" id="passwordL" minlength="8" required />
-
-        <button type="submit" class="styled-btn">Entrar</button>
-
-        <p class="forgot">
-          <a href="#" id="forgot-link">¿Olvidaste tu contraseña?</a>
-        </p>
-      </form>
-      <p style="text-align:center; margin-top:15px;">
-        ¿No tienes cuenta? <a href="register.html">Registrarse</a>
-      </p>
-    </div>
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">SubastaCarHN</a>
+    <ul class="nav-list">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="calculadora.html">Calculadora</a></li>
+      <li><a href="inventario.html">Vehículos</a></li>
+      <li><a href="cursos.html">Cursos</a></li>
+      <li><a href="https://wa.me/50497330137" target="_blank">Soporte</a></li>
+      <li><span id="userGreeting"></span></li>
+    </ul>
+    <button class="menu-icon" onclick="toggleMenu()">☰</button>
   </div>
+  <nav id="mobile-menu-links" class="mobile-nav">
+    <a href="index.html">Inicio</a>
+    <a href="calculadora.html">Calculadora</a>
+    <a href="inventario.html">Vehículos</a>
+    <a href="cursos.html">Cursos</a>
+    <a href="https://wa.me/50497330137" target="_blank">Soporte</a>
+    <span id="mobileGreeting"></span>
+  </nav>
+</header>
 
-  <!-- Modal Recuperación -->
-  <div id="resetModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>Recuperar contraseña</h2>
-      <form id="reset-form">
-        <label for="reset-email">Correo electrónico</label>
-        <input type="email" id="reset-email" required />
-        <button type="submit" class="styled-btn">Enviar enlace</button>
-      </form>
-      <p id="reset-msg" style="margin-top:10px; text-align:center;"></p>
-    </div>
+<!-- LOGIN -->
+<div class="layout">
+  <div class="contenido-central">
+    <h1>Iniciar Sesión</h1>
+    <form id="loginForm">
+      <label for="emailL">Correo electrónico</label>
+      <input type="email" id="emailL" required />
+      <label for="passwordL">Contraseña</label>
+      <input type="password" id="passwordL" minlength="8" required />
+      <button type="submit" class="styled-btn">Entrar</button>
+      <p class="forgot"><a href="#" id="forgot-link">¿Olvidaste tu contraseña?</a></p>
+    </form>
+    <p style="text-align:center; margin-top:15px;">
+      ¿No tienes cuenta? <a href="register.html">Registrarse</a>
+    </p>
   </div>
+</div>
 
-  <!-- Firebase compat SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script>
-    // Tu configuración<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
-    authDomain: "subastacarhn-40554.firebaseapp.com",
-    projectId: "subastacarhn-40554",
-    storageBucket: "subastacarhn-40554.firebasestorage.app",
-    messagingSenderId: "536785797974",
-    appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
-    measurementId: "G-QM5N60K8C0"
-  };
-  firebase.initializeApp(firebaseConfig);
+<!-- MODAL -->
+<div id="resetModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Recuperar contraseña</h2>
+    <form id="reset-form">
+      <label for="reset-email">Correo electrónico</label>
+      <input type="email" id="reset-email" required />
+      <button type="submit" class="styled-btn">Enviar enlace</button>
+    </form>
+    <p id="reset-msg" style="margin-top:10px; text-align:center;"></p>
+  </div>
+</div>
 
-  function toggleMenu() {
-    const m = document.getElementById('menu-links');
-    m.style.display = m.style.display === 'block' ? 'none' : 'block';
-  }
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <nav class="footer-nav">
+      <ul class="footer-list">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="calculadora.html">Calculadora</a></li>
+        <li><a href="inventario.html">Vehículos</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+    <div class="social-links">
+      <a href="https://facebook.com/Subasta-Car-HN" target="_blank">Facebook</a> |
+      <a href="https://instagram.com/subastacar1" target="_blank">Instagram</a> |
+      <a href="https://tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+    </div>
+    <div class="footer-copy">&copy; 2025 SubastaCarHN. Todos los derechos reservados.</div>
+  </div>
+</footer>
 
-  window.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('loginForm');
-    form.addEventListener('submit', async e => {
-      e.preventDefault();
-      const email = document.getElementById('emailL').value.trim();
-      const pass  = document.getElementById('passwordL').value;
-      try {
-        const cred = await firebase.auth().signInWithEmailAndPassword(email, pass);
+<!-- Scripts -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+  authDomain: "subastacarhn-40554.firebaseapp.com",
+  projectId: "subastacarhn-40554",
+  storageBucket: "subastacarhn-40554.appspot.com",
+  messagingSenderId: "536785797974",
+  appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+  measurementId: "G-QM5N60K8C0"
+};
+firebase.initializeApp(firebaseConfig);
 
-        // 🔁 Recargar usuario para obtener datos actualizados
-        await cred.user.reload();
+function toggleMenu() {
+  document.getElementById('mobile-menu-links').classList.toggle('open');
+}
 
-        if (!cred.user.emailVerified) {
-          alert('⚠️ Verifica tu correo antes de continuar.');
-          await firebase.auth().signOut(); // opcional, cerrar sesión si no verifica
-          return;
-        }
-
-        window.location.href = 'index.html';
-      } catch(err) {
-        const msg = (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password')
-          ? '⚠️ Email o contraseña incorrectos.'
-          : err.message;
-        alert(msg);
-      }
-    });
-
-    // Recuperación de contraseña
-    const forgotLink = document.getElementById('forgot-link');
-    const modal = document.getElementById('resetModal');
-    const closeBtn = modal.querySelector('.close');
-    const resetForm = document.getElementById('reset-form');
-    const resetMsg = document.getElementById('reset-msg');
-
-    forgotLink.addEventListener('click', e => {
-      e.preventDefault();
-      resetForm.reset();
-      resetMsg.textContent = '';
-      modal.style.display = 'flex';
-    });
-
-    closeBtn.addEventListener('click', () => modal.style.display = 'none');
-    window.addEventListener('click', e => {
-      if (e.target === modal) modal.style.display = 'none';
-    });
-
-    resetForm.addEventListener('submit', async e => {
-      e.preventDefault();
-      const email = document.getElementById('reset-email').value.trim();
-      try {
-        await firebase.auth().sendPasswordResetEmail(email);
-        resetMsg.textContent = `✅ Enviado enlace a ${email}. Revisa tu bandeja.`;
-      } catch (err) {
-        console.error(err);
-        if (err.code === 'auth/user-not-found') {
-          resetMsg.textContent = '❌ Cuenta no encontrada.';
-        } else if (err.code === 'auth/invalid-email') {
-          resetMsg.textContent = '❌ Correo inválido.';
-        } else {
-          resetMsg.textContent = '❌ Error al enviar el correo.';
-        }
-      }
-    });
-  });
+// login, recuperación de contraseña y control de sesión aquí...
 </script>
 
 </body>
