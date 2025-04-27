@@ -4,177 +4,172 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalle del Vehículo | SubastaCarHN</title>
-  <link rel="manifest" href="Img/site.webmanifest">
-  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
-  <meta name="theme-color" content="#002f6c">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="estilos.css">
+  <style>
+    :root {
+      --primary: #002f6c;
+      --accent: #ffc20e;
+      --text: #333;
+      --bg: #f9f9f9;
+      --card-bg: #fff;
+      --shadow: rgba(0,0,0,0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); }
+    header, footer { background: var(--card-bg); padding: 1rem; }
+    .container { max-width: 900px; margin: 0 auto; padding: 1rem; }
+    #detalleVehiculo img { width: 100%; max-width: 600px; border-radius: 8px; display:block; margin: 0 auto; }
+    #detalleVehiculo h1 { margin-top:1rem; color: var(--primary); text-align:center; }
+    #detalleVehiculo .info { margin: 1rem 0; line-height: 1.5; }
+    #detalleVehiculo .info p { margin: .5rem 0; }
+    #detalleVehiculo .price { font-size: 1.5rem; color: var(--accent); font-weight:700; margin: .5rem 0; }
+    #detalleVehiculo .gallery { display: flex; gap: .5rem; overflow-x: auto; margin-top: 1rem; }
+    #detalleVehiculo .gallery img { width: 120px; height: 80px; object-fit:cover; border-radius: 4px; cursor:pointer; }
+    #sugerencias h2 { text-align: center; color: var(--primary); margin-bottom: 1rem; }
+    #autosSugeridos { display: grid; gap:1rem; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); }
+    .card { background: var(--card-bg); border-radius: 8px; overflow:hidden; box-shadow:0 4px 10px var(--shadow); cursor:pointer; transition: transform .2s; }
+    .card:hover { transform: translateY(-4px); }
+    .card img { width:100%; height:120px; object-fit:cover; }
+    .card .content { padding:.5rem; }
+    .card .content h3 { font-size:1rem; margin-bottom:.5rem; text-transform:capitalize; }
+    .card .content .price { color: var(--accent); font-weight:700; }
+  </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="container header-inner">
-    <a href="index.html" class="brand">SubastaCarHN</a>
-    <nav class="nav-links" aria-label="Menú principal">
-      <a href="calculadora.html">Calculadora</a>
+  <header>
+    <div class="container">
+      <a href="index.html">SubastaCarHN</a> |
+      <a href="calculadora.html">Calculadora</a> |
       <a href="inventario.html">Automóviles</a>
-      <a href="#cursos" id="linkCursos">Cursos</a>
-      <span id="userGreeting"></span>
-    </nav>
-    <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
-  </div>
-
-  <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
-    <li><a href="calculadora.html">Calculadora</a></li>
-    <li><a href="inventario.html">Automóviles</a></li>
-    <li><a href="#cursos" id="linkCursosMobile">Cursos</a></li>
-    <li><span id="mobileGreeting"></span></li>
-    <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
-  </ul>
-</header>
-
-<!-- CONTENIDO -->
-<section class="container" id="detalleVehiculo" style="margin-top: 3rem; text-align: center;">
-  <!-- Aquí se cargará el vehículo -->
-</section>
-
-<section class="container" id="sugerencias" style="margin-top: 4rem;">
-  <h2 style="text-align:center;">También te puede interesar</h2>
-  <div id="autosSugeridos" style="display:grid; gap:2rem; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); margin-top:2rem;"></div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="container">
-    <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
-    <div style="margin-top:0.5rem;">
-      <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
-      <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
-      <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
     </div>
-  </div>
-</footer>
+  </header>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <main class="container">
+    <!-- Detalle del vehículo -->
+    <section id="detalleVehiculo"></section>
 
-<script>
-// Configuración Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
-  authDomain: "subastacarhn-40554.firebaseapp.com",
-  projectId: "subastacarhn-40554",
-  storageBucket: "subastacarhn-40554.appspot.com",
-  messagingSenderId: "536785797974",
-  appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
-  measurementId: "G-QM5N60K8C0"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+    <!-- Sugerencias -->
+    <section id="sugerencias">
+      <h2>También te puede interesar</h2>
+      <div id="autosSugeridos"></div>
+    </section>
+  </main>
 
-// Menú y usuario
-function toggleMenu() {
-  const menu = document.getElementById('mobile-menu-links');
-  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-}
+  <footer>
+    <div class="container" style="text-align:center;">
+      SubastaCarHN — Importaciones claras, seguras y al mejor precio
+    </div>
+  </footer>
 
-firebase.auth().onAuthStateChanged(user => {
-  const desktop = document.getElementById('userGreeting');
-  const mobile = document.getElementById('mobileGreeting');
-  if (user) {
-    const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
-    desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
-    mobile.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
-  } else {
-    desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
-    mobile.innerHTML = desktop.innerHTML;
-  }
-});
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
-function logout() {
-  firebase.auth().signOut().then(() => location.reload());
-}
+  <script>
+    // Inicializa Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+      authDomain: "subastacarhn-40554.firebaseapp.com",
+      projectId: "subastacarhn-40554",
+      storageBucket: "subastacarhn-40554.appspot.com",
+      messagingSenderId: "536785797974",
+      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-// Cargar detalles del vehículo
-async function cargarVehiculo() {
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
-  
-  if (!id) {
-    document.getElementById('detalleVehiculo').innerHTML = '<p>Vehículo no encontrado.</p>';
-    return;
-  }
+    // Obtiene el parámetro id de la URL
+    const params = new URLSearchParams(window.location.search);
+    const vehiculoId = params.get('id');
 
-  try {
-    const doc = await db.collection('inventario').doc(id).get();
-    if (!doc.exists) {
-      document.getElementById('detalleVehiculo').innerHTML = '<p>Vehículo no disponible.</p>';
-      return;
+    const detalleEl = document.getElementById('detalleVehiculo');
+    const sugeridosEl = document.getElementById('autosSugeridos');
+
+    // Carga y renderiza el vehículo
+    async function cargarVehiculo() {
+      if (!vehiculoId) {
+        detalleEl.innerHTML = '<p>Vehículo no encontrado.</p>';
+        return;
+      }
+
+      try {
+        const doc = await db.collection('inventario').doc(vehiculoId).get();
+        if (!doc.exists) {
+          detalleEl.innerHTML = '<p>Vehículo no disponible.</p>';
+          return;
+        }
+
+        const auto = { id: doc.id, ...doc.data() };
+
+        // Galería de imágenes
+        const galleryHtml = (Array.isArray(auto.imagenes) ? auto.imagenes : [])
+          .map(url =>
+            `<img src="${url}" alt="${auto.modelo}" onclick="cambiarImagen('${url}')">`
+          ).join('');
+
+        // Detalle principal
+        detalleEl.innerHTML = `
+          <img id="mainImage" src="${auto.imagenes?.[0]||''}" alt="${auto.modelo}">
+          <div class="info">
+            <h1>${auto.marca} ${auto.modelo} (${auto.anio})</h1>
+            <div class="price">L ${ (typeof auto.precio==='number') ? auto.precio.toLocaleString() : 'N/A' }</div>
+            <p><strong>Motor:</strong> ${auto.motor||'–'}</p>
+            <p><strong>Color:</strong> ${auto.color||'–'}</p>
+            <p><strong>Tipo:</strong> ${auto.tipo||'–'}</p>
+            <p><strong>Kilometraje:</strong> ${(typeof auto.kilometraje==='number')?auto.kilometraje.toLocaleString()+' km':'–'}</p>
+            <p style="margin-top:1rem;">${auto.descripcion||''}</p>
+          </div>
+          ${ galleryHtml ? `<div class="gallery">${galleryHtml}</div>` : '' }
+        `;
+
+        cargarSugerencias(auto);
+      } catch (e) {
+        console.error('Error cargando vehículo:', e);
+        detalleEl.innerHTML = '<p>Error al cargar vehículo.</p>';
+      }
     }
 
-    const auto = doc.data();
-    document.getElementById('detalleVehiculo').innerHTML = `
-      <img src="${auto.imagen}" alt="${auto.modelo}" style="width:100%; max-width:600px; height:auto; border-radius:12px;">
-      <h1 style="margin-top:1rem;">${auto.marca} ${auto.modelo} ${auto.anio}</h1>
-      <p style="font-size:1.2rem; color:var(--blue); font-weight:700;">L ${auto.precio.toLocaleString()}</p>
-      <p><strong>Motor:</strong> ${auto.motor}</p>
-      <p><strong>Color:</strong> ${auto.color}</p>
-      <p><strong>Tipo:</strong> ${auto.tipo}</p>
-      <p><strong>Kilometraje:</strong> ${auto.kilometraje.toLocaleString()} km</p>
-      <p style="margin:2rem 0;">${auto.descripcion}</p>
-      <a href="https://wa.me/50497330137?text=Hola,%20estoy%20interesado%20en%20el%20${auto.marca}%20${auto.modelo}%20${auto.anio}" class="styled-btn" style="margin-top:1rem;">Consultar por WhatsApp</a>
-    `;
+    // Cambia imagen principal al clicar miniatura
+    function cambiarImagen(url) {
+      document.getElementById('mainImage').src = url;
+    }
 
-    cargarSugerencias(auto);
+    // Carga sugerencias de la misma marca
+    async function cargarSugerencias(actual) {
+      try {
+        sugeridosEl.innerHTML = '';
+        const snapshot = await db.collection('inventario')
+          .where('marca', '==', actual.marca)
+          .get();
 
-  } catch (error) {
-    console.error('Error cargando vehículo:', error);
-    document.getElementById('detalleVehiculo').innerHTML = '<p>Error al cargar vehículo.</p>';
-  }
-}
+        snapshot.docs.forEach(doc => {
+          const auto = { id: doc.id, ...doc.data() };
+          if (auto.id === actual.id) return;
 
-// Cargar sugerencias
-async function cargarSugerencias(actual) {
-  try {
-    const snapshot = await db.collection('inventario')
-      .where('marca', '==', actual.marca)
-      .get();
+          const urlImg = auto.imagenes?.[0] || '';
+          const precio = (typeof auto.precio==='number') ? auto.precio.toLocaleString() : 'N/A';
 
-    const contenedor = document.getElementById('autosSugeridos');
-    snapshot.docs.forEach(doc => {
-      const auto = doc.data();
-      if (auto.id !== actual.id) {
-        const div = document.createElement('div');
-        div.style.border = '1px solid #ccc';
-        div.style.borderRadius = '8px';
-        div.style.padding = '1rem';
-        div.style.background = '#fff';
-        div.style.cursor = 'pointer';
-        div.innerHTML = `
-          <img src="${auto.imagen}" alt="${auto.modelo}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
-          <h3 style="margin:0.5rem 0;">${auto.marca} ${auto.modelo} ${auto.anio}</h3>
-          <p style="font-weight:700; color:var(--blue);">L ${auto.precio.toLocaleString()}</p>
-        `;
-        div.addEventListener('click', () => {
-          window.location.href = `vehiculo.html?id=${auto.id}`;
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <img src="${urlImg}" alt="${auto.modelo}">
+            <div class="content">
+              <h3>${auto.marca} ${auto.modelo} (${auto.anio})</h3>
+              <div class="price">L ${precio}</div>
+            </div>
+          `;
+          card.addEventListener('click', () => {
+            window.location.href = `vehiculo.html?id=${auto.id}`;
+          });
+          sugeridosEl.appendChild(card);
         });
-        contenedor.appendChild(div);
+      } catch (e) {
+        console.error('Error cargando sugerencias:', e);
       }
-    });
-  } catch (error) {
-    console.error('Error cargando sugerencias:', error);
-  }
-}
+    }
 
-cargarVehiculo();
-</script>
-
+    document.addEventListener('DOMContentLoaded', cargarVehiculo);
+  </script>
 </body>
 </html>
