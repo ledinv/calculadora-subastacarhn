@@ -5,15 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Administrador de Inventario | SubastaCarHN</title>
 
+  <!-- Iconos y Estilos -->
   <link rel="manifest" href="Img/site.webmanifest" />
   <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png" />
+  <link rel="stylesheet" href="estilos.css" />
   <meta name="theme-color" content="#002f6c" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="estilos.css" />
 </head>
 
 <body style="background: var(--light); font-family: 'Montserrat', sans-serif;">
@@ -25,7 +23,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 
 <script>
-// Configuración Firebase
+// Inicializar Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
   authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -33,7 +31,6 @@ const firebaseConfig = {
   storageBucket: "subastacarhn-40554.appspot.com",
   messagingSenderId: "536785797974",
   appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
-  measurementId: "G-QM5N60K8C0"
 };
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
@@ -44,7 +41,9 @@ const storage = firebase.storage();
 <!-- Seguridad -->
 <script>
 auth.onAuthStateChanged(user => {
-  if (!user || user.email !== "ledinvvv@gmail.com") {
+  if (!user) {
+    window.location.href = "login.html";
+  } else if (user.email !== "ledinvvv@gmail.com") {
     window.location.href = "index.html";
   } else {
     document.getElementById('contenidoAdmin').style.display = 'block';
@@ -53,11 +52,11 @@ auth.onAuthStateChanged(user => {
 });
 </script>
 
-<!-- HEADER -->
-<header style="background: linear-gradient(to right, #002f6c, #004aad); padding: 0.75rem 1rem;">
-  <div class="container header-inner" style="display:flex; justify-content:space-between; align-items:center;">
-    <a href="index.html" class="brand" style="color:white; font-weight:700; font-size:1.25rem;">SubastaCarHN</a>
-    <nav class="nav-links" style="display:flex; gap:1rem;">
+<!-- Header -->
+<header style="background: linear-gradient(to right, #002f6c, #004aad); padding:1rem;">
+  <div class="container" style="display:flex; justify-content:space-between;">
+    <a href="index.html" style="color:white; font-weight:700; font-size:1.25rem;">SubastaCarHN</a>
+    <nav style="display:flex; gap:1rem;">
       <a href="calculadora.html" style="color: #ffc20e;">Calculadora</a>
       <a href="inventario.html" style="color: #ffc20e;">Automóviles</a>
       <a href="cursos.html" style="color: #ffc20e;">Cursos</a>
@@ -65,15 +64,14 @@ auth.onAuthStateChanged(user => {
   </div>
 </header>
 
-<!-- CONTENIDO -->
-<main id="contenidoAdmin" style="display:none; padding:2rem 1rem;">
+<!-- Contenido Admin -->
+<main id="contenidoAdmin" style="display:none; padding:2rem;">
+<h1 style="text-align:center;">Agregar Nuevo Vehículo</h1>
 
-<h1 style="text-align:center; margin-bottom:2rem;">Agregar Nuevo Vehículo</h1>
-
-<form id="formularioAuto" style="max-width:600px; margin:auto; background:white; padding:2rem; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); display:flex; flex-direction:column; gap:1rem;">
+<form id="formularioAuto" style="max-width:600px; margin:auto; background:white; padding:2rem; border-radius:10px; display:flex; flex-direction:column; gap:1rem;">
   <input type="text" id="marca" placeholder="Marca" required>
   <input type="text" id="modelo" placeholder="Modelo" required>
-  <input type="text" id="motor" placeholder="Motor (ej: 2.0L)" required>
+  <input type="text" id="motor" placeholder="Motor" required>
   <input type="number" id="anio" placeholder="Año" required>
   <input type="number" id="precio" placeholder="Precio en Lempiras" required>
   <input type="number" id="kilometraje" placeholder="Kilometraje" required>
@@ -86,146 +84,127 @@ auth.onAuthStateChanged(user => {
     <option value="Camioneta">Camioneta</option>
     <option value="Eléctrico">Eléctrico</option>
   </select>
-  <textarea id="descripcion" placeholder="Descripción del vehículo" rows="4" required></textarea>
+  <textarea id="descripcion" placeholder="Descripción" rows="4" required></textarea>
 
-  <label style="font-weight:bold; color:#002f6c;">Imágenes del Vehículo:</label>
+  <label><strong>Imágenes del Vehículo:</strong></label>
   <input type="file" id="imagenes" accept="image/*" multiple required>
 
-  <div id="previewImagenes" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
-
-  <button type="submit" class="styled-btn" style="margin-top:1rem;">Agregar al Inventario</button>
+  <button type="submit" class="styled-btn">Agregar al Inventario</button>
 </form>
 
-<div id="mensajeExito" style="display:none; text-align:center; color:green; font-weight:bold; margin-top:2rem;">
-  ¡Vehículo agregado exitosamente!
+<div id="mensajeExito" style="text-align:center; color:green; font-weight:bold; margin-top:1rem; display:none;">
+  ✅ Vehículo agregado exitosamente
 </div>
 
 <hr style="margin:3rem 0;">
+<h2 style="text-align:center;">Inventario Actual</h2>
 
-<h2 style="text-align:center; margin-bottom:2rem;">Inventario Actual</h2>
-
-<section id="gridInventario" style="display:grid; gap:2rem; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));"></section>
-
+<section id="gridInventario" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:2rem;"></section>
 </main>
 
-<footer style="background:#004aad; color:white; text-align:center; padding:1rem;">
-  SubastaCarHN — Importaciones claras, seguras y al mejor precio
-</footer>
-
 <script>
-// Previsualizar imágenes
-document.getElementById('imagenes').addEventListener('change', e => {
-  const preview = document.getElementById('previewImagenes');
-  preview.innerHTML = '';
-  [...e.target.files].forEach(file => {
-    const img = document.createElement('img');
-    img.src = URL.createObjectURL(file);
-    img.style.width = '80px';
-    img.style.height = '80px';
-    img.style.objectFit = 'cover';
-    img.style.borderRadius = '8px';
-    preview.appendChild(img);
-  });
-});
+// Referencias
+const formulario = document.getElementById('formularioAuto');
+const gridInventario = document.getElementById('gridInventario');
 
-// Agregar vehículo
-document.getElementById('formularioAuto').addEventListener('submit', async (e) => {
+// Agregar Vehículo
+formulario.addEventListener('submit', async (e) => {
   e.preventDefault();
-  
-  const imagenes = document.getElementById('imagenes').files;
-  if (!imagenes.length) {
-    alert('Debe seleccionar al menos una imagen');
+
+  const marca = document.getElementById('marca').value.trim();
+  const modelo = document.getElementById('modelo').value.trim();
+  const motor = document.getElementById('motor').value.trim();
+  const anio = parseInt(document.getElementById('anio').value.trim());
+  const precio = parseInt(document.getElementById('precio').value.trim());
+  const kilometraje = parseInt(document.getElementById('kilometraje').value.trim());
+  const color = document.getElementById('color').value.trim();
+  const tipo = document.getElementById('tipo').value;
+  const descripcion = document.getElementById('descripcion').value.trim();
+  const imagenesFiles = document.getElementById('imagenes').files;
+
+  if (imagenesFiles.length === 0) {
+    alert('Debes subir al menos una imagen.');
     return;
   }
 
-  const id = `${document.getElementById('modelo').value.toLowerCase()}${document.getElementById('anio').value}-${Date.now()}`;
-  const urlsImagenes = [];
+  const id = `${modelo.toLowerCase()}${anio}-${Date.now()}`;
 
-  for (const imagen of imagenes) {
-    const storageRef = storage.ref().child(`inventario/${id}/${imagen.name}`);
-    await storageRef.put(imagen);
-    const url = await storageRef.getDownloadURL();
-    urlsImagenes.push(url);
+  try {
+    document.getElementById('mensajeExito').textContent = 'Cargando imágenes...';
+    document.getElementById('mensajeExito').style.display = 'block';
+
+    const urls = [];
+    for (let i = 0; i < imagenesFiles.length; i++) {
+      const archivo = imagenesFiles[i];
+      const storageRef = storage.ref(`inventario/${id}/${archivo.name}`);
+      const upload = await storageRef.put(archivo);
+      const url = await upload.ref.getDownloadURL();
+      urls.push(url);
+    }
+
+    const nuevoAuto = {
+      id,
+      marca,
+      modelo,
+      motor,
+      anio,
+      precio,
+      kilometraje,
+      color,
+      tipo,
+      descripcion,
+      imagenes: urls,
+      vendido: false,
+      fecha: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    await db.collection('inventario').doc(id).set(nuevoAuto);
+
+    document.getElementById('mensajeExito').textContent = '✅ Vehículo agregado exitosamente';
+    formulario.reset();
+    cargarInventario();
+  } catch (error) {
+    console.error('Error al agregar:', error);
+    alert('Error al agregar el vehículo.');
   }
-
-  const nuevoAuto = {
-    id,
-    marca: document.getElementById('marca').value,
-    modelo: document.getElementById('modelo').value,
-    motor: document.getElementById('motor').value,
-    anio: parseInt(document.getElementById('anio').value),
-    precio: parseInt(document.getElementById('precio').value),
-    kilometraje: parseInt(document.getElementById('kilometraje').value),
-    color: document.getElementById('color').value,
-    tipo: document.getElementById('tipo').value,
-    descripcion: document.getElementById('descripcion').value,
-    imagenes: urlsImagenes,
-    vendido: false,
-    fecha: firebase.firestore.FieldValue.serverTimestamp()
-  };
-
-  await db.collection('inventario').doc(id).set(nuevoAuto);
-
-  document.getElementById('mensajeExito').style.display = 'block';
-  document.getElementById('formularioAuto').reset();
-  document.getElementById('previewImagenes').innerHTML = '';
-  cargarInventario();
 });
 
 // Cargar inventario
 async function cargarInventario() {
-  const grid = document.getElementById('gridInventario');
-  grid.innerHTML = '';
-  const snapshot = await db.collection('inventario').orderBy('fecha', 'desc').get();
-  
-  snapshot.forEach(doc => {
-    const auto = doc.data();
-    const card = document.createElement('div');
-    card.style.background = '#fff';
-    card.style.padding = '1rem';
-    card.style.borderRadius = '8px';
-    card.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-
-    // Carrusel de imágenes
-    let imagenesHtml = '';
-    auto.imagenes.forEach(url => {
-      imagenesHtml += `<img src="${url}" style="width:100%; height:200px; object-fit:cover; border-radius:8px; margin-bottom:8px;">`;
+  gridInventario.innerHTML = '';
+  try {
+    const snapshot = await db.collection('inventario').orderBy('fecha', 'desc').get();
+    snapshot.forEach(doc => {
+      const auto = doc.data();
+      agregarAutoAlGrid(auto);
     });
-
-    card.innerHTML = `
-      ${imagenesHtml}
-      <h3>${auto.marca} ${auto.modelo} ${auto.anio}</h3>
-      <p><strong>Precio:</strong> L ${auto.precio.toLocaleString()}</p>
-      <p style="color:${auto.vendido ? 'red' : 'green'};">${auto.vendido ? 'VENDIDO' : 'DISPONIBLE'}</p>
-      <div style="margin-top:1rem;">
-        <button onclick="editarAuto('${auto.id}')" class="styled-btn">Editar</button>
-        <button onclick="toggleVendido('${auto.id}', ${auto.vendido})" class="styled-btn">${auto.vendido ? 'Marcar Disponible' : 'Ocultar'}</button>
-        <button onclick="eliminarAuto('${auto.id}', ${JSON.stringify(auto.imagenes)})" class="styled-btn" style="background:red; color:white;">Eliminar</button>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-}
-
-// Eliminar vehículo y sus imágenes
-async function eliminarAuto(id, imagenes) {
-  if (!confirm('¿Eliminar este vehículo definitivamente?')) return;
-
-  for (const url of imagenes) {
-    const ref = storage.refFromURL(url);
-    await ref.delete();
+  } catch (error) {
+    console.error('Error cargando inventario:', error);
   }
-
-  await db.collection('inventario').doc(id).delete();
-  cargarInventario();
 }
 
-// Ocultar o Marcar disponible
-async function toggleVendido(id, estadoActual) {
-  await db.collection('inventario').doc(id).update({ vendido: !estadoActual });
-  cargarInventario();
+// Mostrar en el grid
+function agregarAutoAlGrid(auto) {
+  const card = document.createElement('div');
+  card.style.border = '1px solid #ccc';
+  card.style.borderRadius = '10px';
+  card.style.padding = '1rem';
+  card.style.background = '#fff';
+
+  card.innerHTML = `
+    <img src="${auto.imagenes[0]}" alt="${auto.modelo}" style="width:100%; height:200px; object-fit:cover; border-radius:10px;">
+    <h3>${auto.marca} ${auto.modelo} ${auto.anio}</h3>
+    <p><strong>Precio:</strong> L ${auto.precio.toLocaleString()}</p>
+    <p style="color:${auto.vendido ? 'red' : 'green'}; font-weight:bold;">${auto.vendido ? 'VENDIDO' : 'DISPONIBLE'}</p>
+  `;
+  gridInventario.appendChild(card);
 }
 </script>
+
+<!-- Footer -->
+<footer style="background:#004aad; color:white; text-align:center; padding:1rem;">
+  <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
+</footer>
 
 </body>
 </html>
