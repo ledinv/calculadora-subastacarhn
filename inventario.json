@@ -1,0 +1,38 @@
+[
+  {
+    "id": "elantra2018",
+    "marca": "Hyundai",
+    "modelo": "Elantra",
+    "anio": 2018,
+    "precio": 300000,
+    "imagen": "Img/elantra2018.jpg",
+    "tipo": "Sedán",
+    "color": "Azul",
+    "kilometraje": 70000,
+    "descripcion": "Hyundai Elantra 2018, motor 2.0L, transmisión automática, excelente estado."
+  },
+  {
+    "id": "camry2015",
+    "marca": "Toyota",
+    "modelo": "Camry",
+    "anio": 2015,
+    "precio": 260000,
+    "imagen": "Img/camry2015.jpg",
+    "tipo": "Sedán",
+    "color": "Plateado",
+    "kilometraje": 85000,
+    "descripcion": "Toyota Camry 2015 importado de USA, aire acondicionado, interior en perfecto estado."
+  },
+  {
+    "id": "f1502020",
+    "marca": "Ford",
+    "modelo": "F-150",
+    "anio": 2020,
+    "precio": 450000,
+    "imagen": "Img/f1502020.jpg",
+    "tipo": "Pickup",
+    "color": "Gris",
+    "kilometraje": 40000,
+    "descripcion": "Ford F-150 2020 4x4, motor V6 Ecoboost, como nueva."
+  }
+]
