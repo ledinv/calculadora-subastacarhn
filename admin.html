@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrador de Inventario | SubastaCarHN</title>
+  <link rel="manifest" href="Img/site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
+  <meta name="theme-color" content="#002f6c">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<!-- Seguridad Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+  authDomain: "subastacarhn-40554.firebaseapp.com",
+  projectId: "subastacarhn-40554",
+  storageBucket: "subastacarhn-40554.appspot.com",
+  messagingSenderId: "536785797974",
+  appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+  measurementId: "G-QM5N60K8C0"
+};
+firebase.initializeApp(firebaseConfig);
+
+// Validar acceso solo para Ledin
+firebase.auth().onAuthStateChanged(user => {
+  if (!user) {
+    window.location.href = "login.html";
+  } else if (user.email !== "ledinvvv@gmail.com") {
+    window.location.href = "index.html";
+  } else {
+    document.getElementById('contenidoAdmin').style.display = 'block';
+  }
+});
+</script>
+
+<!-- HEADER -->
+<header>
+  <div class="container header-inner">
+    <a href="index.html" class="brand">SubastaCarHN</a>
+    <nav class="nav-links" aria-label="Menú principal">
+      <a href="calculadora.html">Calculadora</a>
+      <a href="inventario.html">Automóviles</a>
+      <a href="#cursos" id="linkCursos">Cursos</a>
+      <span id="userGreeting"></span>
+    </nav>
+    <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
+  </div>
+
+  <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
+    <li><a href="calculadora.html">Calculadora</a></li>
+    <li><a href="inventario.html">Automóviles</a></li>
+    <li><a href="#cursos" id="linkCursosMobile">Cursos</a></li>
+    <li><span id="mobileGreeting"></span></li>
+    <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+  </ul>
+</header>
+
+<!-- CONTENIDO ADMIN -->
+<div id="contenidoAdmin" style="display: none; padding: 2rem 1rem;">
+
+  <h1 style="text-align:center; margin-bottom:2rem;">Agregar Nuevo Vehículo</h1>
+
+  <form id="formularioAuto" class="container" style="max-width:600px; margin:auto; display:flex; flex-direction:column; gap:1rem;">
+    <input type="text" id="marca" placeholder="Marca" required>
+    <input type="text" id="modelo" placeholder="Modelo" required>
+    <input type="text" id="motor" placeholder="Motor (ej: 2.0L)" required>
+    <input type="number" id="anio" placeholder="Año" required>
+    <input type="number" id="precio" placeholder="Precio en Lempiras" required>
+    <input type="number" id="kilometraje" placeholder="Kilometraje" required>
+    <input type="text" id="color" placeholder="Color" required>
+    <select id="tipo" required>
+      <option value="">Tipo de Vehículo</option>
+      <option value="Sedán">Sedán</option>
+      <option value="SUV">SUV</option>
+      <option value="Pickup">Pickup</option>
+      <option value="Camioneta">Camioneta</option>
+      <option value="Eléctrico">Eléctrico</option>
+    </select>
+    <textarea id="descripcion" placeholder="Descripción del vehículo" rows="4" required></textarea>
+    <input type="text" id="imagen" placeholder="URL de la Imagen Principal" required>
+
+    <button type="submit" class="styled-btn" style="margin-top:1rem;">Agregar al Inventario</button>
+  </form>
+
+  <div id="mensajeExito" style="display:none; text-align:center; color:green; font-weight:bold; margin-top:2rem;">
+    ¡Vehículo agregado exitosamente!
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
+    <div style="margin-top:0.5rem;">
+      <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
+      <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
+      <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Scripts Adicionales -->
+<script>
+// Menú Móvil
+function toggleMenu() {
+  const menu = document.getElementById('mobile-menu-links');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+}
+
+// Firebase Auth Greetings
+firebase.auth().onAuthStateChanged(user => {
+  const desktop = document.getElementById('userGreeting');
+  const mobile  = document.getElementById('mobileGreeting');
+  if (user) {
+    const name = (user.displayName || user.email.split('@')[0])
+                   .replace(/^./, c => c.toUpperCase());
+    desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
+    mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
+  } else {
+    desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+    mobile.innerHTML  = desktop.innerHTML;
+  }
+});
+
+function logout() {
+  firebase.auth().signOut().then(() => location.reload());
+}
+
+// Función para manejar el envío del formulario
+document.getElementById('formularioAuto').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const nuevoAuto = {
+    id: `${document.getElementById('modelo').value.toLowerCase()}${document.getElementById('anio').value}`,
+    marca: document.getElementById('marca').value,
+    modelo: document.getElementById('modelo').value,
+    motor: document.getElementById('motor').value,
+    anio: parseInt(document.getElementById('anio').value),
+    precio: parseInt(document.getElementById('precio').value),
+    kilometraje: parseInt(document.getElementById('kilometraje').value),
+    color: document.getElementById('color').value,
+    tipo: document.getElementById('tipo').value,
+    descripcion: document.getElementById('descripcion').value,
+    imagen: document.getElementById('imagen').value
+  };
+
+  console.log('Nuevo auto creado:', nuevoAuto);
+
+  // Mostrar mensaje de éxito
+  document.getElementById('mensajeExito').style.display = 'block';
+
+  // Resetear el formulario
+  document.getElementById('formularioAuto').reset();
+
+  // Aquí podríamos enviarlo a Firebase o guardarlo localmente después
+});
+</script>
+
+</body>
+</html>
