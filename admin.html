@@ -65,12 +65,12 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 
 <script>
-  // Configuración de Firebase
+  // Configuración de Firebase (bucket corregido)
   const firebaseConfig = {
     apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
     authDomain: "subastacarhn-40554.firebaseapp.com",
     projectId: "subastacarhn-40554",
-    storageBucket: "subastacarhn-40554.appspot.com",
+    storageBucket: "subastacarhn-40554.firebasestorage.app",
     messagingSenderId: "536785797974",
     appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
     measurementId: "G-QM5N60K8C0"
@@ -80,13 +80,10 @@
   // 1. Verificar sesión y permiso de admin
   firebase.auth().onAuthStateChanged(user => {
     if (!user) {
-      // Si no está logueado, redirige al login
       window.location.href = 'login.html';
     } else if (user.email !== 'ledinvvv@gmail.com') {
-      // Si no es el admin correcto, va al home
       window.location.href = '/';
     } else {
-      // Usuario admin: mostrar interfaz y arrancar lógica
       document.getElementById('adminApp').style.display = 'block';
       initApp();
     }
