@@ -4,8 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cursos | SubastaCarHN</title>
-  <link rel="icon" href="Img/favicon-32x32.png" type="image/png"/>
+  <link rel="manifest" href="Img/site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="Img/favicon-32x32.png">
+  <meta name="theme-color" content="#002f6c">
+
+  <!-- Google Fonts Montserrat -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
+
   <style>
     :root {
       --blue: #002f6c;
@@ -15,7 +26,13 @@
       --light: #f9f9f9;
       --max-width: 1200px;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: 'Montserrat', sans-serif;
       color: var(--dark);
@@ -24,34 +41,38 @@
     }
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
+
+    /* Container */
     .container {
       width: 100%;
       max-width: var(--max-width);
       margin: 0 auto;
       padding: 0 1rem;
     }
-    header {
+
+    /* ===== HEADER ===== */
+    .site-header {
       background: linear-gradient(to right, var(--blue), var(--blue2));
-      position: sticky;
-      top: 0;
-      z-index: 999;
+      position: sticky; top: 0; z-index: 1000;
     }
-    .header-inner {
+    .site-header .header-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0.5rem 0;
     }
-    .brand {
+    .site-header .brand {
       color: #fff;
       font-size: 1.25rem;
       font-weight: 700;
     }
-    .nav-links {
+    .site-header .nav-links {
       display: none;
-      gap: 1rem;
+      gap: 1.5rem;
+      margin-left: auto;
     }
-    .nav-links a, .nav-links span {
+    .site-header .nav-links a,
+    .site-header .nav-links span {
       color: var(--yellow);
       font-size: 0.9375rem;
       font-weight: 600;
@@ -68,7 +89,7 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     .mobile-nav {
-      display: none;
+      display: none !important;
       flex-direction: column;
       background: #fff;
       position: absolute;
@@ -79,19 +100,30 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       z-index: 998;
     }
-    .mobile-nav li { margin-bottom: 0.75rem; }
-    .mobile-nav a, .mobile-nav span {
+    .mobile-nav.open {
+      display: flex !important;
+    }
+    .mobile-nav a,
+    .mobile-nav span {
       display: block;
-      color: var(--blue);
       font-weight: 700;
-      font-size: 0.9375rem;
+      font-size: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+      color: var(--blue);
+    }
+    .mobile-nav a:hover,
+    .mobile-nav span:hover {
+      background: rgba(0,47,108,0.1);
     }
     @media (min-width: 768px) {
+      .site-header .nav-links { display: flex; }
       .menu-icon { display: none; }
-      .nav-links { display: flex; }
       .mobile-nav { display: none !important; }
     }
 
+    /* Buttons */
     .styled-btn {
       display: inline-block;
       background: var(--yellow);
@@ -102,11 +134,11 @@
       padding: 0.875rem 1.5rem;
       font-size: 1rem;
       cursor: pointer;
-      margin-top: 1rem;
       transition: background-color 0.3s;
     }
     .styled-btn:hover { background: #e6ac00; }
 
+    /* Hero Curso */
     .hero-curso {
       background: url('Img/curso-hero.jpg') center/cover no-repeat;
       height: 50vh;
@@ -124,29 +156,25 @@
       max-width: 600px;
     }
 
+    /* Sections */
     section { padding: 3rem 1rem; }
-    .video-presentacion, .info-curso, .beneficios {
+    .video-presentacion, .info-curso, .beneficios, .cta-wsp {
       background: #fff;
       text-align: center;
     }
-    .beneficios ul {
+    .info-curso ul, .beneficios ul {
       list-style: none;
       padding: 0;
-      margin-top: 1rem;
+      margin: 1rem auto;
+      max-width: 600px;
+      text-align: left;
     }
     .beneficios li {
       margin-bottom: 1rem;
       font-weight: 600;
     }
-    .cta-wsp {
-      text-align: center;
-      background: var(--blue2);
-      color: white;
-      padding: 3rem 1rem;
-    }
-    .cta-wsp a {
-      font-size: 1.1rem;
-    }
+
+    /* Video container */
     .video-container {
       position: relative;
       width: 100%;
@@ -154,58 +182,78 @@
       background-size: cover;
       background-position: center;
       cursor: pointer;
+      margin: auto;
+      max-width: 600px;
     }
     .video-container video {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border-radius: 12px;
     }
     .play-button {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       background: rgba(255,255,255,0.8);
       border: none;
       border-radius: 50%;
-      width: 60px;
-      height: 60px;
+      width: 60px; height: 60px;
       font-size: 1.5rem;
       cursor: pointer;
     }
 
-    footer {
+    /* ===== FOOTER ===== */
+    .site-footer {
       background: var(--blue2);
       color: #fff;
       text-align: center;
-      padding: 1rem;
+      padding: 2rem 0;
     }
-    footer a { color: var(--yellow); margin: 0 0.5rem; }
+    .site-footer .footer-nav .footer-list {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .site-footer .footer-list li a,
+    .site-footer .social-links a {
+      color: var(--yellow);
+      font-weight: 500;
+    }
+    .site-footer .footer-copy {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body>
-    <!-- HEADER -->
-  <header>
+
+  <!-- HEADER -->
+  <header class="site-header">
     <div class="container header-inner">
       <a href="index.html" class="brand">SubastaCarHN</a>
       <nav class="nav-links" aria-label="Menú principal">
         <a href="calculadora.html">Calculadora</a>
-        <a href="cursos.html">Cursos</a>
+        <a href="#cursos" id="linkCursos">Cursos</a>
+        <a href="inventario.html">Vehículos</a>
+        <a href="https://wa.me/50497330137" target="_blank">Soporte</a>
         <span id="userGreeting"></span>
       </nav>
       <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
     </div>
     <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
       <li><a href="calculadora.html">Calculadora</a></li>
-      <li><a href="cursos.html">Cursos</a></li>
+      <li><a href="#cursos" id="linkCursosMobile">Cursos</a></li>
+      <li><a href="inventario.html">Vehículos</a></li>
+      <li><a href="https://wa.me/50497330137" target="_blank">Soporte</a></li>
       <li><span id="mobileGreeting"></span></li>
-      <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
     </ul>
   </header>
+  <!-- /HEADER -->
 
-  <!-- HERO -->
+  <!-- HERO CURSO -->
   <section class="hero-curso">
     <div class="overlay">
       <h1>Curso de Importación Vehicular</h1>
@@ -213,25 +261,23 @@
     </div>
   </section>
 
-  <!-- VIDEO -->
-  <section class="video-presentacion">
+  <!-- VIDEO PRESENTACIÓN -->
+  <section class="video-presentacion" id="cursos">
     <div class="container">
       <h2 style="color: var(--blue); margin-bottom: 1rem;">Conoce el Curso en 60 segundos</h2>
-      <div class="video-wrapper" style="max-width: 600px; margin: auto;">
-        <div id="cursoVideoLazy" class="video-container"
-             data-video-src="videos/VIDEO-2025-04-21-14-26-34.mp4"
-             style="background-image: url('Img/course-poster.jpg');">
-          <button class="play-button" aria-label="Reproducir video">▶️</button>
-        </div>
+      <div id="videoCursos" class="video-container"
+           data-video-src="videos/VIDEO-2025-04-21-14-26-34.mp4"
+           style="background-image: url('Img/course-poster.jpg');">
+        <button class="play-button" aria-label="Reproducir video">▶️</button>
       </div>
     </div>
   </section>
 
-  <!-- CURSO DETALLES (NUEVO) -->
+  <!-- INFO CURSO -->
   <section class="info-curso">
     <div class="container">
       <h2 style="color: var(--blue);">Curso Virtual de Importación de Autos</h2>
-      <ul style="text-align: left; max-width: 600px; margin: auto;">
+      <ul>
         <li><strong>Inicio:</strong> 18 de Junio 2025</li>
         <li><strong>Modalidad:</strong> Online (Google Meet)</li>
         <li><strong>Horario:</strong> 9:00 PM a 10:00 PM</li>
@@ -240,7 +286,7 @@
       </ul>
 
       <h3 style="margin-top: 2rem; color: var(--blue);">¿Qué incluye este curso?</h3>
-      <ul style="text-align: left; max-width: 600px; margin: auto;">
+      <ul>
         <li>Asesoría personalizada en tu primera importación.</li>
         <li>Guía de contactos confiables (aduanas, grúas, transporte).</li>
         <li>Estrategias para ahorrar dinero y evitar errores costosos.</li>
@@ -248,7 +294,7 @@
       </ul>
 
       <h3 style="margin-top: 2rem; color: var(--blue);">Temario del curso</h3>
-      <ul id="temario-lista" style="text-align: left; max-width: 600px; margin: auto;">
+      <ul id="temario-lista">
         <li>1. Cómo importar legalmente sin errores</li>
         <li>2. Dominio total de Copart (cuentas básicas y premium)</li>
         <li>3. Evaluación de vehículos y cálculo de daños</li>
@@ -257,7 +303,7 @@
       <button onclick="document.getElementById('temario-completo').style.display='block'; this.style.display='none';" class="styled-btn">
         Ver temario completo
       </button>
-      <ul id="temario-completo" style="display:none; text-align: left; max-width: 600px; margin: auto; margin-top: 1rem;">
+      <ul id="temario-completo" style="display:none; margin-top:1rem;">
         <li>5. Coordinación de grúa, embarque y desaduanaje</li>
         <li>6. Estrategias de reparación y compra de repuestos</li>
         <li>7. Técnicas de venta y maximización de ganancias</li>
@@ -287,7 +333,7 @@
     </div>
   </section>
 
-  <!-- CTA -->
+  <!-- CTA WHATSAPP -->
   <section class="cta-wsp">
     <h2>¿Listo para comenzar?</h2>
     <p>Haz clic para confirmar tu inscripción y recibir detalles del próximo curso.</p>
@@ -300,18 +346,26 @@
   </section>
 
   <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
-      <div style="margin-top:0.5rem;">
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <nav class="footer-nav" aria-label="Enlaces de pie de página">
+        <ul class="footer-list">
+          <li><a href="calculadora.html">Calculadora</a></li>
+          <li><a href="inventario.html">Vehículos</a></li>
+          <li><a href="#cursos">Cursos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="social-links">
         <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
         <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
         <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
       </div>
+      <div class="footer-copy">&copy; 2025 SubastaCarHN. Todos los derechos reservados.</div>
     </div>
   </footer>
 
-  <!-- Scripts -->
+  <!-- Firebase + Autenticación y Menú -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
@@ -321,45 +375,65 @@
       projectId: "subastacarhn-40554",
       storageBucket: "subastacarhn-40554.appspot.com",
       messagingSenderId: "536785797974",
-      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+      appId: "1:536785797974:web=e3eabb4dcd898c2ffe8cf7",
       measurementId: "G-QM5N60K8C0"
     };
     firebase.initializeApp(firebaseConfig);
+
     function toggleMenu() {
-      const menu = document.getElementById('mobile-menu-links');
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+      document.getElementById('mobile-menu-links').classList.toggle('open');
     }
+
+    function scrollYPlay() {
+      const vc = document.getElementById('videoCursos');
+      vc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => {
+        const btn = vc.querySelector('.play-button');
+        if (btn) btn.click();
+      }, 600);
+    }
+
     firebase.auth().onAuthStateChanged(user => {
       const desktop = document.getElementById('userGreeting');
       const mobile = document.getElementById('mobileGreeting');
       if (user) {
-        const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
-        desktop.innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Cerrar sesión</a>`;
-        mobile.innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Salir</a>`;
+        const name = (user.displayName || user.email.split('@')[0])
+                       .replace(/^./, c => c.toUpperCase());
+        desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> | <a href="#" onclick="logout()">Cerrar sesión</a>`;
+        mobile.innerHTML = desktop.innerHTML;
       } else {
         desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
         mobile.innerHTML = desktop.innerHTML;
       }
     });
+
     function logout() {
       firebase.auth().signOut().then(() => location.reload());
     }
+
+    // Scroll + play on Cursos click
+    document.getElementById('linkCursos')
+      .addEventListener('click', e => { e.preventDefault(); scrollYPlay(); });
+    document.getElementById('linkCursosMobile')
+      .addEventListener('click', e => { e.preventDefault(); toggleMenu(); scrollYPlay(); });
   </script>
+
+  <!-- Lazy-load video play -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const container = document.getElementById('cursoVideoLazy');
+      const container = document.getElementById('videoCursos');
       const btn = container.querySelector('.play-button');
       btn.addEventListener('click', () => {
         const vid = document.createElement('video');
         vid.controls = true;
         vid.autoplay = true;
-        vid.playsInline = true;
+        vid.playsinline = true;
         vid.src = container.dataset.videoSrc;
-        vid.style.borderRadius = '12px';
         container.innerHTML = '';
         container.appendChild(vid);
       });
     });
   </script>
+
 </body>
 </html>
