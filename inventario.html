@@ -120,7 +120,7 @@ function toggleMenu() {
 async function cargarInventario() {
   try {
     const snapshot = await db.collection('inventario').get();
-    inventario = snapshot.docs.map(doc => doc.data());
+    inventario = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // ✅ Incluyendo el id del documento
     mostrarAutos(inventario);
     llenarFiltroMarcas(inventario);
   } catch (error) {
@@ -148,7 +148,7 @@ function mostrarAutos(autos) {
       <p style="font-weight:700; color:var(--blue);">L ${auto.precio.toLocaleString()}</p>
     `;
     card.addEventListener('click', () => {
-      window.location.href = `vehiculo.html?id=${auto.id}`;
+      window.location.href = \`vehiculo.html?id=${auto.id}\`;
     });
     autosGrid.appendChild(card);
   });
