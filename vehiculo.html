@@ -17,117 +17,68 @@
       --max-width: 1200px;
     }
     * { box-sizing: border-box; margin:0; padding:0; }
-    body { font-family: 'Montserrat', sans-serif; background: var(--light); color: var(--text); }
+    body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text); }
     a { text-decoration:none; color:inherit; }
-    .container { max-width: var(--max-width); margin:0 auto; padding:1rem; }
+    .container { max-width:var(--max-width); margin:0 auto; padding:1rem;}
 
     /* HEADER */
-    .site-header {
-      background: linear-gradient(to right, var(--blue), var(--blue2));
-      position: sticky; top: 0; z-index:1000;
-    }
-    .site-header .header-inner {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:0.75rem;
-    }
-    .site-header .brand { color:#fff; font-size:1.5rem; font-weight:700; }
-    .site-header .nav-list { display:flex; gap:1rem; margin-left:auto; }
-    .site-header .nav-list a, .site-header .nav-list span {
-      color: var(--yellow); font-weight:600; font-size:0.95rem;
-    }
-    .menu-icon {
-      background:var(--yellow); color:var(--blue); border:none;
-      padding:0.5rem; border-radius:6px; cursor:pointer;
-      box-shadow:0 2px 8px var(--shadow);
-    }
-    .mobile-nav {
-      display:none; flex-direction:column; background:#fff;
-      padding:1rem; box-shadow:0 2px 8px var(--shadow);
-    }
-    .mobile-nav.open { display:flex; gap:0.5rem; }
-    .mobile-nav a, .mobile-nav span {
-      font-weight:700; padding:0.75rem; border-radius:4px;
-      transition:background 0.2s;
-    }
-    .mobile-nav a:hover, .mobile-nav span:hover {
-      background:rgba(0,47,108,0.1);
-    }
-    @media (max-width:767px) { .site-header .nav-list { display:none; } }
-    @media (min-width:768px) { .menu-icon { display:none; } }
+    .site-header{background:linear-gradient(to right,var(--blue),var(--blue2));position:sticky;top:0;z-index:1000}
+    .site-header .header-inner{display:flex;align-items:center;justify-content:space-between;padding:.75rem}
+    .site-header .brand{color:#fff;font-size:1.5rem;font-weight:700}
+    .site-header .nav-list{display:flex;gap:1rem;margin-left:auto}
+    .site-header .nav-list a, .site-header .nav-list span{color:var(--yellow);font-weight:600;font-size:.95rem}
+    .menu-icon{background:var(--yellow);color:var(--blue);border:none;padding:.5rem;border-radius:6px;cursor:pointer;box-shadow:0 2px 8px var(--shadow)}
+    .mobile-nav{display:none;flex-direction:column;background:#fff;padding:1rem;box-shadow:0 2px 8px var(--shadow)}
+    .mobile-nav.open{display:flex;gap:.5rem}
+    .mobile-nav a, .mobile-nav span{font-weight:700;padding:.75rem;border-radius:4px;transition:background .2s}
+    .mobile-nav a:hover, .mobile-nav span:hover{background:rgba(0,47,108,.1)}
+    @media(max-width:767px){.site-header .nav-list{display:none}}
+    @media(min-width:768px){.menu-icon{display:none}}
 
-    /* DETALLE VEHÍCULO */
-    #detalleVehiculo img#mainImage {
-      width:100%; max-width:600px; border-radius:8px;
-      display:block; margin:1rem auto;
-      box-shadow:0 4px 10px var(--shadow);
+    /* DETALLE */
+    #detalleVehiculo img#mainImage{width:100%;max-width:600px;border-radius:8px;display:block;margin:1rem auto;box-shadow:0 4px 10px var(--shadow);position:relative}
+    #detalleVehiculo .img-wrapper{position:relative;}
+    #detalleVehiculo .arrow{
+      position:absolute;top:50%;transform:translateY(-50%);
+      background:rgba(0,0,0,0.4);color:#fff;border:none;
+      width:32px;height:32px;border-radius:50%;cursor:pointer;
     }
-    #detalleVehiculo .info { margin:1rem 0; line-height:1.5; }
-    #detalleVehiculo h1 {
-      text-align:center; color:var(--blue); font-weight:700; margin-top:1rem;
+    #detalleVehiculo .arrow.prev{left:8px}
+    #detalleVehiculo .arrow.next{right:8px}
+
+    #detalleVehiculo .info{margin:1rem 0;line-height:1.5}
+    #detalleVehiculo h1{text-align:center;color:var(--blue);font-weight:700;margin-top:1rem}
+    #detalleVehiculo .price{text-align:center;font-size:1.5rem;color:var(--yellow);font-weight:700}
+    #detalleVehiculo .btns{display:flex;gap:1rem;justify-content:center;margin:1.5rem 0}
+    .btn{
+      background:var(--yellow);color:var(--blue);padding:.75rem 1.5rem;
+      border:none;border-radius:6px;font-weight:700;cursor:pointer;
+      box-shadow:0 2px 6px var(--shadow);transition:background .2s;
     }
-    #detalleVehiculo .price {
-      text-align:center; font-size:1.5rem; color:var(--yellow); font-weight:700;
-    }
+    .btn:hover{background:#e6ac00}
 
     /* Carrusel */
-    .gallery-container {
-      position: relative; overflow:hidden; margin-top:1rem;
-    }
-    .gallery-track {
-      display:flex; transition: transform 0.3s ease;
-    }
-    .gallery-track img {
-      min-width:120px; height:80px; object-fit:cover;
-      border-radius:4px; margin-right:0.5rem; cursor:pointer;
-    }
-    .gallery-arrow {
-      position:absolute; top:50%; transform:translateY(-50%);
-      background:rgba(0,0,0,0.4); color:#fff; border:none;
-      padding:0.5rem; border-radius:50%; cursor:pointer;
-    }
-    .gallery-arrow.prev { left:0.5rem; }
-    .gallery-arrow.next { right:0.5rem; }
+    .gallery-container{position:relative;overflow:hidden;margin-top:1rem}
+    .gallery-track{display:flex;transition:transform .3s ease}
+    .gallery-track img{min-width:120px;height:80px;object-fit:cover;border-radius:4px;margin-right:.5rem;cursor:pointer}
 
     /* SUGERENCIAS */
-    #sugerencias { margin-top:3rem; }
-    #sugerencias h2 {
-      text-align:center; color:var(--blue); margin-bottom:1rem;
-    }
-    #autosSugeridos {
-      display:grid; gap:1rem;
-      grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-    }
-    .card {
-      background: var(--card-bg); border-radius:8px; overflow:hidden;
-      box-shadow:0 4px 10px var(--shadow); transition:transform .2s;
-      cursor:pointer;
-    }
-    .card:hover { transform:translateY(-4px); }
-    .card img { width:100%; height:120px; object-fit:cover; }
-    .card .content { padding:0.5rem; }
-    .card .content h3 {
-      font-size:1rem; margin-bottom:0.5rem; text-transform:capitalize;
-    }
-    .card .content .price {
-      color:var(--yellow); font-weight:700;
-    }
+    #sugerencias{margin-top:3rem}
+    #sugerencias h2{text-align:center;color:var(--blue);margin-bottom:1rem}
+    #autosSugeridos{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+    .card{background:var(--card-bg);border-radius:8px;overflow:hidden;box-shadow:0 4px 10px var(--shadow);transition:transform .2s;cursor:pointer}
+    .card:hover{transform:translateY(-4px)}
+    .card img{width:100%;height:120px;object-fit:cover}
+    .card .content{padding:.5rem}
+    .card .content h3{font-size:1rem;margin-bottom:.5rem;text-transform:capitalize}
+    .card .content .price{color:var(--yellow);font-weight:700}
 
     /* FOOTER */
-    .site-footer {
-      background: var(--blue2); color:#fff; text-align:center; padding:2rem 0;
-    }
-    .site-footer .footer-list {
-      display:flex; justify-content:center; gap:1.5rem; margin-bottom:1rem;
-    }
-    .site-footer .footer-list a {
-      color:var(--yellow); font-weight:500;
-    }
-    .site-footer .social-links a {
-      color:var(--yellow); margin:0 0.5rem; font-weight:500;
-    }
-    .site-footer .footer-copy {
-      font-size:0.85rem; opacity:0.8;
-    }
+    .site-footer{background:var(--blue2);color:#fff;text-align:center;padding:2rem 0}
+    .site-footer .footer-list{display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem}
+    .site-footer .footer-list a{color:var(--yellow);font-weight:500}
+    .site-footer .social-links a{color:var(--yellow);margin:0 .5rem;font-weight:500}
+    .site-footer .footer-copy{font-size:.85rem;opacity:.8}
   </style>
 </head>
 <body>
@@ -247,7 +198,11 @@
           : '';
 
         detEl.innerHTML=`
-          <img id="mainImage" src="${carouselImages[0]||''}">
+          <div class="img-wrapper">
+            <img id="mainImage" src="${carouselImages[0]||''}">
+            <button class="arrow prev" onclick="prev()">‹</button>
+            <button class="arrow next" onclick="next()">›</button>
+          </div>
           <div class="info">
             <h1>${a.marca} ${a.modelo} (${a.anio})</h1>
             <div class="price">L ${(typeof a.precio==='number')?a.precio.toLocaleString():'N/A'}</div>
@@ -256,6 +211,14 @@
             <p><strong>Tipo:</strong> ${a.tipo||'–'}</p>
             <p><strong>Kilometraje:</strong> ${(typeof a.kilometraje==='number')?a.kilometraje.toLocaleString()+' km':'–'}</p>
             <p style="margin-top:1rem;">${a.descripcion||''}</p>
+          </div>
+          <div class="btns">
+            <button class="btn" onclick="window.location.href='contacto.html?vehiculo=${a.id}'">
+              📩 Contactar por este vehículo
+            </button>
+            <button class="btn" onclick="shareWhatsApp()">
+              🔗 Compartir
+            </button>
           </div>
           ${gallery}
         `;
@@ -267,23 +230,28 @@
 
     // Carrusel funciones
     function updateCarousel(){
-      document.querySelector('.gallery-track')
-              .style.transform = `translateX(-${carouselIndex*128}px)`;
+      document.querySelector('.gallery-track').style.transform = `translateX(-${carouselIndex*128}px)`;
     }
     function prev(){ if(carouselIndex>0){ carouselIndex--; updateCarousel(); setMain(); } }
     function next(){ if(carouselIndex<carouselImages.length-1){ carouselIndex++; updateCarousel(); setMain(); } }
     function goTo(i){ carouselIndex=i; updateCarousel(); setMain(); }
     function setMain(){ document.getElementById('mainImage').src = carouselImages[carouselIndex]; }
 
+    // Compartir por WhatsApp
+    function shareWhatsApp(){
+      const url = encodeURIComponent(location.href);
+      window.open(`https://wa.me/?text=Échale un vistazo a este vehículo: ${url}`, '_blank');
+    }
+
     // Sugerencias
     async function cargarSugerencias(marcaActual){
       try {
-        sugEl.innerHTML='';
+        sugEl.innerHTML = '';
         const snap = await db.collection('inventario')
                              .where('marca','==',marcaActual)
                              .get();
         snap.docs.forEach(doc=>{
-          const a={ id:doc.id, ...doc.data() };
+          const a = { id:doc.id, ...doc.data() };
           if(a.id===id) return;
           const url = a.imagenes?.[0]||'';
           const precio = (typeof a.precio==='number')
