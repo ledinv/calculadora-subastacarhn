@@ -26,12 +26,10 @@
       --light: #f9f9f9;
       --max-width: 1200px;
     }
-
     /* Reset */
     *, *::before, *::after {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
     }
     body {
       font-family: 'Montserrat', sans-serif;
@@ -158,11 +156,8 @@
 
     /* Sections */
     section { padding: 3rem 1rem; }
-    .video-presentacion, .info-curso, .beneficios, .cta-wsp {
-      background: #fff;
-      text-align: center;
-    }
-    .info-curso ul, .beneficios ul {
+    .info-curso ul,
+    .beneficios ul {
       list-style: none;
       padding: 0;
       margin: 1rem auto;
@@ -265,9 +260,11 @@
   <section class="video-presentacion" id="cursos">
     <div class="container">
       <h2 style="color: var(--blue); margin-bottom: 1rem;">Conoce el Curso en 60 segundos</h2>
-      <div id="videoCursos" class="video-container"
-           data-video-src="videos/VIDEO-2025-04-21-14-26-34.mp4"
-           style="background-image: url('Img/course-poster.jpg');">
+      <div
+        id="videoCursos"
+        class="video-container"
+        data-video-src="videos/VIDEO-2025-04-21-14-26-34.mp4"
+        style="background-image: url('Img/course-poster.jpg');">
         <button class="play-button" aria-label="Reproducir video">▶️</button>
       </div>
     </div>
@@ -300,7 +297,9 @@
         <li>3. Evaluación de vehículos y cálculo de daños</li>
         <li>4. Cálculo de impuestos y derechos de importación</li>
       </ul>
-      <button onclick="document.getElementById('temario-completo').style.display='block'; this.style.display='none';" class="styled-btn">
+      <button
+        onclick="document.getElementById('temario-completo').style.display='block'; this.style.display='none';"
+        class="styled-btn">
         Ver temario completo
       </button>
       <ul id="temario-completo" style="display:none; margin-top:1rem;">
@@ -337,9 +336,9 @@
   <section class="cta-wsp">
     <h2>¿Listo para comenzar?</h2>
     <p>Haz clic para confirmar tu inscripción y recibir detalles del próximo curso.</p>
-    <a 
+    <a
       href="https://wa.me/50497330137?text=¡Hola!%20Estoy%20interesado%20en%20el%20curso%20de%20importación%20de%20vehículos.%20Vengo%20desde%20la%20página%20de%20cursos%20y%20me%20gustaría%20conocer%20la%20próxima%20fecha%20disponible."
-      target="_blank" 
+      target="_blank"
       class="styled-btn">
       Confirmar mi inscripción vía WhatsApp
     </a>
@@ -365,7 +364,7 @@
     </div>
   </footer>
 
-  <!-- Firebase + Autenticación y Menú -->
+  <!-- Firebase + autenticación y menú -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
@@ -411,29 +410,31 @@
       firebase.auth().signOut().then(() => location.reload());
     }
 
-    // Scroll + play on Cursos click
     document.getElementById('linkCursos')
       .addEventListener('click', e => { e.preventDefault(); scrollYPlay(); });
     document.getElementById('linkCursosMobile')
       .addEventListener('click', e => { e.preventDefault(); toggleMenu(); scrollYPlay(); });
   </script>
 
-  <!-- Lazy-load video play -->
+  <!-- Lazy-load del video corregido -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const container = document.getElementById('videoCursos');
       const btn = container.querySelector('.play-button');
       btn.addEventListener('click', () => {
+        // 1) Limpiar el contenedor
+        container.innerHTML = '';
+        // 2) Crear y configurar el <video>
         const vid = document.createElement('video');
+        vid.src = container.dataset.videoSrc;
         vid.controls = true;
         vid.autoplay = true;
-        vid.playsinline = true;
-        vid.src = container.dataset.videoSrc;
-        container.innerHTML = '';
+        vid.playsInline = true;
+        vid.style.borderRadius = '12px';
+        // 3) Insertar el video
         container.appendChild(vid);
       });
     });
   </script>
-
 </body>
 </html>
