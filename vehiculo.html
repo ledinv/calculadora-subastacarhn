@@ -38,12 +38,11 @@
   </ul>
 </header>
 
-<!-- CONTENIDO PRINCIPAL -->
+<!-- CONTENIDO -->
 <section class="container" id="detalleVehiculo" style="margin-top: 3rem; text-align: center;">
-  <!-- Aquí cargará el vehículo -->
+  <!-- Aquí se cargará el vehículo -->
 </section>
 
-<!-- SUGERENCIAS -->
 <section class="container" id="sugerencias" style="margin-top: 4rem;">
   <h2 style="text-align:center;">También te puede interesar</h2>
   <div id="autosSugeridos" style="display:grid; gap:2rem; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); margin-top:2rem;"></div>
@@ -61,11 +60,13 @@
   </div>
 </footer>
 
-<!-- Firebase + Scripts -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
 <script>
-// Firebase config igual a tus otros archivos
+// Configuración Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
   authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -76,58 +77,54 @@ const firebaseConfig = {
   measurementId: "G-QM5N60K8C0"
 };
 firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-// Menú móvil
+// Menú y usuario
 function toggleMenu() {
   const menu = document.getElementById('mobile-menu-links');
   menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
 }
 
-// Autenticación usuario
 firebase.auth().onAuthStateChanged(user => {
   const desktop = document.getElementById('userGreeting');
-  const mobile  = document.getElementById('mobileGreeting');
+  const mobile = document.getElementById('mobileGreeting');
   if (user) {
-    const name = (user.displayName || user.email.split('@')[0])
-                   .replace(/^./, c => c.toUpperCase());
+    const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
     desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
-    mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
+    mobile.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
   } else {
     desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
-    mobile.innerHTML  = desktop.innerHTML;
+    mobile.innerHTML = desktop.innerHTML;
   }
 });
 
 function logout() {
   firebase.auth().signOut().then(() => location.reload());
 }
-</script>
 
-<script>
-// Script para cargar el vehículo
+// Cargar detalles del vehículo
 async function cargarVehiculo() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
-
+  
   if (!id) {
     document.getElementById('detalleVehiculo').innerHTML = '<p>Vehículo no encontrado.</p>';
     return;
   }
 
   try {
-    const res = await fetch('inventario.json');
-    const inventario = await res.json();
-    const auto = inventario.find(a => a.id === id);
-
-    if (!auto) {
+    const doc = await db.collection('inventario').doc(id).get();
+    if (!doc.exists) {
       document.getElementById('detalleVehiculo').innerHTML = '<p>Vehículo no disponible.</p>';
       return;
     }
 
+    const auto = doc.data();
     document.getElementById('detalleVehiculo').innerHTML = `
       <img src="${auto.imagen}" alt="${auto.modelo}" style="width:100%; max-width:600px; height:auto; border-radius:12px;">
       <h1 style="margin-top:1rem;">${auto.marca} ${auto.modelo} ${auto.anio}</h1>
       <p style="font-size:1.2rem; color:var(--blue); font-weight:700;">L ${auto.precio.toLocaleString()}</p>
+      <p><strong>Motor:</strong> ${auto.motor}</p>
       <p><strong>Color:</strong> ${auto.color}</p>
       <p><strong>Tipo:</strong> ${auto.tipo}</p>
       <p><strong>Kilometraje:</strong> ${auto.kilometraje.toLocaleString()} km</p>
@@ -135,33 +132,45 @@ async function cargarVehiculo() {
       <a href="https://wa.me/50497330137?text=Hola,%20estoy%20interesado%20en%20el%20${auto.marca}%20${auto.modelo}%20${auto.anio}" class="styled-btn" style="margin-top:1rem;">Consultar por WhatsApp</a>
     `;
 
-    mostrarSugerencias(inventario, auto);
+    cargarSugerencias(auto);
 
   } catch (error) {
-    console.error('Error al cargar vehículo:', error);
+    console.error('Error cargando vehículo:', error);
+    document.getElementById('detalleVehiculo').innerHTML = '<p>Error al cargar vehículo.</p>';
   }
 }
 
-function mostrarSugerencias(inventario, actual) {
-  const sugerencias = inventario.filter(a => a.marca === actual.marca && a.id !== actual.id).slice(0, 3);
-  const contenedor = document.getElementById('autosSugeridos');
-  sugerencias.forEach(auto => {
-    const div = document.createElement('div');
-    div.style.border = '1px solid #ccc';
-    div.style.borderRadius = '8px';
-    div.style.padding = '1rem';
-    div.style.background = '#fff';
-    div.style.cursor = 'pointer';
-    div.innerHTML = `
-      <img src="${auto.imagen}" alt="${auto.modelo}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
-      <h3 style="margin:0.5rem 0;">${auto.marca} ${auto.modelo} ${auto.anio}</h3>
-      <p style="font-weight:700; color:var(--blue);">L ${auto.precio.toLocaleString()}</p>
-    `;
-    div.addEventListener('click', () => {
-      window.location.href = `vehiculo.html?id=${auto.id}`;
+// Cargar sugerencias
+async function cargarSugerencias(actual) {
+  try {
+    const snapshot = await db.collection('inventario')
+      .where('marca', '==', actual.marca)
+      .get();
+
+    const contenedor = document.getElementById('autosSugeridos');
+    snapshot.docs.forEach(doc => {
+      const auto = doc.data();
+      if (auto.id !== actual.id) {
+        const div = document.createElement('div');
+        div.style.border = '1px solid #ccc';
+        div.style.borderRadius = '8px';
+        div.style.padding = '1rem';
+        div.style.background = '#fff';
+        div.style.cursor = 'pointer';
+        div.innerHTML = `
+          <img src="${auto.imagen}" alt="${auto.modelo}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+          <h3 style="margin:0.5rem 0;">${auto.marca} ${auto.modelo} ${auto.anio}</h3>
+          <p style="font-weight:700; color:var(--blue);">L ${auto.precio.toLocaleString()}</p>
+        `;
+        div.addEventListener('click', () => {
+          window.location.href = `vehiculo.html?id=${auto.id}`;
+        });
+        contenedor.appendChild(div);
+      }
     });
-    contenedor.appendChild(div);
-  });
+  } catch (error) {
+    console.error('Error cargando sugerencias:', error);
+  }
 }
 
 cargarVehiculo();
