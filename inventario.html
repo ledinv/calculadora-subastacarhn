@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automóviles en Venta | SubastaCarHN</title>
+  <link rel="manifest" href="Img/site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
+  <meta name="theme-color" content="#002f6c">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<!-- HEADER igual que tu página -->
+<header>
+  <div class="container header-inner">
+    <a href="index.html" class="brand">SubastaCarHN</a>
+    <nav class="nav-links" aria-label="Menú principal">
+      <a href="calculadora.html">Calculadora</a>
+      <a href="inventario.html">Automóviles</a>
+      <a href="#cursos" id="linkCursos">Cursos</a>
+      <span id="userGreeting"></span>
+    </nav>
+    <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
+  </div>
+
+  <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
+    <li><a href="calculadora.html">Calculadora</a></li>
+    <li><a href="inventario.html">Automóviles</a></li>
+    <li><a href="#cursos" id="linkCursosMobile">Cursos</a></li>
+    <li><span id="mobileGreeting"></span></li>
+    <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+  </ul>
+</header>
+
+<!-- CONTENIDO PRINCIPAL AQUÍ -->
+
+<section class="hero" style="height: auto; padding: 2rem 1rem; background: var(--light); text-align: center;">
+  <h1 style="font-size: 2.5rem; color: var(--dark);">Automóviles en Venta</h1>
+  <p style="margin-top: 0.5rem; color: var(--blue); font-weight: 600;">Encuentra tu próximo vehículo importado</p>
+
+  <!-- Filtros de búsqueda -->
+  <div style="margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
+    <input type="text" id="buscarInput" placeholder="Buscar..." style="padding: 0.5rem; width: 200px; border: 1px solid #ccc; border-radius: 8px;">
+    <select id="marcaFiltro" style="padding: 0.5rem; width: 200px; border: 1px solid #ccc; border-radius: 8px;">
+      <option value="">Todas las marcas</option>
+      <!-- Opciones se llenarán dinámicamente -->
+    </select>
+    <button onclick="filtrarAutos()" class="styled-btn" style="padding: 0.5rem 1rem;">Buscar</button>
+  </div>
+</section>
+
+<section class="container" id="autosGrid" style="display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); margin-top: 3rem;">
+  <!-- Aquí se cargarán los autos automáticamente -->
+</section>
+
+<!-- FOOTER igual que tu página -->
+<footer>
+  <div class="container">
+    <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
+    <div style="margin-top:0.5rem;">
+      <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
+      <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
+      <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Scripts de Firebase, Autenticación y Menú igual que en index -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script>
+// (Aquí irán los scripts de autenticación y carga de inventario que te daré en el siguiente paso)
+</script>
+
+</body>
+</html>
