@@ -19,6 +19,7 @@
 <!-- Seguridad Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
@@ -30,6 +31,7 @@ const firebaseConfig = {
   measurementId: "G-QM5N60K8C0"
 };
 firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 // Validar acceso solo para Ledin
 firebase.auth().onAuthStateChanged(user => {
@@ -110,15 +112,14 @@ firebase.auth().onAuthStateChanged(user => {
   </div>
 </footer>
 
-<!-- Scripts Adicionales -->
+<!-- Scripts adicionales -->
 <script>
-// Menú Móvil
 function toggleMenu() {
   const menu = document.getElementById('mobile-menu-links');
   menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
 }
 
-// Firebase Auth Greetings
+// Autenticación saludo
 firebase.auth().onAuthStateChanged(user => {
   const desktop = document.getElementById('userGreeting');
   const mobile  = document.getElementById('mobileGreeting');
@@ -137,10 +138,10 @@ function logout() {
   firebase.auth().signOut().then(() => location.reload());
 }
 
-// Función para manejar el envío del formulario
-document.getElementById('formularioAuto').addEventListener('submit', function(e) {
+// Agregar auto al inventario en Firestore
+document.getElementById('formularioAuto').addEventListener('submit', async function(e) {
   e.preventDefault();
-  
+
   const nuevoAuto = {
     id: `${document.getElementById('modelo').value.toLowerCase()}${document.getElementById('anio').value}`,
     marca: document.getElementById('marca').value,
@@ -155,15 +156,14 @@ document.getElementById('formularioAuto').addEventListener('submit', function(e)
     imagen: document.getElementById('imagen').value
   };
 
-  console.log('Nuevo auto creado:', nuevoAuto);
-
-  // Mostrar mensaje de éxito
-  document.getElementById('mensajeExito').style.display = 'block';
-
-  // Resetear el formulario
-  document.getElementById('formularioAuto').reset();
-
-  // Aquí podríamos enviarlo a Firebase o guardarlo localmente después
+  try {
+    await db.collection('inventario').doc(nuevoAuto.id).set(nuevoAuto);
+    document.getElementById('mensajeExito').style.display = 'block';
+    document.getElementById('formularioAuto').reset();
+  } catch (error) {
+    console.error('Error agregando vehículo:', error);
+    alert('Error al agregar vehículo. Intenta de nuevo.');
+  }
 });
 </script>
 
