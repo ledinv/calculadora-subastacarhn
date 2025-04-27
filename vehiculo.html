@@ -15,50 +15,97 @@
       --shadow: rgba(0,0,0,0.1);
       --max-width: 1200px;
     }
-    *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: 'Montserrat', sans-serif;
       background: var(--light);
       color: var(--text);
-      overflow-x: hidden;
     }
-    a { text-decoration: none; color: inherit; }
-    .container { max-width: var(--max-width); margin: 0 auto; padding: 1rem; }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 1rem;
+    }
 
     /* ===== HEADER ===== */
     .site-header {
       background: linear-gradient(to right, var(--blue), var(--blue2));
-      position: sticky; top: 0; z-index: 1000;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
     .header-inner {
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 0.75rem;
     }
-    .brand { color: #fff; font-size: 1.5rem; font-weight: 700; }
-    .nav-list { display: flex; gap: 1rem; margin-left: auto; }
-    .nav-list a, .nav-list span {
-      color: var(--yellow); font-weight: 600; font-size: 0.95rem;
+    .brand {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .nav-list {
+      display: flex;
+      gap: 1rem;
+      margin-left: auto;
+    }
+    .nav-list a,
+    .nav-list span {
+      color: var(--yellow);
+      font-weight: 600;
+      font-size: 0.95rem;
     }
     .menu-icon {
-      background: var(--yellow); color: var(--blue);
-      border: none; padding: 0.5rem; border-radius: 6px;
-      cursor: pointer; box-shadow: 0 2px 8px var(--shadow);
-    }
-    .mobile-nav {
-      display: none; flex-direction: column;
-      background: #fff; padding: 1rem;
+      background: var(--yellow);
+      color: var(--blue);
+      border: none;
+      padding: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
       box-shadow: 0 2px 8px var(--shadow);
     }
-    .mobile-nav.open { display: flex; gap: 0.5rem; }
-    .mobile-nav a, .mobile-nav span {
-      font-weight: 700; padding: 0.75rem; border-radius: 4px;
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background: #fff;
+      padding: 1rem;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+    .mobile-nav.open {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .mobile-nav a,
+    .mobile-nav span {
+      font-weight: 700;
+      padding: 0.75rem;
+      border-radius: 4px;
       transition: background 0.2s;
     }
-    .mobile-nav a:hover, .mobile-nav span:hover {
+    .mobile-nav a:hover,
+    .mobile-nav span:hover {
       background: rgba(0,47,108,0.1);
     }
-    @media (max-width: 767px) { .nav-list { display: none; } }
-    @media (min-width: 768px) { .menu-icon { display: none; } }
+    @media (max-width: 767px) {
+      .nav-list { display: none; }
+    }
+    @media (min-width: 768px) {
+      .menu-icon { display: none; }
+    }
 
     /* ===== DETALLE VEHÍCULO ===== */
     main.vehicle-detail {
@@ -70,14 +117,22 @@
       display: inline-block;
     }
     #mainImage {
-      width: 100%; max-width: 600px;
+      width: 100%;
+      max-width: 600px;
       border-radius: 8px;
       box-shadow: 0 4px 10px var(--shadow);
     }
     .arrow {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      background: rgba(0,0,0,0.4); color: #fff; border: none;
-      width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.4);
+      color: #fff;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
     }
     .arrow.prev { left: 8px; }
     .arrow.next { right: 8px; }
@@ -99,7 +154,6 @@
       margin: 0.25rem 0;
     }
 
-    /* descripción */
     .description {
       margin: 1rem auto 0;
       max-width: 700px;
@@ -130,7 +184,9 @@
       align-items: center;
       gap: 0.5rem;
     }
-    .btn:hover { background: #e6ac00; }
+    .btn:hover {
+      background: #e6ac00;
+    }
 
     /* Carrusel miniaturas */
     .gallery-container {
@@ -139,12 +195,16 @@
       padding: 0 1rem;
     }
     .gallery-track {
-      display: flex; gap: 0.5rem;
+      display: flex;
+      gap: 0.5rem;
       transition: transform 0.3s ease;
     }
     .gallery-track img {
-      width: 80px; height: 50px;
-      object-fit: cover; border-radius: 4px; cursor: pointer;
+      width: 80px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 4px;
+      cursor: pointer;
     }
 
     /* ===== FOOTER ===== */
@@ -155,23 +215,20 @@
       padding: 1rem 0;
     }
     .footer-nav .footer-list {
-      display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
     }
     .footer-nav .footer-list a,
     .social-links a {
-      color: var(--yellow); font-weight: 500;
+      color: var(--yellow);
+      font-weight: 500;
     }
     .footer-copy {
-      font-size: 0.85rem; opacity: 0.8;
+      font-size: 0.85rem;
+      opacity: 0.8;
     }
-    .site-header .nav-list {
-  list-style: none;    /* quita las viñetas */
-  margin: 0;           /* elimina márgenes por defecto */
-  padding: 0;          /* elimina padding por defecto */
-  display: flex;       /* sigue usándolo como flex container */
-  gap: 1rem;
-}
-
   </style>
 </head>
 <body>
@@ -245,6 +302,7 @@
     function toggleMenu() {
       document.getElementById('mobile-menu-links').classList.toggle('open');
     }
+
     firebase.auth().onAuthStateChanged(u => {
       const d = document.getElementById('userGreeting'),
             m = document.getElementById('mobileGreeting');
@@ -258,7 +316,9 @@
         m.innerHTML = d.innerHTML;
       }
     });
-    function logout() { firebase.auth().signOut().then(() => location.reload()); }
+    function logout() {
+      firebase.auth().signOut().then(() => location.reload());
+    }
 
     // Parámetro ID y contenedor
     const id = new URLSearchParams(location.search).get('id'),
@@ -266,13 +326,20 @@
     let carouselIndex = 0, carouselImages = [];
 
     async function cargarVehiculo() {
-      if (!id) { detEl.innerHTML = '<p>Vehículo no encontrado.</p>'; return; }
+      if (!id) {
+        detEl.innerHTML = '<p>Vehículo no encontrado.</p>';
+        return;
+      }
       try {
         const doc = await db.collection('inventario').doc(id).get();
-        if (!doc.exists) { detEl.innerHTML = '<p>Vehículo no disponible.</p>'; return; }
+        if (!doc.exists) {
+          detEl.innerHTML = '<p>Vehículo no disponible.</p>';
+          return;
+        }
         const a = { id: doc.id, ...doc.data() };
         carouselImages = Array.isArray(a.imagenes) ? a.imagenes : [];
 
+        // miniaturas
         const thumbs = carouselImages.map((url,i) =>
           `<img src="${url}" onclick="goTo(${i})">`
         ).join('');
@@ -319,10 +386,28 @@
       document.querySelector('.gallery-track')
         .style.transform = `translateX(-${carouselIndex * 88}px)`;
     }
-    function prev(){ if (carouselIndex > 0){ carouselIndex--; updateCarousel(); setMain(); } }
-    function next(){ if (carouselIndex < carouselImages.length - 1){ carouselIndex++; updateCarousel(); setMain(); } }
-    function goTo(i){ carouselIndex = i; updateCarousel(); setMain(); }
-    function setMain(){ document.getElementById('mainImage').src = carouselImages[carouselIndex]; }
+    function prev(){
+      if (carouselIndex > 0){
+        carouselIndex--;
+        updateCarousel();
+        setMain();
+      }
+    }
+    function next(){
+      if (carouselIndex < carouselImages.length - 1){
+        carouselIndex++;
+        updateCarousel();
+        setMain();
+      }
+    }
+    function goTo(i){
+      carouselIndex = i;
+      updateCarousel();
+      setMain();
+    }
+    function setMain(){
+      document.getElementById('mainImage').src = carouselImages[carouselIndex];
+    }
 
     // Compartir WhatsApp
     function shareWhatsAppContact(){
