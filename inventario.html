@@ -74,8 +74,73 @@
 <!-- Scripts de Firebase, Autenticación y Menú igual que en index -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script>
 // (Aquí irán los scripts de autenticación y carga de inventario que te daré en el siguiente paso)
+  <script>
+  const autosGrid = document.getElementById('autosGrid');
+  const buscarInput = document.getElementById('buscarInput');
+  const marcaFiltro = document.getElementById('marcaFiltro');
+
+  let inventario = [];
+
+  async function cargarInventario() {
+    try {
+      const res = await fetch('inventario.json');
+      inventario = await res.json();
+      mostrarAutos(inventario);
+      llenarFiltroMarcas(inventario);
+    } catch (error) {
+      console.error('Error al cargar inventario:', error);
+      autosGrid.innerHTML = '<p>Error al cargar inventario.</p>';
+    }
+  }
+
+  function mostrarAutos(autos) {
+    autosGrid.innerHTML = '';
+    if (autos.length === 0) {
+      autosGrid.innerHTML = '<p>No se encontraron resultados.</p>';
+      return;
+    }
+    autos.forEach(auto => {
+      const card = document.createElement('div');
+      card.style.border = '1px solid #ccc';
+      card.style.borderRadius = '8px';
+      card.style.padding = '1rem';
+      card.style.background = '#fff';
+      card.style.cursor = 'pointer';
+      card.innerHTML = `
+        <img src="${auto.imagen}" alt="${auto.modelo}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+        <h3 style="margin:0.5rem 0;">${auto.marca} ${auto.modelo} ${auto.anio}</h3>
+        <p style="font-weight:700; color:var(--blue);">L ${auto.precio.toLocaleString()}</p>
+      `;
+      card.addEventListener('click', () => {
+        window.location.href = `vehiculo.html?id=${auto.id}`;
+      });
+      autosGrid.appendChild(card);
+    });
+  }
+
+  function llenarFiltroMarcas(autos) {
+    const marcas = [...new Set(autos.map(a => a.marca))];
+    marcas.forEach(marca => {
+      const option = document.createElement('option');
+      option.value = marca;
+      option.textContent = marca;
+      marcaFiltro.appendChild(option);
+    });
+  }
+
+  function filtrarAutos() {
+    const texto = buscarInput.value.toLowerCase();
+    const marca = marcaFiltro.value;
+    const resultados = inventario.filter(auto => {
+      const coincideTexto = auto.modelo.toLowerCase().includes(texto) || auto.marca.toLowerCase().includes(texto);
+      const coincideMarca = marca === '' || auto.marca === marca;
+      return coincideTexto && coincideMarca;
+    });
+    mostrarAutos(resultados);
+  }
+
+  cargarInventario();
 </script>
 
 </body>
