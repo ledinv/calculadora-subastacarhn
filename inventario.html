@@ -1,183 +1,91 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Automóviles en Venta | SubastaCarHN</title>
-  <link rel="manifest" href="Img/site.webmanifest">
-  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
-  <meta name="theme-color" content="#002f6c">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="estilos.css">
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  
+  <style>
+    /* Estilos mínimos para ver el grid */
+    body { font-family: sans-serif; margin: 2rem; }
+    #autosGrid { 
+      display: grid; 
+      gap: 1rem; 
+      grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+    }
+    .card { border:1px solid #ccc; border-radius:6px; overflow:hidden; cursor:pointer; }
+    .card img { width:100%; height:150px; object-fit:cover; }
+    .card h3, .card p { margin:0.5rem; }
+  </style>
+
+  <script>
+    // 1) Inicializa Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+      authDomain: "subastacarhn-40554.firebaseapp.com",
+      projectId: "subastacarhn-40554",
+      storageBucket: "subastacarhn-40554.appspot.com",
+      messagingSenderId: "536785797974",
+      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
 </head>
+
 <body>
+  <h1>Automóviles en Venta</h1>
+  <div id="autosGrid"></div>
 
-<!-- HEADER -->
-<header>
-  <div class="container header-inner">
-    <a href="index.html" class="brand">SubastaCarHN</a>
-    <nav class="nav-links" aria-label="Menú principal">
-      <a href="calculadora.html">Calculadora</a>
-      <a href="inventario.html">Automóviles</a>
-      <a href="#cursos" id="linkCursos">Cursos</a>
-      <span id="userGreeting"></span>
-    </nav>
-    <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
-  </div>
+  <script>
+    const autosGrid = document.getElementById('autosGrid');
 
-  <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
-    <li><a href="calculadora.html">Calculadora</a></li>
-    <li><a href="inventario.html">Automóviles</a></li>
-    <li><a href="#cursos" id="linkCursosMobile">Cursos</a></li>
-    <li><span id="mobileGreeting"></span></li>
-    <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
-  </ul>
-</header>
+    // 2) Carga inventario desde Firestore
+    async function cargarInventario() {
+      try {
+        const snapshot = await db.collection('inventario').get();
+        const inventario = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        mostrarAutos(inventario);
+      } catch (e) {
+        console.error("Error leyendo Firestore:", e);
+        autosGrid.innerHTML = "<p>Error al cargar inventario.</p>";
+      }
+    }
 
-<!-- HERO -->
-<section class="hero" style="height: auto; padding: 2rem 1rem; background: var(--light); text-align: center;">
-  <h1 style="font-size: 2.5rem; color: var(--dark);">Automóviles en Venta</h1>
-  <p style="margin-top: 0.5rem; color: var(--blue); font-weight: 600;">Encuentra tu próximo vehículo importado</p>
+    // 3) Renderiza cada auto en un card
+    function mostrarAutos(autos) {
+      autosGrid.innerHTML = "";
+      if (autos.length === 0) {
+        autosGrid.innerHTML = "<p>No hay vehículos para mostrar.</p>";
+        return;
+      }
+      autos.forEach(auto => {
+        // toma la primera imagen si existe
+        const imgUrl = Array.isArray(auto.imagenes) && auto.imagenes.length
+          ? auto.imagenes[0]
+          : "";
 
-  <div style="margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
-    <input type="text" id="buscarInput" placeholder="Buscar..." style="padding: 0.5rem; width: 200px; border: 1px solid #ccc; border-radius: 8px;">
-    <select id="marcaFiltro" style="padding: 0.5rem; width: 200px; border: 1px solid #ccc; border-radius: 8px;">
-      <option value="">Todas las marcas</option>
-    </select>
-    <button onclick="filtrarAutos()" class="styled-btn" style="padding: 0.5rem 1rem;">Buscar</button>
-  </div>
-</section>
+        const card = document.createElement('div');
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${imgUrl}" alt="${auto.marca} ${auto.modelo}" />
+          <h3>${auto.marca} ${auto.modelo} (${auto.anio})</h3>
+          <p>L ${auto.precio.toLocaleString()}</p>
+        `;
+        card.addEventListener('click', () => {
+          // redirige con id al detalle
+          window.location.href = `vehiculo.html?id=${auto.id}`;
+        });
+        autosGrid.appendChild(card);
+      });
+    }
 
-<!-- GRID DE AUTOS -->
-<section class="container" id="autosGrid" style="display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); margin-top: 3rem;">
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="container">
-    <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
-    <div style="margin-top:0.5rem;">
-      <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
-      <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
-      <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
-    </div>
-  </div>
-</footer>
-
-<!-- Scripts -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-
-<script>
-// Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
-  authDomain: "subastacarhn-40554.firebaseapp.com",
-  projectId: "subastacarhn-40554",
-  storageBucket: "subastacarhn-40554.appspot.com",
-  messagingSenderId: "536785797974",
-  appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
-  measurementId: "G-QM5N60K8C0"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// Variables globales
-const autosGrid = document.getElementById('autosGrid');
-const buscarInput = document.getElementById('buscarInput');
-const marcaFiltro = document.getElementById('marcaFiltro');
-let inventario = [];
-
-// Funciones de autenticación menú
-firebase.auth().onAuthStateChanged(user => {
-  const desktop = document.getElementById('userGreeting');
-  const mobile = document.getElementById('mobileGreeting');
-  if (user) {
-    const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
-    desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
-    mobile.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
-  } else {
-    desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
-    mobile.innerHTML = desktop.innerHTML;
-  }
-});
-
-function logout() {
-  firebase.auth().signOut().then(() => location.reload());
-}
-
-function toggleMenu() {
-  const menu = document.getElementById('mobile-menu-links');
-  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-}
-
-// Cargar inventario desde Firestore
-async function cargarInventario() {
-  try {
-    const snapshot = await db.collection('inventario').get();
-    inventario = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // ✅ Incluyendo el id del documento
-    mostrarAutos(inventario);
-    llenarFiltroMarcas(inventario);
-  } catch (error) {
-    console.error('Error cargando inventario:', error);
-    autosGrid.innerHTML = '<p>Error al cargar inventario.</p>';
-  }
-}
-
-function mostrarAutos(autos) {
-  autosGrid.innerHTML = '';
-  if (autos.length === 0) {
-    autosGrid.innerHTML = '<p>No se encontraron resultados.</p>';
-    return;
-  }
-  autos.forEach(auto => {
-    const card = document.createElement('div');
-    card.style.border = '1px solid #ccc';
-    card.style.borderRadius = '8px';
-    card.style.padding = '1rem';
-    card.style.background = '#fff';
-    card.style.cursor = 'pointer';
-    card.innerHTML = `
-      <img src="${auto.imagen}" alt="${auto.modelo}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
-      <h3 style="margin:0.5rem 0;">${auto.marca} ${auto.modelo} ${auto.anio}</h3>
-      <p style="font-weight:700; color:var(--blue);">L ${auto.precio.toLocaleString()}</p>
-    `;
-    card.addEventListener('click', () => {
-      window.location.href = \`vehiculo.html?id=${auto.id}\`;
-    });
-    autosGrid.appendChild(card);
-  });
-}
-
-function llenarFiltroMarcas(autos) {
-  const marcas = [...new Set(autos.map(a => a.marca))];
-  marcas.forEach(marca => {
-    const option = document.createElement('option');
-    option.value = marca;
-    option.textContent = marca;
-    marcaFiltro.appendChild(option);
-  });
-}
-
-function filtrarAutos() {
-  const texto = buscarInput.value.toLowerCase();
-  const marca = marcaFiltro.value;
-  const resultados = inventario.filter(auto => {
-    const coincideTexto = auto.modelo.toLowerCase().includes(texto) || auto.marca.toLowerCase().includes(texto);
-    const coincideMarca = marca === '' || auto.marca === marca;
-    return coincideTexto && coincideMarca;
-  });
-  mostrarAutos(resultados);
-}
-
-// Cargar inventario al abrir la página
-cargarInventario();
-</script>
-
+    // 4) Arranca todo al cargar la página
+    document.addEventListener('DOMContentLoaded', cargarInventario);
+  </script>
 </body>
 </html>
