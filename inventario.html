@@ -49,6 +49,10 @@
       try {
         const snapshot = await db.collection('inventario').get();
         const inventario = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        // <-- Debug: mira qué trae Firestore
+        console.log("Datos recibidos de Firestore:", inventario);
+        
         mostrarAutos(inventario);
       } catch (e) {
         console.error("Error leyendo Firestore:", e);
@@ -64,20 +68,23 @@
         return;
       }
       autos.forEach(auto => {
-        // toma la primera imagen si existe
         const imgUrl = Array.isArray(auto.imagenes) && auto.imagenes.length
           ? auto.imagenes[0]
           : "";
+
+        // Protegemos el precio por si falta en algún doc
+        const precioFormateado = (typeof auto.precio === 'number')
+          ? auto.precio.toLocaleString()
+          : 'N/A';
 
         const card = document.createElement('div');
         card.className = "card";
         card.innerHTML = `
           <img src="${imgUrl}" alt="${auto.marca} ${auto.modelo}" />
           <h3>${auto.marca} ${auto.modelo} (${auto.anio})</h3>
-          <p>L ${auto.precio.toLocaleString()}</p>
+          <p>L ${precioFormateado}</p>
         `;
         card.addEventListener('click', () => {
-          // redirige con id al detalle
           window.location.href = `vehiculo.html?id=${auto.id}`;
         });
         autosGrid.appendChild(card);
@@ -87,19 +94,5 @@
     // 4) Arranca todo al cargar la página
     document.addEventListener('DOMContentLoaded', cargarInventario);
   </script>
-  async function cargarInventario() {
-  try {
-    const snapshot = await db.collection('inventario').get();
-    const inventario = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    
-    // <-- Aquí añadimos el log:
-    console.log("Datos recibidos de Firestore:", inventario);
-    
-    mostrarAutos(inventario);
-  } catch (error) {
-    console.error('Error cargando inventario:', error);
-    autosGrid.innerHTML = '<p>Error al cargar inventario.</p>';
-  }
-}
 </body>
 </html>
