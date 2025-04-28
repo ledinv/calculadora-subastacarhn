@@ -137,40 +137,43 @@
     .info-curso h2,
     .beneficios h2 {
       color: var(--blue);
+      text-align: center;
       margin-bottom: 1rem;
     }
     .beneficios li {
       margin-bottom: 1rem;
       font-weight: 600;
     }
-    .video-container {
-      position: relative;
+
+    /* CENTRADO CON FLEXBOX */
+    .video-presentacion .container,
+    .info-curso .container,
+    .beneficios .container,
+    .cta-wsp {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* LISTAS CENTRADAS COMO BLOQUE */
+    .info-curso .container ul,
+    .beneficios ul {
       width: 100%;
-      padding-top: 56.25%;
-      background-size: cover;
-      background-position: center;
-      cursor: pointer;
+      max-width: 600px;
+      text-align: left;
+      margin: 1rem 0;
     }
-    .video-container video {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-    }
-    .play-button {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255,255,255,0.8);
-      border: none;
-      border-radius: 50%;
-      width: 60px; height: 60px;
-      font-size: 1.5rem;
-      cursor: pointer;
+
+    /* VIDEO WRAPPER */
+    .video-wrapper {
+      margin: 0 auto;
+      max-width: 600px;
+      width: 100%;
     }
 
     /* CTA */
     .cta-wsp {
-      text-align: center;
       background: var(--blue2);
       color: white;
       padding: 3rem 1rem;
@@ -215,41 +218,6 @@
     .footer-copy {
       font-size: 0.85rem;
       opacity: 0.8;
-    }
-
-    /* —— NUEVAS REGLAS PARA CENTRAR TODO —— */
-
-    /* 1) Flexbox en los contenedores de sección */
-    .video-presentacion .container,
-    .info-curso .container,
-    .beneficios .container,
-    .cta-wsp {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    /* 2) Listas centradas como bloque pero con texto a la izquierda */
-    .info-curso .container ul,
-    .beneficios ul {
-      width: 100%;
-      max-width: 600px;
-      text-align: left;
-      margin: 1rem 0;
-    }
-
-    /* 3) Centrar botón “Ver temario completo” */
-    .info-curso .container button.styled-btn {
-      align-self: center;
-      margin-top: 1rem;
-    }
-
-    /* 4) Vídeo centrado */
-    .video-wrapper {
-      margin: 0 auto;
-      max-width: 600px;
-      width: 100%;
     }
   </style>
 </head>
@@ -305,6 +273,8 @@
   <section class="info-curso">
     <div class="container">
       <h2>Curso Virtual de Importación de Autos</h2>
+
+      <!-- Datos básicos -->
       <ul>
         <li><strong>Inicio:</strong> 18 de Junio 2025</li>
         <li><strong>Modalidad:</strong> Online (Google Meet)</li>
@@ -313,6 +283,7 @@
         <li><strong>Cupos Limitados</strong></li>
       </ul>
 
+      <!-- Lo que incluye -->
       <h3>¿Qué incluye este curso?</h3>
       <ul>
         <li>Asesoría personalizada en tu primera importación.</li>
@@ -321,6 +292,7 @@
         <li>Aprende a convertir este conocimiento en tu negocio.</li>
       </ul>
 
+      <!-- Temario inicial -->
       <h3>Temario del curso</h3>
       <ul id="temario-lista">
         <li>1. Cómo importar legalmente sin errores</li>
@@ -328,15 +300,21 @@
         <li>3. Evaluación de vehículos y cálculo de daños</li>
         <li>4. Cálculo de impuestos y derechos de importación</li>
       </ul>
-      <button onclick="document.getElementById('temario-completo').style.display='block'; this.style.display='none';" class="styled-btn">
-        Ver temario completo
-      </button>
+
+      <!-- Botón para mostrar temario completo -->
+      <button id="showTemarioBtn" class="styled-btn">Ver temario completo</button>
+
+      <!-- Temario completo oculto -->
       <ul id="temario-completo" style="display:none;">
-        <li>5. Coordinación de grúa, embarque y desaduanaje</li>
-        <li>6. Estrategias de reparación y compra de repuestos</li>
-        <li>7. Técnicas de venta y maximización de ganancias</li>
-        <li>8. Registro e inscripción legal de tu negocio (SAR y más)</li>
-        <li>9. Uso de plataformas digitales para tu empresa</li>
+        <li>1. Cómo importar legalmente sin errores.</li>
+        <li>2. Dominio total de Copart (cuentas básicas y premium).</li>
+        <li>3. Evaluación de vehículos y cálculo de daños.</li>
+        <li>4. Cálculo exacto de impuestos y derechos de importación.</li>
+        <li>5. Coordinación de grúa, embarque y desaduanaje.</li>
+        <li>6. Estrategias de reparación y compra de repuestos.</li>
+        <li>7. Técnicas efectivas de venta y maximización de ganancias.</li>
+        <li>8. Registro e inscripción legal de tu negocio (SAR y más).</li>
+        <li>9. Uso de plataformas digitales para potenciar tu empresa.</li>
         <li>10. ¡Y mucho más!</li>
       </ul>
     </div>
@@ -392,14 +370,14 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
-    // Configuración Firebase
+    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
       storageBucket: "subastacarhn-40554.appspot.com",
       messagingSenderId: "536785797974",
-      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+      appId: "1:536785797974:web=e3eabb4dcd898c2ffe8cf7",
       measurementId: "G-QM5N60K8C0"
     };
     firebase.initializeApp(firebaseConfig);
@@ -409,13 +387,12 @@
       document.getElementById('mobile-menu-links').classList.toggle('open');
     }
 
-    // Gestión de sesión y Logout
+    // Sesión y logout
     firebase.auth().onAuthStateChanged(user => {
       const desktop = document.getElementById('userGreeting');
       const mobile  = document.getElementById('mobileGreeting');
       if (user) {
-        const name = (user.displayName || user.email.split('@')[0])
-                       .replace(/^./, c => c.toUpperCase());
+        const name = (user.displayName||user.email.split('@')[0]).replace(/^./,c=>c.toUpperCase());
         desktop.innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Cerrar sesión</a>`;
         mobile.innerHTML  = desktop.innerHTML;
       } else {
@@ -426,6 +403,14 @@
     function logout() {
       firebase.auth().signOut().then(() => location.reload());
     }
+
+    // Mostrar temario completo
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('showTemarioBtn').addEventListener('click', function() {
+        document.getElementById('temario-completo').style.display = 'block';
+        this.style.display = 'none';
+      });
+    });
   </script>
 
   <!-- Lazy-load video -->
@@ -435,10 +420,10 @@
       const btn       = container.querySelector('.play-button');
       btn.addEventListener('click', () => {
         const vid = document.createElement('video');
-        vid.controls     = true;
-        vid.autoplay     = true;
-        vid.playsInline  = true;
-        vid.src          = container.dataset.videoSrc;
+        vid.controls    = true;
+        vid.autoplay    = true;
+        vid.playsInline = true;
+        vid.src         = container.dataset.videoSrc;
         vid.style.borderRadius = '12px';
         container.innerHTML    = '';
         container.appendChild(vid);
