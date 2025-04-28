@@ -661,7 +661,7 @@ function compartirWhatsApp() {
     const cols = fila.querySelectorAll("td, th");
     if (cols.length === 2) texto += `${cols[0].innerText}: ${cols[1].innerText}\n`;
   });
-  texto += "\nCalculado con SUBASTACARROS.COM 👉 https://comocomprarcarros.com/calculadora.html";
+  texto += "\nCalculado con SUBASTACARROS.COM 👉 https://comocomprarcarros.com";
   const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
   window.open(url, "_blank");
 }
