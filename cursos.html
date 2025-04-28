@@ -4,18 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cursos | SubastaCarHN</title>
-
-  <!-- Fuentes e Iconos -->
+  <link rel="icon" href="Img/favicon-32x32.png" type="image/png"/>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <link rel="manifest" href="Img/site.webmanifest">
-  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="theme-color" content="#002f6c">
-
   <style>
     :root {
       --blue: #002f6c;
@@ -23,13 +13,9 @@
       --yellow: #ffc20e;
       --dark: #333;
       --light: #f9f9f9;
-      --shadow: rgba(0,0,0,0.1);
       --max-width: 1200px;
     }
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0; padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Montserrat', sans-serif;
       color: var(--dark);
@@ -38,147 +24,75 @@
     }
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
-
     .container {
       width: 100%;
       max-width: var(--max-width);
       margin: 0 auto;
       padding: 0 1rem;
     }
-
-    /* HEADER */
-    .site-header {
+    header {
       background: linear-gradient(to right, var(--blue), var(--blue2));
       position: sticky;
       top: 0;
-      z-index: 1000;
+      z-index: 999;
     }
     .header-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.75rem 0;
+      padding: 0.5rem 0;
     }
     .brand {
       color: #fff;
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 700;
     }
-    .nav-list {
-      display: flex;
+    .nav-links {
+      display: none;
       gap: 1rem;
-      margin-left: auto;
     }
-    .nav-list a, .nav-list span {
+    .nav-links a, .nav-links span {
       color: var(--yellow);
+      font-size: 0.9375rem;
       font-weight: 600;
-      font-size: 0.95rem;
     }
     .menu-icon {
       background: var(--yellow);
       color: var(--blue);
       border: none;
+      font-size: 1rem;
+      line-height: 1;
       padding: 0.5rem;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 1.25rem;
-      box-shadow: 0 2px 8px var(--shadow);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     .mobile-nav {
       display: none;
       flex-direction: column;
       background: #fff;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
       padding: 1rem;
-      box-shadow: 0 2px 8px var(--shadow);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 998;
     }
-    .mobile-nav.open {
-      display: flex;
-      gap: 0.5rem;
-    }
+    .mobile-nav li { margin-bottom: 0.75rem; }
     .mobile-nav a, .mobile-nav span {
+      display: block;
+      color: var(--blue);
       font-weight: 700;
-      padding: 0.75rem;
-      border-radius: 4px;
-      transition: background 0.2s;
-    }
-    .mobile-nav a:hover, .mobile-nav span:hover {
-      background: rgba(0,47,108,0.1);
-    }
-    @media (max-width: 767px) {
-      .nav-list { display: none; }
+      font-size: 0.9375rem;
     }
     @media (min-width: 768px) {
       .menu-icon { display: none; }
+      .nav-links { display: flex; }
+      .mobile-nav { display: none !important; }
     }
 
-    /* HERO */
-    .hero-curso {
-      background: url('Img/curso-hero.jpg') center/cover no-repeat;
-      height: 50vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: #fff;
-    }
-    .hero-curso .overlay {
-      background: rgba(0,47,108,0.8);
-      padding: 2rem;
-      border-radius: 10px;
-      max-width: 600px;
-    }
-
-    /* SECCIONES */
-    section { padding: 3rem 1rem; }
-    .video-presentacion, .info-curso, .beneficios {
-      background: #fff;
-    }
-    .video-presentacion h2,
-    .info-curso h2,
-    .beneficios h2 {
-      color: var(--blue);
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-    .beneficios li {
-      margin-bottom: 1rem;
-      font-weight: 600;
-    }
-
-    /* CENTRADO CON FLEXBOX */
-    .video-presentacion .container,
-    .info-curso .container,
-    .beneficios .container,
-    .cta-wsp {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    /* LISTAS CENTRADAS COMO BLOQUE */
-    .info-curso .container ul,
-    .beneficios ul {
-      width: 100%;
-      max-width: 600px;
-      text-align: left;
-      margin: 1rem 0;
-    }
-
-    /* VIDEO WRAPPER */
-    .video-wrapper {
-      margin: 0 auto;
-      max-width: 600px;
-      width: 100%;
-    }
-
-    /* CTA */
-    .cta-wsp {
-      background: var(--blue2);
-      color: white;
-      padding: 3rem 1rem;
-    }
-    .cta-wsp a.styled-btn {
+    .styled-btn {
       display: inline-block;
       background: var(--yellow);
       color: var(--blue);
@@ -188,63 +102,107 @@
       padding: 0.875rem 1.5rem;
       font-size: 1rem;
       cursor: pointer;
+      margin-top: 1rem;
       transition: background-color 0.3s;
     }
-    .cta-wsp a.styled-btn:hover {
-      background: #e6ac00;
+    .styled-btn:hover { background: #e6ac00; }
+
+    .hero-curso {
+      background: url('Img/curso-hero.jpg') center/cover no-repeat;
+      height: 50vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      color: #fff;
+    }
+    .hero-curso .overlay {
+      background: rgba(0,47,108,0.8);
+      padding: 2rem;
+      border-radius: 10px;
+      max-width: 600px;
     }
 
-    /* FOOTER */
-    .site-footer {
+    section { padding: 3rem 1rem; }
+    .video-presentacion, .info-curso, .beneficios {
+      background: #fff;
+      text-align: center;
+    }
+    .beneficios ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 1rem;
+    }
+    .beneficios li {
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .cta-wsp {
+      text-align: center;
+      background: var(--blue2);
+      color: white;
+      padding: 3rem 1rem;
+    }
+    .cta-wsp a {
+      font-size: 1.1rem;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+    }
+    .video-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.8);
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    footer {
       background: var(--blue2);
       color: #fff;
       text-align: center;
-      padding: 1rem 0;
+      padding: 1rem;
     }
-    .footer-list {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-bottom: 1rem;
-    }
-    .footer-list a {
-      color: var(--yellow);
-      font-weight: 500;
-    }
-    .social-links a {
-      color: var(--yellow);
-      margin: 0 0.5rem;
-    }
-    .footer-copy {
-      font-size: 0.85rem;
-      opacity: 0.8;
-    }
+    footer a { color: var(--yellow); margin: 0 0.5rem; }
   </style>
 </head>
-
 <body>
-  <!-- HEADER -->
-  <header class="site-header">
+    <!-- HEADER -->
+  <header>
     <div class="container header-inner">
       <a href="index.html" class="brand">SubastaCarHN</a>
-      <ul class="nav-list">
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="calculadora.html">Calculadora</a></li>
-        <li><a href="inventario.html">Vehículos</a></li>
-        <li><a href="cursos.html">Cursos</a></li>
-        <li><a href="https://wa.me/50497330137" target="_blank">Soporte</a></li>
-        <li><span id="userGreeting"></span></li>
-      </ul>
-      <button class="menu-icon" onclick="toggleMenu()">☰</button>
+      <nav class="nav-links" aria-label="Menú principal">
+        <a href="calculadora.html">Calculadora</a>
+        <a href="cursos.html">Cursos</a>
+        <span id="userGreeting"></span>
+      </nav>
+      <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
     </div>
-    <nav id="mobile-menu-links" class="mobile-nav">
-      <a href="index.html">Inicio</a>
-      <a href="calculadora.html">Calculadora</a>
-      <a href="inventario.html">Vehículos</a>
-      <a href="cursos.html">Cursos</a>
-      <a href="https://wa.me/50497330137" target="_blank">Soporte</a>
-      <span id="mobileGreeting"></span>
-    </nav>
+    <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
+      <li><a href="calculadora.html">Calculadora</a></li>
+      <li><a href="cursos.html">Cursos</a></li>
+      <li><span id="mobileGreeting"></span></li>
+      <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
+    </ul>
   </header>
 
   <!-- HERO -->
@@ -258,8 +216,8 @@
   <!-- VIDEO -->
   <section class="video-presentacion">
     <div class="container">
-      <h2>Conoce el Curso en 60 segundos</h2>
-      <div class="video-wrapper">
+      <h2 style="color: var(--blue); margin-bottom: 1rem;">Conoce el Curso en 60 segundos</h2>
+      <div class="video-wrapper" style="max-width: 600px; margin: auto;">
         <div id="cursoVideoLazy" class="video-container"
              data-video-src="videos/VIDEO-2025-04-21-14-26-34.mp4"
              style="background-image: url('Img/course-poster.jpg');">
@@ -269,13 +227,11 @@
     </div>
   </section>
 
-  <!-- INFO CURSO -->
+  <!-- CURSO DETALLES (NUEVO) -->
   <section class="info-curso">
     <div class="container">
-      <h2>Curso Virtual de Importación de Autos</h2>
-
-      <!-- Datos básicos -->
-      <ul>
+      <h2 style="color: var(--blue);">Curso Virtual de Importación de Autos</h2>
+      <ul style="text-align: left; max-width: 600px; margin: auto;">
         <li><strong>Inicio:</strong> 18 de Junio 2025</li>
         <li><strong>Modalidad:</strong> Online (Google Meet)</li>
         <li><strong>Horario:</strong> 9:00 PM a 10:00 PM</li>
@@ -283,47 +239,45 @@
         <li><strong>Cupos Limitados</strong></li>
       </ul>
 
-      <!-- Lo que incluye -->
-      <h3>¿Qué incluye este curso?</h3>
-      <ul>
+      <h3 style="margin-top: 2rem; color: var(--blue);">¿Qué incluye este curso?</h3>
+      <ul style="text-align: left; max-width: 600px; margin: auto;">
         <li>Asesoría personalizada en tu primera importación.</li>
         <li>Guía de contactos confiables (aduanas, grúas, transporte).</li>
         <li>Estrategias para ahorrar dinero y evitar errores costosos.</li>
         <li>Aprende a convertir este conocimiento en tu negocio.</li>
       </ul>
 
-      <!-- Temario inicial -->
-      <h3>Temario del curso</h3>
-      <ul id="temario-lista">
+      <h3 style="margin-top: 2rem; color: var(--blue);">Temario del curso</h3>
+      <ul id="temario-lista" style="text-align: left; max-width: 600px; margin: auto;">
         <li>1. Cómo importar legalmente sin errores</li>
         <li>2. Dominio total de Copart (cuentas básicas y premium)</li>
         <li>3. Evaluación de vehículos y cálculo de daños</li>
         <li>4. Cálculo de impuestos y derechos de importación</li>
       </ul>
-
-      <!-- Botón para mostrar temario completo -->
-      <button id="showTemarioBtn" class="styled-btn">Ver temario completo</button>
-
-      <!-- Temario completo oculto -->
-      <ul id="temario-completo" style="display:none;">
-        <li>1. Cómo importar legalmente sin errores.</li>
-        <li>2. Dominio total de Copart (cuentas básicas y premium).</li>
-        <li>3. Evaluación de vehículos y cálculo de daños.</li>
-        <li>4. Cálculo exacto de impuestos y derechos de importación.</li>
-        <li>5. Coordinación de grúa, embarque y desaduanaje.</li>
-        <li>6. Estrategias de reparación y compra de repuestos.</li>
-        <li>7. Técnicas efectivas de venta y maximización de ganancias.</li>
-        <li>8. Registro e inscripción legal de tu negocio (SAR y más).</li>
-        <li>9. Uso de plataformas digitales para potenciar tu empresa.</li>
+      <button onclick="document.getElementById('temario-completo').style.display='block'; this.style.display='none';" class="styled-btn">
+        Ver temario completo
+      </button>
+      <ul id="temario-completo" style="display:none; text-align: left; max-width: 600px; margin: auto; margin-top: 1rem;">
+        <li>5. Coordinación de grúa, embarque y desaduanaje</li>
+        <li>6. Estrategias de reparación y compra de repuestos</li>
+        <li>7. Técnicas de venta y maximización de ganancias</li>
+        <li>8. Registro e inscripción legal de tu negocio (SAR y más)</li>
+        <li>9. Uso de plataformas digitales para tu empresa</li>
         <li>10. ¡Y mucho más!</li>
       </ul>
+
+      <h3 style="margin-top: 2rem; color: var(--blue);">Inversión</h3>
+      <p><strong>Precio total:</strong> L. 3,600</p>
+      <p><strong>Reserva tu cupo con solo L. 500</strong></p>
+      <p><strong>Formas de pago:</strong> Cuenta BAC y Atlántida</p>
+      <p><strong>Solicita los datos por WhatsApp: <a href="https://wa.me/50497330137">97330137</a></strong></p>
     </div>
   </section>
 
   <!-- BENEFICIOS -->
   <section class="beneficios">
     <div class="container">
-      <h2>Beneficios para ti</h2>
+      <h2 style="color: var(--blue);">Beneficios para ti</h2>
       <ul>
         <li>✔️ Aprende a usar Copart e IAAI</li>
         <li>✔️ Crea tus propias tablas de costos</li>
@@ -333,99 +287,76 @@
     </div>
   </section>
 
-  <!-- CTA WHATSAPP -->
+  <!-- CTA -->
   <section class="cta-wsp">
     <h2>¿Listo para comenzar?</h2>
     <p>Haz clic para confirmar tu inscripción y recibir detalles del próximo curso.</p>
     <a 
-      href="https://wa.me/50497330137?text=¡Hola!%20Estoy%20interesado%20en%20el%20curso%20de%20importación%20de%20vehículos.%20Vengo%20desde%20la%20página%20de%20cursos."
-      target="_blank"
+      href="https://wa.me/50497330137?text=¡Hola!%20Estoy%20interesado%20en%20el%20curso%20de%20importación%20de%20vehículos.%20Vengo%20desde%20la%20página%20de%20cursos%20y%20me%20gustaría%20conocer%20la%20próxima%20fecha%20disponible."
+      target="_blank" 
       class="styled-btn">
       Confirmar mi inscripción vía WhatsApp
     </a>
   </section>
 
   <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <nav class="footer-nav">
-        <ul class="footer-list">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="calculadora.html">Calculadora</a></li>
-          <li><a href="inventario.html">Vehículos</a></li>
-          <li><a href="cursos.html">Cursos</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
-        </ul>
-      </nav>
-      <div class="social-links">
-        <a href="https://facebook.com/Subasta-Car-HN" target="_blank">Facebook</a> |
-        <a href="https://instagram.com/subastacar1" target="_blank">Instagram</a> |
-        <a href="https://tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+  <footer>
+    <div class="container">
+      <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
+      <div style="margin-top:0.5rem;">
+        <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
+        <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
+        <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
       </div>
-      <div class="footer-copy">&copy; 2025 SubastaCarHN. Todos los derechos reservados.</div>
     </div>
   </footer>
 
-  <!-- SCRIPTS -->
+  <!-- Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
-    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
       storageBucket: "subastacarhn-40554.appspot.com",
       messagingSenderId: "536785797974",
-      appId: "1:536785797974:web=e3eabb4dcd898c2ffe8cf7",
+      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
       measurementId: "G-QM5N60K8C0"
     };
     firebase.initializeApp(firebaseConfig);
-
-    // Menú móvil
     function toggleMenu() {
-      document.getElementById('mobile-menu-links').classList.toggle('open');
+      const menu = document.getElementById('mobile-menu-links');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
-
-    // Sesión y logout
     firebase.auth().onAuthStateChanged(user => {
       const desktop = document.getElementById('userGreeting');
-      const mobile  = document.getElementById('mobileGreeting');
+      const mobile = document.getElementById('mobileGreeting');
       if (user) {
-        const name = (user.displayName||user.email.split('@')[0]).replace(/^./,c=>c.toUpperCase());
+        const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
         desktop.innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Cerrar sesión</a>`;
-        mobile.innerHTML  = desktop.innerHTML;
+        mobile.innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Salir</a>`;
       } else {
         desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
-        mobile.innerHTML  = desktop.innerHTML;
+        mobile.innerHTML = desktop.innerHTML;
       }
     });
     function logout() {
       firebase.auth().signOut().then(() => location.reload());
     }
-
-    // Mostrar temario completo
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('showTemarioBtn').addEventListener('click', function() {
-        document.getElementById('temario-completo').style.display = 'block';
-        this.style.display = 'none';
-      });
-    });
   </script>
-
-  <!-- Lazy-load video -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const container = document.getElementById('cursoVideoLazy');
-      const btn       = container.querySelector('.play-button');
+      const btn = container.querySelector('.play-button');
       btn.addEventListener('click', () => {
         const vid = document.createElement('video');
-        vid.controls    = true;
-        vid.autoplay    = true;
+        vid.controls = true;
+        vid.autoplay = true;
         vid.playsInline = true;
-        vid.src         = container.dataset.videoSrc;
+        vid.src = container.dataset.videoSrc;
         vid.style.borderRadius = '12px';
-        container.innerHTML    = '';
+        container.innerHTML = '';
         container.appendChild(vid);
       });
     });
