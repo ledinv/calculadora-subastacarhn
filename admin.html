@@ -81,8 +81,15 @@
   firebase.auth().onAuthStateChanged(user => {
     if (!user) {
       window.location.href = 'login.html';
-    } else if (user.email !== 'ledinvvv@gmail.com') {
-      window.location.href = '/';
+    else {
+  const correosPermitidos = ['ledinvvv@gmail.com', 'ledinvvv1995@yopmail.com'];
+  if (!correosPermitidos.includes(user.email)) {
+    window.location.href = '/';
+  } else {
+    document.getElementById('adminApp').style.display = 'block';
+    initApp();
+  }
+}
     } else {
       document.getElementById('adminApp').style.display = 'block';
       initApp();
