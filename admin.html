@@ -65,7 +65,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 
 <script>
-  // Configuración de Firebase (bucket corregido)
+  // Configuración de Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
     authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -81,11 +81,14 @@
   firebase.auth().onAuthStateChanged(user => {
     if (!user) {
       window.location.href = 'login.html';
-    } else if (user.email !== 'ledinvvv@gmail.com') {
-      window.location.href = '/';
     } else {
-      document.getElementById('adminApp').style.display = 'block';
-      initApp();
+      const correosPermitidos = ['ledinvvv@gmail.com', 'ledinvvv1995@yopmail.com'];
+      if (!correosPermitidos.includes(user.email)) {
+        window.location.href = '/';
+      } else {
+        document.getElementById('adminApp').style.display = 'block';
+        initApp();
+      }
     }
   });
 
