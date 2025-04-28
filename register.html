@@ -7,8 +7,6 @@
 
   <!-- Fuentes y Estilos -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <!-- Iconos -->
   <link rel="manifest" href="Img/site.webmanifest">
   <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
@@ -29,317 +27,239 @@
       --shadow: rgba(0,0,0,0.1);
       --max-width: 1200px;
     }
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: var(--light);
-      color: var(--text);
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--light); color: var(--text); }
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
 
-    .container {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 1rem; }
 
     /* Header */
-    .site-header {
-      background: linear-gradient(to right, var(--blue), var(--blue2));
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 0;
-    }
-    .brand {
-      color: #fff;
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-    .nav-list {
-      display: flex;
-      gap: 1rem;
-      margin-left: auto;
-    }
-    .nav-list a, .nav-list span {
-      color: var(--yellow);
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-    .menu-icon {
-      background: var(--yellow);
-      color: var(--blue);
-      border: none;
-      padding: 0.5rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1.25rem;
-      box-shadow: 0 2px 8px var(--shadow);
-    }
-    .mobile-nav {
-      display: none;
-      flex-direction: column;
-      background: #fff;
-      padding: 1rem;
-      box-shadow: 0 2px 8px var(--shadow);
-    }
+    .site-header { background: linear-gradient(to right, var(--blue), var(--blue2)); position: sticky; top: 0; z-index: 1000; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 0; }
+    .brand { color: #fff; font-size: 1.5rem; font-weight: 700; }
+    .nav-list { display: flex; gap: 1rem; margin-left: auto; }
+    .nav-list a, .nav-list span { color: var(--yellow); font-weight: 600; font-size: 0.95rem; }
+    .menu-icon { background: var(--yellow); color: var(--blue); border: none; padding: 0.5rem; border-radius: 6px; cursor: pointer; font-size: 1.25rem; box-shadow: 0 2px 8px var(--shadow); }
+    .mobile-nav { display: none; flex-direction: column; background: #fff; padding: 1rem; box-shadow: 0 2px 8px var(--shadow); }
     .mobile-nav.open { display: flex; gap: 0.5rem; }
-    .mobile-nav a, .mobile-nav span {
-      font-weight: 700;
-      padding: 0.75rem;
-      border-radius: 4px;
-      transition: background 0.2s;
-    }
-    .mobile-nav a:hover, .mobile-nav span:hover {
-      background: rgba(0,47,108,0.1);
-    }
-    @media (max-width: 767px) {
-      .nav-list { display: none; }
-    }
-    @media (min-width: 768px) {
-      .menu-icon { display: none; }
-    }
+    .mobile-nav a, .mobile-nav span { font-weight: 700; padding: 0.75rem; border-radius: 4px; transition: background 0.2s; }
+    .mobile-nav a:hover, .mobile-nav span:hover { background: rgba(0,47,108,0.1); }
+    @media (max-width: 767px) { .nav-list { display: none; } }
+    @media (min-width: 768px) { .menu-icon { display: none; } }
 
     /* Footer */
-    .site-footer {
-      background: var(--blue2);
-      color: #fff;
-      text-align: center;
-      padding: 1rem 0;
-      margin-top: 2rem;
-    }
-    .footer-list {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-bottom: 1rem;
-    }
-    .footer-list a {
-      color: var(--yellow);
-      font-weight: 500;
-    }
-    .social-links a {
-      color: var(--yellow);
-      margin: 0 0.5rem;
-    }
-    .footer-copy {
-      font-size: 0.85rem;
-      opacity: 0.8;
-    }
+    .site-footer { background: var(--blue2); color: #fff; text-align: center; padding: 1rem 0; margin-top: 2rem; }
+    .footer-list { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem; }
+    .footer-list a { color: var(--yellow); font-weight: 500; }
+    .social-links a { color: var(--yellow); margin: 0 0.5rem; }
+    .footer-copy { font-size: 0.85rem; opacity: 0.8; }
 
-    /* Estilos del formulario (tus originales) */
-    .layout {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px 10px;
-    }
-    .contenido-central {
-      width: 100%;
-      max-width: 400px;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      padding: 20px;
-    }
-    .contenido-central h1 {
-      text-align: center;
-      color: var(--blue);
-      margin-bottom: 20px;
-    }
-    label {
-      font-weight: bold;
-      color: var(--blue);
-      display: block;
-      margin-top: 10px;
-    }
-    input {
-      font-size: 14px;
-      padding: 8px 40px 8px 12px; /* espacio para icono */
-      border-radius: 8px;
-      border: 1px solid var(--blue2);
-      background: #f0f8ff;
-      width: 100%;
-      margin-top: 5px;
-      box-sizing: border-box;
-    }
+    /* Estilos del formulario */
+    .layout { display: flex; justify-content: center; align-items: center; padding: 40px 10px; }
+    .contenido-central { width: 100%; max-width: 400px; background: white; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 20px; }
+    .contenido-central h1 { text-align: center; color: var(--blue); margin-bottom: 20px; }
+    label { font-weight: bold; color: var(--blue); display: block; margin-top: 10px; }
+    input { font-size: 14px; padding: 8px 40px 8px 12px; border-radius: 8px; border: 1px solid var(--blue2); background: #f0f8ff; width: 100%; margin-top: 5px; box-sizing: border-box; }
     .pass-wrapper { position: relative; }
-    .toggle-eye {
-      position: absolute;
-      top: 50%;
-      right: 12px;
-      transform: translateY(-50%);
-      cursor: pointer;
-      width: 24px; height: 24px;
-      color: #555;
-    }
+    .toggle-eye { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); cursor: pointer; width: 24px; height: 24px; color: #555; }
     .toggle-eye:hover { color: #000; }
-    .helper {
-      font-size: 13px;
-      color: #666;
-      margin-top: 4px;
-    }
+    .helper { font-size: 13px; color: #666; margin-top: 4px; }
     .helper.invalid { color: #c00; }
-    .styled-btn {
-      background-color: var(--yellow);
-      color: var(--blue);
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      padding: 10px;
-      margin-top: 20px;
-      width: 100%;
-      cursor: pointer;
-      font-size: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .styled-btn:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
+    .styled-btn { background-color: var(--yellow); color: var(--blue); font-weight: bold; border: none; border-radius: 8px; padding: 10px; margin-top: 20px; width: 100%; cursor: pointer; font-size: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; }
+    .styled-btn:disabled { opacity: 0.7; cursor: not-allowed; }
     .spinner { margin-left: 8px; }
   </style>
 </head>
 
 <body>
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="index.html" class="brand">SubastaCarHN</a>
-      <ul class="nav-list">
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="calculadora.html">Calculadora</a></li>
-        <li><a href="inventario.html">Vehículos</a></li>
-        <li><a href="cursos.html">Cursos</a></li>
-        <li><a href="login.html">Iniciar Sesión</a></li>
-        <li><span id="userGreeting"></span></li>
-      </ul>
-      <button class="menu-icon" onclick="toggleMenu()">☰</button>
-    </div>
-    <nav id="mobile-menu-links" class="mobile-nav">
-      <a href="index.html">Inicio</a>
-      <a href="calculadora.html">Calculadora</a>
-      <a href="inventario.html">Vehículos</a>
-      <a href="cursos.html">Cursos</a>
-      <a href="login.html">Iniciar Sesión</a>
-      <span id="mobileGreeting"></span>
-    </nav>
-  </header>
 
-  <!-- FORMULARIO -->
-  <div class="layout">
-    <div class="contenido-central">
-      <h1>Crear cuenta</h1>
-      <form id="registerForm">
-        <!-- Campos... (igual que antes) -->
-        <label for="fullName">Nombre completo</label>
-        <input type="text" id="fullName" required />
-
-        <label for="email">Correo electrónico</label>
-        <input type="email" id="email" required />
-
-        <label for="phone">Teléfono / Celular</label>
-        <input type="tel" id="phone" pattern="[9238]\d{7}" required />
-
-        <label for="password">Contraseña</label>
-        <div class="pass-wrapper">
-          <input type="password" id="password" minlength="8" required />
-          <span class="toggle-eye" data-target="password">
-            <!-- SVG ojo -->
-          </span>
-        </div>
-        <small id="passwordHelper" class="helper">
-          La contraseña debe tener ≥8 caracteres, 1 mayúscula y 1 número.
-        </small>
-
-        <label for="confirmPassword">Confirmar contraseña</label>
-        <div class="pass-wrapper">
-          <input type="password" id="confirmPassword" minlength="8" required />
-          <span class="toggle-eye" data-target="confirmPassword">
-            <!-- SVG ojo -->
-          </span>
-        </div>
-        <small id="confirmHelper" class="helper"></small>
-
-        <button type="submit" class="styled-btn" id="submitBtn">
-          <span id="btnText">Registrarse</span>
-          <span class="spinner" id="btnSpinner" style="display:none;">⏳</span>
-        </button>
-      </form>
-      <p style="text-align:center; margin-top:15px;">
-        ¿Ya tienes cuenta? <a href="login.html">Iniciar Sesión</a>
-      </p>
-    </div>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">SubastaCarHN</a>
+    <ul class="nav-list">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="calculadora.html">Calculadora</a></li>
+      <li><a href="inventario.html">Vehículos</a></li>
+      <li><a href="cursos.html">Cursos</a></li>
+      <li><a href="login.html">Iniciar Sesión</a></li>
+    </ul>
+    <button class="menu-icon" onclick="toggleMenu()">☰</button>
   </div>
+  <nav id="mobile-menu-links" class="mobile-nav">
+    <a href="index.html">Inicio</a>
+    <a href="calculadora.html">Calculadora</a>
+    <a href="inventario.html">Vehículos</a>
+    <a href="cursos.html">Cursos</a>
+    <a href="login.html">Iniciar Sesión</a>
+  </nav>
+</header>
 
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <nav class="footer-nav">
-        <ul class="footer-list">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="calculadora.html">Calculadora</a></li>
-          <li><a href="inventario.html">Vehículos</a></li>
-          <li><a href="cursos.html">Cursos</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
-        </ul>
-      </nav>
-      <div class="social-links">
-        <a href="https://facebook.com/Subasta-Car-HN" target="_blank">Facebook</a> |
-        <a href="https://instagram.com/subastacar1" target="_blank">Instagram</a> |
-        <a href="https://tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+<div class="layout">
+  <div class="contenido-central">
+    <h1>Crear cuenta</h1>
+    <form id="registerForm">
+      <label for="fullName">Nombre completo</label>
+      <input type="text" id="fullName" required />
+
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" required />
+
+      <label for="phone">Teléfono / Celular</label>
+      <input type="tel" id="phone" pattern="^[923]\d{7}$" required />
+
+      <label for="password">Contraseña</label>
+      <div class="pass-wrapper">
+        <input type="password" id="password" minlength="8" required />
+        <span class="toggle-eye" data-target="password">👁️</span>
       </div>
-      <div class="footer-copy">&copy; 2025 SubastaCarHN. Todos los derechos reservados.</div>
+      <small id="passwordHelper" class="helper">
+        La contraseña debe tener ≥8 caracteres, 1 mayúscula y 1 número.
+      </small>
+
+      <label for="confirmPassword">Confirmar contraseña</label>
+      <div class="pass-wrapper">
+        <input type="password" id="confirmPassword" minlength="8" required />
+        <span class="toggle-eye" data-target="confirmPassword">👁️</span>
+      </div>
+      <small id="confirmHelper" class="helper"></small>
+
+      <button type="submit" class="styled-btn" id="submitBtn">
+        <span id="btnText">Registrarse</span>
+        <span class="spinner" id="btnSpinner" style="display:none;">⏳</span>
+      </button>
+    </form>
+    <p style="text-align:center; margin-top:15px;">
+      ¿Ya tienes cuenta? <a href="login.html">Iniciar Sesión</a>
+    </p>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-list">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="calculadora.html">Calculadora</a></li>
+      <li><a href="inventario.html">Vehículos</a></li>
+      <li><a href="cursos.html">Cursos</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <div class="social-links">
+      <a href="https://facebook.com/Subasta-Car-HN" target="_blank">Facebook</a> |
+      <a href="https://instagram.com/subastacar1" target="_blank">Instagram</a> |
+      <a href="https://tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
     </div>
-  </footer>
+    <div class="footer-copy">&copy; 2025 SubastaCarHN. Todos los derechos reservados.</div>
+  </div>
+</footer>
 
-  <!-- Scripts Firebase y Lógica -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script>
-    // Inicializa Firebase
-    const firebaseConfig = { /* tu configuración */ };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db   = firebase.firestore();
+<!-- Scripts Firebase y Registro -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "TU_API_KEY",
+    authDomain: "subastacarhn-40554.firebaseapp.com",
+    projectId: "subastacarhn-40554",
+    storageBucket: "subastacarhn-40554.appspot.com",
+    messagingSenderId: "536785797974",
+    appId: "TU_APP_ID"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
-    // Toggle móvil
-    function toggleMenu() {
-      document.getElementById('mobile-menu-links')
-              .classList.toggle('open');
+  function toggleMenu() {
+    document.getElementById('mobile-menu-links').classList.toggle('open');
+  }
+
+  document.querySelectorAll('.toggle-eye').forEach(icon => {
+    icon.addEventListener('click', () => {
+      const input = document.getElementById(icon.dataset.target);
+      input.type = input.type === 'password' ? 'text' : 'password';
+    });
+  });
+
+  const passwordHelper = document.getElementById('passwordHelper');
+  const confirmHelper = document.getElementById('confirmHelper');
+  const passwordInput = document.getElementById('password');
+  const confirmPasswordInput = document.getElementById('confirmPassword');
+
+  passwordInput.addEventListener('input', () => {
+    if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(passwordInput.value)) {
+      passwordHelper.classList.add('invalid');
+    } else {
+      passwordHelper.classList.remove('invalid');
+    }
+  });
+
+  confirmPasswordInput.addEventListener('input', () => {
+    if (confirmPasswordInput.value !== passwordInput.value) {
+      confirmHelper.textContent = "Las contraseñas no coinciden.";
+      confirmHelper.classList.add('invalid');
+    } else {
+      confirmHelper.textContent = "";
+      confirmHelper.classList.remove('invalid');
+    }
+  });
+
+  document.getElementById('registerForm').addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const fullName = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    const btnText = document.getElementById('btnText');
+    const btnSpinner = document.getElementById('btnSpinner');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
+      alert('La contraseña debe tener al menos 8 caracteres, 1 mayúscula y 1 número.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      alert('Las contraseñas no coinciden.');
+      return;
+    }
+    if (!/^[923]\d{7}$/.test(phone)) {
+      alert('El teléfono debe iniciar con 9, 2 o 3 y tener 8 dígitos.');
+      return;
     }
 
-    // Toggle ojo de contraseña (igual que antes)
-    document.querySelectorAll('.toggle-eye').forEach(icon => {
-      icon.addEventListener('click', () => {
-        const inp = document.getElementById(icon.dataset.target);
-        const isPwd = inp.type === 'password';
-        inp.type = isPwd ? 'text' : 'password';
-        // Aquí intercambias el SVG si quieres...
-      });
-    });
+    try {
+      btnText.style.display = 'none';
+      btnSpinner.style.display = 'inline-block';
+      submitBtn.disabled = true;
 
-    // Validación y submit del registro (igual que antes)
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
-    document.getElementById('registerForm')
-      .addEventListener('submit', async e => {
-        e.preventDefault();
-        // lógica de spinner, validaciones y Firebase...
+      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+
+      await db.collection('clients').doc(user.uid).set({
+        fullName: fullName,
+        email: email,
+        phone: phone,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
-  </script>
+
+      await user.sendEmailVerification();
+
+      alert('Registro exitoso. Verifica tu correo antes de iniciar sesión.');
+      window.location.href = 'login.html';
+
+    } catch (error) {
+      console.error(error);
+      alert(error.message || 'Error al registrar.');
+    } finally {
+      btnText.style.display = 'inline-block';
+      btnSpinner.style.display = 'none';
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+
 </body>
 </html>
