@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mi Perfil – SubastaCarHN</title>
+
+  <!-- Fuentes e íconos -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
   <link rel="manifest" href="Img/site.webmanifest">
   <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
@@ -11,93 +14,82 @@
   <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
   <meta name="theme-color" content="#002f6c">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
+
   <style>
     :root {
       --blue: #002f6c;
       --blue2: #004aad;
       --yellow: #ffc20e;
-      --dark: #333;
+      --text: #333;
       --light: #f9f9f9;
+      --shadow: rgba(0,0,0,0.1);
       --max-width: 1200px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      color: var(--dark);
-      background: var(--light);
-      line-height: 1.6;
-    }
+    body { font-family: 'Montserrat', sans-serif; background: var(--light); color: var(--text); line-height: 1.6; }
     a { text-decoration: none; color: inherit; }
-    ul { list-style: none; }
+    ul { list-style: none; margin: 0; padding: 0; }
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 1rem; }
 
-    .container {
-      width: 100%;
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-
-    header {
+    /* Header */
+    .site-header {
       background: linear-gradient(to right, var(--blue), var(--blue2));
       position: sticky;
       top: 0;
-      z-index: 999;
+      z-index: 1000;
     }
     .header-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.5rem 0;
+      padding: 0.75rem;
     }
     .brand {
       color: #fff;
-      font-size: 1.25rem;
+      font-size: 1.5rem;
       font-weight: 700;
     }
-    .nav-links {
-      display: none;
+    .nav-list {
+      display: flex;
       gap: 1rem;
+      margin-left: auto;
     }
-    .nav-links a, .nav-links span {
+    .nav-list a, .nav-list span {
       color: var(--yellow);
-      font-size: 0.9375rem;
       font-weight: 600;
+      font-size: 0.95rem;
     }
     .menu-icon {
       background: var(--yellow);
       color: var(--blue);
       border: none;
-      font-size: 1rem;
-      line-height: 1;
       padding: 0.5rem;
       border-radius: 6px;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 8px var(--shadow);
     }
     .mobile-nav {
       display: none;
       flex-direction: column;
       background: #fff;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
       padding: 1rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      z-index: 998;
+      box-shadow: 0 2px 8px var(--shadow);
     }
-    .mobile-nav li { margin-bottom: 0.75rem; }
+    .mobile-nav.open { display: flex; gap: 0.5rem; }
     .mobile-nav a, .mobile-nav span {
-      color: var(--blue);
       font-weight: 700;
-      font-size: 0.9375rem;
+      padding: 0.75rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+      color: var(--blue);
     }
-    @media (min-width: 768px) {
-      .menu-icon { display: none; }
-      .nav-links { display: flex; }
-      .mobile-nav { display: none !important; }
+    .mobile-nav a:hover, .mobile-nav span:hover {
+      background: rgba(0,47,108,0.1);
     }
+    @media (max-width: 767px) { .nav-list { display: none; } }
+    @media (min-width: 768px) { .menu-icon { display: none; } }
+
+    /* Main Layout */
     main.layout {
       padding: 2rem 1rem;
     }
@@ -106,25 +98,29 @@
       margin: 0 auto;
       background: #fff;
       padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
     .contenido-central h1 {
       text-align: center;
       color: var(--blue);
       margin-bottom: 1.5rem;
     }
-    form label {
+    label {
+      font-weight: bold;
+      color: var(--blue);
       display: block;
-      margin: 0.5rem 0 0.25rem;
-      font-weight: 600;
+      margin-top: 10px;
     }
-    form input {
+    input {
       width: 100%;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-bottom: 1rem;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid var(--blue2);
+      background: #f0f8ff;
+      margin-top: 5px;
+      box-sizing: border-box;
+      font-size: 14px;
     }
     .readonly {
       background: #e4e4e4;
@@ -138,19 +134,19 @@
       margin-bottom: 1rem;
     }
     .styled-btn {
-      background: var(--yellow);
+      background-color: var(--yellow);
       color: var(--blue);
-      font-weight: 700;
+      font-weight: bold;
       border: none;
       border-radius: 8px;
-      padding: 0.75rem;
-      font-size: 1rem;
-      cursor: pointer;
+      padding: 10px;
+      margin-top: 20px;
       width: 100%;
-      margin-bottom: 0.75rem;
+      cursor: pointer;
+      font-size: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
-    .styled-btn:hover { background: #e6ac00; }
-
+    .styled-btn:hover { background-color: #e6ac00; }
     .success-msg {
       background: #d4edda;
       color: #155724;
@@ -161,79 +157,122 @@
       text-align: center;
     }
 
-    footer {
+    /* Footer */
+    .site-footer {
       background: var(--blue2);
       color: #fff;
       text-align: center;
-      padding: 1rem;
+      padding: 1rem 0;
       margin-top: 2rem;
     }
-    footer a { color: var(--yellow); margin: 0 0.5rem; }
+    .footer-nav .footer-list {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .footer-nav .footer-list a, .social-links a {
+      color: var(--yellow);
+      font-weight: 500;
+    }
+    .footer-copy {
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
   </style>
 </head>
 <body>
-  <header>
+
+  <!-- HEADER -->
+  <header class="site-header">
     <div class="container header-inner">
       <a href="index.html" class="brand">SubastaCarHN</a>
-      <nav class="nav-links" aria-label="Menú principal">
-        <a href="calculadora.html">Calculadora</a>
-        <a href="cursos.html" id="linkCursos">Cursos</a>
-        <span id="userGreeting"></span>
-      </nav>
+      <ul class="nav-list">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="calculadora.html">Calculadora</a></li>
+        <li><a href="inventario.html">Vehículos</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="https://wa.me/50497330137" target="_blank">Soporte</a></li>
+        <li><span id="userGreeting"></span></li>
+      </ul>
       <button class="menu-icon" onclick="toggleMenu()">☰</button>
     </div>
-    <ul id="mobile-menu-links" class="mobile-nav">
-      <li><a href="calculadora.html">Calculadora</a></li>
-      <li><a href="cursos.html" id="linkCursosMobile">Cursos</a></li>
-      <li><span id="mobileGreeting"></span></li>
-      <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
-    </ul>
+    <nav id="mobile-menu-links" class="mobile-nav">
+      <a href="index.html">Inicio</a>
+      <a href="calculadora.html">Calculadora</a>
+      <a href="inventario.html">Vehículos</a>
+      <a href="cursos.html">Cursos</a>
+      <a href="https://wa.me/50497330137" target="_blank">Soporte</a>
+      <span id="mobileGreeting"></span>
+    </nav>
   </header>
 
+  <!-- MAIN -->
   <main class="layout">
     <div class="contenido-central">
       <h1>Mi Perfil</h1>
       <form id="profileForm">
         <label for="name">Nombre completo</label>
         <input type="text" id="name" required />
+
         <label for="email">Correo electrónico</label>
         <input type="email" id="email" class="readonly" readonly />
+
         <label for="phone">Teléfono</label>
         <input type="tel" id="phone" class="readonly" readonly />
+
         <label for="address">Dirección</label>
         <input type="text" id="address" />
+
         <label for="dni">DNI</label>
         <input type="text" id="dni" />
+
         <label for="birthYear">Año de nacimiento</label>
         <input type="number" id="birthYear" min="1900" max="2100" />
         <small class="note">El DNI y el año de nacimiento te ayudarán a recuperar tu cuenta si pierdes el acceso.</small>
+
         <button type="submit" class="styled-btn">Guardar cambios</button>
         <button type="button" class="styled-btn" onclick="sendPasswordReset()">Cambiar contraseña</button>
         <button type="button" class="styled-btn" onclick="logout()">Cerrar sesión</button>
-        <div id="successMsg" class="success-msg" style="display:none;">✅ Tus datos han sido actualizados con éxito.</div>
+
+        <div id="successMsg" class="success-msg" style="display:none;">
+          ✅ Tus datos han sido actualizados con éxito.
+        </div>
       </form>
+
       <hr style="margin: 2rem 0; border: none; border-top: 2px dashed #ccc;" />
-      <h2 style="text-align:center; color:#002f6c;">Historial de Cálculos</h2>
+      <h2 style="text-align:center; color: var(--blue);">Historial de Cálculos</h2>
       <div id="historialContainer" style="margin-top: 1rem;"></div>
     </div>
   </main>
 
-  <footer>
-    <div class="container">
-      <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
-      <div style="margin-top:0.5rem;">
-        <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
-        <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
-        <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <nav class="footer-nav">
+        <ul class="footer-list">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="calculadora.html">Calculadora</a></li>
+          <li><a href="inventario.html">Vehículos</a></li>
+          <li><a href="cursos.html">Cursos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="social-links">
+        <a href="https://facebook.com/Subasta-Car-HN" target="_blank">Facebook</a> |
+        <a href="https://instagram.com/subastacar1" target="_blank">Instagram</a> |
+        <a href="https://tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
       </div>
+      <div class="footer-copy">&copy; 2025 SubastaCarHN. Todos los derechos reservados.</div>
     </div>
   </footer>
 
-  <!-- Firebase -->
+  <!-- Firebase y lógica -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script>
+    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -246,158 +285,118 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
+
+    // Menú móvil
+    function toggleMenu() {
+      document.getElementById('mobile-menu-links').classList.toggle('open');
+    }
+
+    // Saludo de usuario en header
     auth.onAuthStateChanged(async user => {
-      if (!user) return window.location.href = "login.html";
-      const docRef = db.collection('clients').doc(user.uid);
-      const docSnap = await docRef.get();
-      if (docSnap.exists) {
-        const data = docSnap.data();
-        document.getElementById('name').value = data.fullName || "";
-        document.getElementById('email').value = data.email || user.email;
-        document.getElementById('phone').value = data.phone || "";
-        document.getElementById('address').value = data.address || "";
-        document.getElementById('dni').value = data.dni || "";
-        document.getElementById('birthYear').value = data.birthYear || "";
-        cargarHistorial();
-      } else {
-        alert("⚠️ No se encontró el perfil.");
-      }
+      if (!user) return window.location.href = 'login.html';
+      document.getElementById('userGreeting').textContent = `Hola, ${user.displayName || user.email}`;
+      document.getElementById('mobileGreeting').textContent = `Hola, ${user.displayName || user.email}`;
+      // Carga perfil
+      const doc = await db.collection('clients').doc(user.uid).get();
+      if (!doc.exists) return alert('⚠️ No se encontró el perfil.');
+      const d = doc.data();
+      document.getElementById('name').value      = d.fullName || '';
+      document.getElementById('email').value     = d.email    || user.email;
+      document.getElementById('phone').value     = d.phone    || '';
+      document.getElementById('address').value   = d.address  || '';
+      document.getElementById('dni').value       = d.dni      || '';
+      document.getElementById('birthYear').value = d.birthYear|| '';
+      cargarHistorial();
     });
 
+    // Historial
     async function cargarHistorial() {
-      const user = firebase.auth().currentUser;
-      if (!user) return;
-      const historialRef = db.collection("clients").doc(user.uid).collection("historial").orderBy("fecha", "desc").limit(100);
-      const snapshot = await historialRef.get();
-
-      const container = document.getElementById("historialContainer");
-      if (snapshot.empty) {
-        container.innerHTML = "<p style='text-align:center;'>Aún no hay cálculos guardados.</p>";
-        return;
-      }
-
-      let html = "";
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const id = doc.id;
-        const nombre = data.nombre || "Sin título";
-        const total = data.total || "-";
-        const fecha = data.fecha?.toDate().toLocaleString("es-HN") || "Fecha desconocida";
-
-        html += `
-          <div id="historial-${id}" style="background:#f0f8ff; padding:1rem; border-radius:10px; margin-bottom:1rem; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-            <input type="text" value="${nombre}" onchange="renombrarHistorial('${id}', this.value)" style="font-weight:bold; border:none; background:transparent; color:#002f6c; width:100%;"/>
+      const uid = auth.currentUser.uid;
+      const snap = await db.collection('clients').doc(uid)
+        .collection('historial').orderBy('fecha','desc').limit(100).get();
+      const cont = document.getElementById('historialContainer');
+      if (snap.empty) return cont.innerHTML = '<p style="text-align:center;">Aún no hay cálculos guardados.</p>';
+      cont.innerHTML = snap.docs.map(doc => {
+        const d = doc.data();
+        const fecha = d.fecha?.toDate().toLocaleString('es-HN') || 'Fecha desconocida';
+        return `
+          <div id="historial-${doc.id}" style="background:#f0f8ff;padding:1rem;border-radius:10px;margin-bottom:1rem;box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+            <input type="text" value="${d.nombre||'Sin título'}" 
+              onchange="renombrarHistorial('${doc.id}', this.value)" 
+              style="font-weight:bold;border:none;background:transparent;color:#002f6c;width:100%;"/>
             <small>${fecha}</small><br>
-            <strong style="color:#004aad;">${total}</strong>
-            <br><br>
-            <button class="styled-btn" onclick="verDetallesHistorial('${id}')">Ver detalles</button>
-            <button class="styled-btn" onclick="descargarHistorialPDF('${id}')">Descargar PDF</button>
-            <button class="styled-btn" onclick="eliminarHistorial('${id}')">Eliminar</button>
-          </div>
-        `;
-      });
-      container.innerHTML = html;
+            <strong style="color:#004aad;">${d.total||'-'}</strong><br><br>
+            <button class="styled-btn" onclick="verDetallesHistorial('${doc.id}')">Ver detalles</button>
+            <button class="styled-btn" onclick="descargarHistorialPDF('${doc.id}')">Descargar PDF</button>
+            <button class="styled-btn" onclick="eliminarHistorial('${doc.id}')">Eliminar</button>
+          </div>`;
+      }).join('');
     }
 
-    async function verDetallesHistorial(id) {
-      // Ocultar otros detalles abiertos
-      document.querySelectorAll(".detalle-abierto").forEach(el => el.remove());
-
-      const user = firebase.auth().currentUser;
-      const ref = db.collection("clients").doc(user.uid).collection("historial").doc(id);
-      const doc = await ref.get();
-      if (!doc.exists) return alert("❌ No se encontró este cálculo.");
-      const data = doc.data();
-
-      const detalle = document.createElement("div");
-      detalle.classList.add("detalle-abierto");
-      detalle.innerHTML = `
-        <div style="margin-top: 1rem; border: 1px dashed #ccc; border-radius: 10px; padding: 10px;">
-          <table class="tabla-detalles">
-            <tr><th>Concepto</th><th>Valor</th></tr>
-            ${data.detalles.map(item => `
-              <tr>
-                <td>${item.titulo}</td>
-                <td>${item.valor}</td>
-              </tr>`).join('')}
-          </table>
-          <button class="styled-btn" onclick="this.parentElement.remove()">Cerrar</button>
-        </div>
-      `;
-      document.getElementById(`historial-${id}`).appendChild(detalle);
+    async function renombrarHistorial(id, nombre) {
+      await db.collection('clients').doc(auth.currentUser.uid)
+        .collection('historial').doc(id).update({ nombre })
+        .catch(()=>alert('❌ No se pudo renombrar.'));
     }
-
-    async function renombrarHistorial(id, nuevoNombre) {
-      const user = firebase.auth().currentUser;
-      if (!user) return;
-      try {
-        await db.collection("clients").doc(user.uid).collection("historial").doc(id).update({
-          nombre: nuevoNombre
-        });
-      } catch (e) {
-        alert("❌ No se pudo renombrar.");
-        console.error(e);
-      }
-    }
-
     async function eliminarHistorial(id) {
-      const confirmacion = confirm("¿Seguro que deseas eliminar este historial?");
-      if (!confirmacion) return;
-      const user = firebase.auth().currentUser;
-      if (!user) return;
-      try {
-        await db.collection("clients").doc(user.uid).collection("historial").doc(id).delete();
-        cargarHistorial(); // Recargar lista
-      } catch (e) {
-        alert("❌ No se pudo eliminar.");
-        console.error(e);
-      }
+      if (!confirm('¿Seguro que deseas eliminar este historial?')) return;
+      await db.collection('clients').doc(auth.currentUser.uid)
+        .collection('historial').doc(id).delete()
+        .then(cargarHistorial)
+        .catch(()=>alert('❌ No se pudo eliminar.'));
     }
-
+    function verDetallesHistorial(id) {
+      document.querySelectorAll('.detalle-abierto').forEach(e=>e.remove());
+      db.collection('clients').doc(auth.currentUser.uid)
+        .collection('historial').doc(id).get()
+        .then(doc => {
+          if (!doc.exists) return alert('❌ No se encontró este cálculo.');
+          const data = doc.data();
+          const cont = document.getElementById(`historial-${id}`);
+          const detalle = document.createElement('div');
+          detalle.classList.add('detalle-abierto');
+          detalle.innerHTML = `
+            <div style="margin-top:1rem;border:1px dashed #ccc;border-radius:10px;padding:10px;">
+              <table style="width:100%;border-collapse:collapse;">
+                <tr><th>Concepto</th><th>Valor</th></tr>
+                ${data.detalles.map(i=>`<tr><td style="border:1px solid #ddd;padding:6px;">${i.titulo}</td><td style="border:1px solid #ddd;padding:6px;">${i.valor}</td></tr>`).join('')}
+              </table>
+              <button class="styled-btn" onclick="this.parentElement.parentElement.remove()">Cerrar</button>
+            </div>`;
+          cont.appendChild(detalle);
+        });
+    }
     function descargarHistorialPDF(id) {
-      const user = firebase.auth().currentUser;
-      db.collection("clients").doc(user.uid).collection("historial").doc(id).get().then(doc => {
-        if (!doc.exists) return alert("❌ No se encontró este cálculo.");
-        const data = doc.data();
-        const tabla = `
-          <h2 style="text-align:center;">${data.nombre}</h2>
-          <p><strong>Total Final:</strong> ${data.total}</p>
-          <table class="tabla-detalles" style="margin-top:1rem;">
-            <tr><th>Concepto</th><th>Valor</th></tr>
-            ${data.detalles.map(item => `
-              <tr>
-                <td>${item.titulo}</td>
-                <td>${item.valor}</td>
-              </tr>`).join('')}
-          </table>
-        `;
-        const w = window.open('', '_blank', 'width=800,height=600');
-        w.document.open();
-        w.document.write(`
-          <html><head><title>Descargar Historial</title>
-          <style>
-            body { font-family: Helvetica; margin: 20px; }
-            .tabla-detalles { border-collapse: collapse; width: 100%; max-width: 600px; margin: auto; }
-            .tabla-detalles th, .tabla-detalles td {
-              padding: 8px 12px;
-              border: 1px solid #ddd;
-            }
-            .tabla-detalles th { background: #f2f2f2; }
-          </style>
-          </head><body>${tabla}</body></html>
-        `);
-        w.document.close();
-        setTimeout(() => w.print(), 500);
-      });
+      db.collection('clients').doc(auth.currentUser.uid)
+        .collection('historial').doc(id).get()
+        .then(doc => {
+          if (!doc.exists) return alert('❌ No se encontró este cálculo.');
+          const d = doc.data();
+          const w = window.open('', '_blank', 'width=800,height=600');
+          w.document.write(`
+            <html><head><title>${d.nombre}</title>
+            <style>body{font-family:Arial;margin:20px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ccc;padding:8px;}</style>
+            </head><body>
+            <h2 style="text-align:center;">${d.nombre}</h2>
+            <p><strong>Total Final:</strong> ${d.total}</p>
+            <table><tr><th>Concepto</th><th>Valor</th></tr>
+              ${d.detalles.map(i=>`<tr><td>${i.titulo}</td><td>${i.valor}</td></tr>`).join('')}
+            </table></body></html>
+          `);
+          setTimeout(() => w.print(), 500);
+        });
     }
-  </script>
-  <script>
-  function toggleMenu() {
-    const menu = document.getElementById("mobile-menu-links");
-    const isOpen = menu.style.display === "flex";
-    menu.style.display = isOpen ? "none" : "flex";
-  }
-</script>
 
+    // Recuperar contraseña y cerrar sesión
+    function sendPasswordReset() {
+      auth.sendPasswordResetEmail(auth.currentUser.email)
+        .then(() => alert('🔗 Enlace enviado al correo.'))
+        .catch(() => alert('❌ Error al enviar enlace.'));
+    }
+    function logout() {
+      auth.signOut().then(() => window.location.href = 'login.html');
+    }
+
+  </script>
 </body>
 </html>
