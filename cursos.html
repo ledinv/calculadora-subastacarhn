@@ -119,7 +119,6 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      position: relative;
       color: #fff;
     }
     .hero-curso .overlay {
@@ -138,13 +137,7 @@
     .info-curso h2,
     .beneficios h2 {
       color: var(--blue);
-      text-align: center;
       margin-bottom: 1rem;
-    }
-    .beneficios ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 1rem;
     }
     .beneficios li {
       margin-bottom: 1rem;
@@ -223,27 +216,41 @@
       font-size: 0.85rem;
       opacity: 0.8;
     }
-    /* Centrar títulos, párrafos y secciones */
-.info-curso .container,
-.video-presentacion .container,
-.beneficios .container,
-.cta-wsp {
-  text-align: center;
-}
 
-/* Mantener los listados alineados a la izquierda, pero centrados como bloque */
-.info-curso .container ul,
-.beneficios ul {
-  display: inline-block;
-  text-align: left;
-  margin: 1rem auto;
-  max-width: 600px; /* o el ancho que desees */
-}
+    /* —— NUEVAS REGLAS PARA CENTRAR TODO —— */
 
-/* Centrar la tarjeta de video */
-.video-wrapper {
-  margin: 0 auto;
-}
+    /* 1) Flexbox en los contenedores de sección */
+    .video-presentacion .container,
+    .info-curso .container,
+    .beneficios .container,
+    .cta-wsp {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* 2) Listas centradas como bloque pero con texto a la izquierda */
+    .info-curso .container ul,
+    .beneficios ul {
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+      margin: 1rem 0;
+    }
+
+    /* 3) Centrar botón “Ver temario completo” */
+    .info-curso .container button.styled-btn {
+      align-self: center;
+      margin-top: 1rem;
+    }
+
+    /* 4) Vídeo centrado */
+    .video-wrapper {
+      margin: 0 auto;
+      max-width: 600px;
+      width: 100%;
+    }
   </style>
 </head>
 
@@ -284,7 +291,7 @@
   <section class="video-presentacion">
     <div class="container">
       <h2>Conoce el Curso en 60 segundos</h2>
-      <div class="video-wrapper" style="max-width: 600px; margin: auto;">
+      <div class="video-wrapper">
         <div id="cursoVideoLazy" class="video-container"
              data-video-src="videos/VIDEO-2025-04-21-14-26-34.mp4"
              style="background-image: url('Img/course-poster.jpg');">
@@ -298,7 +305,7 @@
   <section class="info-curso">
     <div class="container">
       <h2>Curso Virtual de Importación de Autos</h2>
-      <ul style="text-align:left; max-width:600px; margin:auto;">
+      <ul>
         <li><strong>Inicio:</strong> 18 de Junio 2025</li>
         <li><strong>Modalidad:</strong> Online (Google Meet)</li>
         <li><strong>Horario:</strong> 9:00 PM a 10:00 PM</li>
@@ -306,16 +313,16 @@
         <li><strong>Cupos Limitados</strong></li>
       </ul>
 
-      <h3 style="margin-top:2rem;">¿Qué incluye este curso?</h3>
-      <ul style="text-align:left; max-width:600px; margin:auto;">
+      <h3>¿Qué incluye este curso?</h3>
+      <ul>
         <li>Asesoría personalizada en tu primera importación.</li>
         <li>Guía de contactos confiables (aduanas, grúas, transporte).</li>
         <li>Estrategias para ahorrar dinero y evitar errores costosos.</li>
         <li>Aprende a convertir este conocimiento en tu negocio.</li>
       </ul>
 
-      <h3 style="margin-top:2rem;">Temario del curso</h3>
-      <ul id="temario-lista" style="text-align:left; max-width:600px; margin:auto;">
+      <h3>Temario del curso</h3>
+      <ul id="temario-lista">
         <li>1. Cómo importar legalmente sin errores</li>
         <li>2. Dominio total de Copart (cuentas básicas y premium)</li>
         <li>3. Evaluación de vehículos y cálculo de daños</li>
@@ -324,7 +331,7 @@
       <button onclick="document.getElementById('temario-completo').style.display='block'; this.style.display='none';" class="styled-btn">
         Ver temario completo
       </button>
-      <ul id="temario-completo" style="display:none; text-align:left; max-width:600px; margin:auto; margin-top:1rem;">
+      <ul id="temario-completo" style="display:none;">
         <li>5. Coordinación de grúa, embarque y desaduanaje</li>
         <li>6. Estrategias de reparación y compra de repuestos</li>
         <li>7. Técnicas de venta y maximización de ganancias</li>
@@ -332,12 +339,6 @@
         <li>9. Uso de plataformas digitales para tu empresa</li>
         <li>10. ¡Y mucho más!</li>
       </ul>
-
-      <h3 style="margin-top:2rem;">Inversión</h3>
-      <p><strong>Precio total:</strong> L. 3,600</p>
-      <p><strong>Reserva tu cupo con solo L. 500</strong></p>
-      <p><strong>Formas de pago:</strong> Cuenta BAC y Atlántida</p>
-      <p><strong>Solicita los datos por WhatsApp: <a href="https://wa.me/50497330137">97330137</a></strong></p>
     </div>
   </section>
 
@@ -405,8 +406,7 @@
 
     // Menú móvil
     function toggleMenu() {
-      document.getElementById('mobile-menu-links')
-              .classList.toggle('open');
+      document.getElementById('mobile-menu-links').classList.toggle('open');
     }
 
     // Gestión de sesión y Logout
@@ -417,7 +417,7 @@
         const name = (user.displayName || user.email.split('@')[0])
                        .replace(/^./, c => c.toUpperCase());
         desktop.innerHTML = `Hola, ${name} | <a href="#" onclick="logout()">Cerrar sesión</a>`;
-        mobile.innerHTML  = `Hola, ${name} | <a href="#" onclick="logout()">Cerrar sesión</a>`;
+        mobile.innerHTML  = desktop.innerHTML;
       } else {
         desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
         mobile.innerHTML  = desktop.innerHTML;
@@ -435,12 +435,12 @@
       const btn       = container.querySelector('.play-button');
       btn.addEventListener('click', () => {
         const vid = document.createElement('video');
-        vid.controls  = true;
-        vid.autoplay  = true;
-        vid.playsInline = true;
-        vid.src       = container.dataset.videoSrc;
+        vid.controls     = true;
+        vid.autoplay     = true;
+        vid.playsInline  = true;
+        vid.src          = container.dataset.videoSrc;
         vid.style.borderRadius = '12px';
-        container.innerHTML = '';
+        container.innerHTML    = '';
         container.appendChild(vid);
       });
     });
