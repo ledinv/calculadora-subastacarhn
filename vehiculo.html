@@ -39,8 +39,6 @@
       margin: 0 auto;
       padding: 1rem;
     }
-
-    /* ===== HEADER ===== */
     .site-header {
       background: linear-gradient(to right, var(--blue), var(--blue2));
       position: sticky;
@@ -63,8 +61,7 @@
       gap: 1rem;
       margin-left: auto;
     }
-    .nav-list a,
-    .nav-list span {
+    .nav-list a, .nav-list span {
       color: var(--yellow);
       font-weight: 600;
       font-size: 0.95rem;
@@ -89,15 +86,13 @@
       display: flex;
       gap: 0.5rem;
     }
-    .mobile-nav a,
-    .mobile-nav span {
+    .mobile-nav a, .mobile-nav span {
       font-weight: 700;
       padding: 0.75rem;
       border-radius: 4px;
       transition: background 0.2s;
     }
-    .mobile-nav a:hover,
-    .mobile-nav span:hover {
+    .mobile-nav a:hover, .mobile-nav span:hover {
       background: rgba(0,47,108,0.1);
     }
     @media (max-width: 767px) {
@@ -106,8 +101,6 @@
     @media (min-width: 768px) {
       .menu-icon { display: none; }
     }
-
-    /* ===== DETALLE VEHÍCULO ===== */
     main.vehicle-detail {
       text-align: center;
       padding: 2rem 1rem;
@@ -136,7 +129,6 @@
     }
     .arrow.prev { left: 8px; }
     .arrow.next { right: 8px; }
-
     h1 {
       margin-top: 1rem;
       color: var(--blue);
@@ -153,7 +145,6 @@
       font-size: 0.95rem;
       margin: 0.25rem 0;
     }
-
     .description {
       margin: 1rem auto 0;
       max-width: 700px;
@@ -161,8 +152,8 @@
       font-size: 0.95rem;
       line-height: 1.4;
       color: var(--text);
+      white-space: pre-line;
     }
-
     .btns {
       display: flex;
       gap: 1rem;
@@ -187,8 +178,6 @@
     .btn:hover {
       background: #e6ac00;
     }
-
-    /* Carrusel miniaturas */
     .gallery-container {
       margin-top: 1.5rem;
       overflow: hidden;
@@ -206,8 +195,6 @@
       border-radius: 4px;
       cursor: pointer;
     }
-
-    /* ===== FOOTER ===== */
     .site-footer {
       background: var(--blue2);
       color: #fff;
@@ -220,8 +207,7 @@
       gap: 1.5rem;
       margin-bottom: 1rem;
     }
-    .footer-nav .footer-list a,
-    .social-links a {
+    .footer-nav .footer-list a, .social-links a {
       color: var(--yellow);
       font-weight: 500;
     }
@@ -232,7 +218,6 @@
   </style>
 </head>
 <body>
-
   <!-- HEADER -->
   <header class="site-header">
     <div class="container header-inner">
@@ -286,7 +271,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script>
-    // Inicializa Firebase
     const cfg = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -298,7 +282,6 @@
     firebase.initializeApp(cfg);
     const db = firebase.firestore();
 
-    // Menú móvil
     function toggleMenu() {
       document.getElementById('mobile-menu-links').classList.toggle('open');
     }
@@ -316,11 +299,11 @@
         m.innerHTML = d.innerHTML;
       }
     });
+
     function logout() {
       firebase.auth().signOut().then(() => location.reload());
     }
 
-    // Parámetro ID y contenedor
     const id = new URLSearchParams(location.search).get('id'),
           detEl = document.getElementById('detalleVehiculo');
     let carouselIndex = 0, carouselImages = [];
@@ -339,7 +322,6 @@
         const a = { id: doc.id, ...doc.data() };
         carouselImages = Array.isArray(a.imagenes) ? a.imagenes : [];
 
-        // miniaturas
         const thumbs = carouselImages.map((url,i) =>
           `<img src="${url}" onclick="goTo(${i})">`
         ).join('');
@@ -362,16 +344,12 @@
             <p><strong>Kilometraje:</strong> ${(typeof a.kilometraje==='number') ? a.kilometraje.toLocaleString()+' km' : '–'}</p>
           </div>
           ${ a.descripcion
-             ? `<div class="description">${a.descripcion}</div>`
+             ? `<div class="description">${a.descripcion.replace(/\n/g, '<br>')}</div>`
              : ''
           }
           <div class="btns">
-            <button class="btn" onclick="shareWhatsAppContact()">
-              🤝 ¡Me interesa este vehículo!
-            </button>
-            <button class="btn" onclick="shareWhatsAppLink()">
-              🔗 Compartir vehículo
-            </button>
+            <button class="btn" onclick="shareWhatsAppContact()">🤝 ¡Me interesa este vehículo!</button>
+            <button class="btn" onclick="shareWhatsAppLink()">🔗 Compartir vehículo</button>
           </div>
           ${gallery}
         `;
@@ -381,7 +359,6 @@
       }
     }
 
-    // Carrusel
     function updateCarousel(){
       document.querySelector('.gallery-track')
         .style.transform = `translateX(-${carouselIndex * 88}px)`;
@@ -409,11 +386,11 @@
       document.getElementById('mainImage').src = carouselImages[carouselIndex];
     }
 
-    // Compartir WhatsApp
     function shareWhatsAppContact(){
       const msg = encodeURIComponent(`¡Hola! Me interesa este vehículo: ${location.href}`);
       window.open(`https://wa.me/50497330137?text=${msg}`, '_blank');
     }
+
     function shareWhatsAppLink(){
       const msg = encodeURIComponent(`Mira este vehículo: ${location.href}`);
       window.open(`https://wa.me/?text=${msg}`, '_blank');
