@@ -18,59 +18,40 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text); }
 
-    /* Header idéntico a index.html */
     header { background: var(--blue); color: #fff; padding: 1rem; }
     header .logo { font-size: 1.5rem; font-weight: bold; }
     header nav ul { list-style: none; display: flex; gap: 1rem; }
     header nav a { color: #fff; text-decoration: none; }
 
-    /* Contenedor general */
     #adminApp { max-width: var(--max-width); margin: 1rem auto; }
 
-    /* Pestañas */
     .tabs { display: flex; border-bottom: 2px solid var(--blue2); }
-    .tab { flex: 1; padding: 0.75rem; background: var(--blue2); color: #fff; text-align: center; cursor: pointer; font-weight: 600; }
-    .tab.active { background: var(--blue); }
+    .tab { flex:1; padding:.75rem; background:var(--blue2); color:#fff; text-align:center; cursor:pointer; font-weight:600; }
+    .tab.active { background:var(--blue); }
 
-    /* Secciones */
-    .section { display: none; padding: 1rem; background: #fff; border-radius: 8px; box-shadow: 0 2px 10px var(--shadow); margin-top: 1rem; }
-    .section.active { display: block; }
+    .section { display:none; padding:1rem; background:#fff; border-radius:8px; box-shadow:0 2px 10px var(--shadow); margin-top:1rem; }
+    .section.active { display:block; }
 
-    /* Formulario compacto en grid */
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:1rem; }
     form input, form select, form textarea, form button {
-      width: 100%; margin: 0.5rem 0; padding: 0.75rem;
-      border: 1px solid #ccc; border-radius: 4px; font-size: 1rem;
+      width:100%; margin:.5rem 0; padding:.75rem; border:1px solid #ccc; border-radius:4px;
     }
-    form button {
-      background: var(--yellow); color: var(--blue);
-      border: none; font-weight: 600; cursor: pointer;
-    }
-    .preview img {
-      width: 60px; height: 60px; object-fit: cover;
-      margin: 4px; border-radius: 4px; border: 1px solid #ccc;
-    }
-    #mensajeExito { font-size: 0.9rem; color: green; text-align: center; margin-top: 5px; }
+    form button { background:var(--yellow); color:var(--blue); border:none; font-weight:600; cursor:pointer; }
 
-    /* Tablas compactas */
-    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 0.5rem; }
-    th, td { padding: 0.5rem; border: 1px solid #ddd; text-align: left; vertical-align: middle; }
-    th { background: var(--blue2); color: #fff; }
-    img.thumb { width: 50px; border-radius: 4px; }
-    .actions button {
-      margin-right: 4px; padding: 2px 6px; border: none;
-      border-radius: 4px; cursor: pointer; font-size: 0.8rem;
-    }
-    .btn-sold { background: var(--yellow); color: var(--text); }
-    .btn-edit { background: var(--blue); color: #fff; }
-    .btn-delete { background: #e74c3c; color: #fff; }
-    .btn-copy, #btnCopyAll {
-      background: var(--blue); color: #fff; padding: 4px 8px; font-size: 0.9rem; margin-bottom: 0.5rem;
-    }
+    .preview img { width:60px; height:60px; object-fit:cover; margin:4px; border:1px solid #ccc; border-radius:4px; }
+    #mensajeExito { font-size:.9rem; color:green; text-align:center; margin-top:5px; }
 
-    /* Footer idéntico */
-    footer { background: var(--blue); color: #fff; padding: 1rem; text-align: center; margin-top: 2rem; }
-    footer .logo { font-size: 1.5rem; font-weight: bold; }
+    table { width:100%; border-collapse:collapse; font-size:.9rem; margin-top:.5rem; }
+    th, td { padding:.5rem; border:1px solid #ddd; text-align:left; vertical-align:middle; }
+    th { background:var(--blue2); color:#fff; }
+    img.thumb { width:50px; border-radius:4px; }
+    .actions button { margin-right:4px; padding:2px 6px; border:none; border-radius:4px; cursor:pointer; font-size:.8rem; }
+    .btn-sold { background:var(--yellow); color:var(--text); }
+    .btn-edit { background:var(--blue); color:#fff; }
+    .btn-delete { background:#e74c3c; color:#fff; }
+    .btn-copy, #btnCopyAll { background:var(--blue); color:#fff; padding:4px 8px; font-size:.9rem; margin-bottom:.5rem; }
+
+    footer { background:var(--blue); color:#fff; padding:1rem; text-align:center; margin-top:2rem; }
   </style>
 </head>
 <body>
@@ -88,7 +69,6 @@
     </nav>
   </header>
 
-  <!-- ADMIN APP -->
   <div id="adminApp" style="display:none;">
 
     <!-- PESTAÑAS -->
@@ -96,6 +76,7 @@
       <div class="tab active" data-sec="add">Añadir</div>
       <div class="tab" data-sec="inv">Inventario</div>
       <div class="tab" data-sec="usr">Usuarios (<span id="userCount">0</span>)</div>
+      <div class="tab" data-sec="ped">Pedidos</div>
     </div>
 
     <!-- SECCIÓN AÑADIR -->
@@ -111,18 +92,14 @@
           <input id="color" name="color" placeholder="Color" required/>
           <select id="tipo" name="tipo" required>
             <option value="">Tipo de Vehículo…</option>
-            <option>Sedán</option><option>SUV</option>
-            <option>Pickup</option><option>Camioneta</option>
-            <option>Eléctrico</option>
+            <option>Sedán</option><option>SUV</option><option>Pickup</option><option>Camioneta</option><option>Eléctrico</option>
           </select>
-          <textarea id="descripcion" name="descripcion" class="full" rows="2" placeholder="Descripción"></textarea>
-          <input id="imagenes" name="imagenes" class="full" type="file" multiple accept="image/*"/>
+          <textarea id="descripcion" name="descripcion" rows="2" placeholder="Descripción"></textarea>
+          <input id="imagenes" name="imagenes" type="file" multiple accept="image/*"/>
         </div>
         <div class="preview" id="preview"></div>
         <button id="btnAgregar" type="submit">Guardar Vehículo</button>
-        <button id="btnCancelarEdicion" type="button" style="background:#e74c3c;color:#fff;display:none;">
-          Cancelar
-        </button>
+        <button id="btnCancelarEdicion" type="button" style="background:#e74c3c;color:#fff;display:none;">Cancelar</button>
         <div id="mensajeExito" style="display:none;"></div>
       </form>
     </div>
@@ -131,10 +108,7 @@
     <div id="section-inv" class="section">
       <table id="inventory-table">
         <thead>
-          <tr>
-            <th>Foto</th><th>Marca</th><th>Modelo</th>
-            <th>Año</th><th>Precio</th><th>Est.</th><th>Acc.</th>
-          </tr>
+          <tr><th>Foto</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Precio</th><th>Est.</th><th>Acc.</th></tr>
         </thead>
         <tbody></tbody>
       </table>
@@ -144,14 +118,38 @@
     <div id="section-usr" class="section">
       <button id="btnCopyAll">Copiar todos</button>
       <table id="users-table">
-        <thead><tr><th>Nombre</th><th>Teléfono</th><th>Acción</th></tr></thead>
+        <thead>
+          <tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Acción</th></tr>
+        </thead>
         <tbody></tbody>
       </table>
     </div>
 
+    <!-- SECCIÓN PEDIDOS -->
+    <div id="section-ped" class="section">
+      <div style="display:flex; gap:10px; margin-bottom:10px;">
+        <select id="statusFilter">
+          <option value="">Todos</option>
+          <option value="pending">Pendientes</option>
+          <option value="finalized">Finalizados</option>
+        </select>
+        <select id="clientFilter">
+          <option value="">Todos los clientes</option>
+        </select>
+      </div>
+      <table id="orders-table">
+        <thead>
+          <tr>
+            <th>Cliente</th><th>Email</th><th>Teléfono</th><th>Vehículo</th><th>Precio</th><th>Estado</th><th>Factura</th><th>Fotos Entrega</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <small>Estados: Inicio → Pago Pendiente → Pagado → Recogido de Subasta → En Predio USA → En Camino → Honduras → En Votainer → Entregado</small>
+    </div>
+
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <div class="logo">SubastaCarHN</div>
     <p>© 2025 SubastaCarHN. Todos los derechos reservados.</p>
@@ -163,20 +161,17 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
-      authDomain: "subastacarhn-40554.firebaseapp.com",
-      projectId: "subastacarhn-40554",
-      storageBucket: "subastacarhn-40554.appspot.com",
-      messagingSenderId: "536785797974",
-      appId: "1:536785797974:web=e3eabb4dcd898c2ffe8cf7",
-      measurementId: "G-QM5N60K8C0"
-    };
+    // Configuración Firebase
+    const firebaseConfig = { /* tu config aquí */ };
     firebase.initializeApp(firebaseConfig);
 
     const db = firebase.firestore();
     const storageRef = firebase.storage().ref();
-    let editingId = null, allPhones = [];
+    let editingId = null, allPhones = [], ordersCache = [];
+    const ORDER_STATUSES = [
+      'Inicio','Pago Pendiente','Pagado','Recogido de Subasta',
+      'En Predio USA','En Camino','En Honduras','En Votainer','Entregado'
+    ];
 
     // Pestañas
     document.querySelectorAll('.tab').forEach(tab => {
@@ -184,11 +179,11 @@
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         tab.classList.add('active');
-        document.getElementById('section-' + tab.dataset.sec).classList.add('active');
+        document.getElementById('section-'+tab.dataset.sec).classList.add('active');
       };
     });
 
-    // Auth y carga
+    // Autenticación y carga inicial
     firebase.auth().onAuthStateChanged(u => {
       if (!u) return location = 'login.html';
       const admins = ['ledinvvv@gmail.com','ledinvvv1995@yopmail.com'];
@@ -198,16 +193,77 @@
     });
 
     function initApp() {
-      fetchUsers();
-      fetchVehicles();
+      fetchUsers(); fetchVehicles(); fetchOrdersList();
+
       document.getElementById('btnCopyAll').onclick = () => {
         if (!allPhones.length) return alert('No hay números');
-        navigator.clipboard.writeText(allPhones.join(', '))
-          .then(() => alert('Copiado'));
+        navigator.clipboard.writeText(allPhones.join(', ')).then(()=>alert('Copiado'));
       };
+      document.getElementById('statusFilter').onchange = renderOrders;
+      document.getElementById('clientFilter').onchange = renderOrders;
+
       document.getElementById('imagenes').onchange = previewImgs;
       document.getElementById('formularioAuto').onsubmit = onSubmit;
       document.getElementById('btnCancelarEdicion').onclick = resetForm;
+    }
+
+    // Usuarios
+    function fetchUsers() {
+      db.collection('clients').orderBy('fullName').get().then(snap => {
+        const tbody = document.querySelector('#users-table tbody');
+        tbody.innerHTML = '';
+        allPhones = [];
+        snap.forEach(d => {
+          const u = d.data();
+          allPhones.push(u.phone);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${u.fullName}</td>
+            <td>${u.email}</td>
+            <td>${u.phone}</td>
+            <td><button class="btn-copy" onclick="navigator.clipboard.writeText('${u.phone}')">Copiar</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+        document.getElementById('userCount').textContent = allPhones.length;
+      });
+    }
+
+    // Inventario
+    function fetchVehicles() {
+      db.collection('inventario').orderBy('fecha','desc').get().then(snap => {
+        const tbody = document.querySelector('#inventory-table tbody');
+        tbody.innerHTML = '';
+        snap.forEach(d => {
+          const v = d.data();
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><img src="${v.imagenes?.[0]||''}" class="thumb"/></td>
+            <td>${v.marca}</td><td>${v.modelo}</td><td>${v.anio}</td>
+            <td>${v.precio} LPS</td><td>${v.vendido?'Vendido':'Disp.'}</td>
+            <td class="actions">
+              ${!v.vendido
+                ? `<button class="btn-sold" onclick="markSold('${d.id}')">V</button>`
+                : `<button class="btn-sold" disabled>V</button>`}
+              <button class="btn-edit" onclick="editVehicle('${d.id}')">E</button>
+              <button class="btn-delete" onclick="deleteVehicle('${d.id}')">X</button>
+            </td>`;
+          tbody.appendChild(tr);
+        });
+      });
+    }
+    function markSold(id){ if(confirm('¿Marcar vendido?')) db.collection('inventario').doc(id).update({vendido:true}).then(fetchVehicles); }
+    function deleteVehicle(id){ if(confirm('¿Eliminar?')) db.collection('inventario').doc(id).delete().then(fetchVehicles); }
+    function editVehicle(id){
+      db.collection('inventario').doc(id).get().then(doc => {
+        const v = doc.data(), f = document.getElementById('formularioAuto');
+        ['marca','modelo','motor','anio','precio','kilometraje','color','tipo','descripcion']
+          .forEach(k => f[k].value = v[k] || '');
+        editingId = id;
+        document.getElementById('btnAgregar').textContent = 'Guardar Cambios';
+        document.getElementById('btnCancelarEdicion').style.display = 'inline-block';  
+        window.scrollTo({top:0,behavior:'smooth'});
+      });
     }
 
     function previewImgs() {
@@ -224,116 +280,106 @@
       e.preventDefault();
       const f = e.target;
       const data = {
-        marca: f.marca.value,
-        modelo: f.modelo.value,
-        motor: f.motor.value,
-        anio: +f.anio.value,
-        precio: +f.precio.value,
-        kilometraje: +f.kilometraje.value,
-        color: f.color.value,
-        tipo: f.tipo.value,
-        descripcion: f.descripcion.value
+        marca: f.marca.value, modelo: f.modelo.value, motor: f.motor.value,
+        anio:+f.anio.value, precio:+f.precio.value, kilometraje:+f.kilometraje.value,
+        color:f.color.value, tipo:f.tipo.value, descripcion:f.descripcion.value
       };
       try {
         if (editingId) {
           await db.collection('inventario').doc(editingId).update(data);
         } else {
-          const id = `${data.modelo.toLowerCase()}${data.anio}-${Date.now()}`;
-          const urls = [];
+          const id = `${data.modelo.toLowerCase()}${data.anio}-${Date.now()}`, urls = [];
           for (let file of f.imagenes.files) {
             const up = await storageRef.child(`inventario/${id}/${file.name}`).put(file);
             urls.push(await up.ref.getDownloadURL());
           }
-          Object.assign(data, {
-            id,
-            imagenes: urls,
-            vendido: false,
-            fecha: firebase.firestore.FieldValue.serverTimestamp()
-          });
+          Object.assign(data,{id,imagenes:urls,vendido:false,fecha:firebase.firestore.FieldValue.serverTimestamp()});
           await db.collection('inventario').doc(id).set(data);
         }
         document.getElementById('mensajeExito').style.display = 'block';
-        setTimeout(() => document.getElementById('mensajeExito').style.display = 'none', 2000);
-        f.reset();
-        document.getElementById('preview').innerHTML = '';
-        resetForm();
-        fetchVehicles();
-      } catch (err) {
-        alert(err.message);
-      }
+        setTimeout(()=>document.getElementById('mensajeExito').style.display = 'none',2000);
+        f.reset(); document.getElementById('preview').innerHTML=''; resetForm(); fetchVehicles();
+      } catch(err){ alert(err.message); }
+    }
+    function resetForm(){
+      editingId=null;
+      document.getElementById('btnCancelarEdicion').style.display='none';
+      document.getElementById('btnAgregar').textContent='Guardar Vehículo';
     }
 
-    function resetForm() {
-      editingId = null;
-      document.getElementById('btnCancelarEdicion').style.display = 'none';
-      document.getElementById('btnAgregar').textContent = 'Guardar Vehículo';
-    }
-
-    function fetchVehicles() {
-      db.collection('inventario').orderBy('fecha','desc').get().then(snap => {
-        const tb = document.querySelector('#inventory-table tbody');
-        tb.innerHTML = '';
-        snap.forEach(d => {
-          const v = d.data();
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td><img src="${v.imagenes?.[0]||''}" class="thumb"/></td>
-            <td>${v.marca}</td><td>${v.modelo}</td>
-            <td>${v.anio}</td><td>${v.precio} LPS</td>
-            <td>${v.vendido?'Vendido':'Disp.'}</td>
-            <td class="actions">
-              ${!v.vendido
-                ? `<button class="btn-sold" onclick="markSold('${d.id}')">V</button>`
-                : `<button class="btn-sold" disabled>V</button>`}
-              <button class="btn-edit" onclick="editVehicle('${d.id}')">E</button>
-              <button class="btn-delete" onclick="deleteVehicle('${d.id}')">X</button>
-            </td>`;
-          tb.appendChild(tr);
-        });
+    // Pedidos
+    function fetchOrdersList(){
+      db.collection('orders').orderBy('createdAt','desc').get().then(snap=>{
+        ordersCache=[]; snap.forEach(d=>ordersCache.push({id:d.id,data:d.data()}));
+        populateClientFilter(); renderOrders();
       });
     }
-
-    function markSold(id) {
-      if (confirm('¿Marcar vendido?')) {
-        db.collection('inventario').doc(id).update({ vendido:true }).then(fetchVehicles);
-      }
-    }
-
-    function deleteVehicle(id) {
-      if (confirm('¿Eliminar?')) {
-        db.collection('inventario').doc(id).delete().then(fetchVehicles);
-      }
-    }
-
-    function editVehicle(id) {
-      db.collection('inventario').doc(id).get().then(doc => {
-        const v = doc.data(), f = document.getElementById('formularioAuto');
-        ['marca','modelo','motor','anio','precio','kilometraje','color','tipo','descripcion']
-          .forEach(k => { f[k].value = v[k] || ''; });
-        editingId = id;
-        document.getElementById('btnAgregar').textContent = 'Guardar Cambios';
-        document.getElementById('btnCancelarEdicion').style.display = 'inline-block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    function populateClientFilter(){
+      const sel=document.getElementById('clientFilter');
+      sel.innerHTML='<option value="">Todos los clientes</option>';
+      [...new Set(ordersCache.map(o=>o.data.clientName))].forEach(name=>{
+        const opt=document.createElement('option');
+        opt.value=name; opt.textContent=name; sel.appendChild(opt);
       });
     }
-
-    function fetchUsers() {
-      db.collection('clients').orderBy('fullName').get().then(snap => {
-        const tb = document.querySelector('#users-table tbody');
-        tb.innerHTML = '';
-        allPhones = [];
-        snap.forEach(d => {
-          const u = d.data();
-          allPhones.push(u.phone);
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${u.fullName}</td>
-            <td>${u.phone}</td>
-            <td><button class="btn-copy" onclick="navigator.clipboard.writeText('${u.phone}')">C</button></td>`;
-          tb.appendChild(tr);
-        });
-        document.getElementById('userCount').textContent = allPhones.length;
+    function renderOrders(){
+      const sf=document.getElementById('statusFilter').value;
+      const cf=document.getElementById('clientFilter').value;
+      const tbody=document.querySelector('#orders-table tbody');
+      tbody.innerHTML='';
+      ordersCache.forEach(({id,data})=>{
+        const st=data.status;
+        const isFinal=(st==='Entregado');
+        if(sf==='pending'&&isFinal) return;
+        if(sf==='finalized'&&!isFinal) return;
+        if(cf&&data.clientName!==cf) return;
+        const hasInv=!!data.invoiceUrl;
+        const photos=(data.deliveryPhotos||[]).length;
+        const tr=document.createElement('tr');
+        tr.innerHTML=`
+          <td>${data.clientName}</td>
+          <td>${data.clientEmail}</td>
+          <td>${data.clientPhone}</td>
+          <td><a href="${data.vehicleUrl}" target="_blank">Ver</a></td>
+          <td>${data.negotiatedPrice} LPS</td>
+          <td>${st}</td>
+          <td>${
+            hasInv
+              ? `<a href="${data.invoiceUrl}" target="_blank">PDF</a>`
+              : `<input type="file" accept="application/pdf" onchange="uploadInvoice('${id}',this.files)"/>`
+          }</td>
+          <td>${
+            photos
+              ? photos+' foto(s)'
+              : `<input type="file" accept="image/*" multiple onchange="uploadPhotos('${id}',this.files)"/>`
+          }</td>
+          <td><button class="btn-edit" onclick="advanceStatus('${id}','${st}')">→</button></td>`;
+        tbody.appendChild(tr);
       });
+    }
+    async function advanceStatus(id,cur){
+      const i=ORDER_STATUSES.indexOf(cur);
+      if(i<0||i===ORDER_STATUSES.length-1) return;
+      await db.collection('orders').doc(id).update({status:ORDER_STATUSES[i+1]});
+      fetchOrdersList();
+    }
+    async function uploadInvoice(id,files){
+      const ref=storageRef.child(`orders/${id}/invoice.pdf`);
+      const snap=await ref.put(files[0]);
+      const url=await snap.ref.getDownloadURL();
+      await db.collection('orders').doc(id).update({invoiceUrl:url});
+      fetchOrdersList();
+    }
+    async function uploadPhotos(id,files){
+      const urls=[];
+      for(const f of files){
+        const ref=storageRef.child(`orders/${id}/delivery/${f.name}`);
+        const snap=await ref.put(f);
+        urls.push(await snap.ref.getDownloadURL());
+      }
+      await db.collection('orders').doc(id)
+        .update({deliveryPhotos: firebase.firestore.FieldValue.arrayUnion(...urls)});
+      fetchOrdersList();
     }
   </script>
 </body>
