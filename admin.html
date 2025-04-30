@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Panel de Administración | SubastaCarHN</title>
+  <!-- Fuentes y estilos generales -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -25,24 +26,26 @@
       background: var(--light);
       color: var(--text);
     }
-    header, footer {
+    /* Header idéntico al de index.html */
+    header {
       background: var(--blue);
       color: #fff;
       padding: 1rem;
     }
-    header .logo, footer .logo {
+    header .logo {
       font-size: 1.5rem;
       font-weight: bold;
     }
-    nav ul {
+    header nav ul {
       list-style: none;
       display: flex;
       gap: 1rem;
     }
-    nav a {
+    header nav a {
       color: #fff;
       text-decoration: none;
     }
+    /* Contenedores */
     .container {
       max-width: var(--max-width);
       margin: 2rem auto;
@@ -82,8 +85,7 @@
       object-fit: cover;
       border-radius: 4px;
       border: 1px solid #ccc;
-      margin-right: 10px;
-      margin-bottom: 10px;
+      margin: 5px;
     }
     .progress {
       text-align: center;
@@ -112,20 +114,31 @@
       border-radius: 4px;
     }
     .actions button {
-      width: auto;
       margin-right: 5px;
       margin-bottom: 5px;
+      width: auto;
     }
     .btn-sold { background: var(--yellow); color: var(--text); }
     .btn-edit { background: var(--blue2); color: #fff; }
     .btn-delete { background: #e74c3c; color: #fff; }
     .btn-copy { background: var(--blue2); color: #fff; }
     #btnCopyAll { width: auto; margin-bottom: 1rem; }
+    /* Footer idéntico al de index.html */
+    footer {
+      background: var(--blue);
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    footer .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- HEADER (copiado EXACTO de index.html) -->
   <header>
     <div class="logo">SubastaCarHN</div>
     <nav>
@@ -138,10 +151,10 @@
     </nav>
   </header>
 
-  <!-- App solo tras login -->
+  <!-- APLICACIÓN ADMINISTRATIVA (solo tras login) -->
   <div id="adminApp" style="display:none;">
 
-    <!-- Formulario Agregar / Editar Vehículo -->
+    <!-- FORMULARIO Agregar / Editar Vehículo -->
     <div class="container">
       <h1 id="formTitle">Agregar Nuevo Vehículo</h1>
       <form id="formularioAuto">
@@ -165,9 +178,8 @@
         <label>Imágenes del Vehículo</label><input type="file" id="imagenes" multiple accept="image/*">
         <div id="preview" class="preview"></div>
         <div id="progresoCarga" class="progress"></div>
-
         <button id="btnAgregar" type="submit">Agregar al Inventario</button>
-        <button id="btnCancelarEdicion" type="button" style="display:none; background:#e74c3c; color:#fff;">
+        <button id="btnCancelarEdicion" type="button" style="background:#e74c3c; color:#fff; display:none;">
           Cancelar Edición
         </button>
       </form>
@@ -176,7 +188,7 @@
       </div>
     </div>
 
-    <!-- Gestión de Inventario -->
+    <!-- GESTIÓN DE INVENTARIO -->
     <div class="container">
       <h2>Gestión de Inventario</h2>
       <table id="inventory-table">
@@ -195,7 +207,7 @@
       </table>
     </div>
 
-    <!-- Usuarios Registrados -->
+    <!-- USUARIOS REGISTRADOS -->
     <div class="container">
       <h2>Usuarios Registrados</h2>
       <button id="btnCopyAll" class="btn-copy">Copiar todos los teléfonos</button>
@@ -213,20 +225,18 @@
 
   </div>
 
-  <!-- Footer -->
+  <!-- FOOTER (copiado EXACTO de index.html) -->
   <footer>
     <div class="logo">SubastaCarHN</div>
     <p>© 2025 SubastaCarHN. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase SDKs y lógica JS -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
-
   <script>
-    // Tu Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -237,13 +247,11 @@
       measurementId: "G-QM5N60K8C0"
     };
     firebase.initializeApp(firebaseConfig);
-
     const db = firebase.firestore();
     const storageRef = firebase.storage().ref();
-    let editingId = null;
-    let allPhones = [];
+    let editingId = null, allPhones = [];
 
-    // Comprueba sesión y permisos
+    // Autenticación y permisos
     firebase.auth().onAuthStateChanged(user => {
       if (!user) return window.location.href = 'login.html';
       const admins = ['ledinvvv@gmail.com','ledinvvv1995@yopmail.com'];
@@ -253,90 +261,71 @@
     });
 
     function initApp() {
-      // Formulario
-      document.getElementById('imagenes')
-        .addEventListener('change', mostrarPreview);
-      document.getElementById('formularioAuto')
-        .addEventListener('submit', onSubmit);
-      document.getElementById('btnCancelarEdicion')
-        .addEventListener('click', resetForm);
-
-      // Botón copiar todos
-      document.getElementById('btnCopyAll')
-        .addEventListener('click', () => {
-          if (!allPhones.length) return alert('No hay números para copiar');
-          navigator.clipboard.writeText(allPhones.join(', '))
-            .then(()=> alert('Todos los teléfonos copiados'))
-            .catch(()=> alert('Error al copiar'));
-        });
-
-      // Carga inicial
+      document.getElementById('imagenes').addEventListener('change', mostrarPreview);
+      document.getElementById('formularioAuto').addEventListener('submit', onSubmit);
+      document.getElementById('btnCancelarEdicion').addEventListener('click', resetForm);
+      document.getElementById('btnCopyAll').addEventListener('click', () => {
+        if (!allPhones.length) return alert('No hay números para copiar');
+        navigator.clipboard.writeText(allPhones.join(', '))
+          .then(()=> alert('Todos los teléfonos copiados'))
+          .catch(()=> alert('Error al copiar'));
+      });
       fetchVehicles();
       fetchUsers();
     }
 
-    // Muestra miniaturas
     function mostrarPreview() {
-      const archivos = document.getElementById('imagenes').files;
-      const prev = document.getElementById('preview');
+      const files = document.getElementById('imagenes').files, prev = document.getElementById('preview');
       prev.innerHTML = '';
-      for (let f of archivos) {
-        const reader = new FileReader();
-        reader.onload = e => {
+      for (let f of files) {
+        const r = new FileReader();
+        r.onload = e => {
           const img = document.createElement('img');
           img.src = e.target.result;
           prev.appendChild(img);
         };
-        reader.readAsDataURL(f);
+        r.readAsDataURL(f);
       }
     }
 
-    // Agregar/Editar
     async function onSubmit(e) {
       e.preventDefault();
-      const form = document.getElementById('formularioAuto');
+      const f = document.getElementById('formularioAuto');
       const data = {
-        marca: form.marca.value,
-        modelo: form.modelo.value,
-        motor: form.motor.value,
-        anio: parseInt(form.anio.value,10),
-        precio: parseInt(form.precio.value,10),
-        kilometraje: parseInt(form.kilometraje.value,10),
-        color: form.color.value,
-        tipo: form.tipo.value,
-        descripcion: form.descripcion.value,
+        marca: f.marca.value,
+        modelo: f.modelo.value,
+        motor: f.motor.value,
+        anio: +f.anio.value,
+        precio: +f.precio.value,
+        kilometraje: +f.kilometraje.value,
+        color: f.color.value,
+        tipo: f.tipo.value,
+        descripcion: f.descripcion.value
       };
       try {
         if (editingId) {
           await db.collection('inventario').doc(editingId).update(data);
-          mensaje('¡Vehículo actualizado!');
+          showMsg('¡Vehículo actualizado!');
         } else {
           const id = `${data.modelo.toLowerCase()}${data.anio}-${Date.now()}`;
-          const imgs = document.getElementById('imagenes').files;
-          const urls = [];
-          for (let f of imgs) {
+          const files = document.getElementById('imagenes').files, urls = [];
+          for (let f of files) {
             const up = await storageRef.child(`inventario/${id}/${f.name}`).put(f);
             urls.push(await up.ref.getDownloadURL());
           }
-          Object.assign(data, {
-            id, imagenes: urls,
-            vendido: false,
-            fecha: firebase.firestore.FieldValue.serverTimestamp()
-          });
+          Object.assign(data, { id, imagenes: urls, vendido: false, fecha: firebase.firestore.FieldValue.serverTimestamp() });
           await db.collection('inventario').doc(id).set(data);
-          mensaje('¡Vehículo agregado!');
+          showMsg('¡Vehículo agregado!');
         }
+        resetForm(); fetchVehicles();
       } catch(err) {
-        return alert(err.message);
+        alert(err.message);
       }
-      resetForm();
-      fetchVehicles();
     }
 
-    // Reset formulario
     function resetForm() {
-      const form = document.getElementById('formularioAuto');
-      form.reset();
+      const f = document.getElementById('formularioAuto');
+      f.reset();
       document.getElementById('preview').innerHTML = '';
       document.getElementById('progresoCarga').textContent = '';
       document.getElementById('formTitle').textContent = 'Agregar Nuevo Vehículo';
@@ -346,97 +335,75 @@
       editingId = null;
     }
 
-    // Mensaje éxito
-    function mensaje(txt) {
+    function showMsg(txt) {
       const m = document.getElementById('mensajeExito');
-      m.textContent = txt;
-      m.style.display = 'block';
-      setTimeout(()=> m.style.display='none', 3500);
+      m.textContent = txt; m.style.display = 'block';
+      setTimeout(()=> m.style.display='none', 3000);
     }
 
-    // Cargar vehículos
     function fetchVehicles() {
       db.collection('inventario').orderBy('fecha','desc').get()
         .then(snap => {
-          const tbody = document.querySelector('#inventory-table tbody');
-          tbody.innerHTML = '';
-          snap.forEach(doc => {
-            const v = doc.data();
+          const tb = document.querySelector('#inventory-table tbody');
+          tb.innerHTML = '';
+          snap.forEach(d => {
+            const v = d.data();
             const tr = document.createElement('tr');
             tr.innerHTML = `
               <td><img src="${v.imagenes?.[0]||'Img/default-car.jpg'}" class="thumb"></td>
-              <td>${v.marca}</td>
-              <td>${v.modelo}</td>
-              <td>${v.anio}</td>
+              <td>${v.marca}</td><td>${v.modelo}</td><td>${v.anio}</td>
               <td>${v.precio.toLocaleString('es-HN')} LPS</td>
               <td>${v.vendido?'Vendido':'Disponible'}</td>
               <td class="actions">
                 ${!v.vendido
-                  ? `<button class="btn-sold" onclick="markAsSold('${doc.id}')">Marcar vendido</button>`
+                  ? `<button class="btn-sold" onclick="markSold('${d.id}')">Marcar vendido</button>`
                   : `<button class="btn-sold" disabled>Vendido</button>`}
-                <button class="btn-edit"   onclick="editVehicle('${doc.id}')">Editar</button>
-                <button class="btn-delete" onclick="deleteVehicle('${doc.id}')">Eliminar</button>
+                <button class="btn-edit" onclick="editVehicle('${d.id}')">Editar</button>
+                <button class="btn-delete" onclick="deleteVehicle('${d.id}')">Eliminar</button>
               </td>
             `;
-            tbody.appendChild(tr);
+            tb.appendChild(tr);
           });
         });
     }
-
-    function markAsSold(id) {
-      if (!confirm('¿Marcar como vendido?')) return;
-      db.collection('inventario').doc(id).update({vendido:true})
-        .then(fetchVehicles);
+    function markSold(id) {
+      if (!confirm('Marcar como vendido?')) return;
+      db.collection('inventario').doc(id).update({ vendido:true }).then(fetchVehicles);
     }
     function deleteVehicle(id) {
-      if (!confirm('¿Eliminar vehículo?')) return;
-      db.collection('inventario').doc(id).delete()
-        .then(fetchVehicles);
+      if (!confirm('Eliminar vehículo?')) return;
+      db.collection('inventario').doc(id).delete().then(fetchVehicles);
     }
     function editVehicle(id) {
-      db.collection('inventario').doc(id).get()
-        .then(doc => {
-          const v = doc.data();
-          const f = document.getElementById('formularioAuto');
-          f.marca.value = v.marca;
-          f.modelo.value = v.modelo;
-          f.motor.value = v.motor;
-          f.anio.value = v.anio;
-          f.precio.value = v.precio;
-          f.kilometraje.value = v.kilometraje;
-          f.color.value = v.color;
-          f.tipo.value = v.tipo;
-          f.descripcion.value = v.descripcion;
-          document.getElementById('formTitle').textContent = 'Editar Vehículo';
-          document.getElementById('btnAgregar').textContent = 'Guardar Cambios';
-          document.getElementById('btnCancelarEdicion').style.display = 'block';
-          document.getElementById('imagenes').disabled = true;
-          editingId = id;
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+      db.collection('inventario').doc(id).get().then(doc => {
+        const v = doc.data(), f = document.getElementById('formularioAuto');
+        f.marca.value=v.marca; f.modelo.value=v.modelo; f.motor.value=v.motor;
+        f.anio.value=v.anio; f.precio.value=v.precio; f.kilometraje.value=v.kilometraje;
+        f.color.value=v.color; f.tipo.value=v.tipo; f.descripcion.value=v.descripcion;
+        document.getElementById('formTitle').textContent='Editar Vehículo';
+        document.getElementById('btnAgregar').textContent='Guardar Cambios';
+        document.getElementById('btnCancelarEdicion').style.display='block';
+        document.getElementById('imagenes').disabled=true;
+        editingId=id;
+        window.scrollTo({top:0,behavior:'smooth'});
+      });
     }
 
-    // Cargar usuarios y popular allPhones
     function fetchUsers() {
       db.collection('clients').orderBy('fullName').get()
         .then(snap => {
-          const tbody = document.querySelector('#users-table tbody');
-          tbody.innerHTML = '';
-          allPhones = [];
-          snap.forEach(doc => {
-            const u = doc.data();
+          const tb = document.querySelector('#users-table tbody');
+          tb.innerHTML = ''; allPhones = [];
+          snap.forEach(d => {
+            const u = d.data();
             allPhones.push(u.phone);
             const tr = document.createElement('tr');
             tr.innerHTML = `
               <td>${u.fullName}</td>
               <td>${u.phone}</td>
-              <td>
-                <button class="btn-copy" onclick="copyPhone('${u.phone}')">
-                  Copiar
-                </button>
-              </td>
+              <td><button class="btn-copy" onclick="copyPhone('${u.phone}')">Copiar</button></td>
             `;
-            tbody.appendChild(tr);
+            tb.appendChild(tr);
           });
         });
     }
@@ -445,7 +412,6 @@
         .then(()=> alert('Número copiado: '+num))
         .catch(()=> alert('Error al copiar'));
     }
-
   </script>
 </body>
 </html>
