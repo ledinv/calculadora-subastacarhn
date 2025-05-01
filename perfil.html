@@ -2,13 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mi Perfil – SubastaCarHN</title>
-
-  <!-- Fuentes e íconos -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
   <meta name="theme-color" content="#002f6c" />
-
   <style>
     :root {
       --blue: #002f6c;
@@ -21,114 +18,39 @@
       --card-radius: 8px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: var(--light);
-      color: var(--text);
-    }
+    body { font-family: 'Montserrat', sans-serif; background: var(--light); color: var(--text); }
     a { text-decoration: none; color: inherit; }
     .container { max-width: var(--max-width); margin: 0 auto; padding: 1rem; }
-    header, footer {
-      background: var(--blue);
-      color: #fff;
-    }
-    header .nav, footer .nav {
-      display: flex; justify-content: center; gap: 1rem;
-      padding: 1rem 0;
-    }
-    header .nav a, footer .nav a {
-      color: var(--yellow); font-weight: 600;
-    }
-    main { padding: 2rem 0; }
+    header, footer { background: var(--blue); color: #fff; }
+    header .nav, footer .nav { display: flex; justify-content: center; gap: 1rem; padding: 1rem 0; }
+    header .nav a, footer .nav a { color: var(--yellow); font-weight: 600; }
+    main { padding: 1rem 0; }
 
-    .card {
-      background: #fff;
-      border-radius: var(--card-radius);
-      box-shadow: 0 2px 8px var(--shadow);
-      overflow: hidden;
-      margin-bottom: 1.5rem;
-    }
-    .card-header {
-      background: var(--blue2);
-      color: #fff;
-      padding: .75rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-    }
-    .card-body {
-      max-height: 0;
-      overflow: hidden;
-      transition: all .3s ease;
-      padding: 0 1rem;
-    }
-    .card-body.open {
-      padding: 1rem;
-      max-height: 800px;
-    }
+    /* Tabs */
+    .tabs { display: flex; border-bottom: 2px solid var(--blue2); margin-bottom: 1rem; }
+    .tab { flex: 1; text-align: center; padding: 0.75rem; cursor: pointer; background: var(--blue2); color: #fff; font-weight: 600; }
+    .tab.active { background: var(--blue); }
+    .section { display: none; animation: fadeIn 0.3s ease; }
+    .section.active { display: block; }
 
-    .btn, button {
-      background: var(--yellow);
-      color: var(--blue);
-      border: none;
-      padding: .75rem 1rem;
-      border-radius: var(--card-radius);
-      cursor: pointer;
-      font-weight: 600;
-    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    form .grid, .grid {
-      display: grid;
-      gap: .75rem;
-    }
-    .grid-2 {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: .6rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    .tracker {
-      list-style: none;
-      display: flex;
-      gap: .5rem;
-      margin: 1rem 0;
-      flex-wrap: wrap;
-      padding: 0;
-    }
-    .tracker li {
-      position: relative;
-      padding-left: 1.2rem;
-      font-size: .8rem;
-    }
-    .tracker li::before {
-      content: '';
-      position: absolute;
-      left: 0; top: .2rem;
-      width: .8rem; height: .8rem;
-      border-radius: 50%;
-      background: #ccc;
-    }
+    /* Cards */
+    .card { background: #fff; border-radius: var(--card-radius); box-shadow: 0 2px 8px var(--shadow); margin-bottom: 1rem; overflow: hidden; }
+    .card-header { background: var(--blue2); color: #fff; padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .card-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; padding: 0 1rem; }
+    .card-body.open { padding: 1rem; max-height: 800px; }
+    .status-badge { background: var(--yellow); color: var(--text); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
+    .tracker { list-style: none; display: flex; gap: 0.5rem; flex-wrap: wrap; padding: 0; margin-bottom: 1rem; }
+    .tracker li { position: relative; padding-left: 1.2rem; font-size: 0.8rem; }
+    .tracker li::before { content: ''; position: absolute; left: 0; top: 0.2rem; width: 0.8rem; height: 0.8rem; border-radius: 50%; background: #ccc; }
     .tracker li.done::before { background: var(--yellow); }
     .tracker li.active::before { background: var(--blue); }
 
-    .orders-grid {
-      display: grid;
-      gap: 1rem;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    }
-    .status-badge {
-      background: var(--yellow);
-      color: var(--text);
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: .8rem;
-    }
+    .btn { background: var(--yellow); color: var(--blue); border: none; padding: 0.75rem 1rem; border-radius: var(--card-radius); cursor: pointer; font-weight: 600; }
+    form .grid { display: grid; gap: 0.75rem; }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    input, select, textarea { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 4px; }
   </style>
 </head>
 <body>
@@ -146,44 +68,58 @@
   </header>
 
   <main class="container">
-    <!-- Perfil -->
-    <section class="card">
-      <div class="card-header">Mi Perfil</div>
-      <div class="card-body open">
-        <form id="profileForm" class="grid grid-2">
-          <label>Nombre<input type="text" id="name" required></label>
-          <label>Email<input type="email" id="email" readonly></label>
-          <label>Teléfono<input type="tel" id="phone" readonly></label>
-          <label>Dirección<input id="address"></label>
-          <label>DNI<input id="dni"></label>
-          <label>Año nacimiento<input type="number" id="birthYear" min="1900" max="2100"></label>
-          <div></div>
-          <button type="submit" class="btn">Guardar cambios</button>
-          <button type="button" class="btn" onclick="sendPasswordReset()">Cambiar contraseña</button>
-          <button type="button" class="btn" onclick="logout()">Cerrar sesión</button>
-        </form>
-      </div>
-    </section>
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" data-sec="perfil">Perfil</div>
+      <div class="tab" data-sec="gestion">Gestión</div>
+      <div class="tab" data-sec="historial">Historial</div>
+    </div>
 
-    <!-- Gestión -->
-    <section class="card">
-      <div class="card-header">Gestión de Subastas</div>
-      <div class="card-body open grid">
-        <button id="btnStartGestion" class="btn">Comenzar gestión</button>
-        <div id="depositForm" style="display:none;" class="grid grid-2">
-          <input type="file" id="depositFile" accept="application/pdf,image/*">
-          <button id="btnUploadDeposit" class="btn">Enviar comprobante</button>
-        </div>
-        <div id="depositSuccess" style="display:none;" class="success-msg">
-          ✅ Comprobante subido. Pronto comenzaremos la gestión.
+    <!-- Sección Perfil -->
+    <section id="section-perfil" class="section active">
+      <div class="card">
+        <div class="card-header">Mi Perfil</div>
+        <div class="card-body open">
+          <form id="profileForm" class="grid grid-2">
+            <label>Nombre<input type="text" id="name" required></label>
+            <label>Email<input type="email" id="email" readonly></label>
+            <label>Teléfono<input type="tel" id="phone" readonly></label>
+            <label>Dirección<input id="address"></label>
+            <label>DNI<input id="dni"></label>
+            <label>Año nacimiento<input type="number" id="birthYear" min="1900" max="2100"></label>
+            <div></div>
+            <button type="submit" class="btn">Guardar cambios</button>
+            <button type="button" class="btn" onclick="sendPasswordReset()">Cambiar contraseña</button>
+            <button type="button" class="btn" onclick="logout()">Cerrar sesión</button>
+          </form>
         </div>
       </div>
     </section>
 
-    <!-- Mis Gestiones -->
-    <section>
+    <!-- Sección Gestión -->
+    <section id="section-gestion" class="section">
+      <div class="card">
+        <div class="card-header">Nueva Gestión</div>
+        <div class="card-body open grid">
+          <button id="btnStartGestion" class="btn">Comenzar gestión (5,000 LPS)</button>
+          <div id="depositForm" style="display:none;" class="grid grid-2">
+            <input type="file" id="depositFile" accept="application/pdf,image/*">
+            <button id="btnUploadDeposit" class="btn">Enviar comprobante</button>
+          </div>
+          <div id="depositSuccess" class="card-body open" style="display:none;">✅ Comprobante subido</div>
+        </div>
+      </div>
+
       <h2>Mis Gestiones</h2>
       <div id="orders" class="orders-grid"></div>
+    </section>
+
+    <!-- Sección Historial -->
+    <section id="section-historial" class="section">
+      <div class="card">
+        <div class="card-header">Historial de Cálculos</div>
+        <div class="card-body open" id="historialContainer"></div>
+      </div>
     </section>
   </main>
 
@@ -202,7 +138,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
-
   <script>
     // Inicializar Firebase
     firebase.initializeApp({
@@ -214,15 +149,23 @@
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
       measurementId: "G-QM5N60K8C0"
     });
-    const auth = firebase.auth(),
-          db = firebase.firestore(),
-          storage = firebase.storage().ref();
+    const auth = firebase.auth(), db = firebase.firestore(), storage = firebase.storage().ref();
 
-    // Utilidades
+    // Helpers
     const STEPS = ['Inicio','Pago Pendiente','Pagado','Enviado','Aduana','Finalizado'];
     const $ = s => document.querySelector(s);
 
-    // Toggle de acordeones
+    // Pestañas
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.onclick = () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('section-' + tab.dataset.sec).classList.add('active');
+      };
+    });
+
+    // Listener acordeones
     document.addEventListener('click', e => {
       if (e.target.classList.contains('card-header')) {
         e.target.nextElementSibling.classList.toggle('open');
@@ -231,95 +174,74 @@
 
     // Autenticación
     auth.onAuthStateChanged(user => {
-      if (!user) location = 'login.html';
+      if (!user) return location = 'login.html';
       $('#userGreeting').textContent = `Hola, ${user.displayName || user.email}`;
       loadProfile(user);
       loadOrders(user);
+      loadHistorial(user);
     });
 
-    // Cargar perfil
-    function loadProfile(user) {
-      db.collection('clients').doc(user.uid).get().then(doc => {
+    // Perfil
+    function loadProfile(u) {
+      db.collection('clients').doc(u.uid).get().then(doc => {
         if (!doc.exists) return;
         const d = doc.data();
-        $('#name').value      = d.fullName || '';
-        $('#email').value     = d.email    || user.email;
-        $('#phone').value     = d.phone    || '';
-        $('#address').value   = d.address  || '';
-        $('#dni').value       = d.dni      || '';
-        $('#birthYear').value = d.birthYear|| '';
+        $('#name').value = d.fullName || '';
+        $('#email').value = d.email || u.email;
+        $('#phone').value = d.phone || '';
+        $('#address').value = d.address || '';
+        $('#dni').value = d.dni || '';
+        $('#birthYear').value = d.birthYear || '';
       });
     }
     $('#profileForm').onsubmit = e => {
       e.preventDefault();
-      const user = auth.currentUser;
-      db.collection('clients').doc(user.uid).set({
-        fullName:      $('#name').value,
-        address:       $('#address').value,
-        dni:           $('#dni').value,
-        birthYear:     parseInt($('#birthYear').value) || null
-      }, { merge: true })
-      .then(() => alert('Perfil actualizado'));
+      const u = auth.currentUser;
+      db.collection('clients').doc(u.uid).set({
+        fullName: $('#name').value,
+        address: $('#address').value,
+        dni: $('#dni').value,
+        birthYear: parseInt($('#birthYear').value) || null
+      }, { merge: true }).then(() => alert('Perfil actualizado'));
     };
+    function sendPasswordReset() { auth.sendPasswordResetEmail(auth.currentUser.email).then(() => alert('Enlace enviado')); }
+    function logout() { auth.signOut().then(() => location = 'login.html'); }
 
-    function sendPasswordReset() {
-      auth.sendPasswordResetEmail(auth.currentUser.email).then(() => alert('Enlace enviado'));
-    }
-    function logout() {
-      auth.signOut().then(() => location = 'login.html');
-    }
-
-    // Gestión de depósito
-    $('#btnStartGestion').onclick = () => {
-      $('#depositForm').style.display = 'grid';
-      $('#depositSuccess').style.display = 'none';
-    };
+    // Gestión de depósitos y pedidos
+    $('#btnStartGestion').onclick = () => $('#depositForm').style.display = 'grid';
     $('#btnUploadDeposit').onclick = async () => {
-      const file = $('#depositFile').files[0];
-      if (!file) return alert('Selecciona un comprobante');
+      const file = $('#depositFile').files[0]; if (!file) return alert('Selecciona comprobante');
       $('#btnUploadDeposit').disabled = true;
       try {
-        const user = auth.currentUser;
-        const snap = await storage
-          .child(`orders/${user.uid}/deposit/${Date.now()}_${file.name}`)
-          .put(file);
+        const u = auth.currentUser;
+        const snap = await storage.child(`orders/${u.uid}/deposit/${Date.now()}_${file.name}`).put(file);
         const url = await snap.ref.getDownloadURL();
         await db.collection('orders').add({
-          clientName:        user.displayName || user.email,
-          clientEmail:       user.email,
+          clientName: u.displayName || u.email,
+          clientEmail: u.email,
           depositReceiptUrl: url,
-          depositAmount:     5000,
-          createdAt:         firebase.firestore.FieldValue.serverTimestamp(),
-          updatedAt:         firebase.firestore.FieldValue.serverTimestamp()
+          depositAmount: 5000,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
         $('#depositSuccess').style.display = 'block';
-        loadOrders(user);
-      } catch (err) {
-        console.error(err);
-        alert('Error al subir comprobante');
-      } finally {
-        $('#btnUploadDeposit').disabled = false;
-      }
+        loadOrders(u);
+      } catch (err) { console.error(err); alert('Error al subir'); }
+      finally { $('#btnUploadDeposit').disabled = false; }
     };
 
-    // Cargar y mostrar órdenes
-    async function loadOrders(user) {
+    // Mostrar órdenes
+    async function loadOrders(u) {
       const snap = await db.collection('orders')
-        .where('clientEmail','==',user.email)
+        .where('clientEmail','==',u.email)
         .orderBy('createdAt','desc')
         .get();
-      const container = $('#orders');
-      container.innerHTML = '';
-      if (snap.empty) {
-        container.innerHTML = '<p style="text-align:center;">No tienes gestiones.</p>';
-        return;
-      }
+      const c = $('#orders'); c.innerHTML = '';
+      if (snap.empty) { c.innerHTML = '<p style="text-align:center;">No tienes gestiones.</p>'; return; }
       snap.docs.forEach(doc => {
         const o = doc.data();
         const status = getStatus(o);
-        // crear tarjeta
-        const card = document.createElement('div');
-        card.className = 'card';
+        const card = document.createElement('div'); card.className = 'card';
         card.innerHTML = `
           <div class="card-header">
             #${doc.id.slice(0,6)} ${o.clientName}
@@ -336,7 +258,7 @@
               }).join('')}
             </ul>
           </div>`;
-        container.appendChild(card);
+        c.appendChild(card);
       });
     }
     function getStatus(o) {
@@ -346,6 +268,25 @@
       if (o.recogida?.valorGrua || o.recogida?.valorBarco) return 'Enviado';
       if (o.copartInvoiceUrl) return 'Pagado';
       return 'Inicio';
+    }
+
+    // Historial cálculos
+    async function loadHistorial(u) {
+      const snap = await db.collection('clients').doc(u.uid)
+        .collection('historial').orderBy('fecha','desc').limit(100).get();
+      const cont = $('#historialContainer'); cont.innerHTML = '';
+      if (snap.empty) { cont.innerHTML = '<p style="text-align:center;">Sin cálculos.</p>'; return; }
+      snap.docs.forEach(doc => {
+        const d = doc.data();
+        const fecha = d.fecha?.toDate().toLocaleString('es-HN') || 'Fecha';
+        const div = document.createElement('div'); div.className='card';
+        div.innerHTML = `
+          <div class="card-header">${d.nombre||'Sin título'}<span>${fecha}</span></div>
+          <div class="card-body open">
+            <strong>Total: L ${d.total||'-'}</strong>
+          </div>`;
+        cont.append(div);
+      });
     }
   </script>
 </body>
