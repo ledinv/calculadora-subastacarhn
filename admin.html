@@ -103,7 +103,9 @@
     <div class="tabs">
       <div class="tab active" data-sec="add">Añadir</div>
       <div class="tab" data-sec="inv">Inventario</div>
-      <div class="tab" data-sec="usr">Usuarios</div>
+      <div class="tab" data-sec="usr">
+        Usuarios (<span id="userCount">0</span>)
+      </div>
       <div class="tab" data-sec="ped">Pedidos</div>
     </div>
 
@@ -391,6 +393,7 @@
             <td><button class="btn-copy" onclick="navigator.clipboard.writeText('${u.phone}')">Copiar</button></td>`;
           tb.appendChild(tr);
         });
+        document.getElementById('userCount').textContent = clientsCache.length;
       });
     }
 
@@ -405,7 +408,6 @@
         .onSnapshot(snap=>{
           ordersCache=[];
           snap.forEach(doc=>ordersCache.push({id:doc.id,data:doc.data()}));
-          // filtro clientes
           const clientSel=document.getElementById('clientFilter');
           const names=[...new Set(ordersCache.map(o=>o.data.clientName))];
           clientSel.innerHTML='<option value="">Todos los clientes</option>';
