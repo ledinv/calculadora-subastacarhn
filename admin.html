@@ -17,8 +17,7 @@
     }
     *, *::before, *::after {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
     }
     body {
       font-family: 'Montserrat', sans-serif;
@@ -48,7 +47,6 @@
       max-width: var(--max-width);
       margin: 1rem auto;
     }
-
     .tabs {
       display: flex;
       border-bottom: 2px solid var(--blue2);
@@ -76,8 +74,7 @@
     .section.active {
       display: block;
     }
-
-    /* === Añadir Vehículo === */
+    /* Añadir Vehículo */
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -107,8 +104,7 @@
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-
-    /* === Inventario === */
+    /* Inventario */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -139,20 +135,10 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    .btn-sold {
-      background: var(--yellow);
-      color: var(--text);
-    }
-    .btn-edit {
-      background: var(--blue);
-      color: #fff;
-    }
-    .btn-delete {
-      background: #e74c3c;
-      color: #fff;
-    }
-
-    /* === Usuarios === */
+    .btn-sold { background: var(--yellow); color: var(--text); }
+    .btn-edit { background: var(--blue); color: #fff; }
+    .btn-delete { background: #e74c3c; color: #fff; }
+    /* Usuarios */
     .btn-copy {
       background: var(--blue);
       color: #fff;
@@ -161,12 +147,11 @@
       border-radius: 4px;
       cursor: pointer;
     }
-
-    /* === Pedidos Tracker === */
+    /* Pedidos Tracker */
     .orders-grid {
       display: grid;
       gap: 1rem;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px,1fr));
     }
     .order-card {
       background: #fff;
@@ -194,25 +179,18 @@
     .tracker li::before {
       content: '';
       position: absolute;
-      left: 0;
-      top: .1rem;
-      width: .8rem;
-      height: .8rem;
+      left: 0; top: .1rem;
+      width: .8rem; height: .8rem;
       border-radius: 50%;
       background: #ccc;
     }
-    .tracker li.done::before {
-      background: var(--yellow);
-    }
-    .tracker li.active::before {
-      background: var(--blue);
-    }
+    .tracker li.done::before { background: var(--yellow); }
+    .tracker li.active::before { background: var(--blue); }
     .order-meta {
       font-size: .8rem;
       color: #666;
       margin-top: .5rem;
     }
-
     footer {
       background: var(--blue);
       color: #fff;
@@ -234,7 +212,6 @@
       </ul>
     </nav>
   </header>
-
   <div id="adminApp">
     <div class="tabs">
       <div class="tab active" data-sec="add">Añadir</div>
@@ -243,7 +220,7 @@
       <div class="tab" data-sec="ped">Pedidos</div>
     </div>
 
-    <!-- SECCIÓN AÑADIR -->
+    <!-- Añadir -->
     <div id="section-add" class="section active">
       <form id="formularioAuto">
         <div class="form-grid">
@@ -267,13 +244,14 @@
         </div>
         <div id="preview" class="preview"></div>
         <button id="btnAgregar" type="submit">Guardar Vehículo</button>
-        <button id="btnCancelarEdicion" type="button" style="background:#e74c3c;color:#fff;display:none;">
+        <button id="btnCancelarEdicion" type="button"
+                style="background:#e74c3c;color:#fff;display:none;">
           Cancelar
         </button>
       </form>
     </div>
 
-    <!-- SECCIÓN INVENTARIO -->
+    <!-- Inventario -->
     <div id="section-inv" class="section">
       <table id="inventory-table">
         <thead>
@@ -285,7 +263,7 @@
       </table>
     </div>
 
-    <!-- SECCIÓN USUARIOS -->
+    <!-- Usuarios -->
     <div id="section-usr" class="section">
       <button id="btnCopyAll" class="btn-copy">Copiar todos</button>
       <table id="users-table">
@@ -296,7 +274,7 @@
       </table>
     </div>
 
-    <!-- SECCIÓN PEDIDOS -->
+    <!-- Pedidos -->
     <div id="section-ped" class="section">
       <button id="btnNewOrder" class="btn-copy">+ Nuevo Pedido</button>
       <div id="orderFormContainer" style="display:none;">
@@ -362,7 +340,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
   <script>
-    // Inicialización Firebase
+    // Inicializar Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -376,9 +354,12 @@
     const db = firebase.firestore();
     const storage = firebase.storage().ref();
 
-    let clientsCache = [], ordersCache = [], editingOrderId = null, editingVehicleId = null;
+    let clientsCache = [],
+        ordersCache = [],
+        editingOrderId = null,
+        editingVehicleId = null;
 
-    // Manejo de pestañas
+    // Pestañas
     document.querySelectorAll('.tab').forEach(tab => {
       tab.onclick = () => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -388,7 +369,7 @@
       };
     });
 
-    // Autenticación y arranque
+    // Autenticación
     firebase.auth().onAuthStateChanged(user => {
       if (!user) return location = 'login.html';
       const admins = ['ledinvvv@gmail.com','ledinvvv1995@yopmail.com'];
@@ -415,7 +396,9 @@
       document.getElementById('btnNewOrder').onclick = () => {
         editingOrderId = null;
         resetOrderForm();
-        document.getElementById('orderFormContainer').style.display = 'block';
+        fetchClients().then(() => {
+          document.getElementById('orderFormContainer').style.display = 'block';
+        });
       };
       document.getElementById('btnCancelOrder').onclick = () =>
         document.getElementById('orderFormContainer').style.display = 'none';
@@ -429,7 +412,7 @@
       fetchOrders();
     }
 
-    /* ——— Vehículos ——— */
+    /* — Vehículos — */
     function showVehPreview() {
       const pr = document.getElementById('preview'); pr.innerHTML = '';
       Array.from(imagenes.files).forEach(f => {
@@ -463,7 +446,9 @@
           urls.push(await up.ref.getDownloadURL());
         }
         Object.assign(data, {
-          id, imagenes: urls, vendido: false,
+          id,
+          imagenes: urls,
+          vendido: false,
           fecha: firebase.firestore.FieldValue.serverTimestamp()
         });
         await db.collection('inventario').doc(id).set(data);
@@ -481,7 +466,7 @@
     }
 
     function fetchVehicles() {
-      db.collection('inventario').orderBy('fecha', 'desc').get().then(snap => {
+      db.collection('inventario').orderBy('fecha','desc').get().then(snap => {
         const tb = document.querySelector('#inventory-table tbody');
         tb.innerHTML = '';
         snap.forEach(async d => {
@@ -491,18 +476,18 @@
             try {
               imgUrl = await firebase.storage().refFromURL(v.imagenes[0]).getDownloadURL();
             } catch (e) {
-              console.warn('No se pudo cargar la imagen:', e);
+              console.warn('IMG:', e);
             }
           }
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td><img src="${imgUrl}" class="thumb"/></td>
             <td>${v.marca}</td><td>${v.modelo}</td><td>${v.anio}</td>
-            <td>${v.precio} LPS</td><td>${v.vendido ? 'Vendido' : 'Disp.'}</td>
+            <td>${v.precio} LPS</td><td>${v.vendido? 'Vendido':'Disp.'}</td>
             <td class="actions">
               ${!v.vendido
                 ? `<button class="btn-sold" onclick="markSold('${d.id}')">V</button>`
-                : `<button class="btn-sold" disabled>V</button>`} 
+                : `<button class="btn-sold" disabled>V</button>`}
               <button class="btn-edit" onclick="editVehicle('${d.id}')">E</button>
               <button class="btn-delete" onclick="deleteVehicle('${d.id}')">X</button>
             </td>`;
@@ -527,35 +512,48 @@
       db.collection('inventario').doc(id).get().then(doc => {
         const v = doc.data();
         ['marca','modelo','motor','anio','precio','kilometraje','color','tipo','descripcion']
-          .forEach(k => document.getElementById(k).value = v[k] || '');
+          .forEach(k => document.getElementById(k).value = v[k]||'');
         editingVehicleId = id;
         btnAgregar.textContent = 'Guardar Cambios';
         btnCancelarEdicion.style.display = 'inline-block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top:0, behavior:'smooth' });
       });
     }
 
-    /* ——— Usuarios ——— */
+    /* — Usuarios — */
     function fetchClients() {
-      db.collection('clients').orderBy('fullName').get().then(snap => {
-        clientsCache = [];
-        const tb = document.querySelector('#users-table tbody');
-        tb.innerHTML = '';
-        snap.forEach(d => {
-          const u = d.data(); clientsCache.push(u);
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${u.fullName}</td>
-            <td>${u.email}</td>
-            <td>${u.phone}</td>
-            <td><button class="btn-copy" onclick="navigator.clipboard.writeText('${u.phone}')">Copiar</button></td>`;
-          tb.appendChild(tr);
+      return db.collection('clients')
+        .orderBy('fullName')
+        .get()
+        .then(snap => {
+          clientsCache = [];
+          const tb = document.querySelector('#users-table tbody');
+          tb.innerHTML = '';
+          const sel = document.getElementById('orderClient');
+          sel.innerHTML = '<option value="">Selecciona cliente…</option>';
+          snap.forEach(d => {
+            const u = d.data(); clientsCache.push(u);
+            // tabla
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${u.fullName}</td>
+              <td>${u.email}</td>
+              <td>${u.phone}</td>
+              <td>
+                <button class="btn-copy"
+                        onclick="navigator.clipboard.writeText('${u.phone}')">
+                  Copiar
+                </button>
+              </td>`;
+            tb.appendChild(tr);
+            // dropdown
+            sel.innerHTML += `<option value="${u.email}">${u.fullName}</option>`;
+          });
+          document.getElementById('userCount').textContent = clientsCache.length;
         });
-        document.getElementById('userCount').textContent = clientsCache.length;
-      });
     }
 
-    /* ——— Pedidos en tiempo real ——— */
+    /* — Pedidos — */
     function resetOrderForm() {
       formularioOrder.reset();
       orderFormTitle.innerText = 'Nuevo Pedido';
@@ -563,13 +561,12 @@
 
     function fetchOrders() {
       db.collection('orders')
-        .orderBy('updatedAt', 'desc')
+        .orderBy('createdAt','desc')
         .onSnapshot(snap => {
           ordersCache = [];
-          snap.forEach(doc => ordersCache.push({ id: doc.id, data: doc.data() }));
-          // actualiza filtro de clientes
+          snap.forEach(doc => ordersCache.push({ id:doc.id,data:doc.data() }));
           const clientSel = document.getElementById('clientFilter');
-          const names = [...new Set(ordersCache.map(o => o.data.clientName))];
+          const names = [...new Set(ordersCache.map(o=>o.data.clientName))];
           clientSel.innerHTML = '<option value="">Todos los clientes</option>';
           names.forEach(n => clientSel.innerHTML += `<option value="${n}">${n}</option>`);
           renderOrders();
@@ -590,20 +587,20 @@
           const cls = iS < iSt ? 'done' : iS === iSt ? 'active' : '';
           return `<li class="${cls}">${step}</li>`;
         }).join('');
-        const updated = d.updatedAt?.toDate().toLocaleString('es-HN') || '';
+        const updated = d.updatedAt?.toDate().toLocaleString('es-HN')||'';
         const card = document.createElement('div');
         card.className = 'order-card';
         card.innerHTML = `
           <h4>${d.clientName}</h4>
           <ul class="tracker">${trackerItems}</ul>
-          <p><strong>Factura:</strong> ${d.copartInvoiceUrl ? `<a href="${d.copartInvoiceUrl}" target="_blank">Ver</a>` : '-'}</p>
-          <p><strong>Fotos:</strong> ${d.copartPhotos?.length ? `<a href="${d.copartPhotos[0]}" target="_blank">Ver</a>` : '-'}</p>
-          <p><strong>Grua:</strong> ${d.recogida?.valorGrua || '-'} USD</p>
-          <p><strong>Barco:</strong> ${d.recogida?.valorBarco || '-'} USD</p>
-          <p><strong>Llegada HND:</strong> ${d.envioHnd?.detail || '-'}</p>
-          <p><strong>Aduana:</strong> ${d.aduana?.detail || '-'}</p>
-          <p><strong>Entrega:</strong> ${d.entrega?.detail || '-'}</p>
-          <p><strong>Precio final:</strong> ${d.entrega?.precioFinal || '-'} LPS</p>
+          <p><strong>Factura:</strong> ${d.copartInvoiceUrl? `<a href="${d.copartInvoiceUrl}" target="_blank">Ver</a>`:'-'}</p>
+          <p><strong>Fotos:</strong> ${d.copartPhotos?.length? `<a href="${d.copartPhotos[0]}" target="_blank">Ver</a>`:'-'}</p>
+          <p><strong>Grua:</strong> ${d.recogida?.valorGrua|| '-'} USD</p>
+          <p><strong>Barco:</strong> ${d.recogida?.valorBarco|| '-'} USD</p>
+          <p><strong>Llegada HND:</strong> ${d.envioHnd?.detail|| '-'}</p>
+          <p><strong>Aduana:</strong> ${d.aduana?.detail|| '-'}</p>
+          <p><strong>Entrega:</strong> ${d.entrega?.detail|| '-'}</p>
+          <p><strong>Precio final:</strong> ${d.entrega?.precioFinal|| '-'} LPS</p>
           <p class="order-meta">Última actualización: ${updated}</p>
           <div style="margin-top:.5rem;">
             <button class="btn-edit" onclick="editOrder('${o.id}')">Editar</button>
@@ -615,7 +612,7 @@
 
     async function saveOrder(e) {
       e.preventDefault();
-      const client = clientsCache.find(c => c.email === orderClient.value);
+      const client = clientsCache.find(c=>c.email===orderClient.value);
       const payload = {
         clientName: client.fullName,
         clientEmail: client.email,
@@ -624,19 +621,22 @@
         status: 'Inicio',
         copartPhotos: [],
         copartInvoiceUrl: null,
-        recogida: { valorGrua: +valorGrua.value, valorBarco: +valorBarco.value },
+        recogida: {
+          valorGrua: +valorGrua.value,
+          valorBarco: +valorBarco.value
+        },
         envioHnd: { detail: textoEnvioHnd.value },
-        aduana: { detail: textoAduana.value },
-        entrega: { detail: textoEntrega.value, precioFinal: +precioFinal.value },
+        aduana:   { detail: textoAduana.value },
+        entrega:  { detail: textoEntrega.value, precioFinal: +precioFinal.value },
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
       for (let f of orderCopartPhotos.files) {
-        const snap = await storage.child(`orders/${editingOrderId || 'new'}/copart/${f.name}`).put(f);
+        const snap = await storage.child(`orders/${editingOrderId||'new'}/copart/${f.name}`).put(f);
         payload.copartPhotos.push(await snap.ref.getDownloadURL());
       }
       if (orderCopartInvoice.files[0]) {
-        const snap = await storage.child(`orders/${editingOrderId || 'new'}/receipt.pdf`).put(orderCopartInvoice.files[0]);
+        const snap = await storage.child(`orders/${editingOrderId||'new'}/receipt.pdf`).put(orderCopartInvoice.files[0]);
         payload.copartInvoiceUrl = await snap.ref.getDownloadURL();
       }
       if (editingOrderId) {
@@ -648,22 +648,23 @@
       document.getElementById('orderFormContainer').style.display = 'none';
     }
 
-    function editOrder(id) {
-      const o = ordersCache.find(x => x.id === id);
+    async function editOrder(id) {
+      const o = ordersCache.find(x=>x.id===id);
       if (!o) return;
       editingOrderId = id;
       resetOrderForm();
+      await fetchClients();
       orderFormContainer.style.display = 'block';
       orderFormTitle.innerText = 'Editar Pedido';
       const d = o.data;
       orderClient.value = d.clientEmail; orderClient.onchange();
       orderVehicleURL.value = d.vehicleURL;
-      valorGrua.value = d.recogida?.valorGrua || '';
-      valorBarco.value = d.recogida?.valorBarco || '';
-      textoEnvioHnd.value = d.envioHnd?.detail || '';
-      textoAduana.value = d.aduana?.detail || '';
-      textoEntrega.value = d.entrega?.detail || '';
-      precioFinal.value = d.entrega?.precioFinal || '';
+      valorGrua.value      = d.recogida?.valorGrua   || '';
+      valorBarco.value     = d.recogida?.valorBarco  || '';
+      textoEnvioHnd.value  = d.envioHnd?.detail      || '';
+      textoAduana.value    = d.aduana?.detail        || '';
+      textoEntrega.value   = d.entrega?.detail       || '';
+      precioFinal.value    = d.entrega?.precioFinal  || '';
     }
 
     function deleteOrder(id) {
