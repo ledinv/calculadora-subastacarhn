@@ -17,44 +17,39 @@
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text); }
-
-    /* Header / Footer */
-    header, footer { background: var(--blue); color: #fff; padding: 1rem; text-align: center; }
-    header .logo, footer .logo { font-size: 1.5rem; font-weight: bold; }
-    header nav ul { list-style: none; display: flex; justify-content: center; gap: 1rem; margin-top: .5rem; }
+    header { background: var(--blue); color: #fff; padding: 1rem; }
+    header .logo { font-size: 1.5rem; font-weight: bold; }
+    header nav ul { list-style: none; display: flex; gap: 1rem; }
     header nav a { color: #fff; text-decoration: none; }
-
     #adminApp { max-width: var(--max-width); margin: 1rem auto; display: none; }
-
-    /* Pestañas */
-    .tabs { display:flex; border-bottom: 2px solid var(--blue2); }
+    .tabs { display: flex; border-bottom: 2px solid var(--blue2); }
     .tab { flex:1; padding:.75rem; background:var(--blue2); color:#fff; text-align:center; cursor:pointer; font-weight:600; }
     .tab.active { background:var(--blue); }
-
-    /* Secciones */
     .section { display:none; padding:1rem; background:#fff; border-radius:8px; box-shadow:0 2px 10px var(--shadow); margin-top:1rem; }
     .section.active { display:block; }
-
-    /* Formularios y tablas */
-    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:1rem; }
     form input, form select, form textarea, form button {
       width:100%; margin:.5rem 0; padding:.75rem; border:1px solid #ccc; border-radius:4px;
     }
     form button { background:var(--yellow); color:var(--blue); border:none; font-weight:600; cursor:pointer; }
-    .preview img, img.thumb { width:60px; height:60px; object-fit:cover; margin:4px; border:1px solid #ccc; border-radius:4px; }
-    table { width:100%; border-collapse:collapse; font-size:.9rem; margin-top:1rem; }
+    .preview img { width:60px; height:60px; object-fit:cover; margin:4px; border:1px solid #ccc; border-radius:4px; }
+    #mensajeExito { font-size:.9rem; color:green; text-align:center; margin-top:5px; }
+    table { width:100%; border-collapse:collapse; font-size:.9rem; margin-top:.5rem; }
     th, td { padding:.5rem; border:1px solid #ddd; text-align:left; vertical-align:middle; }
     th { background:var(--blue2); color:#fff; }
-    .actions button, .actions input { margin-right:4px; padding:2px 6px; font-size:.8rem; }
+    img.thumb { width:50px; border-radius:4px; }
+    .actions button, .actions input, .actions select {
+      margin-right:4px; padding:2px 6px; font-size:.8rem;
+    }
     .btn-sold { background:var(--yellow); color:var(--text); }
     .btn-edit { background:var(--blue); color:#fff; }
     .btn-delete { background:#e74c3c; color:#fff; }
     .btn-copy, #btnCopyAll { background:var(--blue); color:#fff; padding:4px 8px; font-size:.9rem; margin-bottom:.5rem; }
+    footer { background:var(--blue); color:#fff; padding:1rem; text-align:center; margin-top:2rem; }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header>
     <div class="logo">SubastaCarHN</div>
     <nav>
@@ -67,10 +62,7 @@
     </nav>
   </header>
 
-  <!-- ADMIN APP -->
   <div id="adminApp">
-
-    <!-- PESTAÑAS -->
     <div class="tabs">
       <div class="tab active" data-sec="add">Añadir</div>
       <div class="tab" data-sec="inv">Inventario</div>
@@ -80,70 +72,103 @@
 
     <!-- SECCIÓN AÑADIR VEHÍCULO -->
     <div id="section-add" class="section active">
-      <!-- ... aquí tu formulario de vehículo ... -->
+      <h2>Agregar / Editar Vehículo</h2>
+      <form id="formularioAuto">
+        <div class="form-grid">
+          <input id="marca" name="marca" placeholder="Marca" required/>
+          <input id="modelo" name="modelo" placeholder="Modelo" required/>
+          <input id="motor" name="motor" placeholder="Motor" required/>
+          <input id="anio" name="anio" type="number" placeholder="Año" required/>
+          <input id="precio" name="precio" type="number" placeholder="Precio (LPS)" required/>
+          <input id="kilometraje" name="kilometraje" type="number" placeholder="Kilometraje" required/>
+          <input id="color" name="color" placeholder="Color" required/>
+          <select id="tipo" name="tipo" required>
+            <option value="">Tipo de Vehículo…</option>
+            <option>Sedán</option><option>SUV</option><option>Pickup</option>
+            <option>Camioneta</option><option>Eléctrico</option>
+          </select>
+          <textarea id="descripcion" name="descripcion" rows="2" placeholder="Descripción"></textarea>
+          <input id="imagenes" name="imagenes" type="file" multiple accept="image/*"/>
+        </div>
+        <div id="preview" class="preview"></div>
+        <button id="btnAgregar" type="submit">Guardar Vehículo</button>
+        <button id="btnCancelarEdicion" type="button" style="background:#e74c3c;color:#fff;display:none;">Cancelar</button>
+        <div id="mensajeExito" style="display:none;">¡Guardado!</div>
+      </form>
     </div>
 
     <!-- SECCIÓN INVENTARIO -->
     <div id="section-inv" class="section">
-      <!-- ... tu tabla de inventario ... -->
+      <h2>Gestión de Inventario</h2>
+      <table id="inventory-table">
+        <thead>
+          <tr><th>Foto</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Precio</th><th>Est.</th><th>Acc.</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
 
     <!-- SECCIÓN USUARIOS -->
     <div id="section-usr" class="section">
-      <button id="btnCopyAll" class="btn-copy">Copiar todos</button>
+      <h2>Usuarios Registrados</h2>
+      <button id="btnCopyAll">Copiar todos los teléfonos</button>
       <table id="users-table">
-        <thead>
-          <tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Acción</th></tr>
-        </thead>
+        <thead><tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Acción</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
 
     <!-- SECCIÓN PEDIDOS -->
     <div id="section-ped" class="section">
-      <button id="btnNewOrder" class="btn-copy">+ Nuevo Pedido</button>
-      <!-- Formulario de Pedido -->
-      <form id="formOrder" style="display:none; margin-bottom:1rem;">
-        <div class="form-grid">
-          <select id="orderClient" required>
-            <option value="">Selecciona cliente…</option>
-          </select>
-          <input id="orderUrl" placeholder="URL Copart" required/>
-          <input id="orderPrice" type="number" placeholder="Precio estimado LPS" required/>
-          <!-- aquí podrías añadir más campos si quisieras -->
-        </div>
-        <button id="btnSaveOrder" type="submit">Guardar Pedido</button>
-        <button id="btnCancelOrder" type="button" style="background:#e74c3c;color:#fff;">Cancelar</button>
-      </form>
+      <h2>Gestión de Pedidos</h2>
+      <button id="btnNewOrder">+ Nuevo Pedido</button>
+      <div id="orderFormContainer" style="display:none; margin:1rem 0;">
+        <h3>Nuevo / Editar Pedido</h3>
+        <form id="formularioOrder">
+          <div class="form-grid">
+            <select id="orderClient" required>
+              <option value="">Selecciona Cliente…</option>
+            </select>
+            <input id="orderVehicleUrl" placeholder="URL Copart" required/>
+            <input id="orderPrice" type="number" placeholder="Precio Estimado (LPS)" required/>
+            <select id="orderStatus" required>
+              <option>Inicio</option><option>Pago Pendiente</option><option>Pagado</option>
+              <option>Recogido de Subasta</option><option>En predio naviera</option>
+              <option>En camino a Honduras</option><option>En yarda HND</option>
+              <option>En proceso nacionalización</option><option>Finalizado</option>
+            </select>
+          </div>
+          <button type="submit">Guardar Pedido</button>
+          <button id="btnCancelOrder" type="button" style="background:#e74c3c;color:#fff;">Cancelar</button>
+        </form>
+      </div>
 
-      <!-- Filtros -->
       <div style="display:flex; gap:10px; margin-bottom:10px;">
         <select id="statusFilter">
           <option value="">Todos</option>
-          <option value="Pendiente">Pendientes</option>
-          <option value="Finalizado">Finalizados</option>
+          <option>Inicio</option><option>Pago Pendiente</option><option>Pagado</option>
+          <option>Recogido de Subasta</option><option>En predio naviera</option>
+          <option>En camino a Honduras</option><option>En yarda HND</option>
+          <option>En proceso nacionalización</option><option>Finalizado</option>
         </select>
         <select id="clientFilter">
           <option value="">Todos los clientes</option>
         </select>
       </div>
 
-      <!-- Tabla de Pedidos -->
       <table id="orders-table">
         <thead>
           <tr>
             <th>Cliente</th><th>Email</th><th>Teléfono</th>
-            <th>URL Copart</th><th>Precio</th><th>Estado</th><th>Acciones</th>
+            <th>Vehículo</th><th>Precio</th><th>Estado</th><th>Acciones</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
-      <small>Flujo de gestión completo: Copart → Envío → Honduras → Aduana → Entrega</small>
+      <small>Flujo: Inicio → Pago Pendiente → Pagado → … → Finalizado</small>
     </div>
-
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <div class="logo">SubastaCarHN</div>
     <p>© 2025 SubastaCarHN. Todos los derechos reservados.</p>
@@ -154,154 +179,258 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
-
   <script>
-    // Tu configuración Firebase
+    // Configuración Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
       storageBucket: "subastacarhn-40554.appspot.com",
       messagingSenderId: "536785797974",
-      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+      appId: "1:536785797974:web=e3eabb4dcd898c2ffe8cf7",
       measurementId: "G-QM5N60K8C0"
     };
     firebase.initializeApp(firebaseConfig);
-
     const db = firebase.firestore();
-    let editingOrderId = null;
-    let clientsList = [];
+    const storageRef = firebase.storage().ref();
 
-    // PESTAÑAS
+    // Tab switching
     document.querySelectorAll('.tab').forEach(tab=>{
-      tab.addEventListener('click',()=>{
-        document.querySelectorAll('.tab, .section').forEach(el=>el.classList.remove('active'));
+      tab.onclick = ()=>{
+        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+        document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
         tab.classList.add('active');
-        document.getElementById('section-' + tab.dataset.sec).classList.add('active');
-      });
+        document.getElementById('section-'+tab.dataset.sec).classList.add('active');
+      };
     });
 
-    // AUTH + INICIO
-    firebase.auth().onAuthStateChanged(user=>{
-      if(!user) return location='login.html';
+    // Auth + init
+    firebase.auth().onAuthStateChanged(u=>{
+      if(!u) return location='login.html';
       document.getElementById('adminApp').style.display='block';
       initApp();
     });
 
+    // State
+    let editingVehicleId = null,
+        editingOrderId   = null,
+        allClients       = [],
+        ordersCache      = [];
+
     function initApp(){
       loadClients();
+      loadInventory();
+      loadUsers();
       loadOrders();
-      // botón + Nuevo Pedido
-      document.getElementById('btnNewOrder').onclick = ()=>{
+
+      // vehicle form
+      document.getElementById('imagenes').onchange = showPreview;
+      document.getElementById('formularioAuto').onsubmit = saveVehicle;
+      document.getElementById('btnCancelarEdicion').onclick = resetVehicleForm;
+
+      // orders UI
+      document.getElementById('btnNewOrder').onclick = ()=> {
         editingOrderId = null;
-        document.getElementById('formOrder').style.display='block';
-        document.getElementById('orderClient').value = '';
-        document.getElementById('orderUrl').value = '';
-        document.getElementById('orderPrice').value = '';
+        document.getElementById('orderFormContainer').style.display = 'block';
       };
       document.getElementById('btnCancelOrder').onclick = ()=> {
-        document.getElementById('formOrder').style.display='none';
+        document.getElementById('orderFormContainer').style.display = 'none';
       };
-      document.getElementById('formOrder').onsubmit = saveOrder;
-
-      // filtros tabla
-      document.getElementById('statusFilter').onchange = loadOrders;
-      document.getElementById('clientFilter').onchange = loadOrders;
+      document.getElementById('formularioOrder').onsubmit = saveOrder;
+      document.getElementById('statusFilter').onchange = renderOrders;
+      document.getElementById('clientFilter').onchange = renderOrders;
     }
 
-    // Carga lista de clientes para el select
+    // -------- CLIENTES --------
     function loadClients(){
       db.collection('clients').orderBy('fullName').get().then(snap=>{
+        allClients = snap.docs.map(d=>({id:d.id, ...d.data()}));
+        // fill users table
+        const ut = document.querySelector('#users-table tbody');
+        ut.innerHTML = '';
+        allClients.forEach(u=>{
+          ut.innerHTML += `
+            <tr>
+              <td>${u.fullName}</td>
+              <td>${u.email}</td>
+              <td>${u.phone}</td>
+              <td><button class="btn-copy" onclick="navigator.clipboard.writeText('${u.phone}')">Copiar</button></td>
+            </tr>`;
+        });
+        document.getElementById('userCount').textContent = allClients.length;
+
+        // fill order client selects
         const sel = document.getElementById('orderClient');
-        sel.innerHTML = '<option value="">Selecciona cliente…</option>';
-        clientsList = snap.docs.map(d=>({ id:d.id, ...d.data() }));
-        clientsList.forEach(c=>{
-          const o = document.createElement('option');
-          o.value = c.id;
-          o.textContent = `${c.fullName} (${c.email})`;
-          sel.appendChild(o);
-        });
-        // también para el filtro
-        const cf = document.getElementById('clientFilter');
-        cf.innerHTML = '<option value="">Todos los clientes</option>';
-        clientsList.forEach(c=>{
-          const o = document.createElement('option');
-          o.value = c.fullName;
-          o.textContent = c.fullName;
-          cf.appendChild(o);
+        const sel2 = document.getElementById('clientFilter');
+        allClients.forEach(u=>{
+          sel.innerHTML += `<option value="${u.email}">${u.fullName}</option>`;
+          sel2.innerHTML += `<option value="${u.email}">${u.fullName}</option>`;
         });
       });
     }
 
-    // Guarda nuevo pedido o edita existente
-    function saveOrder(e){
+    // -------- INVENATRIO --------
+    function loadInventory(){
+      db.collection('inventario').orderBy('fecha','desc').get().then(snap=>{
+        const tb = document.querySelector('#inventory-table tbody');
+        tb.innerHTML = '';
+        snap.forEach(d=>{
+          const v = d.data();
+          tb.innerHTML += `
+            <tr>
+              <td><img src="${v.imagenes?.[0]||''}" class="thumb"/></td>
+              <td>${v.marca}</td><td>${v.modelo}</td><td>${v.anio}</td>
+              <td>${v.precio} LPS</td><td>${v.vendido?'Vendido':'Disp.'}</td>
+              <td class="actions">
+                ${!v.vendido
+                  ? `<button class="btn-sold" onclick="markSold('${d.id}')">V</button>`
+                  : `<button class="btn-sold" disabled>V</button>`}
+                <button class="btn-edit" onclick="editVehicle('${d.id}')">E</button>
+                <button class="btn-delete" onclick="deleteVehicle('${d.id}')">X</button>
+              </td>
+            </tr>`;
+        });
+      });
+    }
+    function showPreview(){
+      const pr = document.getElementById('preview');
+      pr.innerHTML = '';
+      Array.from(this.files).forEach(f=>{
+        const r = new FileReader();
+        r.onload = e=> pr.innerHTML += `<img src="${e.target.result}"/>`;
+        r.readAsDataURL(f);
+      });
+    }
+    async function saveVehicle(e){
       e.preventDefault();
-      const cid = document.getElementById('orderClient').value;
-      const client = clientsList.find(c=>c.id===cid);
+      const f = e.target;
       const data = {
-        clientId: cid,
-        clientName: client.fullName,
-        clientEmail: client.email,
-        clientPhone: client.phone,
-        copartUrl: document.getElementById('orderUrl').value,
-        negotiatedPrice: Number(document.getElementById('orderPrice').value),
-        status: 'Pendiente',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        marca: f.marca.value,
+        modelo: f.modelo.value,
+        motor: f.motor.value,
+        anio: +f.anio.value,
+        precio: +f.precio.value,
+        kilometraje: +f.kilometraje.value,
+        color: f.color.value,
+        tipo: f.tipo.value,
+        descripcion: f.descripcion.value
       };
-      const col = db.collection('orders');
-      const op = editingOrderId
-        ? col.doc(editingOrderId).update(data)
-        : col.doc().set(data);
-      op.then(()=>{
-        document.getElementById('formOrder').style.display='none';
-        loadOrders();
-      });
-    }
-
-    // Carga tabla de pedidos
-    function loadOrders(){
-      const stFilter = document.getElementById('statusFilter').value;
-      const clFilter = document.getElementById('clientFilter').value;
-      db.collection('orders').orderBy('createdAt','desc').get().then(snap=>{
-        const tbody = document.querySelector('#orders-table tbody');
-        tbody.innerHTML = '';
-        snap.forEach(doc=>{
-          const o = doc.data(), id = doc.id;
-          if(stFilter && o.status !== stFilter) return;
-          if(clFilter && o.clientName !== clFilter) return;
-
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${o.clientName}</td>
-            <td>${o.clientEmail}</td>
-            <td>${o.clientPhone}</td>
-            <td><a href="${o.copartUrl}" target="_blank">Ver</a></td>
-            <td>${o.negotiatedPrice.toLocaleString('es-HN')} LPS</td>
-            <td>${o.status}</td>
-            <td class="actions">
-              <button class="btn-edit" onclick="editOrder('${id}')">Editar</button>
-              <button class="btn-delete" onclick="deleteOrder('${id}')">X</button>
-            </td>`;
-          tbody.appendChild(tr);
+      if(editingVehicleId){
+        await db.collection('inventario').doc(editingVehicleId).update(data);
+      } else {
+        const id = `${data.modelo.toLowerCase()}${data.anio}-${Date.now()}`;
+        const urls = [];
+        for(let file of f.imagenes.files){
+          const snap = await storageRef.child(`inventario/${id}/${file.name}`).put(file);
+          urls.push(await snap.ref.getDownloadURL());
+        }
+        Object.assign(data,{
+          id, imagenes: urls, vendido: false,
+          fecha: firebase.firestore.FieldValue.serverTimestamp()
         });
-        document.getElementById('userCount').textContent = snap.size;
+        await db.collection('inventario').doc(id).set(data);
+      }
+      resetVehicleForm();
+      loadInventory();
+    }
+    function resetVehicleForm(){
+      editingVehicleId = null;
+      document.getElementById('formularioAuto').reset();
+      document.getElementById('preview').innerHTML = '';
+      document.getElementById('btnCancelarEdicion').style.display = 'none';
+      document.getElementById('btnAgregar').textContent = 'Guardar Vehículo';
+      document.getElementById('mensajeExito').style.display = 'none';
+    }
+    function markSold(id){
+      if(confirm('¿Marcar vendido?')){
+        db.collection('inventario').doc(id).update({vendido:true}).then(loadInventory);
+      }
+    }
+    function deleteVehicle(id){
+      if(confirm('¿Eliminar?')){
+        db.collection('inventario').doc(id).delete().then(loadInventory);
+      }
+    }
+    function editVehicle(id){
+      db.collection('inventario').doc(id).get().then(doc=>{
+        const v = doc.data();
+        const f = document.getElementById('formularioAuto');
+        ['marca','modelo','motor','anio','precio','kilometraje','color','tipo','descripcion']
+          .forEach(k => f[k].value = v[k]||'');
+        editingVehicleId = id;
+        document.getElementById('btnAgregar').textContent = 'Guardar Cambios';
+        document.getElementById('btnCancelarEdicion').style.display = 'inline-block';
       });
     }
 
-    function editOrder(id){
-      db.collection('orders').doc(id).get().then(doc=>{
-        const o = doc.data();
-        editingOrderId = id;
-        document.getElementById('formOrder').style.display='block';
-        document.getElementById('orderClient').value = o.clientId;
-        document.getElementById('orderUrl').value = o.copartUrl;
-        document.getElementById('orderPrice').value = o.negotiatedPrice;
+    // -------- PEDIDOS --------
+    function loadOrders(){
+      db.collection('orders').orderBy('createdAt','desc').get().then(snap=>{
+        ordersCache = snap.docs.map(d=>({id:d.id,data:d.data()}));
+        renderOrders();
       });
     }
-
+    function renderOrders(){
+      const sf = document.getElementById('statusFilter').value;
+      const cf = document.getElementById('clientFilter').value;
+      const tb = document.querySelector('#orders-table tbody');
+      tb.innerHTML = '';
+      ordersCache.forEach(o=>{
+        const d = o.data;
+        if(sf && d.status !== sf) return;
+        if(cf && d.clientEmail !== cf) return;
+        tb.innerHTML += `
+          <tr>
+            <td>${d.clientName}</td>
+            <td>${d.clientEmail}</td>
+            <td>${d.clientPhone}</td>
+            <td>${d.vehicleUrl? `<a href="${d.vehicleUrl}" target="_blank">Ver</a>`: '–'}</td>
+            <td>${d.negotiatedPrice} LPS</td>
+            <td>${d.status}</td>
+            <td class="actions">
+              <button class="btn-edit" onclick="startEditOrder('${o.id}')">E</button>
+              <button class="btn-delete" onclick="deleteOrder('${o.id}')">X</button>
+            </td>
+          </tr>`;
+      });
+    }
+    function startEditOrder(id){
+      const o = ordersCache.find(x=>x.id===id);
+      editingOrderId = id;
+      document.getElementById('orderFormContainer').style.display = 'block';
+      const f = document.getElementById('formularioOrder');
+      f.orderClient.value    = o.data.clientEmail;
+      f.orderVehicleUrl.value= o.data.vehicleUrl;
+      f.orderPrice.value     = o.data.negotiatedPrice;
+      f.orderStatus.value    = o.data.status;
+    }
+    async function saveOrder(e){
+      e.preventDefault();
+      const f = e.target;
+      const client = allClients.find(u=>u.email===f.orderClient.value);
+      const data = {
+        clientEmail:    client.email,
+        clientName:     client.fullName,
+        clientPhone:    client.phone,
+        vehicleUrl:     f.orderVehicleUrl.value,
+        negotiatedPrice:+f.orderPrice.value,
+        status:         f.orderStatus.value,
+        createdAt:      firebase.firestore.FieldValue.serverTimestamp()
+      };
+      if(editingOrderId){
+        await db.collection('orders').doc(editingOrderId).update(data);
+      } else {
+        await db.collection('orders').add(data);
+      }
+      document.getElementById('orderFormContainer').style.display = 'none';
+      f.reset();
+      editingOrderId = null;
+      loadOrders();
+    }
     function deleteOrder(id){
-      if(!confirm('¿Eliminar pedido?')) return;
-      db.collection('orders').doc(id).delete().then(loadOrders);
+      if(confirm('¿Eliminar pedido?')){
+        db.collection('orders').doc(id).delete().then(loadOrders);
+      }
     }
   </script>
 </body>
