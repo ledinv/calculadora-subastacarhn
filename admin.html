@@ -52,8 +52,29 @@
     .orders-filters { display:flex; gap:10px; margin:1rem 0; }
     .orders-grid { display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); }
     .order-card { border:1px solid #ddd; border-radius:6px; overflow:hidden; background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-    .accordion-header { display:flex; justify-content:space-between; align-items:center; padding:.75rem 1rem; background:var(--blue2); color:#fff; cursor:pointer; }
+
+    .accordion-header {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:.75rem 1rem; background:var(--blue2); color:#fff; cursor:pointer;
+    }
     .status-badge { background:var(--yellow); color:var(--text); padding:2px 8px; border-radius:4px; font-size:.8rem; }
+
+    /* Botones inline (Editar / Eliminar) */
+    .btn-edit-inline,
+    .btn-delete-inline {
+      background:transparent;
+      border:1px solid #fff;
+      color:#fff;
+      padding:2px 6px;
+      border-radius:4px;
+      font-size:.8rem;
+      cursor:pointer;
+    }
+    .btn-edit-inline:hover,
+    .btn-delete-inline:hover {
+      background:rgba(255,255,255,0.2);
+    }
+
     .accordion-content { max-height:0; overflow:hidden; transition:max-height .3s ease, padding .3s ease; padding:0 1rem; }
     .accordion-content.open { padding:1rem; max-height:800px; }
 
@@ -275,7 +296,7 @@
     fetchOrders();
   }
 
-  /* Vehículos */
+  /* — Vehículos — */
   function showVehPreview(){
     preview.innerHTML='';
     Array.from(imagenes.files).forEach(f=>{
@@ -288,9 +309,15 @@
     e.preventDefault();
     const f=e.target;
     const data={
-      marca:f.marca.value, modelo:f.modelo.value, motor:f.motor.value,
-      anio:+f.anio.value, precio:+f.precio.value, kilometraje:+f.kilometraje.value,
-      color:f.color.value, tipo:f.tipo.value, descripcion:f.descripcion.value
+      marca:f.marca.value,
+      modelo:f.modelo.value,
+      motor:f.motor.value,
+      anio:+f.anio.value,
+      precio:+f.precio.value,
+      kilometraje:+f.kilometraje.value,
+      color:f.color.value,
+      tipo:f.tipo.value,
+      descripcion:f.descripcion.value
     };
     if(editingVehicleId){
       await db.collection('inventario').doc(editingVehicleId).update(data);
@@ -316,14 +343,13 @@
   }
   function fetchVehicles(){
     db.collection('inventario').orderBy('fecha','desc').get().then(snap=>{
-      const tbody = document.getElementById('inventory-table').querySelector('tbody');
+      const tbody=document.querySelector('#inventory-table tbody');
       tbody.innerHTML='';
       snap.forEach(async d=>{
         const v=d.data();
         let imgUrl='';
         if(v.imagenes?.[0]){
-          try{ imgUrl=await firebase.storage().refFromURL(v.imagenes[0]).getDownloadURL(); }
-          catch{}
+          try{ imgUrl=await firebase.storage().refFromURL(v.imagenes[0]).getDownloadURL(); }catch{}
         }
         const tr=document.createElement('tr');
         tr.innerHTML=`
@@ -353,7 +379,7 @@
     });
   }
 
-  /* Usuarios */
+  /* — Usuarios — */
   function fetchClients(){
     return db.collection('clients').orderBy('fullName').get().then(snap=>{
       clientsCache=[];
@@ -366,7 +392,7 @@
     });
   }
 
-  /* Pedidos */
+  /* — Pedidos — */
   function getDisplayStatus(d){
     if(d.entrega?.deliveryPhotos?.length) return 'Finalizado';
     if(d.aduana?.detail) return 'Aduana';
@@ -389,12 +415,32 @@
     ordersCache.forEach(o=>{
       const d=o.data, disp=getDisplayStatus(d);
       if(sf&&disp!==sf) return; if(cf&&d.clientName!==cf) return;
-      const header=`<div class="accordion-header" data-acc="${o.id}"><span>#${o.id.slice(0,6)}</span><span class="status-badge">${disp}</span></div>`;
-      const steps=STEPS.map((s,i)=>{
-        const cls=i<STEPS.indexOf(disp)?'done':i===STEPS.indexOf(disp)?'active':'';
+
+      // <-- CABECERA MODIFICADA -->
+      const header = `
+        <div class="accordion-header" data-acc="${o.id}">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <strong>#${o.id.slice(0,6)}</strong>
+            <span>${d.clientName}</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="status-badge">${disp}</span>
+            <button class="btn-edit-inline" onclick="editOrder('${o.id}')">Editar</button>
+            <button class="btn-delete-inline" onclick="deleteOrder('${o.id}')">Eliminar</button>
+          </div>
+        </div>`;
+      // <-- FIN DE CABECERA MODIFICADA -->
+
+      const steps = STEPS.map((s,i)=>{
+        const cls = i < STEPS.indexOf(disp)
+                  ? 'done'
+                  : i === STEPS.indexOf(disp)
+                    ? 'active'
+                    : '';
         return `<li class="${cls}">${s}</li>`;
       }).join('');
-      const content=`
+
+      const content = `
         <div id="acc-${o.id}" class="accordion-content">
           <ul class="tracker">${steps}</ul>
           <ul class="summary">
@@ -403,27 +449,37 @@
             <li><strong>Fotos Copart:</strong> ${d.copartPhotos?.length?`<a href="${d.copartPhotos[0]}" target="_blank">Ver</a>`:'-'}</li>
             <li><strong>Grúa:</strong> ${d.recogida?.valorGrua||'-'} USD</li>
             <li><strong>Barco:</strong> ${d.recogida?.valorBarco||'-'} USD</li>
-            <li><strong>Aduana:</strong> <a href="#" class="toggle-detail" data-detail="adu-${o.id}">Ver</a><div id="adu-${o.id}" style="display:none;margin:.5rem 0;">${d.aduana?.detail||'-'}</div></li>
-            <li><strong>Entrega final:</strong> <a href="#" class="toggle-detail" data-detail="ent-${o.id}">Ver</a><div id="ent-${o.id}" style="display:none;margin:.5rem 0;">${d.entrega?.detail||'-'}</div></li>
+            <li><strong>Aduana:</strong> <a href="#" class="toggle-detail" data-detail="adu-${o.id}">Ver</a>
+              <div id="adu-${o.id}" style="display:none;margin:.5rem 0;">${d.aduana?.detail||'-'}</div>
+            </li>
+            <li><strong>Entrega final:</strong> <a href="#" class="toggle-detail" data-detail="ent-${o.id}">Ver</a>
+              <div id="ent-${o.id}" style="display:none;margin:.5rem 0;">${d.entrega?.detail||'-'}</div>
+            </li>
             <li><strong>Fotos entrega:</strong> ${d.entrega?.deliveryPhotos?.length?`<a href="${d.entrega.deliveryPhotos[0]}" target="_blank">Ver</a>`:'-'}</li>
             <li><strong>Final:</strong> ${d.entrega?.precioFinal||'-'} LPS</li>
           </ul>
           <p class="order-meta">Última actualización: ${d.updatedAt?.toDate().toLocaleString('es-HN')||'-'}</p>
         </div>`;
-      const card=document.createElement('div'); card.className='order-card';
-      card.innerHTML=header+content;
+
+      const card = document.createElement('div');
+      card.className = 'order-card';
+      card.innerHTML = header + content;
       ordersContainer.appendChild(card);
     });
-    // Hooks
-    document.querySelectorAll('.accordion-header').forEach(h=>h.onclick=()=>{
-      document.getElementById('acc-'+h.dataset.acc).classList.toggle('open');
+
+    // activamos acordeones y toggles
+    document.querySelectorAll('.accordion-header').forEach(h=>{
+      h.onclick = ()=> document.getElementById('acc-'+h.dataset.acc).classList.toggle('open');
     });
-    document.querySelectorAll('.toggle-detail').forEach(a=>a.onclick=e=>{
-      e.preventDefault();
-      const d=document.getElementById(a.dataset.detail);
-      d.style.display = d.style.display==='none'?'block':'none';
+    document.querySelectorAll('.toggle-detail').forEach(a=>{
+      a.onclick = e=>{
+        e.preventDefault();
+        const d=document.getElementById(a.dataset.detail);
+        d.style.display = d.style.display==='none'?'block':'none';
+      };
     });
   }
+
   async function saveOrder(e){
     e.preventDefault();
     const c=clientsCache.find(x=>x.email===orderClient.value)||{};
@@ -454,6 +510,7 @@
     else await db.collection('orders').add(payload);
     orderFormContainer.style.display='none';
   }
+
   async function editOrder(id){
     const o=ordersCache.find(x=>x.id===id); if(!o) return;
     editingOrderId=id; resetOrderForm(); await fetchClients();
@@ -465,6 +522,7 @@
     textoEnvioHnd.value=d.envioHnd?.detail||''; textoAduana.value=d.aduana?.detail||'';
     textoEntrega.value=d.entrega?.detail||''; precioFinal.value=d.entrega?.precioFinal||'';
   }
+
   function deleteOrder(id){
     if(confirm('¿Eliminar este pedido?')) db.collection('orders').doc(id).delete();
   }
