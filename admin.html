@@ -115,9 +115,7 @@
         <h3 id="orderFormTitle">Nuevo Pedido</h3>
         <form id="formularioOrder">
           <div class="form-grid">
-            <select id="orderClient" required>
-              <option value="">Selecciona cliente…</option>
-            </select>
+            <select id="orderClient" required><option value="">Selecciona cliente…</option></select>
             <input id="orderClientPhone" placeholder="Teléfono" readonly/>
             <input id="orderVehicleURL" type="url" placeholder="Copart URL" required/>
             <input id="orderCopartPhotos" type="file" multiple accept="image/*"/>
@@ -126,13 +124,13 @@
           <div id="previewCopart" class="preview"></div>
 
           <div class="form-grid">
-            <label style="grid-column: span 2;">Factura Copart</label>
             <input id="orderCopartInvoice" type="file" accept="application/pdf"/>
+            <input id="valorGrua" type="number" placeholder="Costo grúa (USD)"/>
           </div>
 
           <div class="form-grid">
-            <input id="valorGrua" type="number" placeholder="Costo grúa (USD)"/>
             <input id="valorBarco" type="number" placeholder="Costo barco (USD)"/>
+            <input id="precioFinal" type="number" placeholder="Precio final (LPS)"/>
           </div>
 
           <label>Detalles de envío a Honduras</label>
@@ -144,9 +142,6 @@
           <label>Fotos de entrega</label>
           <input id="fotosEntrega" type="file" multiple accept="image/*"/>
           <div id="previewEntrega" class="preview"></div>
-
-          <label>Precio final (LPS)</label>
-          <input id="precioFinal" type="number" placeholder="Precio final (LPS)"/>
 
           <div style="margin-top:1rem; display:flex; gap:10px;">
             <button type="submit">Guardar Pedido</button>
@@ -217,6 +212,7 @@ document.querySelectorAll('.tab').forEach(tab => {
   };
 });
 
+// Verifica sesión
 firebase.auth().onAuthStateChanged(user => {
   if (!user) return location = 'login.html';
   const admins = ['ledinvvv@gmail.com','ledinvvv1995@yopmail.com'];
@@ -313,8 +309,7 @@ function resetVehicleForm() {
   document.getElementById('btnCancelarEdicion').style.display = 'none';
   document.getElementById('btnAgregar').textContent = 'Guardar Vehículo';
 }
-</script>
-<script>
+
 function fetchVehicles() {
   db.collection('inventario').orderBy('fecha', 'desc').get().then(snap => {
     const tb = document.querySelector('#inventory-table tbody');
@@ -393,20 +388,27 @@ function fetchClients() {
     document.getElementById('userCount').textContent = clientsCache.length;
   });
 }
-
+</script>
+<script>
 function resetOrderForm() {
   formularioOrder.reset();
-  ['valorGrua','valorBarco','textoEnvioHnd','textoAduana','fotosEntrega','precioFinal']
-    .forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.disabled = false;
-        el.style.display = '';
-      }
-    });
-  document.getElementById('orderStatus').parentNode.style.display = '';
-  document.getElementById('previewCopart').innerHTML = '';
-  document.getElementById('previewEntrega').innerHTML = '';
+  const campos = ['valorGrua','valorBarco','textoEnvioHnd','textoAduana','fotosEntrega','precioFinal','orderCopartPhotos','orderCopartInvoice'];
+  campos.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.disabled = false;
+      el.style.display = '';
+    }
+  });
+  const previewCopart = document.getElementById('previewCopart');
+  if (previewCopart) previewCopart.innerHTML = '';
+
+  const previewEntrega = document.getElementById('previewEntrega');
+  if (previewEntrega) previewEntrega.innerHTML = '';
+
+  const facturaExtra = document.querySelector('#orderCopartInvoice + div');
+  if (facturaExtra) facturaExtra.remove();
+
   document.getElementById('orderFormTitle').innerText = 'Nuevo Pedido';
 }
 
@@ -452,7 +454,6 @@ async function editOrder(id) {
   orderClient.value = d.clientEmail;
   orderClient.dispatchEvent(new Event('change'));
   orderVehicleURL.value = d.vehicleURL;
-  document.getElementById('orderStatus').parentNode.style.display = 'none';
 
   if (d.copartInvoiceUrl) {
     const facturaDiv = document.createElement('div');
@@ -520,7 +521,7 @@ async function saveOrder(e) {
     clientEmail: client.email,
     clientPhone: client.phone,
     vehicleURL: orderVehicleURL.value,
-    status: 'Calculado',
+    status: 'Procesado',
     copartPhotos: [],
     copartInvoiceUrl: null,
     recogida: { done: true, valorGrua: +valorGrua.value, valorBarco: +valorBarco.value },
