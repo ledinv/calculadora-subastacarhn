@@ -31,7 +31,7 @@
     ul { list-style:none }
     .container { max-width:var(--max-width); margin:0 auto; padding:0 1rem }
 
-    /* HEADER */
+    /* Header */
     .site-header {
       background:var(--blue);
       position: sticky; top:0; z-index:1000;
@@ -50,7 +50,7 @@
     @media (max-width:767px) { .nav-list { display:none; } }
     @media (min-width:768px) { .menu-icon { display:none; } }
 
-    /* MAIN */
+    /* Main */
     main.layout { padding:2rem 1rem }
     .contenido-central {
       max-width:600px; margin:0 auto; background:#fff;
@@ -58,7 +58,7 @@
     }
     .contenido-central h1 { text-align:center; color:var(--blue); margin-bottom:1.5rem }
 
-    /* PESTAÑAS */
+    /* Pestañas */
     #tabs { display:flex; justify-content:space-around; margin-bottom:1.5rem; }
     .tab-btn {
       position:relative; background:transparent; border:2px solid transparent;
@@ -73,11 +73,11 @@
       height:4px; background:var(--yellow); border-radius:2px;
     }
 
-    /* SECCIONES */
+    /* Secciones */
     .section { display:none; }
     .section.active { display:block; }
 
-    /* PERFIL */
+    /* Perfil */
     label { display:block; font-weight:bold; color:var(--blue); margin-top:10px }
     input, textarea {
       width:100%; padding:8px; border-radius:8px; border:1px solid var(--blue2);
@@ -96,7 +96,7 @@
       padding:10px; border-radius:6px; text-align:center; margin-top:10px;
     }
 
-    /* GESTIONES */
+    /* Gestiones */
     .orders-grid {
       display:grid; gap:1rem;
       grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
@@ -138,15 +138,13 @@
       width:60px; height:60px; object-fit:cover;
       border:1px solid #ddd; border-radius:4px;
     }
+    .summary hr { display:none; }
 
-    /* HISTORIAL */
+    /* Historial */
     #historialContainer .hist-item {
       background:#f0f8ff; padding:1rem; border-radius:10px;
       margin-bottom:1rem; box-shadow:0 2px 5px rgba(0,0,0,0.1);
     }
-
-    /* Ocultar cualquier <hr> residual */
-    .summary hr { display:none; }
   </style>
 </head>
 <body>
@@ -180,7 +178,7 @@
     <div class="contenido-central">
       <h1>Mi Perfil</h1>
 
-      <!-- PESTAÑAS -->
+      <!-- TABS -->
       <div id="tabs">
         <button class="tab-btn" data-tab="perfil" onclick="showSection('perfil')">Perfil</button>
         <button class="tab-btn" data-tab="gestiones" onclick="showSection('gestiones')">Gestiones</button>
@@ -192,27 +190,20 @@
         <form id="profileForm">
           <label for="name">Nombre completo</label>
           <input type="text" id="name" required />
-
           <label for="email">Correo electrónico</label>
           <input type="email" id="email" class="readonly" readonly />
-
           <label for="phone">Teléfono</label>
           <input type="tel" id="phone" class="readonly" readonly />
-
           <label for="address">Dirección</label>
           <input type="text" id="address" />
-
           <label for="dni">DNI</label>
           <input type="text" id="dni" />
-
           <label for="birthYear">Año de nacimiento</label>
           <input type="number" id="birthYear" min="1900" max="2100" />
           <small class="note">El DNI y el año de nacimiento te ayudarán a recuperar tu cuenta si pierdes el acceso.</small>
-
           <button type="submit" class="styled-btn">Guardar cambios</button>
           <button type="button" class="styled-btn" onclick="sendPasswordReset()">Cambiar contraseña</button>
           <button type="button" class="styled-btn" onclick="logout()">Cerrar sesión</button>
-
           <div id="successMsg" class="success-msg" style="display:none;">
             ✅ Tus datos han sido actualizados con éxito.
           </div>
@@ -230,7 +221,6 @@
         <div id="depositSuccess" class="success-msg" style="display:none; margin-top:1rem;">
           ✅ Comprobante enviado. Pronto comenzaremos la gestión.
         </div>
-
         <h2 style="text-align:center; color:var(--blue); margin-top:2rem;">Mis Gestiones</h2>
         <div id="clientOrdersContainer" class="orders-grid"></div>
       </section>
@@ -282,6 +272,7 @@
       measurementId: "G-QM5N60K8C0"
     };
     firebase.initializeApp(firebaseConfig);
+
     const auth    = firebase.auth();
     const db      = firebase.firestore();
     const storage = firebase.storage().ref();
@@ -300,7 +291,7 @@
     }
     document.addEventListener('DOMContentLoaded', () => showSection('perfil'));
 
-    // Historial
+    // Cargar historial
     async function cargarHistorial() {
       const uid = auth.currentUser.uid;
       const snap = await db.collection('clients').doc(uid)
@@ -330,7 +321,37 @@
       cargarHistorial();
     }
 
-    // Gestión de depósitos y pedidos
+    // Mostrar detalles de historial
+    function verDetallesHistorial(histId) {
+      const uid = auth.currentUser.uid;
+      db.collection('clients').doc(uid)
+        .collection('historial').doc(histId).get()
+        .then(doc => {
+          if (!doc.exists) {
+            return alert('No se encontraron detalles para este historial.');
+          }
+          const d = doc.data();
+          let detalles = `Detalles de "${d.nombre || 'Sin título'}":\n\n`;
+          Object.entries(d).forEach(([key,val])=>{
+            if (key==='fecha') {
+              detalles += `Fecha: ${val.toDate().toLocaleString('es-HN')}\n`;
+            } else if (key==='total') {
+              detalles += `Total: L ${val}\n`;
+            } else if (key==='nombre') {
+              detalles += `Nombre: ${val}\n`;
+            } else {
+              detalles += `${key}: ${JSON.stringify(val)}\n`;
+            }
+          });
+          alert(detalles);
+        })
+        .catch(err=>{
+          console.error(err);
+          alert('Error al cargar detalles.');
+        });
+    }
+
+    // Rest of management & auth logic...
     const btnStartGestion       = document.getElementById('btnStartGestion');
     const depositForm           = document.getElementById('depositForm');
     const depositFile           = document.getElementById('depositFile');
@@ -339,87 +360,51 @@
     const clientOrdersContainer = document.getElementById('clientOrdersContainer');
     const STEPS = ['Inicio','Pago Pendiente','Pagado','Enviado','Aduana','Finalizado'];
 
-    btnStartGestion.onclick = () => {
-      depositForm.style.display     = 'block';
-      btnStartGestion.style.display = 'none';
-      depositSuccess.style.display  = 'none';
-      depositForm.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    btnUploadDeposit.onclick = async () => {
-      if (!depositFile.files[0]) {
-        alert('Selecciona un comprobante antes de enviar.');
-        return;
-      }
-      btnUploadDeposit.disabled    = true;
-      btnUploadDeposit.textContent = 'Subiendo…';
+    btnStartGestion.onclick = ()=>{ depositForm.style.display='block'; btnStartGestion.style.display='none'; depositSuccess.style.display='none'; depositForm.scrollIntoView({behavior:'smooth'}); };
+    btnUploadDeposit.onclick = async ()=>{
+      if(!depositFile.files[0]){ alert('Selecciona un comprobante antes de enviar.'); return; }
+      btnUploadDeposit.disabled=true; btnUploadDeposit.textContent='Subiendo…';
       try {
-        const user = auth.currentUser;
-        const file = depositFile.files[0];
-        const snap = await storage
-          .child(`orders/${user.uid}/deposit/${Date.now()}_${file.name}`)
-          .put(file);
-        const url = await snap.ref.getDownloadURL();
+        const user=auth.currentUser, file=depositFile.files[0];
+        const snap=await storage.child(`orders/${user.uid}/deposit/${Date.now()}_${file.name}`).put(file);
+        const url=await snap.ref.getDownloadURL();
         await db.collection('orders').add({
-          clientName:        user.displayName || user.email,
-          clientEmail:       user.email,
-          clientPhone:       document.getElementById('phone').value,
-          vehicleURL:        null,
-          precioEstimado:    null,
-          depositReceiptUrl: url,
-          depositAmount:     5000,
-          copartInvoiceUrl:  null,
-          copartPhotos:      [],
-          recogida:          { valorGrua:0, valorBarco:0 },
-          envioHnd:          { detail:'' },
-          aduana:            { detail:'' },
-          entrega:           { detail:'', precioFinal:0, deliveryPhotos:[] },
-          createdAt:         firebase.firestore.FieldValue.serverTimestamp(),
-          updatedAt:         firebase.firestore.FieldValue.serverTimestamp()
+          clientName: user.displayName||user.email,
+          clientEmail:user.email,
+          clientPhone:document.getElementById('phone').value,
+          vehicleURL:null, precioEstimado:null,
+          depositReceiptUrl:url, depositAmount:5000,
+          copartInvoiceUrl:null, copartPhotos:[],
+          recogida:{valorGrua:0,valorBarco:0},
+          envioHnd:{detail:''}, aduana:{detail:''},
+          entrega:{detail:'',precioFinal:0,deliveryPhotos:[]},
+          createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt:firebase.firestore.FieldValue.serverTimestamp()
         });
-        depositForm.style.display    = 'none';
-        depositSuccess.style.display = 'block';
-        fetchClientOrders();
-      } catch (err) {
-        console.error(err);
-        alert('❌ Error al subir el comprobante. Intenta de nuevo.');
-      } finally {
-        btnUploadDeposit.disabled    = false;
-        btnUploadDeposit.textContent = 'Enviar comprobante';
-      }
+        depositForm.style.display='none'; depositSuccess.style.display='block'; fetchClientOrders();
+      } catch(e){ console.error(e); alert('❌ Error al subir el comprobante.'); }
+      finally{ btnUploadDeposit.disabled=false; btnUploadDeposit.textContent='Enviar comprobante'; }
     };
 
-    function getDisplayStatus(o) {
-      if (o.depositReceiptUrl)                       return 'Pago Pendiente';
-      if (o.entrega?.deliveryPhotos?.length)         return 'Finalizado';
-      if (o.aduana?.detail)                          return 'Aduana';
-      if (o.recogida?.valorGrua || o.recogida?.valorBarco) return 'Enviado';
-      if (o.copartInvoiceUrl)                        return 'Pagado';
+    function getDisplayStatus(o){
+      if(o.depositReceiptUrl) return 'Pago Pendiente';
+      if(o.entrega?.deliveryPhotos?.length) return 'Finalizado';
+      if(o.aduana?.detail) return 'Aduana';
+      if(o.recogida?.valorGrua||o.recogida?.valorBarco) return 'Enviado';
+      if(o.copartInvoiceUrl) return 'Pagado';
       return 'Inicio';
     }
-
-    async function fetchClientOrders() {
-      const user = auth.currentUser;
-      if (!user) return;
-      clientOrdersContainer.innerHTML = '';
-      const snap = await db.collection('orders')
-        .where('clientEmail','==',user.email)
-        .orderBy('createdAt','desc').get();
-      if (snap.empty) {
-        clientOrdersContainer.innerHTML = '<p style="text-align:center;">Aún no tienes gestiones iniciadas.</p>';
-        return;
-      }
-      snap.docs.forEach(doc => {
-        const o      = doc.data();
-        const status = getDisplayStatus(o);
-        const idx    = STEPS.indexOf(status);
-        const stepsHtml = STEPS.map((s,i) => {
-          const cls = i < idx ? 'done' : (i===idx ? 'active' : '');
-          return `<li class="${cls}">${s}</li>`;
-        }).join('');
-        const card = document.createElement('div');
-        card.className = 'order-card';
-        card.innerHTML = `
+    async function fetchClientOrders(){
+      const user=auth.currentUser;
+      if(!user)return;
+      clientOrdersContainer.innerHTML='';
+      const snap=await db.collection('orders').where('clientEmail','==',user.email).orderBy('createdAt','desc').get();
+      if(snap.empty){ clientOrdersContainer.innerHTML='<p style="text-align:center;">Aún no tienes gestiones iniciadas.</p>'; return;}
+      snap.docs.forEach(doc=>{
+        const o=doc.data(), status=getDisplayStatus(o), idx=STEPS.indexOf(status);
+        const stepsHtml=STEPS.map((s,i)=>`<li class="${i<idx?'done':(i===idx?'active':'')}">${s}</li>`).join('');
+        const card=document.createElement('div'); card.className='order-card';
+        card.innerHTML=`
           <div class="accordion-header" data-acc="${doc.id}">
             <div><strong>#${doc.id.slice(0,6)}</strong> ${o.clientName}</div>
             <div><span class="status-badge">${status}</span></div>
@@ -427,71 +412,49 @@
           <div id="acc-${doc.id}" class="accordion-content">
             <ul class="tracker">${stepsHtml}</ul>
             <ul class="summary">
-              <li><strong>Vehículo:</strong> ${ o.vehicleURL ? `<a href="${o.vehicleURL}" target="_blank">Ver vehículo</a>` : '-' }</li>
-              <li><strong>Estimado:</strong> ${ o.precioEstimado ? `${o.precioEstimado} USD` : '-' }</li>
-              <li><strong>Depósito:</strong> ${ o.depositAmount || '-'} LPS</li>
-              <li><strong>Comprobante:</strong> ${ o.depositReceiptUrl ? `<a href="${o.depositReceiptUrl}" target="_blank">Ver comprobante</a>` : '-' }</li>
-              <li><strong>Factura Copart:</strong> ${ o.copartInvoiceUrl ? `<a href="${o.copartInvoiceUrl}" target="_blank">Ver PDF</a>` : '-' }</li>
-              <li><strong>Fotos Copart:</strong> ${ o.copartPhotos?.length ? `<a href="#" class="toggle-client-detail" data-detail="cp-${doc.id}">Ver fotos</a>
-                 <div id="cp-${doc.id}" class="gallery" style="display:none;">${ o.copartPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}</div>` : '-' }</li>
+              <li><strong>Vehículo:</strong> ${o.vehicleURL?`<a href="${o.vehicleURL}" target="_blank">Ver vehículo</a>`:'-'}</li>
+              <li><strong>Estimado:</strong> ${o.precioEstimado?`${o.precioEstimado} USD`:'-'}</li>
+              <li><strong>Depósito:</strong> ${o.depositAmount||'-'} LPS</li>
+              <li><strong>Comprobante:</strong> ${o.depositReceiptUrl?`<a href="${o.depositReceiptUrl}" target="_blank">Ver comprobante</a>`:'-'}</li>
+              <li><strong>Factura Copart:</strong> ${o.copartInvoiceUrl?`<a href="${o.copartInvoiceUrl}" target="_blank">Ver PDF</a>`:'-'}</li>
+              <li><strong>Fotos Copart:</strong> ${o.copartPhotos?.length?`<a href="#" class="toggle-client-detail" data-detail="cp-${doc.id}">Ver fotos</a><div id="cp-${doc.id}" class="gallery" style="display:none;">${o.copartPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}</div>`:'-'}</li>
               <li><strong>Grúa:</strong> ${o.recogida.valorGrua||'-'} USD</li>
               <li><strong>Barco:</strong> ${o.recogida.valorBarco||'-'} USD</li>
-              <li><strong>Llegada HND:</strong> <a href="#" class="toggle-client-detail" data-detail="hnd-${doc.id}">Ver</a>
-                 <div id="hnd-${doc.id}" style="display:none;margin:.5rem 0;">${o.envioHnd.detail||'-'}</div>
-              </li>
-              <li><strong>Aduana:</strong> <a href="#" class="toggle-client-detail" data-detail="adu-${doc.id}">Ver</a>
-                 <div id="adu-${doc.id}" style="display:none;margin:.5rem 0;">${o.aduana.detail||'-'}</div>
-              </li>
-              <li><strong>Entrega Final:</strong> <a href="#" class="toggle-client-detail" data-detail="ent-${doc.id}">Ver</a>
-                 <div id="ent-${doc.id}" style="display:none;margin:.5rem 0;">${o.entrega.detail||'-'}<br><strong>Precio final:</strong> ${o.entrega.precioFinal||'-'} LPS</div>
-              </li>
-              <li><strong>Fotos Entrega:</strong> ${ o.entrega.deliveryPhotos?.length ? `<a href="#" class="toggle-client-detail" data-detail="dp-${doc.id}">Ver fotos</a>
-                 <div id="dp-${doc.id}" class="gallery" style="display:none;">${o.entrega.deliveryPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}</div>` : '-' }</li>
+              <li><strong>Llegada HND:</strong> <a href="#" class="toggle-client-detail" data-detail="hnd-${doc.id}">Ver</a><div id="hnd-${doc.id}" style="display:none;margin:.5rem 0;">${o.envioHnd.detail||'-'}</div></li>
+              <li><strong>Aduana:</strong> <a href="#" class="toggle-client-detail" data-detail="adu-${doc.id}">Ver</a><div id="adu-${doc.id}" style="display:none;margin:.5rem 0;">${o.aduana.detail||'-'}</div></li>
+              <li><strong>Entrega Final:</strong> <a href="#" class="toggle-client-detail" data-detail="ent-${doc.id}">Ver</a><div id="ent-${doc.id}" style="display:none;margin:.5rem 0;">${o.entrega.detail||'-'}<br><strong>Precio final:</strong> ${o.entrega.precioFinal||'-'} LPS</div></li>
+              <li><strong>Fotos Entrega:</strong> ${o.entrega.deliveryPhotos?.length?`<a href="#" class="toggle-client-detail" data-detail="dp-${doc.id}">Ver fotos</a><div id="dp-${doc.id}" class="gallery" style="display:none;">${o.entrega.deliveryPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}</div>`:'-'}</li>
               <li><strong>Últ. actualización:</strong> ${o.updatedAt?.toDate().toLocaleString('es-HN')||'-'}</li>
             </ul>
           </div>`;
         clientOrdersContainer.appendChild(card);
       });
-      document.querySelectorAll('.accordion-header').forEach(h => {
-        h.onclick = () => document.getElementById('acc-'+h.dataset.acc).classList.toggle('open');
-      });
-      document.querySelectorAll('.toggle-client-detail').forEach(a => {
-        a.onclick = e => {
-          e.preventDefault();
-          const tgt = document.getElementById(a.dataset.detail);
-          tgt.style.display = tgt.style.display==='none'?'block':'none';
-        };
-      });
+      document.querySelectorAll('.accordion-header').forEach(h=>h.onclick=()=>document.getElementById('acc-'+h.dataset.acc).classList.toggle('open'));
+      document.querySelectorAll('.toggle-client-detail').forEach(a=>a.onclick=e=>{e.preventDefault();const tgt=document.getElementById(a.dataset.detail);tgt.style.display=tgt.style.display==='none'?'block':'none';});
     }
 
-    // AUTH & LOAD
-    auth.onAuthStateChanged(user => {
-      if (!user) return window.location.href='login.html';
-      document.getElementById('userGreeting').textContent   = `Hola, ${user.displayName||user.email}`;
-      document.getElementById('mobileGreeting').textContent = `Hola, ${user.displayName||user.email}`;
-      db.collection('clients').doc(user.uid).get().then(doc => {
-        if (doc.exists) {
-          const d = doc.data();
-          document.getElementById('name').value      = d.fullName||'';
-          document.getElementById('email').value     = d.email   || user.email;
-          document.getElementById('phone').value     = d.phone   || '';
-          document.getElementById('address').value   = d.address || '';
-          document.getElementById('dni').value       = d.dni     || '';
-          document.getElementById('birthYear').value = d.birthYear|| '';
+    // Auth & init
+    auth.onAuthStateChanged(user=>{
+      if(!user)return window.location.href='login.html';
+      document.getElementById('userGreeting').textContent=`Hola, ${user.displayName||user.email}`;
+      document.getElementById('mobileGreeting').textContent=`Hola, ${user.displayName||user.email}`;
+      db.collection('clients').doc(user.uid).get().then(doc=>{
+        if(doc.exists){
+          const d=doc.data();
+          document.getElementById('name').value=d.fullName||'';
+          document.getElementById('email').value=d.email||user.email;
+          document.getElementById('phone').value=d.phone||'';
+          document.getElementById('address').value=d.address||'';
+          document.getElementById('dni').value=d.dni||'';
+          document.getElementById('birthYear').value=d.birthYear||'';
         }
       });
       cargarHistorial();
       fetchClientOrders();
     });
 
-    function sendPasswordReset() {
-      auth.sendPasswordResetEmail(auth.currentUser.email)
-        .then(() => alert('🔗 Enlace enviado al correo.'))
-        .catch(() => alert('❌ Error al enviar enlace.'));
-    }
-    function logout() {
-      auth.signOut().then(() => window.location.href='login.html');
-    }
+    function sendPasswordReset(){ auth.sendPasswordResetEmail(auth.currentUser.email).then(()=>alert('🔗 Enlace enviado.')).catch(()=>alert('❌ Error.')); }
+    function logout(){ auth.signOut().then(()=>window.location.href='login.html'); }
   </script>
 </body>
 </html>
