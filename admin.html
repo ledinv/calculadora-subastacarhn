@@ -23,7 +23,7 @@
     header nav ul { list-style: none; display: flex; gap: 1rem; }
     header nav a { color: #fff; text-decoration: none; }
 
-    #adminApp { max-width: var(--max-width); margin: 1rem auto; }
+    #adminApp { max-width: var(--max-width); margin: 1rem auto; display: none; }
 
     .tabs { display: flex; border-bottom: 2px solid var(--blue2); }
     .tab { flex:1; padding:.75rem; background:var(--blue2); color:#fff; text-align:center; cursor:pointer; font-weight:600; }
@@ -45,7 +45,9 @@
     th, td { padding:.5rem; border:1px solid #ddd; text-align:left; vertical-align:middle; }
     th { background:var(--blue2); color:#fff; }
     img.thumb { width:50px; border-radius:4px; }
-    .actions button { margin-right:4px; padding:2px 6px; border:none; border-radius:4px; cursor:pointer; font-size:.8rem; }
+    .actions button, .actions input, .actions select {
+      margin-right:4px; padding:2px 6px; font-size:.8rem;
+    }
     .btn-sold { background:var(--yellow); color:var(--text); }
     .btn-edit { background:var(--blue); color:#fff; }
     .btn-delete { background:#e74c3c; color:#fff; }
@@ -68,7 +70,7 @@
     </nav>
   </header>
 
-  <div id="adminApp" style="display:none;">
+  <div id="adminApp">
 
     <div class="tabs">
       <div class="tab active" data-sec="add">Añadir</div>
@@ -77,7 +79,7 @@
       <div class="tab" data-sec="ped">Pedidos</div>
     </div>
 
-    <!-- Añadir vehículo -->
+    <!-- SECCIÓN AÑADIR -->
     <div id="section-add" class="section active">
       <form id="formularioAuto">
         <div class="form-grid">
@@ -102,17 +104,19 @@
       </form>
     </div>
 
-    <!-- Inventario -->
+    <!-- SECCIÓN INVENTARIO -->
     <div id="section-inv" class="section">
       <table id="inventory-table">
         <thead>
-          <tr><th>Foto</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Precio</th><th>Est.</th><th>Acc.</th></tr>
+          <tr>
+            <th>Foto</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Precio</th><th>Est.</th><th>Acc.</th>
+          </tr>
         </thead>
         <tbody></tbody>
       </table>
     </div>
 
-    <!-- Usuarios -->
+    <!-- SECCIÓN USUARIOS -->
     <div id="section-usr" class="section">
       <button id="btnCopyAll">Copiar todos</button>
       <table id="users-table">
@@ -123,13 +127,13 @@
       </table>
     </div>
 
-    <!-- Pedidos -->
+    <!-- SECCIÓN PEDIDOS -->
     <div id="section-ped" class="section">
       <div style="display:flex; gap:10px; margin-bottom:10px;">
         <select id="statusFilter">
           <option value="">Todos</option>
-          <option value="pending">Pendientes</option>
-          <option value="finalized">Finalizados</option>
+          <option value="Pendiente">Pendientes</option>
+          <option value="Finalizado">Finalizados</option>
         </select>
         <select id="clientFilter">
           <option value="">Todos los clientes</option>
@@ -138,12 +142,15 @@
       <table id="orders-table">
         <thead>
           <tr>
-            <th>Cliente</th><th>Email</th><th>Teléfono</th><th>Vehículo</th><th>Precio</th><th>Estado</th><th>Factura</th><th>Fotos</th><th>Acciones</th>
+            <th>Cliente</th><th>Email</th><th>Teléfono</th>
+            <th>Copart URL</th><th>Fotos Copart</th><th>Recibo Copart</th>
+            <th>Envío</th><th>Recibo HND</th><th>Recibo Aduana</th>
+            <th>Fotos Entrega</th><th>Precio Final</th><th>Estado</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
-      <small>Estados: Inicio → Pago Pendiente → Pagado → Recogido de Subasta → En Predio USA → En Camino → Honduras → En Votainer → Entregado</small>
+      <small>Flujo: Copart → Envío → Honduras → Aduana → Entrega</small>
     </div>
 
   </div>
@@ -159,7 +166,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
   <script>
-    // Tu configuración real de Firebase:
+    // Configuración Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -176,8 +183,9 @@
     let editingId = null, allPhones = [], ordersCache = [];
     const ORDER_STATUSES = [
       'Inicio','Pago Pendiente','Pagado','Recogido de Subasta',
-      'En Predio USA','En Camino','En Honduras','En Votainer','Entregado'
+      'En predio naviera','En camino a Honduras','En yarda HND','En proceso nacionalización','Finalizado'
     ];
+    const SHIPPING_STEPS = ORDER_STATUSES.slice(3,8);
 
     // Manejo de pestañas
     document.querySelectorAll('.tab').forEach(tab => {
@@ -192,8 +200,6 @@
     // Autenticación y carga inicial
     firebase.auth().onAuthStateChanged(u => {
       if (!u) return location='login.html';
-      const admins = ['ledinvvv@gmail.com','ledinvvv1995@yopmail.com'];
-      if (!admins.includes(u.email)) return location='/';
       document.getElementById('adminApp').style.display = 'block';
       initApp();
     });
@@ -202,8 +208,8 @@
       fetchUsers();
       fetchVehicles();
       fetchOrdersList();
-      document.getElementById('btnCopyAll').onclick = ()=>{
-        if(!allPhones.length) return alert('No hay números');
+      document.getElementById('btnCopyAll').onclick = () => {
+        if (!allPhones.length) return alert('No hay números');
         navigator.clipboard.writeText(allPhones.join(', ')).then(()=>alert('Copiado'));
       };
       document.getElementById('statusFilter').onchange = renderOrders;
@@ -268,7 +274,6 @@
         editingId = id;
         document.getElementById('btnAgregar').textContent='Guardar Cambios';
         document.getElementById('btnCancelarEdicion').style.display='inline-block';
-        window.scrollTo({top:0,behavior:'smooth'});
       });
     }
 
@@ -314,8 +319,13 @@
 
     // Pedidos
     function fetchOrdersList(){
-      db.collection('orders').orderBy('createdAt','desc').get().then(snap=>{
-        ordersCache=[]; snap.forEach(d=>ordersCache.push({id:d.id,data:d.data()}));
+      const user = firebase.auth().currentUser;
+      let q = db.collection('orders');
+      if (user.email !== 'ledinvvv@gmail.com') {
+        q = q.where('clientEmail','==',user.email);
+      }
+      q.orderBy('createdAt','desc').get().then(snap=>{
+        ordersCache = snap.docs.map(d=>({id:d.id,data:d.data()}));
         populateClientFilter(); renderOrders();
       });
     }
@@ -323,53 +333,158 @@
       const sel=document.getElementById('clientFilter');
       sel.innerHTML='<option value="">Todos los clientes</option>';
       [...new Set(ordersCache.map(o=>o.data.clientName))].forEach(name=>{
-        const opt=document.createElement('option'); opt.value=name; opt.textContent=name; sel.appendChild(opt);
+        const opt=document.createElement('option');
+        opt.value=name; opt.textContent=name; sel.appendChild(opt);
       });
     }
     function renderOrders(){
-      const sf=document.getElementById('statusFilter').value, cf=document.getElementById('clientFilter').value;
-      const tbody=document.querySelector('#orders-table tbody'); tbody.innerHTML='';
+      const sf=document.getElementById('statusFilter').value;
+      const cf=document.getElementById('clientFilter').value;
+      const tbody=document.querySelector('#orders-table tbody');
+      tbody.innerHTML='';
       ordersCache.forEach(({id,data})=>{
-        const st=data.status, isFinal=(st==='Entregado');
-        if(sf==='pending'&&isFinal) return;
-        if(sf==='finalized'&&!isFinal) return;
+        if(sf==='Pendiente' && data.status==='Finalizado') return;
+        if(sf==='Finalizado' && data.status!=='Finalizado') return;
         if(cf&&data.clientName!==cf) return;
-        const hasInv=!!data.invoiceUrl, photos=(data.deliveryPhotos||[]).length;
         const tr=document.createElement('tr');
         tr.innerHTML=`
           <td>${data.clientName}</td>
           <td>${data.clientEmail}</td>
           <td>${data.clientPhone}</td>
-          <td><a href="${data.vehicleUrl}" target="_blank">Ver</a></td>
-          <td>${data.negotiatedPrice} LPS</td>
-          <td>${st}</td>
           <td>${
-            hasInv? `<a href="${data.invoiceUrl}" target="_blank">PDF</a>`
-                   : `<input type="file" accept="application/pdf" onchange="uploadInvoice('${id}',this.files)"/>`
+            data.copartUrl
+              ? `<a href="${data.copartUrl}" target="_blank">Ver</a>`
+              : `<button onclick="addCopartLink('${id}')">Iniciar</button>`
           }</td>
           <td>${
-            photos? `${photos} foto(s)`
-                  : `<input type="file" accept="image/*" multiple onchange="uploadPhotos('${id}',this.files)"/>`
+            data.copartPhotos?.length
+              ? data.copartPhotos.map(u=>`<img src="${u}" class="thumb">`).join('')
+              : `<input type="file" multiple onchange="uploadCopartPhotos('${id}',this.files)"/>`
           }</td>
-          <td><button class="btn-edit" onclick="advanceStatus('${id}','${st}')">→</button></td>`;
+          <td>${
+            data.copartReceiptUrl
+              ? `<a href="${data.copartReceiptUrl}" target="_blank">PDF</a>`
+              : `<input type="file" accept="application/pdf" onchange="uploadCopartReceipt('${id}',this.files)"/>`
+          }</td>
+          <td>${
+            data.shippingStatus || '–'
+          } <button onclick="advanceShipping('${id}')">Sgt</button></td>
+          <td>${
+            data.hondurasReceiptUrl
+              ? `<a href="${data.hondurasReceiptUrl}" target="_blank">PDF</a>`
+              : `<input type="file" accept="application/pdf" onchange="uploadHondurasReceipt('${id}',this.files)"/>`
+          }</td>
+          <td>${
+            data.customsReceiptUrl
+              ? `<a href="${data.customsReceiptUrl}" target="_blank">PDF</a>`
+              : `<input type="file" accept="application/pdf" onchange="uploadCustomsReceipt('${id}',this.files)"/>`
+          }</td>
+          <td>${
+            data.deliveryPhotos?.length
+              ? data.deliveryPhotos.map(u=>`<img src="${u}" class="thumb">`).join('')
+              : `<input type="file" multiple onchange="uploadDeliveryPhotos('${id}',this.files)"/>`
+          }</td>
+          <td>${
+            data.finalPrice
+              ? data.finalPrice + ' LPS'
+              : `<input type="number" placeholder="Precio final" onchange="setFinalPrice('${id}',this.value)"/>`
+          }</td>
+          <td>${
+            data.status==='Finalizado'
+              ? '✔️'
+              : `<button onclick="finishOrder('${id}')">Finalizar</button>`
+          }</td>`;
         tbody.appendChild(tr);
       });
     }
-    async function advanceStatus(id,cur){
-      const i=ORDER_STATUSES.indexOf(cur); if(i<0||i===ORDER_STATUSES.length-1) return;
-      await db.collection('orders').doc(id).update({status:ORDER_STATUSES[i+1]});
+
+    function addCopartLink(id) {
+      const url = prompt("Pega la URL de Copart:");
+      if (!url) return;
+      db.collection('orders').doc(id).update({
+        copartUrl: url,
+        shippingStatus: 'Recogida pendiente',
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(fetchOrdersList);
+    }
+    async function uploadCopartPhotos(id, files) {
+      const urls = [];
+      for (let f of files) {
+        const snap = await storageRef.child(`orders/${id}/copart/${f.name}`).put(f);
+        urls.push(await snap.ref.getDownloadURL());
+      }
+      await db.collection('orders').doc(id).update({
+        copartPhotos: firebase.firestore.FieldValue.arrayUnion(...urls),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
       fetchOrdersList();
     }
-    async function uploadInvoice(id,files){
-      const ref=storageRef.child(`orders/${id}/invoice.pdf`), snap=await ref.put(files[0]), url=await snap.ref.getDownloadURL();
-      await db.collection('orders').doc(id).update({invoiceUrl:url});
+    async function uploadCopartReceipt(id, files) {
+      const snap = await storageRef.child(`orders/${id}/copart/receipt.pdf`).put(files[0]);
+      const url = await snap.ref.getDownloadURL();
+      await db.collection('orders').doc(id).update({
+        copartReceiptUrl: url,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
       fetchOrdersList();
     }
-    async function uploadPhotos(id,files){
-      const urls=[]; for(const f of files){ const ref=storageRef.child(`orders/${id}/delivery/${f.name}`), snap=await ref.put(f); urls.push(await snap.ref.getDownloadURL()); }
-      await db.collection('orders').doc(id)
-        .update({deliveryPhotos: firebase.firestore.FieldValue.arrayUnion(...urls)});
+    function advanceShipping(id) {
+      const o = ordersCache.find(x=>x.id===id).data;
+      const idx = SHIPPING_STEPS.indexOf(o.shippingStatus);
+      if (idx < 0 || idx === SHIPPING_STEPS.length-1) return;
+      const next = SHIPPING_STEPS[idx+1];
+      db.collection('orders').doc(id).update({
+        shippingStatus: next,
+        shippingUpdates: firebase.firestore.FieldValue.arrayUnion({
+          status: next,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(fetchOrdersList);
+    }
+    async function uploadHondurasReceipt(id, files) {
+      const snap = await storageRef.child(`orders/${id}/honduras/receipt.pdf`).put(files[0]);
+      const url = await snap.ref.getDownloadURL();
+      await db.collection('orders').doc(id).update({
+        hondurasReceiptUrl: url,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
       fetchOrdersList();
+    }
+    async function uploadCustomsReceipt(id, files) {
+      const snap = await storageRef.child(`orders/${id}/aduana/receipt.pdf`).put(files[0]);
+      const url = await snap.ref.getDownloadURL();
+      await db.collection('orders').doc(id).update({
+        customsReceiptUrl: url,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      fetchOrdersList();
+    }
+    async function uploadDeliveryPhotos(id, files) {
+      const urls = [];
+      for (let f of files) {
+        const snap = await storageRef.child(`orders/${id}/delivery/${f.name}`).put(f);
+        urls.push(await snap.ref.getDownloadURL());
+      }
+      await db.collection('orders').doc(id).update({
+        deliveryPhotos: firebase.firestore.FieldValue.arrayUnion(...urls),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      fetchOrdersList();
+    }
+    function setFinalPrice(id, value) {
+      db.collection('orders').doc(id).update({
+        finalPrice: Number(value),
+        status: 'Finalizado',
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(fetchOrdersList);
+    }
+    function finishOrder(id) {
+      if (!confirm("¿Marcar pedido como Finalizado?")) return;
+      db.collection('orders').doc(id).update({
+        status: 'Finalizado',
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(fetchOrdersList);
     }
   </script>
 </body>
