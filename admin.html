@@ -227,6 +227,11 @@
     document.getElementById('adminApp').style.display='block';
     initApp();
   });
+  function resetOrderForm() {
+  // Borra todos los campos
+  document.getElementById('formularioOrder').reset();
+  // Vuelve el título a “Nuevo Pedido”
+  document.getElementById('orderFormTitle').innerText = 'Nuevo Pedido';
 
   function initApp() {
     // Vehículos
