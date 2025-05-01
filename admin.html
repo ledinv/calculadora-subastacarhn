@@ -9,62 +9,52 @@
     :root {
       --blue: #002f6c;
       --blue2: #004aad;
-      --green: #28a745;
       --yellow: #ffc20e;
-      --red: #e74c3c;
       --text: #333;
       --light: #f9f9f9;
       --shadow: rgba(0,0,0,0.1);
       --max-width: 1200px;
     }
-    *, *::before, *::after { box-sizing: border-box; margin:0; padding:0 }
-    body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text) }
-    header, footer { background:var(--blue); color:#fff; padding:1rem; text-align:center }
-    header .logo, footer .logo { font-size:1.5rem; font-weight:bold }
-    nav ul { list-style:none; display:flex; gap:1rem; justify-content:center; }
-    nav a { color:#fff; text-decoration:none }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text); }
 
-    #adminApp { max-width:var(--max-width); margin:1rem auto; display:none }
-    .tabs { display:flex; border-bottom:2px solid var(--blue2) }
-    .tab { flex:1; padding:.75rem; background:var(--blue2); color:#fff; text-align:center; cursor:pointer; font-weight:600 }
-    .tab.active { background:var(--blue) }
-    .section { display:none; padding:1rem; background:#fff; border-radius:8px; box-shadow:0 2px 10px var(--shadow); margin-top:1rem }
-    .section.active { display:block }
+    /* Header / Footer */
+    header, footer { background: var(--blue); color: #fff; padding: 1rem; text-align: center; }
+    header .logo, footer .logo { font-size: 1.5rem; font-weight: bold; }
+    header nav ul { list-style: none; display: flex; justify-content: center; gap: 1rem; margin-top: .5rem; }
+    header nav a { color: #fff; text-decoration: none; }
 
-    /* Reutilizamos estilos anteriores para formularios, tablas, botones… */
+    #adminApp { max-width: var(--max-width); margin: 1rem auto; display: none; }
 
-    .btn { padding:6px 12px; border:none; border-radius:4px; cursor:pointer; }
-    .btn-green { background:var(--green); color:#fff }
-    .btn-blue  { background:var(--blue); color:#fff }
-    .btn-yellow{ background:var(--yellow); color:var(--text) }
-    .btn-red   { background:var(--red); color:#fff }
-    .btn-copy, #btnCopyAll, #btnNewOrder { background:var(--blue); color:#fff }
+    /* Pestañas */
+    .tabs { display:flex; border-bottom: 2px solid var(--blue2); }
+    .tab { flex:1; padding:.75rem; background:var(--blue2); color:#fff; text-align:center; cursor:pointer; font-weight:600; }
+    .tab.active { background:var(--blue); }
 
-    table { width:100%; border-collapse:collapse; margin-top:.5rem; font-size:.9rem }
-    th, td { padding:.5rem; border:1px solid #ddd; text-align:left; vertical-align:middle }
-    th { background:var(--blue2); color:#fff }
-    img.thumb { width:50px; border-radius:4px }
-    .actions button, .actions input, .actions select { margin-right:4px; padding:2px 6px; font-size:.8rem }
+    /* Secciones */
+    .section { display:none; padding:1rem; background:#fff; border-radius:8px; box-shadow:0 2px 10px var(--shadow); margin-top:1rem; }
+    .section.active { display:block; }
 
-    /* Modal de pedido */
-    #orderModal {
-      display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-      background:rgba(0,0,0,0.5); align-items:center; justify-content:center;
+    /* Formularios y tablas */
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    form input, form select, form textarea, form button {
+      width:100%; margin:.5rem 0; padding:.75rem; border:1px solid #ccc; border-radius:4px;
     }
-    #orderModal .modal-content {
-      background:#fff; padding:1.5rem; border-radius:8px; max-width:500px; width:90%;
-    }
-    #orderModal h3 { margin-top:0 }
-    #orderModal label { display:block; margin:8px 0 4px }
-    #orderModal input, #orderModal select, #orderModal textarea {
-      width:100%; padding:.5rem; margin-bottom:8px; border:1px solid #ccc; border-radius:4px;
-    }
-    #orderModal .btn-group { text-align:right; margin-top:12px }
-    #orderModal .btn-group button { margin-left:8px; padding:6px 12px; border:none; border-radius:4px }
+    form button { background:var(--yellow); color:var(--blue); border:none; font-weight:600; cursor:pointer; }
+    .preview img, img.thumb { width:60px; height:60px; object-fit:cover; margin:4px; border:1px solid #ccc; border-radius:4px; }
+    table { width:100%; border-collapse:collapse; font-size:.9rem; margin-top:1rem; }
+    th, td { padding:.5rem; border:1px solid #ddd; text-align:left; vertical-align:middle; }
+    th { background:var(--blue2); color:#fff; }
+    .actions button, .actions input { margin-right:4px; padding:2px 6px; font-size:.8rem; }
+    .btn-sold { background:var(--yellow); color:var(--text); }
+    .btn-edit { background:var(--blue); color:#fff; }
+    .btn-delete { background:#e74c3c; color:#fff; }
+    .btn-copy, #btnCopyAll { background:var(--blue); color:#fff; padding:4px 8px; font-size:.9rem; margin-bottom:.5rem; }
   </style>
 </head>
 <body>
 
+  <!-- HEADER -->
   <header>
     <div class="logo">SubastaCarHN</div>
     <nav>
@@ -77,8 +67,10 @@
     </nav>
   </header>
 
+  <!-- ADMIN APP -->
   <div id="adminApp">
 
+    <!-- PESTAÑAS -->
     <div class="tabs">
       <div class="tab active" data-sec="add">Añadir</div>
       <div class="tab" data-sec="inv">Inventario</div>
@@ -86,29 +78,46 @@
       <div class="tab" data-sec="ped">Pedidos</div>
     </div>
 
-    <!-- SECCIÓN AÑADIR VEHÍCULO (sin cambios) -->
+    <!-- SECCIÓN AÑADIR VEHÍCULO -->
     <div id="section-add" class="section active">
-      <!-- … tu formulario existente … -->
+      <!-- ... aquí tu formulario de vehículo ... -->
     </div>
 
-    <!-- SECCIÓN INVENTARIO (sin cambios) -->
+    <!-- SECCIÓN INVENTARIO -->
     <div id="section-inv" class="section">
-      <!-- … tu tabla existente … -->
+      <!-- ... tu tabla de inventario ... -->
     </div>
 
-    <!-- SECCIÓN USUARIOS (sin cambios) -->
+    <!-- SECCIÓN USUARIOS -->
     <div id="section-usr" class="section">
-      <!-- … tu tabla existente … -->
+      <button id="btnCopyAll" class="btn-copy">Copiar todos</button>
+      <table id="users-table">
+        <thead>
+          <tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Acción</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
 
     <!-- SECCIÓN PEDIDOS -->
     <div id="section-ped" class="section">
-
-      <!-- Botón “Nuevo Pedido” -->
-      <button id="btnNewOrder" class="btn btn-green">+ Nuevo Pedido</button>
+      <button id="btnNewOrder" class="btn-copy">+ Nuevo Pedido</button>
+      <!-- Formulario de Pedido -->
+      <form id="formOrder" style="display:none; margin-bottom:1rem;">
+        <div class="form-grid">
+          <select id="orderClient" required>
+            <option value="">Selecciona cliente…</option>
+          </select>
+          <input id="orderUrl" placeholder="URL Copart" required/>
+          <input id="orderPrice" type="number" placeholder="Precio estimado LPS" required/>
+          <!-- aquí podrías añadir más campos si quisieras -->
+        </div>
+        <button id="btnSaveOrder" type="submit">Guardar Pedido</button>
+        <button id="btnCancelOrder" type="button" style="background:#e74c3c;color:#fff;">Cancelar</button>
+      </form>
 
       <!-- Filtros -->
-      <div style="display:flex; gap:10px; margin:10px 0;">
+      <div style="display:flex; gap:10px; margin-bottom:10px;">
         <select id="statusFilter">
           <option value="">Todos</option>
           <option value="Pendiente">Pendientes</option>
@@ -119,81 +128,22 @@
         </select>
       </div>
 
-      <!-- Tabla de pedidos -->
+      <!-- Tabla de Pedidos -->
       <table id="orders-table">
         <thead>
           <tr>
             <th>Cliente</th><th>Email</th><th>Teléfono</th>
-            <th>Copart URL</th><th>Fotos Copart</th><th>Recibo Copart</th>
-            <th>Envío</th><th>PDF HND</th><th>PDF Aduana</th>
-            <th>Fotos Entrega</th><th>Precio Final</th><th>Estado</th><th>Acciones</th>
+            <th>URL Copart</th><th>Precio</th><th>Estado</th><th>Acciones</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
-      <small>Flujo: Copart → Envío → Honduras → Aduana → Entrega</small>
+      <small>Flujo de gestión completo: Copart → Envío → Honduras → Aduana → Entrega</small>
     </div>
+
   </div>
 
-  <!-- Modal único para crear/editar pedido -->
-  <div id="orderModal">
-    <div class="modal-content">
-      <h3 id="orderModalTitle">Nuevo Pedido</h3>
-      <form id="formOrder">
-        <!-- Cliente -->
-        <label>Cliente</label>
-        <select id="orderClient" required></select>
-
-        <!-- Vehículo y precio -->
-        <label>Vehículo (modelo/año o URL)</label>
-        <input id="orderVehicle" type="text" required/>
-        <label>Precio negociado (LPS)</label>
-        <input id="orderPrice" type="number" required/>
-
-        <!-- Copart -->
-        <label>URL Copart</label>
-        <input id="orderCopartUrl" type="url" placeholder="https://copart.com/…" />
-        <label>Fotos Copart</label>
-        <input id="orderCopartPhotos" type="file" multiple accept="image/*"/>
-        <label>Recibo Copart (PDF)</label>
-        <input id="orderCopartReceipt" type="file" accept="application/pdf"/>
-
-        <!-- Envío -->
-        <label>Estado envío</label>
-        <select id="orderShippingStatus">
-          <option value="Recogida pendiente">Recogida pendiente</option>
-          <option value="En predio naviera">En predio naviera</option>
-          <option value="En camino a Honduras">En camino a Honduras</option>
-          <option value="En yarda HND">En yarda HND</option>
-          <option value="En proceso nacionalización">En proceso nacionalización</option>
-        </select>
-
-        <!-- Honduras y Aduana -->
-        <label>Recibo Honduras (PDF)</label>
-        <input id="orderHondurasReceipt" type="file" accept="application/pdf"/>
-        <label>Recibo Aduana (PDF)</label>
-        <input id="orderCustomsReceipt" type="file" accept="application/pdf"/>
-
-        <!-- Entrega -->
-        <label>Fotos Entrega</label>
-        <input id="orderDeliveryPhotos" type="file" multiple accept="image/*"/>
-        <label>Precio Final (LPS)</label>
-        <input id="orderFinalPrice" type="number"/>
-
-        <!-- Activo / Cancelado -->
-        <label style="margin-top:8px;display:flex;align-items:center;">
-          <input id="orderActive" type="checkbox" checked style="margin-right:6px;"/>
-          Activo
-        </label>
-
-        <div class="btn-group">
-          <button type="button" onclick="closeOrderModal()">Cancelar</button>
-          <button type="submit" class="btn btn-green">Guardar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
+  <!-- FOOTER -->
   <footer>
     <div class="logo">SubastaCarHN</div>
     <p>© 2025 SubastaCarHN. Todos los derechos reservados.</p>
@@ -204,8 +154,9 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+
   <script>
-    // Configuración Firebase
+    // Tu configuración Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -218,192 +169,139 @@
     firebase.initializeApp(firebaseConfig);
 
     const db = firebase.firestore();
-    const storageRef = firebase.storage().ref();
-    let editingOrderId = null, allPhones = [], ordersCache = [];
-    const ORDER_STATUSES = [
-      'Inicio','Pago Pendiente','Pagado','Recogido de Subasta',
-      'En predio naviera','En camino a Honduras','En yarda HND','En proceso nacionalización','Finalizado'
-    ];
-    const SHIPPING_STEPS = ORDER_STATUSES.slice(3,8);
+    let editingOrderId = null;
+    let clientsList = [];
 
-    // Pestañas
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.onclick = () => {
-        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-        document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    // PESTAÑAS
+    document.querySelectorAll('.tab').forEach(tab=>{
+      tab.addEventListener('click',()=>{
+        document.querySelectorAll('.tab, .section').forEach(el=>el.classList.remove('active'));
         tab.classList.add('active');
-        document.getElementById('section-'+tab.dataset.sec).classList.add('active');
-      };
+        document.getElementById('section-' + tab.dataset.sec).classList.add('active');
+      });
     });
 
-    // Auth + init
-    firebase.auth().onAuthStateChanged(user=> {
+    // AUTH + INICIO
+    firebase.auth().onAuthStateChanged(user=>{
       if(!user) return location='login.html';
       document.getElementById('adminApp').style.display='block';
       initApp();
     });
 
     function initApp(){
-      fetchUsers(); fetchVehicles(); fetchOrdersList();
-      document.getElementById('btnNewOrder').onclick = openNewOrderModal;
+      loadClients();
+      loadOrders();
+      // botón + Nuevo Pedido
+      document.getElementById('btnNewOrder').onclick = ()=>{
+        editingOrderId = null;
+        document.getElementById('formOrder').style.display='block';
+        document.getElementById('orderClient').value = '';
+        document.getElementById('orderUrl').value = '';
+        document.getElementById('orderPrice').value = '';
+      };
+      document.getElementById('btnCancelOrder').onclick = ()=> {
+        document.getElementById('formOrder').style.display='none';
+      };
       document.getElementById('formOrder').onsubmit = saveOrder;
-      document.getElementById('statusFilter').onchange = renderOrders;
-      document.getElementById('clientFilter').onchange = renderOrders;
+
+      // filtros tabla
+      document.getElementById('statusFilter').onchange = loadOrders;
+      document.getElementById('clientFilter').onchange = loadOrders;
     }
 
-    // Modal handlers
-    function openNewOrderModal(){
-      editingOrderId = null;
-      document.getElementById('orderModalTitle').textContent = 'Nuevo Pedido';
-      document.getElementById('formOrder').reset();
-      document.getElementById('orderActive').checked = true;
-      populateClientsSelect();
-      document.getElementById('orderModal').style.display = 'flex';
-    }
-    function closeOrderModal(){
-      document.getElementById('orderModal').style.display = 'none';
-    }
-    function populateClientsSelect(){
-      const sel = document.getElementById('orderClient');
-      sel.innerHTML = '<option value="">Selecciona cliente…</option>';
+    // Carga lista de clientes para el select
+    function loadClients(){
       db.collection('clients').orderBy('fullName').get().then(snap=>{
-        snap.forEach(d=>{
-          const u = d.data();
+        const sel = document.getElementById('orderClient');
+        sel.innerHTML = '<option value="">Selecciona cliente…</option>';
+        clientsList = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        clientsList.forEach(c=>{
           const o = document.createElement('option');
-          o.value = u.email; o.textContent = u.fullName;
+          o.value = c.id;
+          o.textContent = `${c.fullName} (${c.email})`;
           sel.appendChild(o);
         });
-      });
-    }
-
-    // Guardar / Actualizar pedido
-    async function saveOrder(e){
-      e.preventDefault();
-      const email = document.getElementById('orderClient').value;
-      const vehicle = document.getElementById('orderVehicle').value.trim();
-      const price = Number(document.getElementById('orderPrice').value);
-      if(!email||!vehicle||!price) return alert('Cliente, vehículo y precio son obligatorios');
-
-      // Cliente
-      const cSnap = await db.collection('clients').where('email','==',email).get();
-      if(cSnap.empty) return alert('Cliente no encontrado');
-      const cliente = cSnap.docs[0].data();
-
-      // Datos base
-      const data = {
-        clientName: cliente.fullName,
-        clientEmail:cliente.email,
-        clientPhone:cliente.phone,
-        vehicleModel:vehicle,
-        negotiatedPrice:price,
-        copartUrl:document.getElementById('orderCopartUrl').value.trim()||null,
-        shippingStatus:document.getElementById('orderShippingStatus').value,
-        finalPrice:Number(document.getElementById('orderFinalPrice').value)||null,
-        status: document.getElementById('orderActive').checked?'Pendiente':'Cancelado',
-        active: document.getElementById('orderActive').checked,
-        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-      };
-
-      const batch = db.batch();
-      const ref = editingOrderId
-        ? db.collection('orders').doc(editingOrderId)
-        : db.collection('orders').doc();
-      if(!editingOrderId){
-        data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-        batch.set(ref,data);
-      } else {
-        batch.update(ref,data);
-      }
-
-      // Función para subir archivos y actualizar campo
-      const upFiles = async (inputId, field, folder) => {
-        const files = document.getElementById(inputId).files;
-        if(!files.length) return;
-        const urls = [];
-        for(let f of files){
-          const snap = await storageRef.child(`orders/${ref.id}/${folder}/${f.name}`).put(f);
-          urls.push(await snap.ref.getDownloadURL());
-        }
-        batch.update(ref, {
-          [field]: firebase.firestore.FieldValue.arrayUnion(...urls)
+        // también para el filtro
+        const cf = document.getElementById('clientFilter');
+        cf.innerHTML = '<option value="">Todos los clientes</option>';
+        clientsList.forEach(c=>{
+          const o = document.createElement('option');
+          o.value = c.fullName;
+          o.textContent = c.fullName;
+          cf.appendChild(o);
         });
+      });
+    }
+
+    // Guarda nuevo pedido o edita existente
+    function saveOrder(e){
+      e.preventDefault();
+      const cid = document.getElementById('orderClient').value;
+      const client = clientsList.find(c=>c.id===cid);
+      const data = {
+        clientId: cid,
+        clientName: client.fullName,
+        clientEmail: client.email,
+        clientPhone: client.phone,
+        copartUrl: document.getElementById('orderUrl').value,
+        negotiatedPrice: Number(document.getElementById('orderPrice').value),
+        status: 'Pendiente',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
-
-      await upFiles('orderCopartPhotos','copartPhotos','copart');
-      await upFiles('orderCopartReceipt','copartReceiptUrl','copart');
-      await upFiles('orderHondurasReceipt','hondurasReceiptUrl','honduras');
-      await upFiles('orderCustomsReceipt','customsReceiptUrl','aduana');
-      await upFiles('orderDeliveryPhotos','deliveryPhotos','delivery');
-
-      await batch.commit();
-      closeOrderModal();
-      fetchOrdersList();
-    }
-
-    // Editar pedido
-    function editOrder(id){
-      editingOrderId = id;
-      db.collection('orders').doc(id).get().then(doc=>{
-        const d = doc.data();
-        document.getElementById('orderModalTitle').textContent = 'Editar Pedido';
-        document.getElementById('orderClient').value      = d.clientEmail;
-        document.getElementById('orderVehicle').value      = d.vehicleModel;
-        document.getElementById('orderPrice').value        = d.negotiatedPrice;
-        document.getElementById('orderCopartUrl').value    = d.copartUrl||'';
-        document.getElementById('orderShippingStatus').value = d.shippingStatus||'Recogida pendiente';
-        document.getElementById('orderFinalPrice').value   = d.finalPrice||'';
-        document.getElementById('orderActive').checked      = d.active;
-        populateClientsSelect();
-        document.getElementById('orderModal').style.display = 'flex';
+      const col = db.collection('orders');
+      const op = editingOrderId
+        ? col.doc(editingOrderId).update(data)
+        : col.doc().set(data);
+      op.then(()=>{
+        document.getElementById('formOrder').style.display='none';
+        loadOrders();
       });
     }
 
-    // Usuarios e Inventario: omito para brevedad, los dejas iguales…
-
-    // Pedidos: carga inicial
-    function fetchOrdersList(){
+    // Carga tabla de pedidos
+    function loadOrders(){
+      const stFilter = document.getElementById('statusFilter').value;
+      const clFilter = document.getElementById('clientFilter').value;
       db.collection('orders').orderBy('createdAt','desc').get().then(snap=>{
-        ordersCache = snap.docs.map(d=>({id:d.id,data:d.data()}));
-        populateClientFilter();
-        renderOrders();
+        const tbody = document.querySelector('#orders-table tbody');
+        tbody.innerHTML = '';
+        snap.forEach(doc=>{
+          const o = doc.data(), id = doc.id;
+          if(stFilter && o.status !== stFilter) return;
+          if(clFilter && o.clientName !== clFilter) return;
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${o.clientName}</td>
+            <td>${o.clientEmail}</td>
+            <td>${o.clientPhone}</td>
+            <td><a href="${o.copartUrl}" target="_blank">Ver</a></td>
+            <td>${o.negotiatedPrice.toLocaleString('es-HN')} LPS</td>
+            <td>${o.status}</td>
+            <td class="actions">
+              <button class="btn-edit" onclick="editOrder('${id}')">Editar</button>
+              <button class="btn-delete" onclick="deleteOrder('${id}')">X</button>
+            </td>`;
+          tbody.appendChild(tr);
+        });
+        document.getElementById('userCount').textContent = snap.size;
       });
     }
-    function populateClientFilter(){
-      const sel = document.getElementById('clientFilter');
-      sel.innerHTML = '<option value="">Todos los clientes</option>';
-      [...new Set(ordersCache.map(o=>o.data.clientName))].forEach(name=>{
-        const opt = document.createElement('option');
-        opt.value=name; opt.textContent=name; sel.appendChild(opt);
+
+    function editOrder(id){
+      db.collection('orders').doc(id).get().then(doc=>{
+        const o = doc.data();
+        editingOrderId = id;
+        document.getElementById('formOrder').style.display='block';
+        document.getElementById('orderClient').value = o.clientId;
+        document.getElementById('orderUrl').value = o.copartUrl;
+        document.getElementById('orderPrice').value = o.negotiatedPrice;
       });
     }
-    function renderOrders(){
-      const sf = document.getElementById('statusFilter').value;
-      const cf = document.getElementById('clientFilter').value;
-      const tbody = document.querySelector('#orders-table tbody');
-      tbody.innerHTML = '';
-      ordersCache.forEach(({id,data})=>{
-        if(sf==='Pendiente'&&data.status==='Finalizado') return;
-        if(sf==='Finalizado'&&data.status!=='Finalizado') return;
-        if(cf&&data.clientName!==cf) return;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${data.clientName}</td>
-          <td>${data.clientEmail}</td>
-          <td>${data.clientPhone}</td>
-          <td>${ data.copartUrl? `<a href="${data.copartUrl}" target="_blank">Ver</a>` : '–' }</td>
-          <td>${ (data.copartPhotos||[]).map(u=>`<img src="${u}" class="thumb">`).join('') }</td>
-          <td>${ data.copartReceiptUrl? `<a href="${data.copartReceiptUrl}" target="_blank">PDF</a>`:'–' }</td>
-          <td>${ data.shippingStatus||'–' }</td>
-          <td>${ data.hondurasReceiptUrl? `<a href="${data.hondurasReceiptUrl}" target="_blank">PDF</a>`:'–' }</td>
-          <td>${ data.customsReceiptUrl? `<a href="${data.customsReceiptUrl}" target="_blank">PDF</a>`:'–' }</td>
-          <td>${ (data.deliveryPhotos||[]).map(u=>`<img src="${u}" class="thumb">`).join('') }</td>
-          <td>${ data.finalPrice? data.finalPrice+' LPS':'–' }</td>
-          <td>${ data.status }</td>
-          <td class="actions">
-            <button class="btn-green" onclick="editOrder('${id}')">✎</button>
-          </td>`;
-        tbody.appendChild(tr);
-      });
+
+    function deleteOrder(id){
+      if(!confirm('¿Eliminar pedido?')) return;
+      db.collection('orders').doc(id).delete().then(loadOrders);
     }
   </script>
 </body>
