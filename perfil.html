@@ -179,6 +179,76 @@
       font-size: 0.85rem;
       opacity: 0.8;
     }
+
+    /* Reutilizamos estilos de admin para las tarjetas */
+    .orders-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      margin-top: 2rem;
+    }
+    .order-card {
+      border:1px solid #ddd;
+      border-radius:6px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    }
+    .accordion-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:.75rem 1rem;
+      background:var(--blue2);
+      color:#fff;
+      cursor:pointer;
+    }
+    .status-badge {
+      background:var(--yellow);
+      color:var(--text);
+      padding:2px 8px;
+      border-radius:4px;
+      font-size:.8rem;
+    }
+    .accordion-content {
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .3s ease, padding .3s ease;
+      padding:0 1rem;
+    }
+    .accordion-content.open {
+      padding:1rem;
+      max-height:800px;
+    }
+    .tracker {
+      list-style:none;
+      display:flex;
+      gap:.5rem;
+      padding:0;
+      margin-bottom:.75rem;
+      flex-wrap:wrap;
+    }
+    .tracker li {
+      position:relative;
+      padding-left:1.2rem;
+      font-size:.8rem;
+    }
+    .tracker li::before {
+      content:'';
+      position:absolute;
+      left:0;
+      top:.2rem;
+      width:.8rem;
+      height:.8rem;
+      border-radius:50%;
+      background:#ccc;
+    }
+    .tracker li.done::before { background:var(--yellow); }
+    .tracker li.active::before { background:var(--blue); }
+    .summary { list-style:none; padding:0; margin:0; font-size:.9rem; }
+    .summary li { margin-bottom:.5rem; }
+    .gallery { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
+    .gallery img { width:60px; height:60px; object-fit:cover; border:1px solid #ddd; border-radius:4px; }
   </style>
 </head>
 <body>
@@ -240,7 +310,27 @@
         </div>
       </form>
 
+      <!-- === Inicio: Nueva Gestión de Pedido === -->
+      <button id="btnStartGestion" class="styled-btn">Comenzar gestión</button>
+
+      <div id="depositForm" style="display:none; margin-top:1rem; background:#fff; padding:1rem; border-radius:8px; box-shadow:0 2px 12px rgba(0,0,0,0.1);">
+        <h2 style="margin-bottom:.5rem;color:var(--blue2)">Subir comprobante de depósito (5,000 LPS)</h2>
+        <input type="file" id="depositFile" accept="application/pdf,image/*" />
+        <button id="btnUploadDeposit" class="styled-btn" style="margin-top:.75rem;">Enviar comprobante</button>
+      </div>
+
+      <div id="depositSuccess" class="success-msg" style="display:none; margin-top:1rem;">
+        ✅ Comprobante enviado. Pronto comenzaremos la gestión.
+      </div>
+      <!-- === Fin: Nueva Gestión de Pedido === -->
+
       <hr style="margin: 2rem 0; border: none; border-top: 2px dashed #ccc;" />
+
+      <!-- === Inicio: Sección Mis Gestiones === -->
+      <h2 style="text-align:center; color: var(--blue); margin-bottom:1rem;">Mis Gestiones</h2>
+      <div id="clientOrdersContainer" class="orders-grid" style="max-width:800px; margin:0 auto;"></div>
+      <!-- === Fin: Sección Mis Gestiones === -->
+
       <h2 style="text-align:center; color: var(--blue);">Historial de Cálculos</h2>
       <div id="historialContainer" style="margin-top: 1rem;"></div>
     </div>
@@ -267,12 +357,14 @@
     </div>
   </footer>
 
-  <!-- Firebase y lógica -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+
   <script>
-    // Firebase Config
+    // Configuración Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -283,33 +375,17 @@
       measurementId: "G-QM5N60K8C0"
     };
     firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+
+    const auth    = firebase.auth();
+    const db      = firebase.firestore();
+    const storage = firebase.storage().ref();
 
     // Menú móvil
     function toggleMenu() {
       document.getElementById('mobile-menu-links').classList.toggle('open');
     }
 
-    // Saludo de usuario en header
-    auth.onAuthStateChanged(async user => {
-      if (!user) return window.location.href = 'login.html';
-      document.getElementById('userGreeting').textContent = `Hola, ${user.displayName || user.email}`;
-      document.getElementById('mobileGreeting').textContent = `Hola, ${user.displayName || user.email}`;
-      // Carga perfil
-      const doc = await db.collection('clients').doc(user.uid).get();
-      if (!doc.exists) return alert('⚠️ No se encontró el perfil.');
-      const d = doc.data();
-      document.getElementById('name').value      = d.fullName || '';
-      document.getElementById('email').value     = d.email    || user.email;
-      document.getElementById('phone').value     = d.phone    || '';
-      document.getElementById('address').value   = d.address  || '';
-      document.getElementById('dni').value       = d.dni      || '';
-      document.getElementById('birthYear').value = d.birthYear|| '';
-      cargarHistorial();
-    });
-
-    // Historial
+    // Funciones de perfil e historial
     async function cargarHistorial() {
       const uid = auth.currentUser.uid;
       const snap = await db.collection('clients').doc(uid)
@@ -332,10 +408,10 @@
           </div>`;
       }).join('');
     }
-
     async function renombrarHistorial(id, nombre) {
       await db.collection('clients').doc(auth.currentUser.uid)
         .collection('historial').doc(id).update({ nombre })
+        .then(cargarHistorial)
         .catch(()=>alert('❌ No se pudo renombrar.'));
     }
     async function eliminarHistorial(id) {
@@ -387,6 +463,172 @@
         });
     }
 
+    // ————— Nuevas funciones de Gestión —————
+    const btnStartGestion  = document.getElementById('btnStartGestion');
+    const depositForm      = document.getElementById('depositForm');
+    const depositFile      = document.getElementById('depositFile');
+    const btnUploadDeposit = document.getElementById('btnUploadDeposit');
+    const depositSuccess   = document.getElementById('depositSuccess');
+    const clientOrdersContainer = document.getElementById('clientOrdersContainer');
+    const STEPS = ['Inicio','Pago Pendiente','Pagado','Enviado','Aduana','Finalizado'];
+
+    btnStartGestion.onclick = () => {
+      depositForm.style.display     = 'block';
+      btnStartGestion.style.display = 'none';
+      depositSuccess.style.display  = 'none';
+      window.scrollTo({ top: depositForm.offsetTop - 20, behavior: 'smooth' });
+    };
+
+    btnUploadDeposit.onclick = async () => {
+      if (!depositFile.files[0]) {
+        return alert('Selecciona un comprobante antes de enviar.');
+      }
+      try {
+        btnUploadDeposit.disabled    = true;
+        btnUploadDeposit.textContent = 'Subiendo…';
+
+        const user = auth.currentUser;
+        const file = depositFile.files[0];
+        const path = `orders/${user.uid}/deposit/${Date.now()}_${file.name}`;
+        const snap = await storage.child(path).put(file);
+        const url  = await snap.ref.getDownloadURL();
+
+        const payload = {
+          clientName        : user.displayName || user.email,
+          clientEmail       : user.email,
+          clientPhone       : document.getElementById('phone').value,
+          depositReceiptUrl : url,
+          depositAmount     : 5000,
+          createdAt         : firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt         : firebase.firestore.FieldValue.serverTimestamp()
+        };
+        await db.collection('orders').add(payload);
+
+        depositForm.style.display    = 'none';
+        depositSuccess.style.display = 'block';
+        fetchClientOrders();
+      } catch (err) {
+        console.error(err);
+        alert('❌ Error al subir el comprobante. Intenta de nuevo.');
+      } finally {
+        btnUploadDeposit.disabled    = false;
+        btnUploadDeposit.textContent = 'Enviar comprobante';
+      }
+    };
+
+    function getDisplayStatus(order) {
+      if (order.entrega?.deliveryPhotos?.length) return 'Finalizado';
+      if (order.aduana?.detail)              return 'Aduana';
+      if (order.recogida?.valorGrua || order.recogida?.valorBarco) return 'Enviado';
+      if (order.copartInvoiceUrl)            return 'Pagado';
+      if (order.depositReceiptUrl)           return 'Pago Pendiente';
+      return 'Inicio';
+    }
+
+    async function fetchClientOrders() {
+      const user = auth.currentUser;
+      if (!user) return;
+      clientOrdersContainer.innerHTML = '';
+      const snap = await db.collection('orders')
+        .where('clientEmail', '==', user.email)
+        .orderBy('createdAt', 'desc')
+        .get();
+
+      if (snap.empty) {
+        clientOrdersContainer.innerHTML = '<p style="text-align:center;">Aún no tienes gestiones iniciadas.</p>';
+        return;
+      }
+
+      snap.docs.forEach(doc => {
+        const d = doc.data();
+        const status = getDisplayStatus(d);
+        const stepsHtml = STEPS.map((s,i) => {
+          const cls = i < STEPS.indexOf(status) ? 'done'
+                     : (i === STEPS.indexOf(status) ? 'active' : '');
+          return `<li class="${cls}">${s}</li>`;
+        }).join('');
+        const copartGallery = d.copartPhotos?.length
+          ? `<a href="#" class="toggle-client-detail" data-detail="cp-${doc.id}">Ver fotos Copart</a>
+             <div id="cp-${doc.id}" class="gallery" style="display:none;">
+               ${d.copartPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}
+             </div>` : '-';
+        const deliveryGallery = d.entrega?.deliveryPhotos?.length
+          ? `<a href="#" class="toggle-client-detail" data-detail="dp-${doc.id}">Ver fotos Entrega</a>
+             <div id="dp-${doc.id}" class="gallery" style="display:none;">
+               ${d.entrega.deliveryPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}
+             </div>` : '-';
+
+        const card = document.createElement('div');
+        card.className = 'order-card';
+        card.innerHTML = `
+          <div class="accordion-header" data-acc="${doc.id}">
+            <div><strong>#${doc.id.slice(0,6)}</strong> ${d.clientName}</div>
+            <div><span class="status-badge">${status}</span></div>
+          </div>
+          <div id="acc-${doc.id}" class="accordion-content">
+            <ul class="tracker">${stepsHtml}</ul>
+            <ul class="summary">
+              <li><strong>Depósito (LPS):</strong> ${d.depositAmount}</li>
+              <li><strong>Factura Copart:</strong> ${d.copartInvoiceUrl
+                ? `<a href="${d.copartInvoiceUrl}" target="_blank">Ver PDF</a>` : '-'
+              }</li>
+              <li><strong>Fotos Copart:</strong> ${copartGallery}</li>
+              <li><strong>Grúa (USD):</strong> ${d.recogida?.valorGrua||'-'}</li>
+              <li><strong>Barco (USD):</strong> ${d.recogida?.valorBarco||'-'}</li>
+              <li><strong>Llegada HND:</strong>
+                <a href="#" class="toggle-client-detail" data-detail="hnd-${doc.id}">Ver</a>
+                <div id="hnd-${doc.id}" style="display:none;margin:.5rem 0;">${d.envioHnd?.detail||'-'}</div>
+              </li>
+              <li><strong>Aduana:</strong>
+                <a href="#" class="toggle-client-detail" data-detail="adu-${doc.id}">Ver</a>
+                <div id="adu-${doc.id}" style="display:none;margin:.5rem 0;">${d.aduana?.detail||'-'}</div>
+              </li>
+              <li><strong>Entrega Final:</strong>
+                <a href="#" class="toggle-client-detail" data-detail="ent-${doc.id}">Ver</a>
+                <div id="ent-${doc.id}" style="display:none;margin:.5rem 0;">${d.entrega?.detail||'-'}</div>
+              </li>
+              <li><strong>Fotos Entrega:</strong> ${deliveryGallery}</li>
+              <li><strong>Última actualización:</strong> ${d.updatedAt?.toDate().toLocaleString('es-HN')||'-'}</li>
+            </ul>
+          </div>`;
+        clientOrdersContainer.appendChild(card);
+      });
+
+      // Acordeón y toggles
+      clientOrdersContainer.querySelectorAll('.accordion-header').forEach(h => {
+        h.onclick = () => document.getElementById('acc-'+h.dataset.acc).classList.toggle('open');
+      });
+      clientOrdersContainer.querySelectorAll('.toggle-client-detail').forEach(a => {
+        a.onclick = e => {
+          e.preventDefault();
+          const tgt = document.getElementById(a.dataset.detail);
+          tgt.style.display = tgt.style.display==='none'?'block':'none';
+        };
+      });
+    }
+
+    // Control de estado y carga inicial
+    auth.onAuthStateChanged(async user => {
+      if (!user) return window.location.href = 'login.html';
+      document.getElementById('userGreeting').textContent   = `Hola, ${user.displayName || user.email}`;
+      document.getElementById('mobileGreeting').textContent = `Hola, ${user.displayName || user.email}`;
+
+      // Cargar perfil
+      const doc = await db.collection('clients').doc(user.uid).get();
+      if (doc.exists) {
+        const d = doc.data();
+        document.getElementById('name').value      = d.fullName || '';
+        document.getElementById('email').value     = d.email    || user.email;
+        document.getElementById('phone').value     = d.phone    || '';
+        document.getElementById('address').value   = d.address  || '';
+        document.getElementById('dni').value       = d.dni      || '';
+        document.getElementById('birthYear').value = d.birthYear|| '';
+      }
+      // Cargar historial y gestiones
+      cargarHistorial();
+      fetchClientOrders();
+    });
+
     // Recuperar contraseña y cerrar sesión
     function sendPasswordReset() {
       auth.sendPasswordResetEmail(auth.currentUser.email)
@@ -396,7 +638,6 @@
     function logout() {
       auth.signOut().then(() => window.location.href = 'login.html');
     }
-
   </script>
 </body>
 </html>
