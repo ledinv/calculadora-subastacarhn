@@ -72,6 +72,7 @@
       display:flex; justify-content:space-around; margin-bottom:1.5rem;
     }
     .tab-btn {
+      position: relative;
       background:transparent; border:2px solid transparent; font-weight:600;
       padding:.5rem 1rem; cursor:pointer; font-size:1rem;
       color:var(--blue2); border-radius:6px;
@@ -81,7 +82,7 @@
       border-color:var(--blue2);
     }
     .tab-btn.active::after {
-      content:""; position:absolute; left:25%; right:25%; bottom:0;
+      content:""; position:absolute; left:25%; right:25%; bottom:-2px;
       height:4px; background:var(--yellow); border-radius:2px;
     }
 
@@ -110,7 +111,7 @@
       padding:10px; border-radius:6px; text-align:center; margin-top:10px;
     }
 
-    /* GESTIONES (estilo original) */
+    /* GESTIONES */
     .orders-grid {
       display:grid; gap:1rem;
       grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
@@ -159,6 +160,11 @@
       border:1px solid #ddd; border-radius:4px;
     }
 
+    /* Ocultar cualquier <hr> sobrante */
+    .summary hr {
+      display: none !important;
+    }
+
     /* HISTORIAL */
     #historialContainer .hist-item {
       background:#f0f8ff; padding:1rem; border-radius:10px;
@@ -185,7 +191,7 @@
     <nav id="mobile-menu-links" class="mobile-nav">
       <a href="index.html">Inicio</a>
       <a href="calculadora.html">Calculadora</a>
-      <a href="inventario.html">Vehículos</a>
+      <a href="inventario.html">Vehículos</a></li>
       <a href="cursos.html">Cursos</a>
       <a href="https://wa.me/50497330137" target="_blank">Soporte</a>
       <span id="mobileGreeting"></span>
@@ -308,7 +314,7 @@
       document.getElementById('mobile-menu-links').classList.toggle('open');
     }
 
-    // Mostrar sección/tab
+    // Pestañas
     function showSection(name) {
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -316,7 +322,7 @@
       document.querySelector(`.tab-btn[data-tab="${name}"]`).classList.add('active');
     }
 
-    // Perfil e Historial
+    // Cargar historial
     async function cargarHistorial() {
       const uid = auth.currentUser.uid;
       const snap = await db.collection('clients').doc(uid)
@@ -420,7 +426,7 @@
       if (!user) return;
       clientOrdersContainer.innerHTML = '';
       const snap = await db.collection('orders')
-        .where('clientEmail', '==', user.email)
+        .where('clientEmail','==',user.email)
         .orderBy('createdAt','desc')
         .get();
       if (snap.empty) {
@@ -430,9 +436,9 @@
       snap.docs.forEach(doc => {
         const o      = doc.data();
         const status = getDisplayStatus(o);
+        const idx    = STEPS.indexOf(status);
         const stepsHtml = STEPS.map((s,i) => {
-          const idx = STEPS.indexOf(status);
-          const cls = i < idx ? 'done' : (i === idx ? 'active' : '');
+          const cls = i < idx ? 'done' : (i===idx ? 'active' : '');
           return `<li class="${cls}">${s}</li>`;
         }).join('');
         const card = document.createElement('div');
@@ -445,67 +451,42 @@
           <div id="acc-${doc.id}" class="accordion-content">
             <ul class="tracker">${stepsHtml}</ul>
             <ul class="summary">
-              <li><strong>Vehículo:</strong> ${o.vehicleURL
-                ? `<a href="${o.vehicleURL}" target="_blank">Ver vehículo</a>`
-                : '-'
-              }</li>
+              <li><strong>Vehículo:</strong> ${o.vehicleURL ? `<a href="${o.vehicleURL}" target="_blank">Ver vehículo</a>` : '-'}</li>
               <li><strong>Estimado:</strong> ${o.precioEstimado ? `${o.precioEstimado} USD` : '-'}</li>
               <li><strong>Depósito:</strong> ${o.depositAmount || '-'} LPS</li>
-              <li><strong>Comprobante:</strong> ${o.depositReceiptUrl
-                ? `<a href="${o.depositReceiptUrl}" target="_blank">Ver comprobante</a>`
-                : '-'
-              }</li>
-              <li><strong>Factura Copart:</strong> ${o.copartInvoiceUrl
-                ? `<a href="${o.copartInvoiceUrl}" target="_blank">Ver PDF</a>`
-                : '-'
-              }</li>
-              <li><strong>Fotos Copart:</strong> ${o.copartPhotos?.length
-                ? `<a href="#" class="toggle-client-detail" data-detail="cp-${doc.id}">Ver fotos</a>
-                   <div id="cp-${doc.id}" class="gallery" style="display:none;">
-                     ${o.copartPhotos.map(u => `<img src="${u}" class="thumb"/>`).join('')}
-                   </div>`
-                : '-'
-              }</li>
+              <li><strong>Comprobante:</strong> ${o.depositReceiptUrl ? `<a href="${o.depositReceiptUrl}" target="_blank">Ver comprobante</a>` : '-'}</li>
+              <li><strong>Factura Copart:</strong> ${o.copartInvoiceUrl ? `<a href="${o.copartInvoiceUrl}" target="_blank">Ver PDF</a>` : '-'}</li>
+              <li><strong>Fotos Copart:</strong> ${o.copartPhotos?.length ? `<a href="#" class="toggle-client-detail" data-detail="cp-${doc.id}">Ver fotos</a>
+                 <div id="cp-${doc.id}" class="gallery" style="display:none;">
+                   ${o.copartPhotos.map(u => `<img src="${u}" class="thumb"/>`).join('')}
+                 </div>` : '-'}</li>
               <li><strong>Grúa:</strong> ${o.recogida.valorGrua || '-'} USD</li>
               <li><strong>Barco:</strong> ${o.recogida.valorBarco || '-'} USD</li>
-              <li><strong>Llegada HND:</strong>
-                <a href="#" class="toggle-client-detail" data-detail="hnd-${doc.id}">Ver</a>
-                <div id="hnd-${doc.id}" style="display:none;margin:.5rem 0;">${o.envioHnd.detail || '-'}</div>
-              </li>
-              <li><strong>Aduana:</strong>
-                <a href="#" class="toggle-client-detail" data-detail="adu-${doc.id}">Ver</a>
-                <div id="adu-${doc.id}" style="display:none;margin:.5rem 0;">${o.aduana.detail || '-'}</div>
-              </li>
-              <li><strong>Entrega Final:</strong>
-                <a href="#" class="toggle-client-detail" data-detail="ent-${doc.id}">Ver</a>
-                <div id="ent-${doc.id}" style="display:none;margin:.5rem 0;">
-                  ${o.entrega.detail || '-'}<br>
-                  <strong>Precio final:</strong> ${o.entrega.precioFinal || '-'} LPS
-                </div>
-              </li>
-              <li><strong>Fotos Entrega:</strong> ${o.entrega.deliveryPhotos?.length
-                ? `<a href="#" class="toggle-client-detail" data-detail="dp-${doc.id}">Ver fotos</a>
-                   <div id="dp-${doc.id}" class="gallery" style="display:none;">
-                     ${o.entrega.deliveryPhotos.map(u => `<img src="${u}" class="thumb"/>`).join('')}
-                   </div>`
-                : '-'
-              }</li>
+              <li><strong>Llegada HND:</strong> <a href="#" class="toggle-client-detail" data-detail="hnd-${doc.id}">Ver</a>
+                 <div id="hnd-${doc.id}" style="display:none;margin:.5rem 0;">${o.envioHnd.detail || '-'}</div></li>
+              <li><strong>Aduana:</strong> <a href="#" class="toggle-client-detail" data-detail="adu-${doc.id}">Ver</a>
+                 <div id="adu-${doc.id}" style="display:none;margin:.5rem 0;">${o.aduana.detail || '-'}</div></li>
+              <li><strong>Entrega Final:</strong> <a href="#" class="toggle-client-detail" data-detail="ent-${doc.id}">Ver</a>
+                 <div id="ent-${doc.id}" style="display:none;margin:.5rem 0;">
+                   ${o.entrega.detail || '-'}<br><strong>Precio final:</strong> ${o.entrega.precioFinal || '-'} LPS
+                 </div></li>
+              <li><strong>Fotos Entrega:</strong> ${o.entrega.deliveryPhotos?.length ? `<a href="#" class="toggle-client-detail" data-detail="dp-${doc.id}">Ver fotos</a>
+                 <div id="dp-${doc.id}" class="gallery" style="display:none;">
+                   ${o.entrega.deliveryPhotos.map(u => `<img src="${u}" class="thumb"/>`).join('')}
+                 </div>` : '-'}</li>
               <li><strong>Últ. actualización:</strong> ${o.updatedAt?.toDate().toLocaleString('es-HN') || '-'}</li>
             </ul>
           </div>`;
         clientOrdersContainer.appendChild(card);
       });
-      // acordeón y toggles
       document.querySelectorAll('.accordion-header').forEach(h => {
-        h.onclick = () => {
-          document.getElementById('acc-'+h.dataset.acc).classList.toggle('open');
-        };
+        h.onclick = () => document.getElementById('acc-'+h.dataset.acc).classList.toggle('open');
       });
       document.querySelectorAll('.toggle-client-detail').forEach(a => {
         a.onclick = e => {
           e.preventDefault();
           const tgt = document.getElementById(a.dataset.detail);
-          tgt.style.display = tgt.style.display === 'none' ? 'block' : 'none';
+          tgt.style.display = tgt.style.display==='none'?'block':'none';
         };
       });
     }
@@ -513,10 +494,8 @@
     // Autenticación y carga inicial
     auth.onAuthStateChanged(user => {
       if (!user) return window.location.href = 'login.html';
-      // saludo
       document.getElementById('userGreeting').textContent   = `Hola, ${user.displayName||user.email}`;
       document.getElementById('mobileGreeting').textContent = `Hola, ${user.displayName||user.email}`;
-      // perfil
       db.collection('clients').doc(user.uid).get().then(doc => {
         if (doc.exists) {
           const d = doc.data();
@@ -528,10 +507,8 @@
           document.getElementById('birthYear').value = d.birthYear || '';
         }
       });
-      // historial y gestiones
       cargarHistorial();
       fetchClientOrders();
-      // inicializamos la pestaña visible
       showSection('perfil');
     });
 
