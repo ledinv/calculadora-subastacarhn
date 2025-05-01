@@ -21,29 +21,85 @@
     header .logo { font-size:1.5rem; font-weight:bold; }
     header nav ul { list-style:none; display:flex; gap:1rem; }
     header nav a { color:#fff; text-decoration:none; }
+
     #adminApp { display:none; max-width:var(--max-width); margin:1rem auto; }
     .tabs { display:flex; border-bottom:2px solid var(--blue2); }
-    .tab { flex:1; padding:.75rem; background:var(--blue2); color:#fff; text-align:center; cursor:pointer; font-weight:600; }
+    .tab {
+      flex:1; padding:.75rem; background:var(--blue2);
+      color:#fff; text-align:center; cursor:pointer; font-weight:600;
+    }
     .tab.active { background:var(--blue); }
-    .section { display:none; background:#fff; border-radius:8px; box-shadow:0 2px 10px var(--shadow); margin-top:1rem; padding:1rem; }
+
+    .section {
+      display:none; background:#fff; border-radius:8px;
+      box-shadow:0 2px 10px var(--shadow); margin-top:1rem; padding:1rem;
+    }
     .section.active { display:block; }
+
     .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:1rem; }
     form input, form select, form textarea, form button {
-      width:100%; margin:.5rem 0; padding:.75rem; border:1px solid #ccc; border-radius:4px; font-size:1rem;
+      width:100%; margin:.5rem 0; padding:.75rem;
+      border:1px solid #ccc; border-radius:4px; font-size:1rem;
     }
-    form button { background:var(--yellow); color:var(--blue); border:none; font-weight:600; cursor:pointer; }
-    .preview img { width:60px; height:60px; object-fit:cover; margin:4px; border:1px solid #ccc; border-radius:4px; }
-    table { width:100%; border-collapse:collapse; font-size:.9rem; margin-top:.5rem; }
-    th, td { padding:.5rem; border:1px solid #ddd; text-align:left; vertical-align:middle; }
-    th { background:var(--blue2); color:#fff; }
-    img.thumb { width:50px; border-radius:4px; }
-    .actions button { margin-right:4px; padding:2px 6px; font-size:.8rem; border:none; border-radius:4px; cursor:pointer; }
-    .btn-sold { background:var(--yellow); color:var(--text); }
-    .btn-edit { background:var(--blue); color:#fff; }
-    .btn-delete { background:#e74c3c; color:#fff; }
-    .btn-copy { background:var(--blue); color:#fff; padding:4px 8px; margin-bottom:.5rem; }
-    .buscador { width:100%; max-width:400px; margin:1rem auto; display:block; padding:.75rem; border:1px solid #ccc; border-radius:6px; font-size:1rem; }
-    footer { background:var(--blue); color:#fff; padding:1rem; text-align:center; margin-top:2rem; }
+    form button {
+      background:var(--yellow); color:var(--blue);
+      border:none; font-weight:600; cursor:pointer;
+    }
+
+    .preview img {
+      width:60px; height:60px; object-fit:cover;
+      margin:4px; border:1px solid #ccc; border-radius:4px;
+    }
+
+    .card-pedido {
+      border:1px solid #ddd;
+      border-radius:8px;
+      background:#fff;
+      margin-bottom:1rem;
+      padding:1rem;
+      transition: all 0.3s ease;
+    }
+    .card-pedido:hover {
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .card-pedido h4 {
+      margin:0 0 0.5rem;
+      font-size:1rem;
+      color:var(--blue2);
+    }
+
+    .card-pedido .detalle {
+      display:none;
+      margin-top:1rem;
+      border-top:1px solid #eee;
+      padding-top:1rem;
+      font-size:.9rem;
+    }
+
+    .btn-toggle {
+      margin-top:.5rem;
+      font-size:.85rem;
+      background:transparent;
+      border:1px solid var(--blue2);
+      padding:6px 12px;
+      color:var(--blue2);
+      border-radius:4px;
+      cursor:pointer;
+    }
+
+    .buscador {
+      width:100%; max-width:400px;
+      margin:1rem auto; display:block;
+      padding:.75rem; border:1px solid #ccc;
+      border-radius:6px; font-size:1rem;
+    }
+
+    footer {
+      background:var(--blue); color:#fff;
+      padding:1rem; text-align:center;
+      margin-top:2rem;
+    }
   </style>
 </head>
 <body>
@@ -66,31 +122,6 @@
       <div class="tab" data-sec="usr">Usuarios (<span id="userCount">0</span>)</div>
       <div class="tab" data-sec="ped">Pedidos</div>
     </div>
-
-    <!-- AÑADIR VEHÍCULO -->
-    <div id="section-add" class="section active">
-      <form id="formularioAuto">
-        <div class="form-grid">
-          <input id="marca" name="marca" placeholder="Marca" required/>
-          <input id="modelo" name="modelo" placeholder="Modelo" required/>
-          <input id="motor" name="motor" placeholder="Motor" required/>
-          <input id="anio" name="anio" type="number" placeholder="Año" required/>
-          <input id="precio" name="precio" type="number" placeholder="Precio (LPS)" required/>
-          <input id="kilometraje" name="kilometraje" type="number" placeholder="Kilometraje" required/>
-          <input id="color" name="color" placeholder="Color" required/>
-          <select id="tipo" name="tipo" required>
-            <option value="">Tipo de Vehículo…</option>
-            <option>Sedán</option><option>SUV</option><option>Pickup</option><option>Camioneta</option><option>Eléctrico</option>
-          </select>
-          <textarea id="descripcion" name="descripcion" rows="2" placeholder="Descripción"></textarea>
-          <input id="imagenes" name="imagenes" type="file" multiple accept="image/*"/>
-        </div>
-        <div id="preview" class="preview"></div>
-        <button id="btnAgregar" type="submit">Guardar Vehículo</button>
-        <button id="btnCancelarEdicion" type="button" style="background:#e74c3c;color:#fff;display:none;">Cancelar</button>
-      </form>
-    </div>
-
     <!-- INVENTARIO -->
     <div id="section-inv" class="section">
       <table id="inventory-table">
@@ -109,12 +140,15 @@
         <tbody></tbody>
       </table>
     </div>
+
     <!-- PEDIDOS -->
     <div id="section-ped" class="section">
-      <input id="filtroPedidos" class="buscador" type="search" placeholder="Buscar por nombre, correo o teléfono">
+      <input id="filtroPedidos" class="buscador" type="search" placeholder="Buscar por nombre, correo o teléfono" />
 
-      <!-- Formulario de pedido -->
-      <div id="orderFormContainer" style="margin-top:1rem;">
+      <button id="btnNewOrder" class="btn-copy" style="margin-bottom: 1rem;">+ Nuevo Pedido</button>
+
+      <!-- FORMULARIO PEDIDO -->
+      <div id="orderFormContainer" style="display:none;">
         <h3 id="orderFormTitle">Nuevo Pedido</h3>
         <form id="formularioOrder">
           <div class="form-grid">
@@ -165,294 +199,318 @@
         <div id="contenedorFinalizados"></div>
       </div>
     </div>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 
-    <footer>
-      <div class="logo">SubastaCarHN</div>
-      <p>© 2025 SubastaCarHN. Todos los derechos reservados.</p>
-    </footer>
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+      authDomain: "subastacarhn-40554.firebaseapp.com",
+      projectId: "subastacarhn-40554",
+      storageBucket: "subastacarhn-40554.appspot.com",
+      messagingSenderId: "536785797974",
+      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+      measurementId: "G-QM5N60K8C0"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage().ref();
 
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
-  authDomain: "subastacarhn-40554.firebaseapp.com",
-  projectId: "subastacarhn-40554",
-  storageBucket: "subastacarhn-40554.appspot.com",
-  messagingSenderId: "536785797974",
-  appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
-  measurementId: "G-QM5N60K8C0"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const storage = firebase.storage().ref();
+    let clientsCache = [], ordersCache = [], editingVehicleId = null, editingOrderId = null;
 
-let clientsCache = [], ordersCache = [], editingVehicleId = null, editingOrderId = null;
+    // Tabs
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.onclick = () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('section-' + tab.dataset.sec).classList.add('active');
+      };
+    });
 
-// Tabs
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.onclick = () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById('section-' + tab.dataset.sec).classList.add('active');
-  };
-});
+    // Verifica sesión
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user) return location = 'login.html';
+      const admins = ['ledinvvv@gmail.com','ledinvvv1995@yopmail.com'];
+      if (!admins.includes(user.email)) return location = '/';
+      document.getElementById('adminApp').style.display = 'block';
+      initApp();
+    });
 
-// Verifica sesión
-firebase.auth().onAuthStateChanged(user => {
-  if (!user) return location = 'login.html';
-  const admins = ['ledinvvv@gmail.com','ledinvvv1995@yopmail.com'];
-  if (!admins.includes(user.email)) return location = '/';
-  document.getElementById('adminApp').style.display = 'block';
-  initApp();
-});
+    function initApp() {
+      document.getElementById('imagenes').onchange = previewVehiculos;
+      document.getElementById('formularioAuto').onsubmit = guardarVehiculo;
+      document.getElementById('btnCancelarEdicion').onclick = resetFormularioVehiculo;
+      document.getElementById('btnCopyAll').onclick = () => {
+        const all = clientsCache.map(c => c.phone).join(', ');
+        navigator.clipboard.writeText(all).then(() => alert('Teléfonos copiados'));
+      };
+      document.getElementById('btnNewOrder').onclick = () => {
+        editingOrderId = null;
+        resetFormularioPedido();
+        document.getElementById('orderFormContainer').style.display = 'block';
+        document.getElementById('orderFormContainer').scrollIntoView({ behavior: 'smooth' });
+      };
+      document.getElementById('btnCancelOrder').onclick = () =>
+        document.getElementById('orderFormContainer').style.display = 'none';
+      document.getElementById('orderClient').onchange = () => {
+        const c = clientsCache.find(x => x.email === orderClient.value);
+        orderClientPhone.value = c ? c.phone : '';
+      };
+      document.getElementById('formularioOrder').onsubmit = guardarPedido;
+      document.getElementById('filtroPedidos').oninput = renderPedidos;
 
-function initApp() {
-  document.getElementById('imagenes').onchange = previewVehiculos;
-  document.getElementById('formularioAuto').onsubmit = guardarVehiculo;
-  document.getElementById('btnCancelarEdicion').onclick = resetFormularioVehiculo;
-  document.getElementById('btnCopyAll').onclick = () => {
-    const all = clientsCache.map(c => c.phone).join(', ');
-    navigator.clipboard.writeText(all).then(() => alert('Teléfonos copiados'));
-  };
-  cargarVehiculos();
-  cargarClientes();
-  cargarPedidos();
-
-  document.getElementById('btnNewOrder').onclick = () => {
-    editingOrderId = null;
-    resetFormularioPedido();
-    document.getElementById('orderFormContainer').scrollIntoView({ behavior: 'smooth' });
-  };
-  document.getElementById('btnCancelOrder').onclick = resetFormularioPedido;
-  document.getElementById('orderClient').onchange = () => {
-    const c = clientsCache.find(x => x.email === orderClient.value);
-    orderClientPhone.value = c ? c.phone : '';
-  };
-  document.getElementById('formularioOrder').onsubmit = guardarPedido;
-  document.getElementById('filtroPedidos').oninput = renderPedidos;
-}
-
-function previewVehiculos() {
-  const pr = document.getElementById('preview'); pr.innerHTML = '';
-  Array.from(this.files).forEach(f => {
-    const r = new FileReader();
-    r.onload = e => pr.innerHTML += `<img src="${e.target.result}"/>`;
-    r.readAsDataURL(f);
-  });
-}
-
-async function guardarVehiculo(e) {
-  e.preventDefault();
-  const f = e.target;
-  const data = {
-    marca: f.marca.value,
-    modelo: f.modelo.value,
-    motor: f.motor.value,
-    anio: +f.anio.value,
-    precio: +f.precio.value,
-    kilometraje: +f.kilometraje.value,
-    color: f.color.value,
-    tipo: f.tipo.value,
-    descripcion: f.descripcion.value
-  };
-
-  if (editingVehicleId) {
-    await db.collection('inventario').doc(editingVehicleId).update(data);
-  } else {
-    const id = `${data.modelo.toLowerCase()}${data.anio}-${Date.now()}`;
-    const urls = [];
-    for (let file of f.imagenes.files) {
-      const snap = await storage.child(`inventario/${id}/${file.name}`).put(file);
-      urls.push(await snap.ref.getDownloadURL());
+      cargarVehiculos();
+      cargarClientes();
+      cargarPedidos();
     }
-    Object.assign(data, {
-      id,
-      imagenes: urls,
-      vendido: false,
-      fecha: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    await db.collection('inventario').doc(id).set(data);
-  }
 
-  resetFormularioVehiculo();
-  cargarVehiculos();
-}
+    function previewVehiculos() {
+      const pr = document.getElementById('preview'); pr.innerHTML = '';
+      Array.from(this.files).forEach(f => {
+        const r = new FileReader();
+        r.onload = e => pr.innerHTML += `<img src="${e.target.result}"/>`;
+        r.readAsDataURL(f);
+      });
+    }
 
-function resetFormularioVehiculo() {
-  editingVehicleId = null;
-  const f = document.getElementById('formularioAuto');
-  f.reset();
-  document.getElementById('preview').innerHTML = '';
-  document.getElementById('btnAgregar').textContent = 'Guardar Vehículo';
-  document.getElementById('btnCancelarEdicion').style.display = 'none';
-}
+    async function guardarVehiculo(e) {
+      e.preventDefault();
+      const f = e.target;
+      const data = {
+        marca: f.marca.value,
+        modelo: f.modelo.value,
+        motor: f.motor.value,
+        anio: +f.anio.value,
+        precio: +f.precio.value,
+        kilometraje: +f.kilometraje.value,
+        color: f.color.value,
+        tipo: f.tipo.value,
+        descripcion: f.descripcion.value
+      };
 
-function cargarVehiculos() {
-  db.collection('inventario').orderBy('fecha', 'desc').get().then(snap => {
-    const tb = document.querySelector('#inventory-table tbody');
-    tb.innerHTML = '';
-    snap.forEach(async d => {
-      const v = d.data();
-      const tr = document.createElement('tr');
-      const imgUrl = v.imagenes?.[0] || '';
-      tr.innerHTML = `
-        <td><img src="${imgUrl}" class="thumb"/></td>
-        <td>${v.marca}</td><td>${v.modelo}</td><td>${v.anio}</td>
-        <td>${v.precio} LPS</td><td>${v.vendido ? 'Vendido' : 'Disp.'}</td>
-        <td class="actions">
-          <button class="btn-edit" onclick="editarVehiculo('${d.id}')">E</button>
-          <button class="btn-delete" onclick="eliminarVehiculo('${d.id}')">X</button>
-        </td>`;
-      tb.appendChild(tr);
-    });
-  });
-}
+      if (editingVehicleId) {
+        await db.collection('inventario').doc(editingVehicleId).update(data);
+      } else {
+        const id = `${data.modelo.toLowerCase()}${data.anio}-${Date.now()}`;
+        const urls = [];
+        for (let file of f.imagenes.files) {
+          const snap = await storage.child(`inventario/${id}/${file.name}`).put(file);
+          urls.push(await snap.ref.getDownloadURL());
+        }
+        Object.assign(data, {
+          id,
+          imagenes: urls,
+          vendido: false,
+          fecha: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        await db.collection('inventario').doc(id).set(data);
+      }
 
-function editarVehiculo(id) {
-  db.collection('inventario').doc(id).get().then(doc => {
-    const v = doc.data(), f = document.getElementById('formularioAuto');
-    ['marca','modelo','motor','anio','precio','kilometraje','color','tipo','descripcion']
-      .forEach(k => f[k].value = v[k] || '');
-    editingVehicleId = id;
-    document.getElementById('btnAgregar').textContent = 'Guardar Cambios';
-    document.getElementById('btnCancelarEdicion').style.display = 'inline-block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
+      resetFormularioVehiculo();
+      cargarVehiculos();
+    }
 
-function eliminarVehiculo(id) {
-  if (!confirm('¿Eliminar este vehículo?')) return;
-  db.collection('inventario').doc(id).delete().then(cargarVehiculos);
-}
+    function resetFormularioVehiculo() {
+      editingVehicleId = null;
+      const f = document.getElementById('formularioAuto');
+      f.reset();
+      document.getElementById('preview').innerHTML = '';
+      document.getElementById('btnAgregar').textContent = 'Guardar Vehículo';
+      document.getElementById('btnCancelarEdicion').style.display = 'none';
+    }
 
-function cargarClientes() {
-  db.collection('clients').orderBy('fullName').get().then(snap => {
-    clientsCache = [];
-    const tb = document.querySelector('#users-table tbody');
-    const select = document.getElementById('orderClient');
-    tb.innerHTML = '';
-    select.innerHTML = '<option value="">Selecciona cliente…</option>';
-    snap.forEach(d => {
-      const u = d.data(); clientsCache.push(u);
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${u.fullName}</td>
-        <td>${u.email}</td>
-        <td>${u.phone}</td>
-        <td><button class="btn-copy" onclick="navigator.clipboard.writeText('${u.phone}')">Copiar</button></td>`;
-      tb.appendChild(tr);
-      const opt = document.createElement('option');
-      opt.value = u.email;
-      opt.textContent = u.fullName;
-      select.appendChild(opt);
-    });
-    document.getElementById('userCount').textContent = clientsCache.length;
-  });
-}
-</script>
+    function cargarVehiculos() {
+      db.collection('inventario').orderBy('fecha', 'desc').get().then(snap => {
+        const tb = document.querySelector('#inventory-table tbody');
+        tb.innerHTML = '';
+        snap.forEach(async d => {
+          const v = d.data();
+          const tr = document.createElement('tr');
+          const imgUrl = v.imagenes?.[0] || '';
+          tr.innerHTML = `
+            <td><img src="${imgUrl}" class="thumb"/></td>
+            <td>${v.marca}</td><td>${v.modelo}</td><td>${v.anio}</td>
+            <td>${v.precio} LPS</td><td>${v.vendido ? 'Vendido' : 'Disp.'}</td>
+            <td class="actions">
+              <button class="btn-edit" onclick="editarVehiculo('${d.id}')">E</button>
+              <button class="btn-delete" onclick="eliminarVehiculo('${d.id}')">X</button>
+            </td>`;
+          tb.appendChild(tr);
+        });
+      });
+    }
+
+    function editarVehiculo(id) {
+      db.collection('inventario').doc(id).get().then(doc => {
+        const v = doc.data(), f = document.getElementById('formularioAuto');
+        ['marca','modelo','motor','anio','precio','kilometraje','color','tipo','descripcion']
+          .forEach(k => f[k].value = v[k] || '');
+        editingVehicleId = id;
+        document.getElementById('btnAgregar').textContent = 'Guardar Cambios';
+        document.getElementById('btnCancelarEdicion').style.display = 'inline-block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    function eliminarVehiculo(id) {
+      if (!confirm('¿Eliminar este vehículo?')) return;
+      db.collection('inventario').doc(id).delete().then(cargarVehiculos);
+    }
+
+    function cargarClientes() {
+      db.collection('clients').orderBy('fullName').get().then(snap => {
+        clientsCache = [];
+        const tb = document.querySelector('#users-table tbody');
+        const select = document.getElementById('orderClient');
+        tb.innerHTML = '';
+        select.innerHTML = '<option value="">Selecciona cliente…</option>';
+        snap.forEach(d => {
+          const u = d.data(); clientsCache.push(u);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${u.fullName}</td>
+            <td>${u.email}</td>
+            <td>${u.phone}</td>
+            <td><button class="btn-copy" onclick="navigator.clipboard.writeText('${u.phone}')">Copiar</button></td>`;
+          tb.appendChild(tr);
+          const opt = document.createElement('option');
+          opt.value = u.email;
+          opt.textContent = u.fullName;
+          select.appendChild(opt);
+        });
+        document.getElementById('userCount').textContent = clientsCache.length;
+      });
+    }
+  </script>
 <script>
-function resetFormularioPedido() {
-  document.getElementById('formularioOrder').reset();
-  document.getElementById('previewCopart').innerHTML = '';
-  document.getElementById('previewEntrega').innerHTML = '';
-  editingOrderId = null;
-  document.getElementById('orderFormTitle').textContent = 'Nuevo Pedido';
-}
-
-async function guardarPedido(e) {
-  e.preventDefault();
-  const c = clientsCache.find(x => x.email === orderClient.value);
-  const data = {
-    clientName: c.fullName,
-    clientEmail: c.email,
-    clientPhone: c.phone,
-    vehicleURL: orderVehicleURL.value,
-    precioEstimado: +orderPrecioEstimado.value,
-    copartPhotos: [],
-    copartInvoiceUrl: null,
-    recogida: { valorGrua: +valorGrua.value, valorBarco: +valorBarco.value },
-    envioHnd: { detail: textoEnvioHnd.value },
-    aduana: { detail: textoAduana.value },
-    entrega: { precioFinal: +precioFinal.value, deliveryPhotos: [] },
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  };
-
-  for (let f of orderCopartPhotos.files) {
-    const snap = await storage.child(`orders/${editingOrderId || 'new'}/copart/${f.name}`).put(f);
-    data.copartPhotos.push(await snap.ref.getDownloadURL());
+  function resetFormularioPedido() {
+    document.getElementById('formularioOrder').reset();
+    document.getElementById('previewCopart').innerHTML = '';
+    document.getElementById('previewEntrega').innerHTML = '';
+    editingOrderId = null;
+    document.getElementById('orderFormTitle').textContent = 'Nuevo Pedido';
   }
 
-  if (orderCopartInvoice.files[0]) {
-    const snap = await storage.child(`orders/${editingOrderId || 'new'}/copart/factura.pdf`).put(orderCopartInvoice.files[0]);
-    data.copartInvoiceUrl = await snap.ref.getDownloadURL();
+  async function guardarPedido(e) {
+    e.preventDefault();
+    const c = clientsCache.find(x => x.email === orderClient.value);
+    const data = {
+      clientName: c.fullName,
+      clientEmail: c.email,
+      clientPhone: c.phone,
+      vehicleURL: orderVehicleURL.value,
+      precioEstimado: +orderPrecioEstimado.value,
+      copartPhotos: [],
+      copartInvoiceUrl: null,
+      recogida: { valorGrua: +valorGrua.value, valorBarco: +valorBarco.value },
+      envioHnd: { detail: textoEnvioHnd.value },
+      aduana: { detail: textoAduana.value },
+      entrega: { precioFinal: +precioFinal.value, deliveryPhotos: [] },
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    for (let f of orderCopartPhotos.files) {
+      const snap = await storage.child(`orders/${editingOrderId || 'new'}/copart/${f.name}`).put(f);
+      data.copartPhotos.push(await snap.ref.getDownloadURL());
+    }
+
+    if (orderCopartInvoice.files[0]) {
+      const snap = await storage.child(`orders/${editingOrderId || 'new'}/copart/factura.pdf`).put(orderCopartInvoice.files[0]);
+      data.copartInvoiceUrl = await snap.ref.getDownloadURL();
+    }
+
+    for (let f of fotosEntrega.files) {
+      const snap = await storage.child(`orders/${editingOrderId || 'new'}/delivery/${f.name}`).put(f);
+      data.entrega.deliveryPhotos.push(await snap.ref.getDownloadURL());
+    }
+
+    if (editingOrderId) {
+      await db.collection('orders').doc(editingOrderId).update(data);
+    } else {
+      await db.collection('orders').add(data);
+    }
+
+    resetFormularioPedido();
+    document.getElementById('orderFormContainer').style.display = 'none';
+    cargarPedidos();
   }
 
-  for (let f of fotosEntrega.files) {
-    const snap = await storage.child(`orders/${editingOrderId || 'new'}/delivery/${f.name}`).put(f);
-    data.entrega.deliveryPhotos.push(await snap.ref.getDownloadURL());
+  function cargarPedidos() {
+    db.collection('orders').orderBy('createdAt', 'desc').get().then(snap => {
+      ordersCache = [];
+      snap.forEach(d => ordersCache.push({ id: d.id, ...d.data() }));
+      renderPedidos();
+    });
   }
 
-  if (editingOrderId) {
-    await db.collection('orders').doc(editingOrderId).update(data);
-  } else {
-    await db.collection('orders').add(data);
+  function renderPedidos() {
+    const filtro = document.getElementById('filtroPedidos').value.toLowerCase();
+    const activos = document.getElementById('contenedorActivos');
+    const finalizados = document.getElementById('contenedorFinalizados');
+    activos.innerHTML = '';
+    finalizados.innerHTML = '';
+
+    ordersCache.forEach(p => {
+      const texto = `${p.clientName} ${p.clientEmail} ${p.clientPhone}`.toLowerCase();
+      if (filtro && !texto.includes(filtro)) return;
+
+      const div = document.createElement('div');
+      div.style.border = '1px solid #ccc';
+      div.style.borderRadius = '8px';
+      div.style.marginBottom = '1rem';
+      div.style.padding = '1rem';
+      div.style.background = '#fff';
+
+      div.innerHTML = `
+        <p><strong>Cliente:</strong> ${p.clientName}</p>
+        <p><strong>Email:</strong> ${p.clientEmail}</p>
+        <p><strong>Teléfono:</strong> ${p.clientPhone}</p>
+        <p><strong>URL:</strong> <a href="${p.vehicleURL}" target="_blank">Ver vehículo</a></p>
+        <p><strong>Precio estimado:</strong> ${p.precioEstimado || '-'} LPS</p>
+        <p><strong>Factura:</strong> ${p.copartInvoiceUrl ? `<a href="${p.copartInvoiceUrl}" target="_blank">Ver PDF</a>` : 'No subida'}</p>
+        <p><strong>Fotos vehículo:</strong><br>${(p.copartPhotos || []).map(url => `<img src="${url}" style="width:80px; margin:3px;">`).join('')}</p>
+        <p><strong>Grúa:</strong> ${p.recogida?.valorGrua || 0} USD</p>
+        <p><strong>Barco:</strong> ${p.recogida?.valorBarco || 0} USD</p>
+        <p><strong>Envío:</strong> ${p.envioHnd?.detail || '-'}</p>
+        <p><strong>Aduana:</strong> ${p.aduana?.detail || '-'}</p>
+        <p><strong>Entrega:</strong> ${p.entrega?.precioFinal || '-'} LPS</p>
+        <p><strong>Fotos entrega:</strong><br>${(p.entrega?.deliveryPhotos || []).map(url => `<img src="${url}" style="width:80px; margin:3px;">`).join('')}</p>
+        <button class="btn-edit" onclick="editarPedido('${p.id}')">Editar</button>
+        <button class="btn-delete" onclick="eliminarPedido('${p.id}')">Eliminar</button>
+      `;
+
+      const finalizado = p.entrega?.precioFinal && (p.entrega?.deliveryPhotos?.length || 0) > 0;
+      (finalizado ? finalizados : activos).appendChild(div);
+    });
   }
 
-  resetFormularioPedido();
-  cargarPedidos();
-}
+  function editarPedido(id) {
+    const p = ordersCache.find(o => o.id === id);
+    if (!p) return;
+    editingOrderId = id;
+    document.getElementById('orderFormContainer').style.display = 'block';
+    document.getElementById('orderFormTitle').textContent = 'Editar Pedido';
 
-function cargarPedidos() {
-  db.collection('orders').orderBy('createdAt', 'desc').get().then(snap => {
-    ordersCache = [];
-    snap.forEach(d => ordersCache.push({ id: d.id, ...d.data() }));
-    renderPedidos();
-  });
-}
+    orderClient.value = p.clientEmail;
+    orderClient.dispatchEvent(new Event('change'));
+    orderVehicleURL.value = p.vehicleURL;
+    orderPrecioEstimado.value = p.precioEstimado;
+    valorGrua.value = p.recogida?.valorGrua || 0;
+    valorBarco.value = p.recogida?.valorBarco || 0;
+    textoEnvioHnd.value = p.envioHnd?.detail || '';
+    textoAduana.value = p.aduana?.detail || '';
+    precioFinal.value = p.entrega?.precioFinal || 0;
 
-function renderPedidos() {
-  const filtro = document.getElementById('filtroPedidos').value.toLowerCase();
-  const activos = document.getElementById('contenedorActivos');
-  const finalizados = document.getElementById('contenedorFinalizados');
-  activos.innerHTML = '';
-  finalizados.innerHTML = '';
+    previewCopart.innerHTML = (p.copartPhotos || []).map(url => `<img src="${url}" style="width:60px; margin:4px;">`).join('');
+    previewEntrega.innerHTML = (p.entrega?.deliveryPhotos || []).map(url => `<img src="${url}" style="width:60px; margin:4px;">`).join('');
+  }
 
-  ordersCache.forEach(p => {
-    const texto = `${p.clientName} ${p.clientEmail} ${p.clientPhone}`.toLowerCase();
-    if (filtro && !texto.includes(filtro)) return;
-
-    const div = document.createElement('div');
-    div.style.border = '1px solid #ccc';
-    div.style.borderRadius = '8px';
-    div.style.marginBottom = '1rem';
-    div.style.padding = '1rem';
-    div.style.background = '#fff';
-
-    div.innerHTML = `
-      <p><strong>Cliente:</strong> ${p.clientName}</p>
-      <p><strong>Email:</strong> ${p.clientEmail}</p>
-      <p><strong>Teléfono:</strong> ${p.clientPhone}</p>
-      <p><strong>URL:</strong> <a href="${p.vehicleURL}" target="_blank">Ver vehículo</a></p>
-      <p><strong>Precio estimado:</strong> ${p.precioEstimado || '-'} LPS</p>
-      <p><strong>Factura:</strong> ${p.copartInvoiceUrl ? `<a href="${p.copartInvoiceUrl}" target="_blank">Ver PDF</a>` : 'No subida'}</p>
-      <p><strong>Fotos vehículo:</strong><br>${(p.copartPhotos || []).map(url => `<img src="${url}" style="width:80px; margin:3px;">`).join('')}</p>
-      <p><strong>Grúa:</strong> ${p.recogida?.valorGrua || 0} USD</p>
-      <p><strong>Barco:</strong> ${p.recogida?.valorBarco || 0} USD</p>
-      <p><strong>Envío:</strong> ${p.envioHnd?.detail || '-'}</p>
-      <p><strong>Aduana:</strong> ${p.aduana?.detail || '-'}</p>
-      <p><strong>Entrega:</strong> ${p.entrega?.precioFinal || '-'} LPS</p>
-      <p><strong>Fotos entrega:</strong><br>${(p.entrega?.deliveryPhotos || []).map(url => `<img src="${url}" style="width:80px; margin:3px;">`).join('')}</p>
-    `;
-
-    const estaFinalizado = p.entrega?.precioFinal && (p.entrega.deliveryPhotos || []).length > 0;
-    (estaFinalizado ? finalizados : activos).appendChild(div);
-  });
-}
+  function eliminarPedido(id) {
+    if (!confirm('¿Eliminar este pedido?')) return;
+    db.collection('orders').doc(id).delete().then(cargarPedidos);
+  }
 </script>
-</body>
-</html>
