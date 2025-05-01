@@ -2,10 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mi Perfil – SubastaCarHN</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Fuentes e íconos -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
   <meta name="theme-color" content="#002f6c" />
+
   <style>
     :root {
       --blue: #002f6c;
@@ -17,158 +20,180 @@
       --max-width: 1200px;
       --card-radius: 8px;
     }
-    *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
-    body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text); line-height:1.6; }
-    a { text-decoration:none; color:inherit; }
-    .container { max-width:var(--max-width); margin:0 auto; padding:1rem; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--light);
+      color: var(--text);
+    }
+    a { text-decoration: none; color: inherit; }
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 1rem; }
+    header, footer {
+      background: var(--blue);
+      color: #fff;
+    }
+    header .nav, footer .nav {
+      display: flex; justify-content: center; gap: 1rem;
+      padding: 1rem 0;
+    }
+    header .nav a, footer .nav a {
+      color: var(--yellow); font-weight: 600;
+    }
+    main { padding: 2rem 0; }
 
-    /* Header original */
-    .site-header { background:var(--blue); color:#fff; padding:1rem 0; position:sticky; top:0; z-index:1000; }
-    .header-inner { display:flex; align-items:center; justify-content:space-between; max-width:var(--max-width); margin:0 auto; padding:0 1rem; }
-    .logo { font-size:1.5rem; font-weight:bold; }
-    .nav-list { list-style:none; display:flex; gap:1rem; }
-    .nav-list a, .nav-list span { color:var(--yellow); font-weight:600; font-size:.95rem; }
-    .menu-icon { background:var(--yellow); color:var(--blue); border:none; padding:.5rem; border-radius:6px; cursor:pointer; box-shadow:0 2px 8px var(--shadow); }
-    .mobile-nav { display:none; flex-direction:column; background:#fff; padding:1rem; box-shadow:0 2px 8px var(--shadow); max-width:var(--max-width); margin:0 auto; }
-    .mobile-nav.open { display:flex; gap:.5rem; }
-    .mobile-nav a, .mobile-nav span { font-weight:700; padding:.75rem; border-radius:4px; transition:background .2s; color:var(--blue); }
-    .mobile-nav a:hover, .mobile-nav span:hover { background:rgba(0,47,108,0.1); }
-    @media(max-width:767px){ .nav-list{display:none;} }
-    @media(min-width:768px){ .menu-icon{display:none;} }
+    .card {
+      background: #fff;
+      border-radius: var(--card-radius);
+      box-shadow: 0 2px 8px var(--shadow);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .card-header {
+      background: var(--blue2);
+      color: #fff;
+      padding: .75rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .card-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: all .3s ease;
+      padding: 0 1rem;
+    }
+    .card-body.open {
+      padding: 1rem;
+      max-height: 800px;
+    }
 
-    /* Tabs */
-    .tabs { display:flex; border-bottom:2px solid var(--blue2); margin:1rem auto; max-width:var(--max-width); }
-    .tab { flex:1; text-align:center; padding:.75rem; background:var(--blue2); color:#fff; cursor:pointer; font-weight:600; }
-    .tab.active { background:var(--blue); }
-    .section { display:none; max-width:var(--max-width); margin:0 auto; }
-    .section.active { display:block; }
+    .btn, button {
+      background: var(--yellow);
+      color: var(--blue);
+      border: none;
+      padding: .75rem 1rem;
+      border-radius: var(--card-radius);
+      cursor: pointer;
+      font-weight: 600;
+    }
 
-    /* Cards */
-    .card { background:#fff; border-radius:var(--card-radius); box-shadow:0 2px 8px var(--shadow); margin:1rem 0; overflow:hidden; }
-    .card-header { background:var(--blue2); color:#fff; padding:.75rem 1rem; display:flex; align-items:center; justify-content:space-between; cursor:pointer; }
-    .card-body { max-height:0; overflow:hidden; transition:max-height .3s ease,padding .3s ease; padding:0 1rem; }
-    .card-body.open { padding:1rem; max-height:800px; }
-    .status-badge { background:var(--yellow); color:var(--text); padding:2px 8px; border-radius:4px; font-size:.8rem; }
+    form .grid, .grid {
+      display: grid;
+      gap: .75rem;
+    }
+    .grid-2 {
+      grid-template-columns: 1fr 1fr;
+    }
 
-    .btn { background:var(--yellow); color:var(--blue); border:none; padding:.75rem 1rem; border-radius:var(--card-radius); cursor:pointer; font-weight:600; }
-    .grid { display:grid; gap:.75rem; }
-    .grid-2 { grid-template-columns:1fr 1fr; }
-    input, select, textarea { width:100%; padding:.6rem; border:1px solid #ccc; border-radius:4px; }
+    input, select, textarea {
+      width: 100%;
+      padding: .6rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
 
-    .tracker { list-style:none; display:flex; gap:.5rem; flex-wrap:wrap; padding:0; margin:1rem 0; }
-    .tracker li { position:relative; padding-left:1.2rem; font-size:.8rem; }
-    .tracker li::before { content:''; position:absolute; left:0; top:.2rem; width:.8rem; height:.8rem; border-radius:50%; background:#ccc; }
-    .tracker li.done::before { background:var(--yellow); }
-    .tracker li.active::before { background:var(--blue); }
+    .tracker {
+      list-style: none;
+      display: flex;
+      gap: .5rem;
+      margin: 1rem 0;
+      flex-wrap: wrap;
+      padding: 0;
+    }
+    .tracker li {
+      position: relative;
+      padding-left: 1.2rem;
+      font-size: .8rem;
+    }
+    .tracker li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: .2rem;
+      width: .8rem; height: .8rem;
+      border-radius: 50%;
+      background: #ccc;
+    }
+    .tracker li.done::before { background: var(--yellow); }
+    .tracker li.active::before { background: var(--blue); }
 
-    .orders-grid { display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); }
-
-    /* Historial scroll */
-    #historialContainer { max-height:400px; overflow-y:auto; padding-right:.5rem; }
-    #historialContainer .card { margin:0.5rem 0; }
-
-    /* Footer original */
-    .site-footer { background:var(--blue2); color:#fff; text-align:center; padding:1rem 0; margin-top:2rem; }
-    .footer-list { display:flex; justify-content:center; gap:1.5rem; margin-bottom:1rem; list-style:none; padding:0; }
-    .footer-list a { color:var(--yellow); font-weight:500; }
-    .social-links a { color:var(--yellow); margin:0 .5rem; }
-    .footer-copy { font-size:.85rem; opacity:.8; }
+    .orders-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    .status-badge {
+      background: var(--yellow);
+      color: var(--text);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: .8rem;
+    }
   </style>
 </head>
 <body>
-
-  <!-- Header -->
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="logo">SubastaCarHN</div>
-      <ul class="nav-list">
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="calculadora.html">Calculadora</a></li>
-        <li><a href="inventario.html">Vehículos</a></li>
-        <li><a href="cursos.html">Cursos</a></li>
-        <li><span id="userGreeting"></span></li>
-      </ul>
-      <button class="menu-icon" onclick="toggleMenu()">☰</button>
+  <header>
+    <div class="container">
+      <h1>SubastaCarHN</h1>
+      <nav class="nav">
+        <a href="index.html">Inicio</a>
+        <a href="calculadora.html">Calculadora</a>
+        <a href="inventario.html">Vehículos</a>
+        <a href="cursos.html">Cursos</a>
+        <span id="userGreeting"></span>
+      </nav>
     </div>
-    <nav id="mobile-menu-links" class="mobile-nav">
-      <a href="index.html">Inicio</a>
-      <a href="calculadora.html">Calculadora</a>
-      <a href="inventario.html">Vehículos</a>
-      <a href="cursos.html">Cursos</a>
-      <span id="mobileGreeting"></span>
-    </nav>
   </header>
 
-  <!-- Main -->
   <main class="container">
-    <div class="tabs">
-      <div class="tab active" data-sec="perfil">Perfil</div>
-      <div class="tab" data-sec="gestion">Gestión</div>
-      <div class="tab" data-sec="historial">Historial</div>
-    </div>
-
     <!-- Perfil -->
-    <section id="section-perfil" class="section active">
-      <div class="card">
-        <div class="card-header">Mi Perfil</div>
-        <div class="card-body open">
-          <form id="profileForm" class="grid grid-2">
-            <label>Nombre<input type="text" id="name" required></label>
-            <label>Email<input type="email" id="email" readonly></label>
-            <label>Teléfono<input type="tel" id="phone" readonly></label>
-            <label>Dirección<input id="address"></label>
-            <label>DNI<input id="dni"></label>
-            <label>Año nacimiento<input type="number" id="birthYear" min="1900" max="2100"></label>
-            <div></div>
-            <button type="submit" class="btn">Guardar</button>
-            <button type="button" class="btn" onclick="sendPasswordReset()">Cambiar contraseña</button>
-            <button type="button" class="btn" onclick="logout()">Cerrar sesión</button>
-          </form>
-        </div>
+    <section class="card">
+      <div class="card-header">Mi Perfil</div>
+      <div class="card-body open">
+        <form id="profileForm" class="grid grid-2">
+          <label>Nombre<input type="text" id="name" required></label>
+          <label>Email<input type="email" id="email" readonly></label>
+          <label>Teléfono<input type="tel" id="phone" readonly></label>
+          <label>Dirección<input id="address"></label>
+          <label>DNI<input id="dni"></label>
+          <label>Año nacimiento<input type="number" id="birthYear" min="1900" max="2100"></label>
+          <div></div>
+          <button type="submit" class="btn">Guardar cambios</button>
+          <button type="button" class="btn" onclick="sendPasswordReset()">Cambiar contraseña</button>
+          <button type="button" class="btn" onclick="logout()">Cerrar sesión</button>
+        </form>
       </div>
     </section>
 
     <!-- Gestión -->
-    <section id="section-gestion" class="section">
-      <div class="card">
-        <div class="card-header">Nueva Gestión</div>
-        <div class="card-body open grid">
-          <button id="btnStartGestion" class="btn">Comenzar gestión (5,000 LPS)</button>
-          <div id="depositForm" style="display:none;" class="grid grid-2">
-            <input type="file" id="depositFile" accept="application/pdf,image/*">
-            <button id="btnUploadDeposit" class="btn">Enviar comprobante</button>
-          </div>
-          <div id="depositSuccess" class="card-body open" style="display:none;">✅ Comprobante subido</div>
+    <section class="card">
+      <div class="card-header">Gestión de Subastas</div>
+      <div class="card-body open grid">
+        <button id="btnStartGestion" class="btn">Comenzar gestión</button>
+        <div id="depositForm" style="display:none;" class="grid grid-2">
+          <input type="file" id="depositFile" accept="application/pdf,image/*">
+          <button id="btnUploadDeposit" class="btn">Enviar comprobante</button>
+        </div>
+        <div id="depositSuccess" style="display:none;" class="success-msg">
+          ✅ Comprobante subido. Pronto comenzaremos la gestión.
         </div>
       </div>
+    </section>
+
+    <!-- Mis Gestiones -->
+    <section>
       <h2>Mis Gestiones</h2>
       <div id="orders" class="orders-grid"></div>
     </section>
-
-    <!-- Historial -->
-    <section id="section-historial" class="section">
-      <h2>Historial de Cálculos</h2>
-      <div id="historialContainer"></div>
-    </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="site-footer">
+  <footer>
     <div class="container">
-      <nav class="footer-nav">
-        <ul class="footer-list">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="calculadora.html">Calculadora</a></li>
-          <li><a href="inventario.html">Vehículos</a></li>
-          <li><a href="cursos.html">Cursos</a></li>
-        </ul>
+      <nav class="nav">
+        <a href="index.html">Inicio</a>
+        <a href="calculadora.html">Calculadora</a>
+        <a href="inventario.html">Vehículos</a>
       </nav>
-      <div class="social-links">
-        <a href="https://facebook.com/Subasta-Car-HN" target="_blank">Facebook</a> |
-        <a href="https://instagram.com/subastacar1" target="_blank">Instagram</a> |
-        <a href="https://tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
-      </div>
-      <div class="footer-copy">© 2025 SubastaCarHN. Todos los derechos reservados.</div>
     </div>
   </footer>
 
@@ -177,8 +202,9 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+
   <script>
-    // Firebase init
+    // Inicializar Firebase
     firebase.initializeApp({
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -189,103 +215,86 @@
       measurementId: "G-QM5N60K8C0"
     });
     const auth = firebase.auth(),
-          db   = firebase.firestore(),
+          db = firebase.firestore(),
           storage = firebase.storage().ref();
+
+    // Utilidades
     const STEPS = ['Inicio','Pago Pendiente','Pagado','Enviado','Aduana','Finalizado'];
     const $ = s => document.querySelector(s);
 
-    // Mobile menu toggle
-    function toggleMenu() {
-      $('#mobile-menu-links').classList.toggle('open');
-    }
-
-    // Tabs
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.onclick = () => {
-        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-        document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById('section-' + tab.dataset.sec).classList.add('active');
-      };
+    // Toggle de acordeones
+    document.addEventListener('click', e => {
+      if (e.target.classList.contains('card-header')) {
+        e.target.nextElementSibling.classList.toggle('open');
+      }
     });
 
-    // Accordion for historial: only one open at a time
-    document.getElementById('historialContainer').addEventListener('click', e => {
-      const header = e.target.closest('.card-header');
-      if (!header) return;
-      // prevent toggling when clicking input
-      if (e.target.tagName.toLowerCase() === 'input') return;
-      const body = header.nextElementSibling;
-      document.querySelectorAll('#historialContainer .card-body').forEach(cb => {
-        if (cb !== body) cb.classList.remove('open');
-      });
-      body.classList.toggle('open');
-    });
-
-    // Auth state
+    // Autenticación
     auth.onAuthStateChanged(user => {
-      if (!user) return location = 'login.html';
-      $('#userGreeting').textContent   = `Hola, ${user.displayName||user.email}`;
-      $('#mobileGreeting').textContent = `Hola, ${user.displayName||user.email}`;
+      if (!user) location = 'login.html';
+      $('#userGreeting').textContent = `Hola, ${user.displayName || user.email}`;
       loadProfile(user);
       loadOrders(user);
-      loadHistorial(user);
     });
 
-    // Load profile
-    function loadProfile(u) {
-      db.collection('clients').doc(u.uid).get().then(doc => {
+    // Cargar perfil
+    function loadProfile(user) {
+      db.collection('clients').doc(user.uid).get().then(doc => {
         if (!doc.exists) return;
         const d = doc.data();
-        $('#name').value      = d.fullName||'';
-        $('#email').value     = d.email   || u.email;
-        $('#phone').value     = d.phone   || '';
-        $('#address').value   = d.address || '';
-        $('#dni').value       = d.dni     || '';
-        $('#birthYear').value = d.birthYear||'';
+        $('#name').value      = d.fullName || '';
+        $('#email').value     = d.email    || user.email;
+        $('#phone').value     = d.phone    || '';
+        $('#address').value   = d.address  || '';
+        $('#dni').value       = d.dni      || '';
+        $('#birthYear').value = d.birthYear|| '';
       });
     }
     $('#profileForm').onsubmit = e => {
       e.preventDefault();
-      const u = auth.currentUser;
-      db.collection('clients').doc(u.uid).set({
-        fullName: $('#name').value,
-        address:  $('#address').value,
-        dni:      $('#dni').value,
-        birthYear: parseInt($('#birthYear').value) || null
-      }, { merge:true }).then(()=>alert('Perfil actualizado'));
+      const user = auth.currentUser;
+      db.collection('clients').doc(user.uid).set({
+        fullName:      $('#name').value,
+        address:       $('#address').value,
+        dni:           $('#dni').value,
+        birthYear:     parseInt($('#birthYear').value) || null
+      }, { merge: true })
+      .then(() => alert('Perfil actualizado'));
     };
+
     function sendPasswordReset() {
-      auth.sendPasswordResetEmail(auth.currentUser.email).then(()=>alert('Enlace enviado'));
+      auth.sendPasswordResetEmail(auth.currentUser.email).then(() => alert('Enlace enviado'));
     }
     function logout() {
-      auth.signOut().then(()=>location='login.html');
+      auth.signOut().then(() => location = 'login.html');
     }
 
-    // Nueva gestión
+    // Gestión de depósito
     $('#btnStartGestion').onclick = () => {
       $('#depositForm').style.display = 'grid';
       $('#depositSuccess').style.display = 'none';
     };
     $('#btnUploadDeposit').onclick = async () => {
       const file = $('#depositFile').files[0];
-      if (!file) return alert('Selecciona comprobante');
+      if (!file) return alert('Selecciona un comprobante');
       $('#btnUploadDeposit').disabled = true;
       try {
-        const u = auth.currentUser;
-        const snap = await storage.child(`orders/${u.uid}/deposit/${Date.now()}_${file.name}`).put(file);
-        const url  = await snap.ref.getDownloadURL();
+        const user = auth.currentUser;
+        const snap = await storage
+          .child(`orders/${user.uid}/deposit/${Date.now()}_${file.name}`)
+          .put(file);
+        const url = await snap.ref.getDownloadURL();
         await db.collection('orders').add({
-          clientName: u.displayName||u.email,
-          clientEmail: u.email,
+          clientName:        user.displayName || user.email,
+          clientEmail:       user.email,
           depositReceiptUrl: url,
-          depositAmount: 5000,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          depositAmount:     5000,
+          createdAt:         firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt:         firebase.firestore.FieldValue.serverTimestamp()
         });
         $('#depositSuccess').style.display = 'block';
-        loadOrders(u);
-      } catch(err){
+        loadOrders(user);
+      } catch (err) {
         console.error(err);
         alert('Error al subir comprobante');
       } finally {
@@ -293,80 +302,50 @@
       }
     };
 
-    // Load orders
-    async function loadOrders(u) {
+    // Cargar y mostrar órdenes
+    async function loadOrders(user) {
       const snap = await db.collection('orders')
-        .where('clientEmail','==',u.email)
+        .where('clientEmail','==',user.email)
         .orderBy('createdAt','desc')
         .get();
-      const c = $('#orders');
-      c.innerHTML = '';
+      const container = $('#orders');
+      container.innerHTML = '';
       if (snap.empty) {
-        c.innerHTML = '<p style="text-align:center;">No tienes gestiones.</p>';
+        container.innerHTML = '<p style="text-align:center;">No tienes gestiones.</p>';
         return;
       }
       snap.docs.forEach(doc => {
-        const o = doc.data(), status = getStatus(o);
+        const o = doc.data();
+        const status = getStatus(o);
+        // crear tarjeta
         const card = document.createElement('div');
         card.className = 'card';
-        card.innerHTML = \`
+        card.innerHTML = `
           <div class="card-header">
-            #\${doc.id.slice(0,6)} \${o.clientName}
-            <span class="status-badge">\${status}</span>
+            #${doc.id.slice(0,6)} ${o.clientName}
+            <span class="status-badge">${status}</span>
           </div>
           <div class="card-body">
             <ul class="tracker">
-              \${STEPS.map(s=>{
+              ${STEPS.map(s => {
                 const idx = STEPS.indexOf(status);
-                const cls = STEPS.indexOf(s)<idx?'done':STEPS.indexOf(s)===idx?'active':'';
-                return \`<li class="\${cls}">\${s}</li>\`;
+                const cls = STEPS.indexOf(s) < idx ? 'done'
+                          : STEPS.indexOf(s) === idx ? 'active'
+                          : '';
+                return `<li class="${cls}">${s}</li>`;
               }).join('')}
             </ul>
-          </div>\`;
-        c.appendChild(card);
+          </div>`;
+        container.appendChild(card);
       });
     }
-    function getStatus(o){
-      if(o.depositReceiptUrl) return 'Pago Pendiente';
-      if(o.entrega?.deliveryPhotos?.length) return 'Finalizado';
-      if(o.aduana?.detail) return 'Aduana';
-      if(o.recogida?.valorGrua||o.recogida?.valorBarco) return 'Enviado';
-      if(o.copartInvoiceUrl) return 'Pagado';
+    function getStatus(o) {
+      if (o.depositReceiptUrl) return 'Pago Pendiente';
+      if (o.entrega?.deliveryPhotos?.length) return 'Finalizado';
+      if (o.aduana?.detail) return 'Aduana';
+      if (o.recogida?.valorGrua || o.recogida?.valorBarco) return 'Enviado';
+      if (o.copartInvoiceUrl) return 'Pagado';
       return 'Inicio';
-    }
-
-    // Load historial
-    async function loadHistorial(u){
-      const snap = await db.collection('clients').doc(u.uid)
-        .collection('historial').orderBy('fecha','desc').limit(100).get();
-      const cont = $('#historialContainer');
-      cont.innerHTML = '';
-      if(snap.empty){
-        cont.innerHTML = '<p style="text-align:center;">Sin cálculos.</p>';
-        return;
-      }
-      snap.docs.forEach(doc=>{
-        const d = doc.data();
-        const fecha = d.fecha?.toDate().toLocaleString('es-HN')||'Fecha desconocida';
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = \`
-          <div class="card-header">
-            <input type="text" value="\${d.nombre||'Sin título'}"
-                   onchange="renameHist('\${doc.id}', this.value)"
-                   style="background:transparent;border:none;color:#fff;flex:1;margin-right:1rem;" />
-            <span>\${fecha}</span>
-          </div>
-          <div class="card-body">
-            <ul>\${d.detalles.map(i=>\`<li>\${i.titulo}: \${i.valor}</li>\`).join('')}</ul>
-          </div>\`;
-        cont.appendChild(card);
-      });
-    }
-    function renameHist(id,name){
-      db.collection('clients').doc(auth.currentUser.uid)
-        .collection('historial').doc(id).update({ nombre:name })
-        .then(()=>alert('Nombre actualizado'));
     }
   </script>
 </body>
