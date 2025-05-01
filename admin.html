@@ -316,7 +316,8 @@
   }
   function fetchVehicles(){
     db.collection('inventario').orderBy('fecha','desc').get().then(snap=>{
-      inventory-table.querySelector('tbody').innerHTML='';
+      const tbody = document.getElementById('inventory-table').querySelector('tbody');
+      tbody.innerHTML='';
       snap.forEach(async d=>{
         const v=d.data();
         let imgUrl='';
@@ -334,7 +335,7 @@
             <button class="btn-edit" onclick="editVehicle('${d.id}')">E</button>
             <button class="btn-delete" onclick="deleteVehicle('${d.id}')">X</button>
           </td>`;
-        inventory-table.querySelector('tbody').appendChild(tr);
+        tbody.appendChild(tr);
       });
     });
   }
@@ -342,9 +343,9 @@
   function deleteVehicle(id){ if(confirm('¿Eliminar este vehículo?')) db.collection('inventario').doc(id).delete().then(fetchVehicles); }
   function editVehicle(id){
     db.collection('inventario').doc(id).get().then(doc=>{
-      const v=doc.data();
+      const v=doc.data(), f=formularioAuto;
       ['marca','modelo','motor','anio','precio','kilometraje','color','tipo','descripcion']
-        .forEach(k=>document.getElementById(k).value=v[k]||'');
+        .forEach(k=>f[k].value=v[k]||'');
       editingVehicleId=id;
       btnAgregar.textContent='Guardar Cambios';
       btnCancelarEdicion.style.display='inline-block';
@@ -358,8 +359,7 @@
       clientsCache=[];
       orderClient.innerHTML='<option value="">Selecciona cliente…</option>';
       snap.forEach(d=>{
-        const u=d.data();
-        clientsCache.push(u);
+        const u=d.data(); clientsCache.push(u);
         orderClient.innerHTML+=`<option value="${u.email}">${u.fullName}</option>`;
       });
       userCount.textContent=clientsCache.length;
@@ -377,8 +377,7 @@
   }
   function fetchOrders(){
     db.collection('orders').orderBy('createdAt','desc').onSnapshot(snap=>{
-      ordersCache=[];
-      snap.forEach(d=>ordersCache.push({id:d.id,data:d.data()}));
+      ordersCache=[]; snap.forEach(d=>ordersCache.push({id:d.id,data:d.data()}));
       clientFilter.innerHTML='<option value="">Todos los clientes</option>';
       [...new Set(ordersCache.map(o=>o.data.clientName))].forEach(n=>clientFilter.innerHTML+=`<option>${n}</option>`);
       renderOrders();
@@ -389,13 +388,8 @@
     ordersContainer.innerHTML='';
     ordersCache.forEach(o=>{
       const d=o.data, disp=getDisplayStatus(d);
-      if(sf&&disp!==sf) return;
-      if(cf&&d.clientName!==cf) return;
-      const header=`
-        <div class="accordion-header" data-acc="${o.id}">
-          <span>#${o.id.slice(0,6)}</span>
-          <span class="status-badge">${disp}</span>
-        </div>`;
+      if(sf&&disp!==sf) return; if(cf&&d.clientName!==cf) return;
+      const header=`<div class="accordion-header" data-acc="${o.id}"><span>#${o.id.slice(0,6)}</span><span class="status-badge">${disp}</span></div>`;
       const steps=STEPS.map((s,i)=>{
         const cls=i<STEPS.indexOf(disp)?'done':i===STEPS.indexOf(disp)?'active':'';
         return `<li class="${cls}">${s}</li>`;
@@ -409,31 +403,25 @@
             <li><strong>Fotos Copart:</strong> ${d.copartPhotos?.length?`<a href="${d.copartPhotos[0]}" target="_blank">Ver</a>`:'-'}</li>
             <li><strong>Grúa:</strong> ${d.recogida?.valorGrua||'-'} USD</li>
             <li><strong>Barco:</strong> ${d.recogida?.valorBarco||'-'} USD</li>
-            <li><strong>Aduana:</strong> <a href="#" class="toggle-detail" data-detail="adu-${o.id}">Ver</a>
-              <div id="adu-${o.id}" class="detail" style="display:none;margin:.5rem 0;">${d.aduana?.detail||'-'}</div>
-            </li>
-            <li><strong>Entrega final:</strong> <a href="#" class="toggle-detail" data-detail="ent-${o.id}">Ver</a>
-              <div id="ent-${o.id}" class="detail" style="display:none;margin:.5rem 0;">${d.entrega?.detail||'-'}</div>
-            </li>
+            <li><strong>Aduana:</strong> <a href="#" class="toggle-detail" data-detail="adu-${o.id}">Ver</a><div id="adu-${o.id}" style="display:none;margin:.5rem 0;">${d.aduana?.detail||'-'}</div></li>
+            <li><strong>Entrega final:</strong> <a href="#" class="toggle-detail" data-detail="ent-${o.id}">Ver</a><div id="ent-${o.id}" style="display:none;margin:.5rem 0;">${d.entrega?.detail||'-'}</div></li>
             <li><strong>Fotos entrega:</strong> ${d.entrega?.deliveryPhotos?.length?`<a href="${d.entrega.deliveryPhotos[0]}" target="_blank">Ver</a>`:'-'}</li>
             <li><strong>Final:</strong> ${d.entrega?.precioFinal||'-'} LPS</li>
           </ul>
           <p class="order-meta">Última actualización: ${d.updatedAt?.toDate().toLocaleString('es-HN')||'-'}</p>
         </div>`;
-      const div=document.createElement('div');
-      div.className='order-card';
-      div.innerHTML=header+content;
-      ordersContainer.appendChild(div);
+      const card=document.createElement('div'); card.className='order-card';
+      card.innerHTML=header+content;
+      ordersContainer.appendChild(card);
     });
-    // eventos
-    document.querySelectorAll('.accordion-header').forEach(el=>el.onclick=()=>{
-      const ct=document.getElementById('acc-'+el.dataset.acc);
-      ct.classList.toggle('open');
+    // Hooks
+    document.querySelectorAll('.accordion-header').forEach(h=>h.onclick=()=>{
+      document.getElementById('acc-'+h.dataset.acc).classList.toggle('open');
     });
     document.querySelectorAll('.toggle-detail').forEach(a=>a.onclick=e=>{
       e.preventDefault();
       const d=document.getElementById(a.dataset.detail);
-      d.style.display=d.style.display==='none'?'block':'none';
+      d.style.display = d.style.display==='none'?'block':'none';
     });
   }
   async function saveOrder(e){
