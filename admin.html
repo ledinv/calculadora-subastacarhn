@@ -87,6 +87,10 @@
     .summary { list-style:none; padding:0; margin:0; font-size:.9rem; }
     .summary li { margin-bottom:.5rem; }
 
+    /* Galería de miniaturas */
+    .gallery { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px; }
+    .gallery img { width:60px; height:60px; object-fit:cover; border:1px solid #ddd; border-radius:4px; }
+
     footer { background:var(--blue); color:#fff; padding:1rem; text-align:center; margin-top:2rem; }
   </style>
 </head>
@@ -309,15 +313,9 @@
     e.preventDefault();
     const f=e.target;
     const data={
-      marca:f.marca.value,
-      modelo:f.modelo.value,
-      motor:f.motor.value,
-      anio:+f.anio.value,
-      precio:+f.precio.value,
-      kilometraje:+f.kilometraje.value,
-      color:f.color.value,
-      tipo:f.tipo.value,
-      descripcion:f.descripcion.value
+      marca:f.marca.value, modelo:f.modelo.value, motor:f.motor.value,
+      anio:+f.anio.value, precio:+f.precio.value, kilometraje:+f.kilometraje.value,
+      color:f.color.value, tipo:f.tipo.value, descripcion:f.descripcion.value
     };
     if(editingVehicleId){
       await db.collection('inventario').doc(editingVehicleId).update(data);
@@ -346,8 +344,7 @@
       const tbody=document.querySelector('#inventory-table tbody');
       tbody.innerHTML='';
       snap.forEach(async d=>{
-        const v=d.data();
-        let imgUrl='';
+        const v=d.data(); let imgUrl='';
         if(v.imagenes?.[0]){
           try{ imgUrl=await firebase.storage().refFromURL(v.imagenes[0]).getDownloadURL(); }catch{}
         }
@@ -415,8 +412,7 @@
     ordersCache.forEach(o=>{
       const d=o.data, disp=getDisplayStatus(d);
       if(sf&&disp!==sf) return; if(cf&&d.clientName!==cf) return;
-
-      // <-- CABECERA MODIFICADA -->
+      // CABECERA
       const header = `
         <div class="accordion-header" data-acc="${o.id}">
           <div style="display:flex; align-items:center; gap:8px;">
@@ -429,54 +425,44 @@
             <button class="btn-delete-inline" onclick="deleteOrder('${o.id}')">Eliminar</button>
           </div>
         </div>`;
-      // <-- FIN DE CABECERA MODIFICADA -->
-
+      // TRACKER
       const steps = STEPS.map((s,i)=>{
-        const cls = i < STEPS.indexOf(disp)
-                  ? 'done'
-                  : i === STEPS.indexOf(disp)
-                    ? 'active'
-                    : '';
+        const cls = i < STEPS.indexOf(disp) ? 'done' : i===STEPS.indexOf(disp) ? 'active' : '';
         return `<li class="${cls}">${s}</li>`;
       }).join('');
-
+      // GALERÍAS
+      const copartGallery = d.copartPhotos?.length
+        ? `<div class="gallery">${d.copartPhotos.map(url=>`<img src="${url}" class="thumb">`).join('')}</div>`
+        : '-';
+      const deliveryGallery = d.entrega?.deliveryPhotos?.length
+        ? `<div class="gallery">${d.entrega.deliveryPhotos.map(url=>`<img src="${url}" class="thumb">`).join('')}</div>`
+        : '-';
+      // CONTENIDO
       const content = `
         <div id="acc-${o.id}" class="accordion-content">
           <ul class="tracker">${steps}</ul>
           <ul class="summary">
             <li><strong>Estimado:</strong> ${d.precioEstimado||'-'} USD</li>
             <li><strong>Factura:</strong> ${d.copartInvoiceUrl?`<a href="${d.copartInvoiceUrl}" target="_blank">Ver</a>`:'-'}</li>
-            <li><strong>Fotos Copart:</strong> ${d.copartPhotos?.length?`<a href="${d.copartPhotos[0]}" target="_blank">Ver</a>`:'-'}</li>
+            <li><strong>Fotos Copart:</strong> ${copartGallery}</li>
             <li><strong>Grúa:</strong> ${d.recogida?.valorGrua||'-'} USD</li>
             <li><strong>Barco:</strong> ${d.recogida?.valorBarco||'-'} USD</li>
-            <li><strong>Aduana:</strong> <a href="#" class="toggle-detail" data-detail="adu-${o.id}">Ver</a>
-              <div id="adu-${o.id}" style="display:none;margin:.5rem 0;">${d.aduana?.detail||'-'}</div>
-            </li>
-            <li><strong>Entrega final:</strong> <a href="#" class="toggle-detail" data-detail="ent-${o.id}">Ver</a>
-              <div id="ent-${o.id}" style="display:none;margin:.5rem 0;">${d.entrega?.detail||'-'}</div>
-            </li>
-            <li><strong>Fotos entrega:</strong> ${d.entrega?.deliveryPhotos?.length?`<a href="${d.entrega.deliveryPhotos[0]}" target="_blank">Ver</a>`:'-'}</li>
+            <li><strong>Llegada HND:</strong> ${d.envioHnd?.detail||'-'}</li>
+            <li><strong>Aduana:</strong> ${d.aduana?.detail||'-'}</li>
+            <li><strong>Entrega final:</strong> ${d.entrega?.detail||'-'}</li>
+            <li><strong>Fotos entrega:</strong> ${deliveryGallery}</li>
             <li><strong>Final:</strong> ${d.entrega?.precioFinal||'-'} LPS</li>
           </ul>
           <p class="order-meta">Última actualización: ${d.updatedAt?.toDate().toLocaleString('es-HN')||'-'}</p>
         </div>`;
-
       const card = document.createElement('div');
       card.className = 'order-card';
       card.innerHTML = header + content;
       ordersContainer.appendChild(card);
     });
-
-    // activamos acordeones y toggles
+    // Activa acordeones
     document.querySelectorAll('.accordion-header').forEach(h=>{
       h.onclick = ()=> document.getElementById('acc-'+h.dataset.acc).classList.toggle('open');
-    });
-    document.querySelectorAll('.toggle-detail').forEach(a=>{
-      a.onclick = e=>{
-        e.preventDefault();
-        const d=document.getElementById(a.dataset.detail);
-        d.style.display = d.style.display==='none'?'block':'none';
-      };
     });
   }
 
@@ -484,13 +470,13 @@
     e.preventDefault();
     const c=clientsCache.find(x=>x.email===orderClient.value)||{};
     let payload={
-      clientName:c.fullName||'',clientEmail:c.email||'',clientPhone:c.phone||'',
-      vehicleURL:orderVehicleURL.value||'',precioEstimado:+precioEstimado.value||0,
-      copartPhotos:[],copartInvoiceUrl:null,
-      recogida:{valorGrua:+valorGrua.value||0,valorBarco:+valorBarco.value||0},
+      clientName:c.fullName||'', clientEmail:c.email||'', clientPhone:c.phone||'',
+      vehicleURL:orderVehicleURL.value||'', precioEstimado:+precioEstimado.value||0,
+      copartPhotos:[], copartInvoiceUrl:null,
+      recogida:{valorGrua:+valorGrua.value||0, valorBarco:+valorBarco.value||0},
       envioHnd:{detail:textoEnvioHnd.value||''},
       aduana:{detail:textoAduana.value||''},
-      entrega:{detail:textoEntrega.value||'',precioFinal:+precioFinal.value||0,deliveryPhotos:[]},
+      entrega:{detail:textoEntrega.value||'', precioFinal:+precioFinal.value||0, deliveryPhotos:[]},
       createdAt:firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt:firebase.firestore.FieldValue.serverTimestamp()
     };
