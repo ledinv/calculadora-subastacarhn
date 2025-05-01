@@ -59,7 +59,6 @@
     }
     .status-badge { background:var(--yellow); color:var(--text); padding:2px 8px; border-radius:4px; font-size:.8rem; }
 
-    /* Botones inline (Editar / Eliminar) */
     .btn-edit-inline, .btn-delete-inline {
       background:transparent; border:1px solid #fff; color:#fff;
       padding:2px 6px; border-radius:4px; font-size:.8rem; cursor:pointer;
@@ -396,8 +395,7 @@
       ordersCache = [];
       snap.forEach(d=>ordersCache.push({id:d.id,data:d.data()}));
       clientFilter.innerHTML = '<option value="">Todos los clientes</option>';
-      [...new Set(ordersCache.map(o=>o.data.clientName))]
-        .forEach(n=>clientFilter.innerHTML += `<option>${n}</option>`);
+      [...new Set(ordersCache.map(o=>o.data.clientName))].forEach(n=>clientFilter.innerHTML += `<option>${n}</option>`);
       renderOrders();
     });
   }
@@ -408,7 +406,8 @@
       const d = o.data, disp = getDisplayStatus(d);
       if(sf && disp!==sf) return;
       if(cf && d.clientName!==cf) return;
-      // CABECERA
+
+      // Cabecera
       const header = `
         <div class="accordion-header" data-acc="${o.id}">
           <div style="display:flex; align-items:center; gap:8px;">
@@ -421,25 +420,27 @@
             <button class="btn-delete-inline" onclick="deleteOrder('${o.id}')">Eliminar</button>
           </div>
         </div>`;
-      // TRACKER
+
+      // Tracker
       const steps = STEPS.map((s,i)=>{
         const cls = i < STEPS.indexOf(disp) ? 'done' : i===STEPS.indexOf(disp) ? 'active' : '';
         return `<li class="${cls}">${s}</li>`;
       }).join('');
-      // GALERÍAS / TOGGLES
+
+      // Galerías / toggles
       const copartGallery = d.copartPhotos?.length
         ? `<a href="#" class="toggle-detail" data-detail="cp-${o.id}">Ver fotos</a>
            <div id="cp-${o.id}" class="gallery" style="display:none;">
              ${d.copartPhotos.map(u=>`<img src="${u}" class="thumb">`).join('')}
-           </div>`
-        : '-';
+           </div>` : '-';
+
       const deliveryGallery = d.entrega?.deliveryPhotos?.length
         ? `<a href="#" class="toggle-detail" data-detail="dp-${o.id}">Ver fotos</a>
            <div id="dp-${o.id}" class="gallery" style="display:none;">
              ${d.entrega.deliveryPhotos.map(u=>`<img src="${u}" class="thumb">`).join('')}
-           </div>`
-        : '-';
-      // CONTENIDO
+           </div>` : '-';
+
+      // Contenido
       const content = `
         <div id="acc-${o.id}" class="accordion-content">
           <ul class="tracker">${steps}</ul>
@@ -463,12 +464,14 @@
           </ul>
           <p class="order-meta">Última actualización: ${d.updatedAt?.toDate().toLocaleString('es-HN')||'-'}</p>
         </div>`;
+
       const card = document.createElement('div');
       card.className = 'order-card';
       card.innerHTML = header + content;
       ordersContainer.appendChild(card);
     });
-    // activar acordeones y toggles
+
+    // Acordeones y toggles
     document.querySelectorAll('.accordion-header').forEach(h=>{
       h.onclick = ()=> document.getElementById('acc-'+h.dataset.acc).classList.toggle('open');
     });
@@ -510,15 +513,21 @@
       const snap = await storage.child(`orders/${editingOrderId||'new'}/delivery/${f.name}`).put(f);
       payload.entrega.deliveryPhotos.push(await snap.ref.getDownloadURL());
     }
-    if(editingOrderId) await db.collection('orders').doc(editingOrderId).update(payload);
-    else await db.collection('orders').add(payload);
+    if(editingOrderId){
+      await db.collection('orders').doc(editingOrderId).update(payload);
+    } else {
+      await db.collection('orders').add(payload);
+    }
     document.getElementById('orderFormContainer').style.display='none';
   }
 
   async function editOrder(id){
-    const o = ordersCache.find(x=>x.id===id); if(!o) return;
-    editingOrderId = id; resetOrderForm(); await fetchClients();
-    document.getElementById('orderFormContainer').style.display='block';
+    const o = ordersCache.find(x=>x.id===id);
+    if(!o) return;
+    editingOrderId = id;
+    resetOrderForm();
+    await fetchClients();
+    document.getElementById('orderFormContainer').style.display = 'block';
     document.getElementById('orderFormTitle').innerText = 'Editar Pedido';
     const d = o.data;
     orderClient.value = d.clientEmail; orderClient.onchange();
