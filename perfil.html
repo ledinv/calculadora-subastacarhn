@@ -18,22 +18,68 @@
       --card-radius: 8px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Montserrat', sans-serif; background: var(--light); color: var(--text); }
+    body { font-family: 'Montserrat', sans-serif; background: var(--light); color: var(--text); line-height: 1.6; }
     a { text-decoration: none; color: inherit; }
     .container { max-width: var(--max-width); margin: 0 auto; padding: 1rem; }
-    header, footer { background: var(--blue); color: #fff; }
-    header .nav, footer .nav { display: flex; justify-content: center; gap: 1rem; padding: 1rem 0; }
-    header .nav a, footer .nav a { color: var(--yellow); font-weight: 600; }
-    main { padding: 1rem 0; }
+
+    /* Header original */
+    .site-header {
+      background: linear-gradient(to right, var(--blue), var(--blue2));
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem;
+    }
+    .brand { color: #fff; font-size: 1.5rem; font-weight: 700; }
+    .nav-list {
+      display: flex;
+      gap: 1rem;
+      margin-left: auto;
+    }
+    .nav-list a, .nav-list span {
+      color: var(--yellow);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .menu-icon {
+      background: var(--yellow);
+      color: var(--blue);
+      border: none;
+      padding: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background: #fff;
+      padding: 1rem;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+    .mobile-nav.open { display: flex; gap: 0.5rem; }
+    .mobile-nav a, .mobile-nav span {
+      font-weight: 700;
+      padding: 0.75rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+      color: var(--blue);
+    }
+    .mobile-nav a:hover, .mobile-nav span:hover { background: rgba(0,47,108,0.1); }
+    @media (max-width: 767px) { .nav-list { display: none; } }
+    @media (min-width: 768px) { .menu-icon { display: none; } }
 
     /* Tabs */
     .tabs { display: flex; border-bottom: 2px solid var(--blue2); margin-bottom: 1rem; }
     .tab { flex: 1; text-align: center; padding: 0.75rem; cursor: pointer; background: var(--blue2); color: #fff; font-weight: 600; }
     .tab.active { background: var(--blue); }
-    .section { display: none; animation: fadeIn 0.3s ease; }
+    .section { display: none; }
     .section.active { display: block; }
-
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     /* Cards */
     .card { background: #fff; border-radius: var(--card-radius); box-shadow: 0 2px 8px var(--shadow); margin-bottom: 1rem; overflow: hidden; }
@@ -41,41 +87,53 @@
     .card-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; padding: 0 1rem; }
     .card-body.open { padding: 1rem; max-height: 800px; }
     .status-badge { background: var(--yellow); color: var(--text); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
+
+    .btn { background: var(--yellow); color: var(--blue); border: none; padding: 0.75rem 1rem; border-radius: var(--card-radius); cursor: pointer; font-weight: 600; }
+    form .grid { display: grid; gap: 0.75rem; }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    input, select, textarea { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 4px; }
+
     .tracker { list-style: none; display: flex; gap: 0.5rem; flex-wrap: wrap; padding: 0; margin-bottom: 1rem; }
     .tracker li { position: relative; padding-left: 1.2rem; font-size: 0.8rem; }
     .tracker li::before { content: ''; position: absolute; left: 0; top: 0.2rem; width: 0.8rem; height: 0.8rem; border-radius: 50%; background: #ccc; }
     .tracker li.done::before { background: var(--yellow); }
     .tracker li.active::before { background: var(--blue); }
 
-    .btn { background: var(--yellow); color: var(--blue); border: none; padding: 0.75rem 1rem; border-radius: var(--card-radius); cursor: pointer; font-weight: 600; }
-    form .grid { display: grid; gap: 0.75rem; }
-    .grid-2 { grid-template-columns: 1fr 1fr; }
-    input, select, textarea { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 4px; }
+    .orders-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+    /* Historial scroll */
+    #historialContainer { max-height: 400px; overflow-y: auto; padding-right: 0.5rem; }
+    #historialContainer .card { margin-bottom: 0.5rem; }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <h1>SubastaCarHN</h1>
-      <nav class="nav">
-        <a href="index.html">Inicio</a>
-        <a href="calculadora.html">Calculadora</a>
-        <a href="inventario.html">Vehículos</a>
-        <a href="cursos.html">Cursos</a>
-        <span id="userGreeting"></span>
-      </nav>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">SubastaCarHN</a>
+      <ul class="nav-list">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="calculadora.html">Calculadora</a></li>
+        <li><a href="inventario.html">Vehículos</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
+        <li><span id="userGreeting"></span></li>
+      </ul>
+      <button class="menu-icon" onclick="toggleMenu()">☰</button>
     </div>
+    <nav id="mobile-menu-links" class="mobile-nav">
+      <a href="index.html">Inicio</a>
+      <a href="calculadora.html">Calculadora</a>
+      <a href="inventario.html">Vehículos</a>
+      <a href="cursos.html">Cursos</a>
+      <span id="mobileGreeting"></span>
+    </nav>
   </header>
 
   <main class="container">
-    <!-- Tabs -->
     <div class="tabs">
       <div class="tab active" data-sec="perfil">Perfil</div>
       <div class="tab" data-sec="gestion">Gestión</div>
       <div class="tab" data-sec="historial">Historial</div>
     </div>
 
-    <!-- Sección Perfil -->
     <section id="section-perfil" class="section active">
       <div class="card">
         <div class="card-header">Mi Perfil</div>
@@ -88,7 +146,7 @@
             <label>DNI<input id="dni"></label>
             <label>Año nacimiento<input type="number" id="birthYear" min="1900" max="2100"></label>
             <div></div>
-            <button type="submit" class="btn">Guardar cambios</button>
+            <button type="submit" class="btn">Guardar</button>
             <button type="button" class="btn" onclick="sendPasswordReset()">Cambiar contraseña</button>
             <button type="button" class="btn" onclick="logout()">Cerrar sesión</button>
           </form>
@@ -96,7 +154,6 @@
       </div>
     </section>
 
-    <!-- Sección Gestión -->
     <section id="section-gestion" class="section">
       <div class="card">
         <div class="card-header">Nueva Gestión</div>
@@ -109,37 +166,40 @@
           <div id="depositSuccess" class="card-body open" style="display:none;">✅ Comprobante subido</div>
         </div>
       </div>
-
       <h2>Mis Gestiones</h2>
       <div id="orders" class="orders-grid"></div>
     </section>
 
-    <!-- Sección Historial -->
     <section id="section-historial" class="section">
-      <div class="card">
-        <div class="card-header">Historial de Cálculos</div>
-        <div class="card-body open" id="historialContainer"></div>
-      </div>
+      <h2>Historial de Cálculos</h2>
+      <div id="historialContainer"></div>
     </section>
   </main>
 
-  <footer>
-    <div class="container">
-      <nav class="nav">
-        <a href="index.html">Inicio</a>
-        <a href="calculadora.html">Calculadora</a>
-        <a href="inventario.html">Vehículos</a>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <nav class="footer-nav">
+        <ul class="footer-list">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="calculadora.html">Calculadora</a></li>
+          <li><a href="inventario.html">Vehículos</a></li>
+          <li><a href="cursos.html">Cursos</a></li>
+        </ul>
       </nav>
+      <div class="social-links">
+        <a href="https://facebook.com/Subasta-Car-HN" target="_blank">Facebook</a> |
+        <a href="https://instagram.com/subastacar1" target="_blank">Instagram</a> |
+        <a href="https://tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+      </div>
+      <div class="footer-copy">© 2025 SubastaCarHN. Todos los derechos reservados.</div>
     </div>
   </footer>
 
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
   <script>
-    // Inicializar Firebase
     firebase.initializeApp({
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
@@ -147,147 +207,3 @@
       storageBucket: "subastacarhn-40554.appspot.com",
       messagingSenderId: "536785797974",
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
-      measurementId: "G-QM5N60K8C0"
-    });
-    const auth = firebase.auth(), db = firebase.firestore(), storage = firebase.storage().ref();
-
-    // Helpers
-    const STEPS = ['Inicio','Pago Pendiente','Pagado','Enviado','Aduana','Finalizado'];
-    const $ = s => document.querySelector(s);
-
-    // Pestañas
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.onclick = () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById('section-' + tab.dataset.sec).classList.add('active');
-      };
-    });
-
-    // Listener acordeones
-    document.addEventListener('click', e => {
-      if (e.target.classList.contains('card-header')) {
-        e.target.nextElementSibling.classList.toggle('open');
-      }
-    });
-
-    // Autenticación
-    auth.onAuthStateChanged(user => {
-      if (!user) return location = 'login.html';
-      $('#userGreeting').textContent = `Hola, ${user.displayName || user.email}`;
-      loadProfile(user);
-      loadOrders(user);
-      loadHistorial(user);
-    });
-
-    // Perfil
-    function loadProfile(u) {
-      db.collection('clients').doc(u.uid).get().then(doc => {
-        if (!doc.exists) return;
-        const d = doc.data();
-        $('#name').value = d.fullName || '';
-        $('#email').value = d.email || u.email;
-        $('#phone').value = d.phone || '';
-        $('#address').value = d.address || '';
-        $('#dni').value = d.dni || '';
-        $('#birthYear').value = d.birthYear || '';
-      });
-    }
-    $('#profileForm').onsubmit = e => {
-      e.preventDefault();
-      const u = auth.currentUser;
-      db.collection('clients').doc(u.uid).set({
-        fullName: $('#name').value,
-        address: $('#address').value,
-        dni: $('#dni').value,
-        birthYear: parseInt($('#birthYear').value) || null
-      }, { merge: true }).then(() => alert('Perfil actualizado'));
-    };
-    function sendPasswordReset() { auth.sendPasswordResetEmail(auth.currentUser.email).then(() => alert('Enlace enviado')); }
-    function logout() { auth.signOut().then(() => location = 'login.html'); }
-
-    // Gestión de depósitos y pedidos
-    $('#btnStartGestion').onclick = () => $('#depositForm').style.display = 'grid';
-    $('#btnUploadDeposit').onclick = async () => {
-      const file = $('#depositFile').files[0]; if (!file) return alert('Selecciona comprobante');
-      $('#btnUploadDeposit').disabled = true;
-      try {
-        const u = auth.currentUser;
-        const snap = await storage.child(`orders/${u.uid}/deposit/${Date.now()}_${file.name}`).put(file);
-        const url = await snap.ref.getDownloadURL();
-        await db.collection('orders').add({
-          clientName: u.displayName || u.email,
-          clientEmail: u.email,
-          depositReceiptUrl: url,
-          depositAmount: 5000,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        $('#depositSuccess').style.display = 'block';
-        loadOrders(u);
-      } catch (err) { console.error(err); alert('Error al subir'); }
-      finally { $('#btnUploadDeposit').disabled = false; }
-    };
-
-    // Mostrar órdenes
-    async function loadOrders(u) {
-      const snap = await db.collection('orders')
-        .where('clientEmail','==',u.email)
-        .orderBy('createdAt','desc')
-        .get();
-      const c = $('#orders'); c.innerHTML = '';
-      if (snap.empty) { c.innerHTML = '<p style="text-align:center;">No tienes gestiones.</p>'; return; }
-      snap.docs.forEach(doc => {
-        const o = doc.data();
-        const status = getStatus(o);
-        const card = document.createElement('div'); card.className = 'card';
-        card.innerHTML = `
-          <div class="card-header">
-            #${doc.id.slice(0,6)} ${o.clientName}
-            <span class="status-badge">${status}</span>
-          </div>
-          <div class="card-body">
-            <ul class="tracker">
-              ${STEPS.map(s => {
-                const idx = STEPS.indexOf(status);
-                const cls = STEPS.indexOf(s) < idx ? 'done'
-                          : STEPS.indexOf(s) === idx ? 'active'
-                          : '';
-                return `<li class="${cls}">${s}</li>`;
-              }).join('')}
-            </ul>
-          </div>`;
-        c.appendChild(card);
-      });
-    }
-    function getStatus(o) {
-      if (o.depositReceiptUrl) return 'Pago Pendiente';
-      if (o.entrega?.deliveryPhotos?.length) return 'Finalizado';
-      if (o.aduana?.detail) return 'Aduana';
-      if (o.recogida?.valorGrua || o.recogida?.valorBarco) return 'Enviado';
-      if (o.copartInvoiceUrl) return 'Pagado';
-      return 'Inicio';
-    }
-
-    // Historial cálculos
-    async function loadHistorial(u) {
-      const snap = await db.collection('clients').doc(u.uid)
-        .collection('historial').orderBy('fecha','desc').limit(100).get();
-      const cont = $('#historialContainer'); cont.innerHTML = '';
-      if (snap.empty) { cont.innerHTML = '<p style="text-align:center;">Sin cálculos.</p>'; return; }
-      snap.docs.forEach(doc => {
-        const d = doc.data();
-        const fecha = d.fecha?.toDate().toLocaleString('es-HN') || 'Fecha';
-        const div = document.createElement('div'); div.className='card';
-        div.innerHTML = `
-          <div class="card-header">${d.nombre||'Sin título'}<span>${fecha}</span></div>
-          <div class="card-body open">
-            <strong>Total: L ${d.total||'-'}</strong>
-          </div>`;
-        cont.append(div);
-      });
-    }
-  </script>
-</body>
-</html>
