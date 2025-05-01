@@ -15,53 +15,40 @@
       --shadow: rgba(0,0,0,0.1);
       --max-width: 1200px;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
-    body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text) }
-
-    /* HEADER */
-    header { background:var(--blue); color:#fff; padding:1rem }
-    header .logo { font-size:1.5rem; font-weight:bold }
-    header nav ul { list-style:none; display:flex; gap:1rem }
-    header nav a { color:#fff; text-decoration:none }
-
-    /* CONTENEDOR */
-    #adminApp { display:none; max-width:var(--max-width); margin:1rem auto }
-
-    /* TABS */
-    .tabs { display:flex; border-bottom:2px solid var(--blue2) }
-    .tab { flex:1; padding:.75rem; background:var(--blue2); color:#fff; text-align:center; cursor:pointer; font-weight:600 }
-    .tab.active { background:var(--blue) }
-
-    /* SECCIONES */
-    .section { display:none; background:#fff; border-radius:8px; box-shadow:0 2px 10px var(--shadow); margin-top:1rem; padding:1rem }
-    .section.active { display:block }
-
-    /* FORMULARIOS */
-    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:1rem }
+    *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+    body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text); }
+    header { background:var(--blue); color:#fff; padding:1rem; }
+    header .logo { font-size:1.5rem; font-weight:bold; }
+    header nav ul { list-style:none; display:flex; gap:1rem; }
+    header nav a { color:#fff; text-decoration:none; }
+    #adminApp { display:none; max-width:var(--max-width); margin:1rem auto; }
+    .tabs { display:flex; border-bottom:2px solid var(--blue2); }
+    .tab { flex:1; padding:.75rem; background:var(--blue2); color:#fff; text-align:center; cursor:pointer; font-weight:600; }
+    .tab.active { background:var(--blue); }
+    .section { display:none; background:#fff; border-radius:8px; box-shadow:0 2px 10px var(--shadow); margin-top:1rem; padding:1rem; }
+    .section.active { display:block; }
+    /* Form grids */
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:1rem; }
     form input, form select, form textarea, form button {
-      width:100%; margin:.5rem 0; padding:.75rem; border:1px solid #ccc; border-radius:4px; font-size:1rem
+      width:100%; margin:.5rem 0; padding:.75rem; border:1px solid #ccc; border-radius:4px; font-size:1rem;
     }
-    form button { background:var(--yellow); color:var(--blue); border:none; font-weight:600; cursor:pointer }
-    .preview img { width:60px; height:60px; object-fit:cover; margin:4px; border:1px solid #ccc; border-radius:4px }
-
-    /* TABLAS */
-    table { width:100%; border-collapse:collapse; font-size:.9rem; margin-top:.5rem }
-    th, td { padding:.5rem; border:1px solid #ddd; text-align:left; vertical-align:middle }
-    th { background:var(--blue2); color:#fff }
-    img.thumb { width:50px; border-radius:4px }
-    .actions button { margin-right:4px; padding:2px 6px; font-size:.8rem; border:none; border-radius:4px; cursor:pointer }
-    .btn-edit { background:var(--blue); color:#fff }
-    .btn-delete { background:#e74c3c; color:#fff }
-    .btn-copy { background:var(--blue); color:#fff; padding:4px 8px; margin-bottom:.5rem }
-
-    /* FORMULARIO DE PEDIDOS */
-    #orderFormContainer { background:#f9f9f9; padding:1rem; border-radius:6px; margin-bottom:1rem }
-    #orderFormContainer h3 { margin-bottom:.5rem }
-    #orderFormContainer .form-grid { grid-template-columns:1fr 1fr 1fr 1fr; }
-    #orderFormContainer .wide { grid-column:1/5 }
-
-    /* FOOTER */
-    footer { background:var(--blue); color:#fff; padding:1rem; text-align:center; margin-top:2rem }
+    form button { background:var(--yellow); color:var(--blue); border:none; font-weight:600; cursor:pointer; }
+    .preview, .preview-order { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+    .preview img, .preview-order img {
+      width:60px; height:60px; object-fit:cover; border:1px solid #ccc; border-radius:4px;
+    }
+    .progress-order { text-align:center; margin-top:8px; font-weight:bold; color:green; }
+    table { width:100%; border-collapse:collapse; font-size:.9rem; margin-top:.5rem; }
+    th, td { padding:.5rem; border:1px solid #ddd; text-align:left; vertical-align:middle; }
+    th { background:var(--blue2); color:#fff; }
+    img.thumb { width:50px; border-radius:4px; }
+    .actions button { margin-right:4px; padding:2px 6px; font-size:.8rem; border:none; border-radius:4px; cursor:pointer; }
+    .btn-edit { background:var(--blue); color:#fff; }
+    .btn-delete { background:#e74c3c; color:#fff; }
+    .btn-copy { background:var(--blue); color:#fff; padding:4px 8px; margin-bottom:.5rem; }
+    #orderFormContainer { background:#f9f9f9; padding:1rem; border-radius:6px; margin-bottom:1rem; }
+    #orderFormContainer h3 { margin-bottom:.5rem; }
+    footer { background:var(--blue); color:#fff; padding:1rem; text-align:center; margin-top:2rem; }
   </style>
 </head>
 <body>
@@ -88,7 +75,7 @@
       <div class="tab" data-sec="ped">Pedidos</div>
     </div>
 
-    <!-- AÑADIR VEHÍCULO -->
+    <!-- SECCIÓN AÑADIR VEHÍCULO -->
     <div id="section-add" class="section active">
       <form id="formularioAuto">
         <div class="form-grid">
@@ -108,12 +95,10 @@
         </div>
         <div id="preview" class="preview"></div>
         <button id="btnAgregar" type="submit">Guardar Vehículo</button>
-        <button id="btnCancelarEdicion" type="button" style="background:#e74c3c;color:#fff; display:none;">Cancelar</button>
-        <div id="mensajeExito" style="display:none;color:green;text-align:center;">¡Vehículo guardado!</div>
       </form>
     </div>
 
-    <!-- INVENTARIO -->
+    <!-- SECCIÓN INVENTARIO -->
     <div id="section-inv" class="section">
       <table id="inventory-table">
         <thead>
@@ -123,7 +108,7 @@
       </table>
     </div>
 
-    <!-- USUARIOS -->
+    <!-- SECCIÓN USUARIOS -->
     <div id="section-usr" class="section">
       <button id="btnCopyAll" class="btn-copy">Copiar todos</button>
       <table id="users-table">
@@ -132,94 +117,97 @@
       </table>
     </div>
 
-    <!-- PEDIDOS -->
+    <!-- SECCIÓN PEDIDOS -->
     <div id="section-ped" class="section">
 
-      <!-- Nuevo / Editar -->
+      <!-- Botón Nuevo Pedido -->
       <button id="btnNewOrder" class="btn-copy">+ Nuevo Pedido</button>
 
-      <!-- FORMULARIO DE PEDIDO -->
+      <!-- Formulario Pedido -->
       <div id="orderFormContainer" style="display:none;">
         <h3 id="orderFormTitle">Nuevo Pedido</h3>
         <form id="formularioOrder">
           <div class="form-grid">
-            <!-- Cliente y Teléfono -->
+            <!-- Cliente + Teléfono -->
             <select id="orderClient" required>
               <option value="">Selecciona cliente…</option>
             </select>
             <input id="orderClientPhone" placeholder="Teléfono" readonly/>
 
             <!-- Copart URL -->
-            <input id="orderVehicleURL" class="wide" type="url" placeholder="Copart URL" required/>
+            <input id="orderVehicleURL" type="url" placeholder="Copart URL" required/>
 
             <!-- Fotos Copart -->
-            <input id="orderCopartPhotos" class="wide" type="file" multiple accept="image/*"/>
+            <input id="orderCopartPhotos" type="file" multiple accept="image/*"/>
+            <div id="previewOrderCopart" class="preview-order"></div>
+            <div id="progressOrderCopart" class="progress-order"></div>
 
             <!-- Factura Copart -->
-            <input id="orderCopartInvoice" class="wide" type="file" accept="application/pdf"/>
+            <input id="orderCopartInvoice" type="file" accept="application/pdf"/>
 
-            <!-- Estado -->
-            <select id="orderStatus" class="wide">
+            <!-- Estado Inicial -->
+            <select id="orderStatus">
               <option>Inicio</option>
               <option>Pago Pendiente</option>
               <option>Pagado</option>
-              <option>Finalizado</option>
             </select>
+          </div>
 
-            <!-- Recogida -->
-            <div class="wide">
-              <label><input type="checkbox" id="chkRecogida"/> Gestión de recogida completada</label>
-              <div class="form-grid" style="grid-template-columns:1fr 1fr;">
-                <input id="valorGrua" type="number" placeholder="Costo grúa (USD)"/>
-                <input id="valorBarco" type="number" placeholder="Costo barco (USD)"/>
-              </div>
-            </div>
-
-            <!-- Envío Honduras -->
-            <div class="wide">
-              <label><input type="checkbox" id="chkHndArrived"/> Llegada a Honduras completada</label>
-              <textarea id="textoEnvioHnd" rows="2" placeholder="Detalles de envío"></textarea>
-            </div>
-
-            <!-- Nacionalización -->
-            <div class="wide">
-              <label><input type="checkbox" id="chkAduana"/> Pago aduana completado</label>
-              <textarea id="textoAduana" rows="2" placeholder="Detalles aduana"></textarea>
-            </div>
-
-            <!-- Entrega Final -->
-            <div class="wide">
-              <label><input type="checkbox" id="chkEntrega"/> Entrega final completada</label>
-              <div class="form-grid" style="grid-template-columns:1fr 1fr;">
-                <input id="fotosEntrega" type="file" multiple accept="image/*"/>
-                <input id="precioFinal" type="number" placeholder="Precio final (LPS)"/>
-              </div>
+          <!-- 1) Recogida -->
+          <div id="recogidaSection" style="margin-top:1rem; display:none;">
+            <label><input type="checkbox" id="chkRecogida"/> Gestión de recogida completada</label>
+            <div class="form-grid">
+              <input id="valorGrua" type="number" placeholder="Costo grúa (USD)" disabled/>
+              <input id="valorBarco" type="number" placeholder="Costo barco (USD)" disabled/>
             </div>
           </div>
 
-          <!-- Botones -->
-          <div style="margin-top:16px; display:flex; gap:10px;">
-            <button type="submit" style="flex:1;">Guardar Pedido</button>
-            <button id="btnCancelOrder" type="button" style="flex:1; background:#e74c3c; color:#fff;">Cancelar</button>
+          <!-- 2) Envío a Honduras -->
+          <div id="hndSection" style="margin-top:1rem; display:none;">
+            <label><input type="checkbox" id="chkHndArrived"/> Llegada a Honduras completada</label>
+            <textarea id="textoEnvioHnd" rows="2" placeholder="Detalles de envío" disabled style="width:100%;margin-top:8px;"></textarea>
+          </div>
+
+          <!-- 3) Nacionalización -->
+          <div id="aduanaSection" style="margin-top:1rem; display:none;">
+            <label><input type="checkbox" id="chkAduana"/> Pago aduana completado</label>
+            <textarea id="textoAduana" rows="2" placeholder="Detalles aduana" disabled style="width:100%;margin-top:8px;"></textarea>
+          </div>
+
+          <!-- 4) Entrega Final -->
+          <div id="entregaSection" style="margin-top:1rem; display:none;">
+            <label><input type="checkbox" id="chkEntrega"/> Entrega final completada</label>
+            <div class="form-grid">
+              <input id="fotosEntrega" type="file" multiple accept="image/*" disabled/>
+              <div id="previewEntrega" class="preview-order"></div>
+              <div id="progressEntrega" class="progress-order"></div>
+              <input id="precioFinal" type="number" placeholder="Precio final (LPS)" disabled/>
+            </div>
+          </div>
+
+          <!-- Botones Acción -->
+          <div style="margin-top:1rem; display:flex; gap:10px;">
+            <button id="btnSaveOrder" type="submit">Guardar Pedido</button>
+            <button id="btnCancelOrder" type="button" style="background:#e74c3c;color:#fff;">Cancelar</button>
           </div>
         </form>
       </div>
 
-      <!-- FILTROS -->
+      <!-- Filtros -->
       <div style="display:flex; gap:10px; margin:1rem 0;">
         <select id="statusFilter">
           <option value="">Todos</option>
-          <option>Inicio</option>
-          <option>Pago Pendiente</option>
-          <option>Pagado</option>
-          <option>Finalizado</option>
+          <option value="Inicio">Inicio</option>
+          <option value="Pago Pendiente">Pago Pendiente</option>
+          <option value="Pagado">Pagado</option>
+          <option value="Finalizado">Finalizado</option>
         </select>
         <select id="clientFilter">
           <option value="">Todos los clientes</option>
         </select>
       </div>
 
-      <!-- TABLA PEDIDOS -->
+      <!-- Tabla de Pedidos -->
       <table id="orders-table">
         <thead>
           <tr><th>Cliente</th><th>Email</th><th>Teléfono</th><th>Vehículo</th><th>Estado</th><th>Acciones</th></tr>
@@ -235,11 +223,12 @@
     <p>© 2025 SubastaCarHN. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- Firebase & Lógica JS -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+
   <script>
     // Configuración Firebase
     const firebaseConfig = {
@@ -252,15 +241,15 @@
       measurementId: "G-QM5N60K8C0"
     };
     firebase.initializeApp(firebaseConfig);
+
     const db = firebase.firestore();
     const storage = firebase.storage().ref();
-
     let editingVehicleId = null, editingOrderId = null;
     const clientsCache = [], ordersCache = [];
 
-    // Pestañas
-    document.querySelectorAll('.tab').forEach(tab=>{
-      tab.onclick=()=>{
+    // Manejo pestañas
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.onclick = () => {
         document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
         document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
         tab.classList.add('active');
@@ -268,51 +257,94 @@
       };
     });
 
-    // Tras autenticación
-    firebase.auth().onAuthStateChanged(u=>{
+    // Auth y carga inicial
+    firebase.auth().onAuthStateChanged(u => {
       if(!u) return location='login.html';
+      const admins = ['ledinvvv@gmail.com','ledinvvv1995@yopmail.com'];
+      if(!admins.includes(u.email)) return location='/';
       document.getElementById('adminApp').style.display='block';
       initApp();
     });
 
     function initApp(){
-      // Vehículos
-      document.getElementById('imagenes').onchange=showVehPreview;
-      document.getElementById('formularioAuto').onsubmit=saveVehicle;
-      document.getElementById('btnCancelarEdicion').onclick=resetVehicleForm;
+      /*** VEHÍCULOS ***/
+      document.getElementById('imagenes').addEventListener('change', showVehPreview);
+      document.getElementById('formularioAuto').addEventListener('submit', saveVehicle);
       fetchVehicles();
 
-      // Clientes
+      /*** CLIENTES ***/
       fetchClients();
 
-      // Pedidos
-      document.getElementById('btnNewOrder').onclick=()=>{
-        editingOrderId=null; showOrderForm();
-      };
-      document.getElementById('btnCancelOrder').onclick=hideOrderForm;
-      document.getElementById('formularioOrder').onsubmit=saveOrder;
-      document.getElementById('orderClient').onchange=e=>{
+      /*** PEDIDOS ***/
+      document.getElementById('btnNewOrder').onclick = ()=>{ editingOrderId=null; showOrderForm(); };
+      document.getElementById('btnCancelOrder').onclick = hideOrderForm;
+      document.getElementById('orderClient').addEventListener('change', e=>{
         const c=clientsCache.find(x=>x.email===e.target.value);
-        document.getElementById('orderClientPhone').value = c? c.phone : '';
-      };
-      document.getElementById('statusFilter').onchange=renderOrders;
-      document.getElementById('clientFilter').onchange=renderOrders;
+        document.getElementById('orderClientPhone').value = c? c.phone:'';
+      });
+      document.getElementById('orderCopartPhotos').addEventListener('change', ()=>{
+        const preview=document.getElementById('previewOrderCopart');
+        preview.innerHTML='';
+        Array.from(orderCopartPhotos.files).forEach(f=>{
+          const r=new FileReader();
+          r.onload=e=>{
+            const img=document.createElement('img');
+            img.src=e.target.result;
+            preview.appendChild(img);
+          };
+          r.readAsDataURL(f);
+        });
+      });
+      document.getElementById('fotosEntrega').addEventListener('change', ()=>{
+        const preview=document.getElementById('previewEntrega');
+        preview.innerHTML='';
+        Array.from(fotosEntrega.files).forEach(f=>{
+          const r=new FileReader();
+          r.onload=e=>{
+            const img=document.createElement('img');
+            img.src=e.target.result;
+            preview.appendChild(img);
+          };
+          r.readAsDataURL(f);
+        });
+      });
+      // etapas
+      orderCopartInvoice.addEventListener('change', ()=> document.getElementById('recogidaSection').style.display='block');
+      chkRecogida.addEventListener('change', e=>{
+        valorGrua.disabled=!e.target.checked; valorBarco.disabled=!e.target.checked;
+        if(e.target.checked) document.getElementById('hndSection').style.display='block';
+      });
+      chkHndArrived.addEventListener('change', e=>{
+        textoEnvioHnd.disabled=!e.target.checked;
+        if(e.target.checked) document.getElementById('aduanaSection').style.display='block';
+      });
+      chkAduana.addEventListener('change', e=>{
+        textoAduana.disabled=!e.target.checked;
+        if(e.target.checked) document.getElementById('entregaSection').style.display='block';
+      });
+      chkEntrega.addEventListener('change', e=>{
+        fotosEntrega.disabled=!e.target.checked; precioFinal.disabled=!e.target.checked;
+      });
+      document.getElementById('formularioOrder').addEventListener('submit', saveOrder);
+      document.getElementById('statusFilter').addEventListener('change', renderOrders);
+      document.getElementById('clientFilter').addEventListener('change', renderOrders);
 
       fetchOrders();
     }
 
-    /*** Vehículos ***/
+    /*** VEHÍCULOS ***/
     function showVehPreview(){
       const pr=document.getElementById('preview'); pr.innerHTML='';
-      Array.from(this.files).forEach(f=>{
-        const r=new FileReader();
-        r.onload=e=>pr.innerHTML+=`<img src="${e.target.result}"/>`;
-        r.readAsDataURL(f);
+      Array.from(imagenes.files).forEach(f=>{
+        const r=new FileReader(); r.onload=e=>{
+          const img=document.createElement('img'); img.src=e.target.result; pr.appendChild(img);
+        }; r.readAsDataURL(f);
       });
     }
     async function saveVehicle(e){
       e.preventDefault();
-      const f=e.target, data={
+      const f=e.target;
+      const data={
         marca:f.marca.value, modelo:f.modelo.value, motor:f.motor.value,
         anio:+f.anio.value, precio:+f.precio.value, kilometraje:+f.kilometraje.value,
         color:f.color.value, tipo:f.tipo.value, descripcion:f.descripcion.value
@@ -320,7 +352,8 @@
       if(editingVehicleId){
         await db.collection('inventario').doc(editingVehicleId).update(data);
       } else {
-        const id=`${data.modelo.toLowerCase()}${data.anio}-${Date.now()}`, urls=[];
+        const id=`${data.modelo.toLowerCase()}${data.anio}-${Date.now()}`;
+        const urls=[];
         for(let file of f.imagenes.files){
           const snap=await storage.child(`inventario/${id}/${file.name}`).put(file);
           urls.push(await snap.ref.getDownloadURL());
@@ -328,13 +361,7 @@
         Object.assign(data,{id,imagenes:urls,vendido:false,fecha:firebase.firestore.FieldValue.serverTimestamp()});
         await db.collection('inventario').doc(id).set(data);
       }
-      resetVehicleForm(); fetchVehicles();
-    }
-    function resetVehicleForm(){
-      editingVehicleId=null;
-      const f=document.getElementById('formularioAuto'); f.reset();
-      document.getElementById('preview').innerHTML='';
-      document.getElementById('btnCancelarEdicion').style.display='none';
+      f.reset(); document.getElementById('preview').innerHTML=''; fetchVehicles();
     }
     function fetchVehicles(){
       db.collection('inventario').orderBy('fecha','desc').get().then(snap=>{
@@ -346,8 +373,6 @@
             <td>${v.marca}</td><td>${v.modelo}</td><td>${v.anio}</td>
             <td>${v.precio} LPS</td><td>${v.vendido?'Vendido':'Disp.'}</td>
             <td class="actions">
-              ${!v.vendido?`<button class="btn-edit" onclick="markSold('${d.id}')">V</button>`:
-                `<button class="btn-edit" disabled>V</button>`}
               <button class="btn-edit" onclick="editVehicle('${d.id}')">E</button>
               <button class="btn-delete" onclick="deleteVehicle('${d.id}')">X</button>
             </td>`;
@@ -355,25 +380,26 @@
         });
       });
     }
-    function markSold(id){ if(confirm('Marcar vendido?')) db.collection('inventario').doc(id).update({vendido:true}).then(fetchVehicles); }
-    function deleteVehicle(id){ if(confirm('Eliminar?')) db.collection('inventario').doc(id).delete().then(fetchVehicles); }
     function editVehicle(id){
-      db.collection('inventario').doc(id).get().then(d=>{
-        const v=d.data(), f=document.getElementById('formularioAuto');
+      db.collection('inventario').doc(id).get().then(doc=>{
+        const v=doc.data(), f=document.getElementById('formularioAuto');
         ['marca','modelo','motor','anio','precio','kilometraje','color','tipo','descripcion']
           .forEach(k=>f[k].value=v[k]||'');
         editingVehicleId=id;
-        document.getElementById('btnCancelarEdicion').style.display='inline-block';
-        window.scrollTo({top:0,behavior:'smooth'});
       });
     }
+    function deleteVehicle(id){
+      if(confirm('Eliminar?')) db.collection('inventario').doc(id).delete().then(fetchVehicles);
+    }
 
-    /*** Clientes ***/
+    /*** CLIENTES ***/
     function fetchClients(){
       db.collection('clients').orderBy('fullName').get().then(snap=>{
         clientsCache.length=0;
-        const utb=document.querySelector('#users-table tbody');
-        utb.innerHTML='';
+        const tb=document.querySelector('#users-table tbody'); tb.innerHTML='';
+        const sel=document.getElementById('orderClient'), filt=document.getElementById('clientFilter');
+        sel.innerHTML='<option value="">Selecciona cliente…</option>';
+        filt.innerHTML='<option value="">Todos los clientes</option>';
         snap.forEach(d=>{
           const u=d.data(); clientsCache.push(u);
           const tr=document.createElement('tr');
@@ -382,27 +408,23 @@
             <td>${u.email}</td>
             <td>${u.phone}</td>
             <td><button class="btn-copy" onclick="navigator.clipboard.writeText('${u.phone}')">Copiar</button></td>`;
-          utb.appendChild(tr);
+          tb.appendChild(tr);
+          sel.innerHTML+=`<option value="${u.email}">${u.fullName}</option>`;
+          filt.innerHTML+=`<option value="${u.fullName}">${u.fullName}</option>`;
         });
-        document.getElementById('userCount').innerText=clientsCache.length;
-        // llena selects
-        const sel=document.getElementById('orderClient'),
-              fil=document.getElementById('clientFilter');
-        sel.innerHTML=`<option value="">Selecciona cliente…</option>`;
-        fil.innerHTML=`<option value="">Todos los clientes</option>`;
-        clientsCache.forEach(c=>{
-          sel.innerHTML+=`<option value="${c.email}">${c.fullName}</option>`;
-          fil.innerHTML+=`<option value="${c.fullName}">${c.fullName}</option>`;
-        });
+        document.getElementById('userCount').textContent=clientsCache.length;
       });
     }
 
-    /*** Pedidos ***/
+    /*** PEDIDOS ***/
     function showOrderForm(){
       document.getElementById('orderFormTitle').innerText = editingOrderId?'Editar Pedido':'Nuevo Pedido';
       document.getElementById('orderFormContainer').style.display='block';
-      if(!editingOrderId) document.getElementById('formularioOrder').reset();
-      window.scrollTo({top:0,behavior:'smooth'});
+      document.getElementById('formularioOrder').reset();
+      ['recogidaSection','hndSection','aduanaSection','entregaSection']
+        .forEach(id=>document.getElementById(id).style.display='none');
+      ['valorGrua','valorBarco','textoEnvioHnd','textoAduana','fotosEntrega','precioFinal']
+        .forEach(id=>document.getElementById(id).disabled=true);
     }
     function hideOrderForm(){
       document.getElementById('orderFormContainer').style.display='none';
@@ -410,11 +432,7 @@
     function fetchOrders(){
       db.collection('orders').orderBy('createdAt','desc').get().then(snap=>{
         ordersCache.length=0;
-        const tb=document.querySelector('#orders-table tbody');
-        tb.innerHTML='';
-        snap.forEach(d=>{
-          ordersCache.push({id:d.id,data:d.data()});
-        });
+        snap.forEach(d=>ordersCache.push({id:d.id,data:d.data()}));
         renderOrders();
       });
     }
@@ -445,77 +463,108 @@
       const o=ordersCache.find(x=>x.id===id);
       if(!o) return;
       const d=o.data, f=document.getElementById('formularioOrder');
-      // carga datos
-      f.orderClient.value     = d.clientEmail;
+      f.orderClient.value = d.clientEmail;
       document.getElementById('orderClientPhone').value = d.clientPhone;
       f.orderVehicleURL.value = d.vehicleURL;
-      f.orderStatus.value     = d.status;
-      // etapas anteriores
-      if(d.recogida){
-        document.getElementById('chkRecogida').checked = d.recogida.done;
-        document.getElementById('valorGrua').value   = d.recogida.valorGrua;
-        document.getElementById('valorBarco').value  = d.recogida.valorBarco;
+      f.orderStatus.value = d.status;
+      if(d.copartPhotos?.length) document.getElementById('previewOrderCopart').innerHTML = '';
+      if(d.recogida?.done){
+        chkRecogida.checked=true;
+        valorGrua.disabled=false; valorGrua.value=d.recogida.valorGrua||'';
+        valorBarco.disabled=false; valorBarco.value=d.recogida.valorBarco||'';
+        document.getElementById('hndSection').style.display='block';
       }
-      if(d.envioHnd){
-        document.getElementById('chkHndArrived').checked = d.envioHnd.done;
-        document.getElementById('textoEnvioHnd').value   = d.envioHnd.detail;
+      if(d.envioHnd?.done){
+        chkHndArrived.checked=true;
+        textoEnvioHnd.disabled=false; textoEnvioHnd.value=d.envioHnd.detail||'';
+        document.getElementById('aduanaSection').style.display='block';
       }
-      if(d.aduana){
-        document.getElementById('chkAduana').checked = d.aduana.done;
-        document.getElementById('textoAduana').value = d.aduana.detail;
+      if(d.aduana?.done){
+        chkAduana.checked=true;
+        textoAduana.disabled=false; textoAduana.value=d.aduana.detail||'';
+        document.getElementById('entregaSection').style.display='block';
       }
-      if(d.entrega){
-        document.getElementById('chkEntrega').checked = d.entrega.done;
-        document.getElementById('precioFinal').value = d.entrega.precioFinal;
-        // fotosEntrega se suben de nuevo si quieres
+      if(d.entrega?.done){
+        chkEntrega.checked=true;
+        precioFinal.disabled=false; precioFinal.value=d.entrega.precioFinal||'';
+        fotosEntrega.disabled=false;
       }
       editingOrderId=id;
       showOrderForm();
     }
     function deleteOrder(id){
-      if(!confirm('Eliminar este pedido?')) return;
-      db.collection('orders').doc(id).delete().then(fetchOrders);
+      if(confirm('Eliminar este pedido?')) db.collection('orders').doc(id).delete().then(fetchOrders);
     }
+
     async function saveOrder(e){
       e.preventDefault();
       const f=e.target, clientEmail=f.orderClient.value;
       const client=clientsCache.find(c=>c.email===clientEmail);
+      const id = editingOrderId || db.collection('orders').doc().id;
+      // payload base
       const payload = {
         clientName: client.fullName,
         clientEmail: client.email,
         clientPhone: client.phone,
         vehicleURL: f.orderVehicleURL.value,
         status: f.orderStatus.value,
-        copartPhotos: [],
-        copartInvoiceUrl: null,
-        recogida: { done: f.chkRecogida.checked, valorGrua:+f.valorGrua.value, valorBarco:+f.valorBarco.value },
-        envioHnd: { done: f.chkHndArrived.checked, detail: f.textoEnvioHnd.value },
-        aduana: { done: f.chkAduana.checked, detail: f.textoAduana.value },
-        entrega: { done: f.chkEntrega.checked, precioFinal:+f.precioFinal.value, deliveryPhotos: [] },
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        copartPhotos: [], copartInvoiceUrl:null,
+        recogida:{done:false,valorGrua:0,valorBarco:0},
+        envioHnd:{done:false,detail:''},
+        aduana:{done:false,detail:''},
+        entrega:{done:false,precioFinal:0,deliveryPhotos:[]},
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
-      // subir imágenes
-      for(let file of f.orderCopartPhotos.files){
-        const snap = await storage.child(`orders/${editingOrderId||Date.now()}/copart/${file.name}`).put(file);
-        payload.copartPhotos.push(await snap.ref.getDownloadURL());
+      // subir copart photos
+      if(orderCopartPhotos.files.length){
+        document.getElementById('progressOrderCopart').textContent='Subiendo fotos Copart…';
+        for(let fimg of orderCopartPhotos.files){
+          const snap=await storage.child(`orders/${id}/copart/${fimg.name}`).put(fimg);
+          payload.copartPhotos.push(await snap.ref.getDownloadURL());
+        }
       }
-      if(f.orderCopartInvoice.files[0]){
-        const snap = await storage.child(`orders/${editingOrderId||Date.now()}/copart/receipt.pdf`).put(f.orderCopartInvoice.files[0]);
+      // factura Copart
+      if(orderCopartInvoice.files[0]){
+        const snap=await storage.child(`orders/${id}/copart/receipt.pdf`).put(orderCopartInvoice.files[0]);
         payload.copartInvoiceUrl = await snap.ref.getDownloadURL();
       }
-      if(f.chkEntrega.checked){
-        for(let file of f.fotosEntrega.files){
-          const snap = await storage.child(`orders/${editingOrderId||Date.now()}/delivery/${file.name}`).put(file);
-          payload.entrega.deliveryPhotos.push(await snap.ref.getDownloadURL());
+      // recogida
+      if(chkRecogida.checked){
+        payload.recogida.done = true;
+        payload.recogida.valorGrua = Number(valorGrua.value);
+        payload.recogida.valorBarco = Number(valorBarco.value);
+      }
+      // envío HND
+      if(chkHndArrived.checked){
+        payload.envioHnd.done = true;
+        payload.envioHnd.detail = textoEnvioHnd.value;
+      }
+      // aduana
+      if(chkAduana.checked){
+        payload.aduana.done = true;
+        payload.aduana.detail = textoAduana.value;
+      }
+      // entrega final
+      if(chkEntrega.checked){
+        payload.entrega.done = true;
+        payload.entrega.precioFinal = Number(precioFinal.value);
+        if(fotosEntrega.files.length){
+          document.getElementById('progressEntrega').textContent='Subiendo fotos entrega…';
+          for(let fimg of fotosEntrega.files){
+            const snap=await storage.child(`orders/${id}/delivery/${fimg.name}`).put(fimg);
+            payload.entrega.deliveryPhotos.push(await snap.ref.getDownloadURL());
+          }
         }
       }
       // guardar
       if(editingOrderId){
-        await db.collection('orders').doc(editingOrderId).update(payload);
+        await db.collection('orders').doc(id).update(payload);
       } else {
-        await db.collection('orders').add(payload);
+        payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+        await db.collection('orders').doc(id).set(payload);
       }
-      hideOrderForm(); fetchOrders();
+      hideOrderForm();
+      fetchOrders();
     }
   </script>
 </body>
