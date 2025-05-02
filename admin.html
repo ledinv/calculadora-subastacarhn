@@ -456,7 +456,6 @@
       const d = o.data, disp = getDisplayStatus(d);
       if (sf && disp!==sf) return;
       if (cf && d.clientName!==cf) return;
-      // Header
       const header = `
         <div class="accordion-header" data-acc="${o.id}">
           <div style="display:flex; align-items:center; gap:8px;">
@@ -469,23 +468,20 @@
             <button class="btn-delete-inline" onclick="deleteOrder('${o.id}')">Eliminar</button>
           </div>
         </div>`;
-      // Steps
       const steps = STEPS.map((s,i)=>{
         const cls = i < STEPS.indexOf(disp) ? 'done' : (i===STEPS.indexOf(disp)?'active':'');
         return `<li class="${cls}">${s}</li>`;
       }).join('');
-      // Galleries
       const copartGallery = d.copartPhotos?.length
-        ? `<a href="#" class="toggle-detail" data-detail="cp-${o.id}">Ver fotos</a>
+        ? `<a href="#" class="toggle-detail" data-detail="cp-${o.id}">Ver fotos Copart</a>
            <div id="cp-${o.id}" class="gallery" style="display:none;">
              ${d.copartPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}
            </div>` : '-';
       const deliveryGallery = d.entrega?.deliveryPhotos?.length
-        ? `<a href="#" class="toggle-detail" data-detail="dp-${o.id}">Ver fotos</a>
+        ? `<a href="#" class="toggle-detail" data-detail="dp-${o.id}">Ver fotos Entrega</a>
            <div id="dp-${o.id}" class="gallery" style="display:none;">
              ${d.entrega.deliveryPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}
            </div>` : '-';
-      // Content
       const content = `
         <div id="acc-${o.id}" class="accordion-content">
           <ul class="tracker">${steps}</ul>
@@ -520,12 +516,11 @@
       ordersContainer.appendChild(card);
     });
 
-    // Hooks
-    document.querySelectorAll('.accordion-header').forEach(h => {
-      h.onclick = () => document.getElementById('acc-'+h.dataset.acc).classList.toggle('open');
+    document.querySelectorAll('.accordion-header').forEach(h=>{
+      h.onclick = ()=> document.getElementById('acc-'+h.dataset.acc).classList.toggle('open');
     });
-    document.querySelectorAll('.toggle-detail').forEach(a => {
-      a.onclick = e => {
+    document.querySelectorAll('.toggle-detail').forEach(a=>{
+      a.onclick = e=>{
         e.preventDefault();
         const tgt = document.getElementById(a.dataset.detail);
         tgt.style.display = tgt.style.display==='none'?'block':'none';
