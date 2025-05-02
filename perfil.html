@@ -23,97 +23,93 @@
       --text: #333;
       --light: #f9f9f9;
       --shadow: rgba(0,0,0,0.1);
-      --max-width: 1200px;
+      --max-width: 1000px;
     }
     *, *::before, *::after { box-sizing: border-box; margin:0; padding:0 }
-    body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text); line-height:1.6 }
+    body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text); line-height:1.5 }
     a { text-decoration:none; color:inherit }
     ul { list-style:none }
-    .container { max-width:var(--max-width); margin:0 auto; padding:0 1rem }
-
-    /* Header */
-    .site-header {
-      background:var(--blue);
-      position: sticky; top:0; z-index:1000;
+    header.site-header {
+      background:var(--blue); padding:1rem;
+      position:sticky; top:0; z-index:1000;
     }
-    .header-inner { display:flex; align-items:center; justify-content:space-between; padding:.75rem }
-    .brand { color:#fff; font-size:1.5rem; font-weight:700 }
-    .nav-list { display:flex; gap:1rem; margin-left:auto }
-    .nav-list a, .nav-list span { color:var(--yellow); font-weight:600; font-size:.95rem }
+    .header-inner { max-width:var(--max-width); margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
+    .brand { color:#fff; font-size:1.75rem; font-weight:700 }
+    .nav-list { display:flex; gap:1rem }
+    .nav-list a { color:var(--yellow); font-weight:600 }
     .menu-icon {
-      background:var(--yellow); color:var(--blue); border:none;
-      padding:.5rem; border-radius:6px; cursor:pointer;
-      box-shadow:0 2px 8px var(--shadow);
+      display:none; background:var(--yellow); color:var(--blue);
+      border:none; padding:.5rem; border-radius:6px; cursor:pointer;
+    }
+    @media(max-width:767px) {
+      .nav-list { display:none }
+      .menu-icon { display:block }
     }
     .mobile-nav {
-      display:none; flex-direction:column; background:#fff; padding:1rem;
-      box-shadow:0 2px 8px var(--shadow);
+      display:none; position:absolute; top:100%; left:0; right:0;
+      background:#fff; box-shadow:0 2px 8px var(--shadow); flex-direction:column;
     }
-    .mobile-nav.open { display:flex; }
-    .mobile-nav a, .mobile-nav span {
-      font-weight:700; padding:.75rem; border-radius:4px;
-      transition:background .2s; color:var(--blue);
-    }
-    .mobile-nav a:hover, .mobile-nav span:hover { background:rgba(0,47,108,0.1) }
-    @media (max-width:767px) { .nav-list { display:none; } }
-    @media (min-width:768px) { .menu-icon { display:none; } }
+    .mobile-nav.open { display:flex }
+    .mobile-nav a { padding:1rem; border-bottom:1px solid #eee; color:var(--blue); font-weight:600 }
 
-    /* Main Layout */
-    main.layout { padding:2rem 1rem }
-    .contenido-central {
-      max-width:500px; margin:0 auto; background:#fff;
-      padding:2rem; border-radius:15px;
-      box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    }
-    .contenido-central h1 { text-align:center; color:var(--blue); margin-bottom:1.5rem }
-    label { display:block; font-weight:bold; color:var(--blue); margin-top:10px }
-    input, textarea {
-      width:100%; padding:8px; border-radius:8px;
-      border:1px solid var(--blue2); background:#f0f8ff;
-      margin-top:5px; font-size:14px; box-sizing:border-box;
-    }
-    .readonly { background:#e4e4e4; color:#555; }
-    small.note { font-size:12px; color:#666; display:block; margin:-.2rem 0 1rem; }
-    .styled-btn {
-      background:var(--yellow); color:var(--blue); font-weight:bold;
-      border:none; border-radius:8px; padding:10px; margin-top:20px;
-      width:100%; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.2);
-    }
-    .styled-btn:hover { background:#e6ac00; }
-    .success-msg {
-      background:#d4edda; color:#155724; border:1px solid #c3e6cb;
-      padding:10px; border-radius:6px; text-align:center; margin-top:10px;
-    }
-
-    /* Tabs moderno */
-    .tabs {
-      display:flex; border-bottom:2px solid var(--blue2); margin-top:2rem;
-    }
+    main { max-width:var(--max-width); margin:2rem auto; padding:0 1rem }
+    .tabs { display:flex; border-bottom:2px solid var(--blue2); }
     .tab {
-      flex:1; padding:.75rem; background:var(--blue2);
-      color:#fff; text-align:center; cursor:pointer; font-weight:600;
+      flex:1; padding:.75rem; background:var(--blue2); color:#fff;
+      text-align:center; cursor:pointer; font-weight:600;
     }
     .tab.active { background:var(--blue); }
-    .section { display:none; }
-    .section.active { display:block; margin-top:1rem; }
+    section { display:none; margin-top:1rem }
+    section.active { display:block }
 
-    /* Gestión de Vehículos dentro de sección */
+    /* PERFIL */
+    form.profile-form {
+      background:#fff; padding:2rem; border-radius:8px;
+      box-shadow:0 4px 12px var(--shadow);
+    }
+    .profile-form h2 { margin-bottom:1rem; color:var(--blue) }
+    .profile-form label { display:block; margin-top:1rem; font-weight:600; }
+    .profile-form input {
+      width:100%; padding:.75rem; margin-top:.25rem;
+      border:1px solid var(--blue2); border-radius:4px;
+    }
+    .profile-form input.readonly { background:#e4e4e4 }
+    .profile-form button {
+      margin-top:1.5rem; width:100%; padding:.75rem;
+      background:var(--yellow); color:var(--blue); border:none;
+      border-radius:4px; font-weight:600; cursor:pointer;
+    }
+    .profile-form .btn-secondary {
+      background:transparent; border:2px solid var(--yellow);
+      color:var(--yellow); margin-top:.5rem;
+    }
+    .success-msg {
+      margin-top:1rem; padding:.75rem; background:#d4edda;
+      color:#155724; border-radius:4px; text-align:center;
+    }
+
+    /* GESTIÓN */
+    .styled-btn {
+      background:var(--yellow); color:var(--blue); border:none;
+      padding:.75rem; border-radius:4px; cursor:pointer;
+      font-weight:600; width:100%; margin-top:1rem;
+    }
     .orders-grid {
-      display:grid; gap:1rem;
-      grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-      margin-top:1rem;
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+      gap:1rem; margin-top:1rem;
     }
     .order-card {
-      border:1px solid #ddd; border-radius:6px; overflow:hidden;
-      background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.1);
+      background:#fff; border:1px solid #ddd; border-radius:6px;
+      overflow:hidden; box-shadow:0 2px 6px var(--shadow);
     }
     .accordion-header {
-      display:flex; justify-content:space-between; align-items:center;
-      padding:.75rem 1rem; background:var(--blue2); color:#fff; cursor:pointer;
+      background:var(--blue2); color:#fff; padding:.75rem 1rem;
+      cursor:pointer; display:flex; justify-content:space-between;
+      align-items:center;
     }
     .status-badge {
       background:var(--yellow); color:var(--text);
-      padding:2px 8px; border-radius:4px; font-size:.8rem;
+      padding:2px 6px; border-radius:4px; font-size:.8rem;
     }
     .accordion-content {
       max-height:0; overflow:hidden;
@@ -121,12 +117,9 @@
       padding:0 1rem;
     }
     .accordion-content.open {
-      padding:1rem; max-height:800px;
+      padding:1rem; max-height:600px;
     }
-    .tracker {
-      list-style:none; display:flex; gap:.5rem;
-      padding:0; margin-bottom:.75rem; flex-wrap:wrap;
-    }
+    .tracker { list-style:none; display:flex; gap:.5rem; flex-wrap:wrap; padding:0; margin-bottom:1rem }
     .tracker li {
       position:relative; padding-left:1.2rem; font-size:.8rem;
     }
@@ -136,29 +129,33 @@
     }
     .tracker li.done::before { background:var(--yellow) }
     .tracker li.active::before { background:var(--blue) }
-    .summary { list-style:none; padding:0; margin:0; font-size:.9rem; }
-    .summary li { margin-bottom:.5rem; }
-    .gallery {
-      display:flex; flex-wrap:wrap; gap:4px; margin-top:4px;
-    }
-    .gallery img {
-      width:60px; height:60px; object-fit:cover;
-      border:1px solid #ddd; border-radius:4px;
-    }
+    .summary { list-style:none; padding:0; font-size:.9rem }
+    .summary li { margin-bottom:.5rem }
 
-    /* Footer */
-    .site-footer {
+    /* HISTORIAL */
+    .hist-card {
+      background:#fff; padding:1rem; border-radius:6px;
+      box-shadow:0 2px 6px var(--shadow); margin-bottom:1rem;
+    }
+    .hist-card input {
+      width:100%; border:none; background:transparent;
+      font-weight:600; color:var(--blue2); margin-bottom:.5rem;
+    }
+    .hist-card small { display:block; color:#666; margin-bottom:.5rem }
+
+    /* FOOTER */
+    footer.site-footer {
       background:var(--blue2); color:#fff; text-align:center;
       padding:1rem; margin-top:2rem;
     }
-    .site-footer a { color:var(--yellow); text-decoration:none; }
+    footer.site-footer a { color:var(--yellow); margin:0 .5rem }
   </style>
 </head>
 <body>
 
   <!-- HEADER -->
   <header class="site-header">
-    <div class="container header-inner">
+    <div class="header-inner">
       <a href="index.html" class="brand">SubastaCarHN</a>
       <ul class="nav-list">
         <li><a href="index.html">Inicio</a></li>
@@ -169,7 +166,7 @@
       </ul>
       <button class="menu-icon" onclick="toggleMenu()">☰</button>
     </div>
-    <nav id="mobile-menu-links" class="mobile-nav">
+    <nav id="mobile-nav" class="mobile-nav">
       <a href="index.html">Inicio</a>
       <a href="calculadora.html">Calculadora</a>
       <a href="inventario.html">Vehículos</a>
@@ -178,13 +175,20 @@
     </nav>
   </header>
 
-  <!-- MAIN -->
-  <main class="layout">
-    <div class="contenido-central">
+  <!-- MAIN CONTENT -->
+  <main>
 
-      <!-- Perfil -->
-      <h1>Mi Perfil</h1>
-      <form id="profileForm">
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab active" data-sec="perfil">Perfil</div>
+      <div class="tab" data-sec="gestion">Gestión</div>
+      <div class="tab" data-sec="historial">Historial</div>
+    </div>
+
+    <!-- PERFIL -->
+    <section id="perfil" class="active">
+      <form id="profileForm" class="profile-form">
+        <h2>Mi Perfil</h2>
         <label for="name">Nombre completo</label>
         <input type="text" id="name" required />
 
@@ -202,45 +206,39 @@
 
         <label for="birthYear">Año de nacimiento</label>
         <input type="number" id="birthYear" min="1900" max="2100" />
-        <small class="note">El DNI y el año de nacimiento te ayudarán a recuperar tu cuenta si pierdes el acceso.</small>
 
-        <button type="submit" class="styled-btn">Guardar cambios</button>
-        <button type="button" class="styled-btn" onclick="sendPasswordReset()">Cambiar contraseña</button>
-        <button type="button" class="styled-btn" onclick="logout()">Cerrar sesión</button>
+        <button type="submit">Guardar cambios</button>
+        <button type="button" class="btn-secondary" onclick="sendPasswordReset()">Cambiar contraseña</button>
+        <button type="button" class="btn-secondary" onclick="logout()">Cerrar sesión</button>
 
         <div id="successMsg" class="success-msg" style="display:none;">
           ✅ Tus datos han sido actualizados con éxito.
         </div>
       </form>
+    </section>
 
-      <!-- Tabs para secciones -->
-      <div class="tabs">
-        <div class="tab active" data-sec="gestion">Gestión</div>
-        <div class="tab" data-sec="historial">Historial</div>
+    <!-- GESTIÓN -->
+    <section id="gestion">
+      <h2>Gestión de Vehículos</h2>
+      <button id="btnStartGestion" class="styled-btn">Comenzar gestión</button>
+      <div id="depositForm" style="display:none; margin-top:1rem;">
+        <label>Subir comprobante de depósito (5,000 LPS)</label>
+        <input type="file" id="depositFile" accept="application/pdf,image/*" />
+        <button id="btnUploadDeposit" class="styled-btn">Enviar comprobante</button>
       </div>
-
-      <!-- Sección Gestión -->
-      <div id="section-gestion" class="section active">
-        <button id="btnStartGestion" class="styled-btn">Comenzar gestión</button>
-        <div id="depositForm" style="display:none; margin-top:1rem;">
-          <h3>Subir comprobante de depósito (5,000 LPS)</h3>
-          <input type="file" id="depositFile" accept="application/pdf,image/*" />
-          <button id="btnUploadDeposit">Enviar comprobante</button>
-        </div>
-        <div id="depositSuccess" class="success-msg" style="display:none;">
-          ✅ Comprobante enviado. Pronto comenzaremos la gestión.
-        </div>
-        <h4 style="margin-top:2rem; color:var(--blue);">Mis Gestiones</h4>
-        <div id="clientOrdersContainer" class="orders-grid"></div>
+      <div id="depositSuccess" class="success-msg" style="display:none;">
+        ✅ Comprobante enviado. Pronto comenzaremos la gestión.
       </div>
+      <h3 style="margin-top:1.5rem;">Mis Gestiones</h3>
+      <div id="clientOrdersContainer" class="orders-grid"></div>
+    </section>
 
-      <!-- Sección Historial -->
-      <div id="section-historial" class="section">
-        <h4 style="color:var(--blue);">Historial de Cálculos</h4>
-        <div id="historialContainer" style="margin-top:1rem;"></div>
-      </div>
+    <!-- HISTORIAL -->
+    <section id="historial">
+      <h2>Historial de Cálculos</h2>
+      <div id="historialContainer"></div>
+    </section>
 
-    </div>
   </main>
 
   <!-- FOOTER -->
@@ -252,134 +250,140 @@
     <p>&copy; 2025 SubastaCarHN. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- Firebase SDKs y lógica -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 
   <script>
-    // Configuración Firebase
-    const firebaseConfig = {
+    // Toggle mobile nav
+    function toggleMenu() {
+      document.getElementById('mobile-nav').classList.toggle('open');
+    }
+
+    // Initialize Firebase
+    firebase.initializeApp({
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
       storageBucket: "subastacarhn-40554.appspot.com",
       messagingSenderId: "536785797974",
-      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7"
-    };
-    firebase.initializeApp(firebaseConfig);
+      appId: "1:536785797974:web=e3eabb4dcd898c2ffe8cf7"
+    });
     const auth = firebase.auth();
     const db = firebase.firestore();
-    const storage = firebase.app().storage("gs://subastacarhn-40554.firebasestorage.app").ref();
+    const storage = firebase.storage().ref();
 
-    // Menú móvil
-    function toggleMenu() {
-      document.getElementById('mobile-menu-links').classList.toggle('open');
-    }
+    // TAB functionality
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.onclick = () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.sec).classList.add('active');
+      };
+    });
 
-    // Gestión de depósito
-    const btnStartGestion  = document.getElementById('btnStartGestion');
-    const depositForm      = document.getElementById('depositForm');
-    const depositFile      = document.getElementById('depositFile');
-    const btnUploadDeposit = document.getElementById('btnUploadDeposit');
-    const depositSuccess   = document.getElementById('depositSuccess');
-
-    btnStartGestion.onclick = () => {
-      depositForm.style.display = 'block';
-      btnStartGestion.style.display = 'none';
-      depositSuccess.style.display = 'none';
-      depositForm.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    btnUploadDeposit.onclick = async () => {
-      if (!depositFile.files[0]) {
-        alert('Selecciona un comprobante antes de enviar.');
-        return;
-      }
-      btnUploadDeposit.disabled = true;
-      btnUploadDeposit.textContent = 'Subiendo...';
-      try {
-        const user = auth.currentUser;
-        const file = depositFile.files[0];
-        const filePath = `orders/${user.uid}/deposit/${Date.now()}_${file.name}`;
-        const snap = await storage.child(filePath).put(file);
-        const url = await snap.ref.getDownloadURL();
-        const payload = {
-          clientName: user.displayName||user.email,
-          clientEmail: user.email,
-          clientPhone: document.getElementById('phone').value,
-          precioEstimado: null,
-          depositReceiptUrl: url,
-          depositAmount: 5000,
-          copartPhotos: [],
-          recogida: { valorGrua:0, valorBarco:0 },
-          envioHnd: { detail:'' },
-          aduana: { detail:'' },
-          entrega: { detail:'', precioFinal:0, deliveryPhotos:[] },
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        };
-        await db.collection('orders').add(payload);
-        depositForm.style.display = 'none';
-        depositSuccess.style.display = 'block';
-        fetchClientOrders();
-      } catch (err) {
-        console.error(err);
-        alert('❌ Error al subir el comprobante: '+err.message);
-      } finally {
-        btnUploadDeposit.disabled = false;
-        btnUploadDeposit.textContent = 'Enviar comprobante';
-      }
-    };
-
-    // Perfil y autenticación
+    // Auth state & load initial data
     auth.onAuthStateChanged(async user => {
-      if (!user) return window.location='login.html';
-      document.getElementById('userGreeting').textContent   = `Hola, ${user.displayName||user.email}`;
-      document.getElementById('mobileGreeting').textContent = `Hola, ${user.displayName||user.email}`;
-      const doc = await db.collection('clients').doc(user.uid).get();
-      if (doc.exists) {
-        const d = doc.data();
-        document.getElementById('name').value      = d.fullName||'';
-        document.getElementById('email').value     = d.email   ||user.email;
-        document.getElementById('phone').value     = d.phone   ||'';
-        document.getElementById('address').value   = d.address ||'';
-        document.getElementById('dni').value       = d.dni     ||'';
-        document.getElementById('birthYear').value = d.birthYear||'';
-      }
+      if (!user) return location = 'login.html';
+      loadProfile(user.uid);
       cargarHistorial();
       fetchClientOrders();
     });
 
+    // Load and handle profile form
+    async function loadProfile(uid) {
+      const doc = await db.collection('clients').doc(uid).get();
+      const data = doc.exists ? doc.data() : {};
+      document.getElementById('name').value = data.fullName || '';
+      document.getElementById('email').value = data.email || '';
+      document.getElementById('phone').value = data.phone || '';
+      document.getElementById('address').value = data.address || '';
+      document.getElementById('dni').value = data.dni || '';
+      document.getElementById('birthYear').value = data.birthYear || '';
+    }
     document.getElementById('profileForm').onsubmit = async e => {
       e.preventDefault();
       const user = auth.currentUser;
-      const data = {
+      await db.collection('clients').doc(user.uid).update({
         fullName: document.getElementById('name').value,
-        address : document.getElementById('address').value,
-        dni     : document.getElementById('dni').value,
+        address: document.getElementById('address').value,
+        dni: document.getElementById('dni').value,
         birthYear: document.getElementById('birthYear').value
-      };
-      await db.collection('clients').doc(user.uid).update(data);
+      });
       const msg = document.getElementById('successMsg');
       msg.style.display = 'block';
-      setTimeout(()=>msg.style.display='none',3000);
+      setTimeout(() => msg.style.display = 'none', 3000);
     };
-
     function sendPasswordReset() {
       auth.sendPasswordResetEmail(auth.currentUser.email)
-        .then(()=>alert('🔗 Enlace enviado al correo.'))
-        .catch(()=>alert('❌ Error al enviar enlace.'));
+        .then(() => alert('🔗 Enlace enviado al correo.'));
     }
     function logout() {
-      auth.signOut().then(()=>window.location='login.html');
+      auth.signOut().then(() => location = 'login.html');
     }
 
-    // Historial
+    // Gestión: deposit upload
+    document.getElementById('btnStartGestion').onclick = () => {
+      document.getElementById('depositForm').style.display = 'block';
+    };
+    document.getElementById('btnUploadDeposit').onclick = async () => {
+      const file = document.getElementById('depositFile').files[0];
+      if (!file) return alert('Selecciona un comprobante.');
+      const user = auth.currentUser;
+      const snap = await storage.child(`orders/${user.uid}/deposit/${Date.now()}_${file.name}`).put(file);
+      const url = await snap.ref.getDownloadURL();
+      await db.collection('orders').add({
+        clientName: user.displayName || user.email,
+        clientEmail: user.email,
+        clientPhone: document.getElementById('phone').value,
+        depositReceiptUrl: url,
+        depositAmount: 5000,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      document.getElementById('depositSuccess').style.display = 'block';
+      fetchClientOrders();
+    };
+
+    // Fetch and render client orders
+    async function fetchClientOrders() {
+      const user = auth.currentUser;
+      const snap = await db.collection('orders')
+        .where('clientEmail', '==', user.email)
+        .orderBy('createdAt', 'desc')
+        .get();
+      const container = document.getElementById('clientOrdersContainer');
+      container.innerHTML = '';
+      snap.forEach(doc => {
+        const o = doc.data();
+        const status = o.depositReceiptUrl ? 'Pago Pendiente' : 'Finalizado';
+        const card = document.createElement('div');
+        card.className = 'order-card';
+        card.innerHTML = `
+          <div class="accordion-header">
+            <span>#${doc.id.slice(0,6)}</span>
+            <span class="status-badge">${status}</span>
+          </div>
+          <div class="accordion-content">
+            <ul class="summary">
+              <li><strong>Depósito:</strong> ${o.depositAmount} LPS</li>
+              <li><strong>Comprobante:</strong> <a href="${o.depositReceiptUrl}" target="_blank">Ver</a></li>
+            </ul>
+          </div>`;
+        card.querySelector('.accordion-header').onclick = () => {
+          card.querySelector('.accordion-content').classList.toggle('open');
+        };
+        container.appendChild(card);
+      });
+    }
+
+    // Historial: load, rename
     async function cargarHistorial() {
-      const uid = auth.currentUser.uid;
-      const snap = await db.collection('clients').doc(uid)
+      const user = auth.currentUser;
+      const snap = await db.collection('clients').doc(user.uid)
         .collection('historial').orderBy('fecha','desc').limit(100).get();
       const cont = document.getElementById('historialContainer');
       if (snap.empty) {
@@ -388,122 +392,29 @@
       }
       cont.innerHTML = snap.docs.map(doc => {
         const d = doc.data();
-        const fecha = d.fecha?.toDate().toLocaleString('es-HN')||'Fecha desconocida';
+        const fecha = d.fecha?.toDate().toLocaleString('es-HN') || '';
         return `
-          <div style="background:#f0f8ff;padding:1rem;border-radius:10px;margin-bottom:1rem;box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+          <div class="hist-card" id="historial-${doc.id}">
             <input type="text" value="${d.nombre||'Sin título'}"
-              onchange="renombrarHistorial('${doc.id}',this.value)"
-              style="font-weight:bold;border:none;background:transparent;color:var(--blue2);width:100%;"/>
+              onchange="renombrarHistorial('${doc.id}',this.value)" />
             <small>${fecha}</small><br>
-            <strong style="color:var(--blue2);">L ${d.total||'-'}</strong><br><br>
-            <button class="styled-btn" onclick="verDetallesHistorial('${doc.id}')">Ver detalles</button>
-          </div>
-        `;
+            <strong>L ${d.total||'-'}</strong>
+          </div>`;
       }).join('');
     }
-
-    async function renombrarHistorial(id,nombre) {
+    async function renombrarHistorial(id,nuevo) {
       try {
         await db.collection('clients').doc(auth.currentUser.uid)
-          .collection('historial').doc(id).update({ nombre });
-        // confirmación
+          .collection('historial').doc(id).update({ nombre:nuevo });
         const cont = document.getElementById(`historial-${id}`);
         const msg = document.createElement('div');
-        msg.className='success-msg';
-        msg.textContent='✅ Nombre actualizado';
+        msg.className = 'success-msg'; msg.textContent = '✅ Renombrado';
         cont.appendChild(msg);
         setTimeout(()=>msg.remove(),3000);
       } catch {
-        alert('❌ No se pudo renombrar.');
+        alert('❌ No se pudo renombrar');
       }
     }
-
-    function verDetallesHistorial(id) {
-      document.querySelectorAll('.detalle-abierto').forEach(e=>e.remove());
-      db.collection('clients').doc(auth.currentUser.uid)
-        .collection('historial').doc(id).get()
-        .then(doc=>{
-          if(!doc.exists) return alert('❌ No se encontró este cálculo.');
-          const d=doc.data();
-          const cont=document.getElementById(`historial-${id}`);
-          const detalle=document.createElement('div');
-          detalle.classList.add('detalle-abierto');
-          detalle.innerHTML=`
-            <div style="margin-top:1rem;border:1px dashed #ccc;border-radius:10px;padding:10px;">
-              <table style="width:100%;border-collapse:collapse;">
-                <tr><th>Concepto</th><th>Valor</th></tr>
-                ${d.detalles.map(i=>`
-                  <tr><td style="border:1px solid #ddd;padding:6px;">${i.titulo}</td>
-                      <td style="border:1px solid #ddd;padding:6px;">${i.valor}</td></tr>
-                `).join('')}
-              </table>
-              <button class="styled-btn" onclick="this.closest('.detalle-abierto').remove()">Cerrar</button>
-            </div>
-          `;
-          cont.appendChild(detalle);
-        });
-    }
-
-    // Gestión de órdenes
-    function getDisplayStatus(o) {
-      if (o.depositReceiptUrl) return 'Pago Pendiente';
-      if (o.entrega?.deliveryPhotos?.length) return 'Finalizado';
-      if (o.aduana?.detail) return 'Aduana';
-      if (o.recogida?.valorGrua||o.recogida?.valorBarco) return 'Enviado';
-      return 'Inicio';
-    }
-    async function fetchClientOrders() {
-      const user=auth.currentUser;
-      if(!user)return;
-      const STEPS=['Inicio','Pago Pendiente','Pagado','Enviado','Aduana','Finalizado'];
-      const cont=document.getElementById('clientOrdersContainer');
-      cont.innerHTML='';
-      const snap=await db.collection('orders')
-        .where('clientEmail','==',user.email)
-        .orderBy('createdAt','desc').get();
-      if(snap.empty){
-        cont.innerHTML='<p style="text-align:center;">Aún no tienes gestiones iniciadas.</p>';
-        return;
-      }
-      snap.docs.forEach(doc=>{
-        const o=doc.data(), status=getDisplayStatus(o);
-        const steps=o? STEPS.map((s,i)=>{
-          const cls=i<STEPS.indexOf(status)?'done':i===STEPS.indexOf(status)?'active':'';
-          return `<li class="${cls}">${s}</li>`;
-        }).join(''): '';
-        const card=document.createElement('div');
-        card.className='order-card';
-        card.innerHTML=`
-          <div class="accordion-header" data-acc="${doc.id}">
-            <div><strong>#${doc.id.slice(0,6)}</strong> ${o.clientName}</div>
-            <div><span class="status-badge">${status}</span></div>
-          </div>
-          <div id="acc-${doc.id}" class="accordion-content">
-            <ul class="tracker">${steps}</ul>
-            <ul class="summary">
-              <li><strong>Depósito:</strong> ${o.depositAmount||'-'} LPS</li>
-              <li><strong>Comprobante:</strong> ${o.depositReceiptUrl
-                ? `<a href="${o.depositReceiptUrl}" target="_blank">Ver comprobante</a>`:'-'}</li>
-            </ul>
-          </div>
-        `;
-        cont.appendChild(card);
-      });
-      document.querySelectorAll('.accordion-header').forEach(h=>h.onclick=()=>{
-        const acc=document.getElementById('acc-'+h.dataset.acc);
-        acc.classList.toggle('open');
-      });
-    }
-
-    // Lógica de pestañas
-    document.querySelectorAll('.tab').forEach(tab=>{
-      tab.onclick=()=>{
-        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-        document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById('section-'+tab.dataset.sec).classList.add('active');
-      };
-    });
   </script>
 </body>
 </html>
