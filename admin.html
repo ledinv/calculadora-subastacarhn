@@ -59,6 +59,7 @@
     }
     .status-badge { background:var(--yellow); color:var(--text); padding:2px 8px; border-radius:4px; font-size:.8rem; }
 
+    /* Botones inline (Editar / Eliminar) */
     .btn-edit-inline, .btn-delete-inline {
       background:transparent; border:1px solid #fff; color:#fff;
       padding:2px 6px; border-radius:4px; font-size:.8rem; cursor:pointer;
@@ -80,18 +81,27 @@
     .gallery { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
     .gallery img { width:60px; height:60px; object-fit:cover; border:1px solid #ddd; border-radius:4px; }
 
+    /* Lightbox */
     .lightbox {
       position: fixed; top:0; left:0; right:0; bottom:0;
       background: rgba(0,0,0,0.8);
       display: none; align-items: center; justify-content: center;
       z-index: 9999;
     }
-    .lightbox-img { max-width: 90%; max-height: 80%; border-radius: 4px; }
-    .lightbox-close { position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem; color: #fff; cursor: pointer; }
-    .lightbox-nav { position: absolute; bottom: 2rem; display: flex; gap:1rem; }
+    .lightbox-img {
+      max-width: 90%; max-height: 80%; border-radius: 4px;
+    }
+    .lightbox-close {
+      position: absolute; top: 1rem; right: 1.5rem;
+      font-size: 2rem; color: #fff; cursor: pointer;
+    }
+    .lightbox-nav {
+      position: absolute; bottom: 2rem; display: flex; gap:1rem;
+    }
     .lightbox-nav button {
-      background: rgba(255,255,255,0.3); border: none; color: #fff;
-      font-size: 2rem; padding: 0.2rem 0.5rem; border-radius: 4px; cursor: pointer;
+      background: rgba(255,255,255,0.3); border: none;
+      color: #fff; font-size: 2rem; padding: 0.2rem 0.5rem;
+      border-radius: 4px; cursor: pointer;
     }
 
     footer { background:var(--blue); color:#fff; padding:1rem; text-align:center; margin-top:2rem; }
@@ -121,17 +131,45 @@
 
   <!-- SECCIÓN AÑADIR VEHÍCULO -->
   <div id="section-add" class="section active">
-    <!-- ... (lógica de añadir vehículo) ... -->
+    <form id="formularioAuto">
+      <div class="form-grid">
+        <input id="marca" name="marca" placeholder="Marca" required/>
+        <input id="modelo" name="modelo" placeholder="Modelo" required/>
+        <input id="motor" name="motor" placeholder="Motor" required/>
+        <input id="anio" name="anio" type="number" placeholder="Año" required/>
+        <input id="precio" name="precio" type="number" placeholder="Precio (LPS)" required/>
+        <input id="kilometraje" name="kilometraje" type="number" placeholder="Kilometraje" required/>
+        <input id="color" name="color" placeholder="Color" required/>
+        <select id="tipo" name="tipo" required>
+          <option value="">Tipo de Vehículo…</option>
+          <option>Sedán</option><option>SUV</option><option>Pickup</option><option>Camioneta</option><option>Eléctrico</option>
+        </select>
+        <textarea id="descripcion" name="descripcion" rows="2" placeholder="Descripción"></textarea>
+        <input id="imagenes" name="imagenes" type="file" multiple accept="image/*"/>
+      </div>
+      <div id="preview" class="preview"></div>
+      <button id="btnAgregar" type="submit">Guardar Vehículo</button>
+      <button id="btnCancelarEdicion" type="button" style="background:#e74c3c;color:#fff;display:none;">Cancelar</button>
+    </form>
   </div>
 
   <!-- SECCIÓN INVENTARIO -->
   <div id="section-inv" class="section">
-    <!-- ... (tabla de inventario) ... -->
+    <table id="inventory-table">
+      <thead>
+        <tr><th>Foto</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Precio</th><th>Est.</th><th>Acc.</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
   <!-- SECCIÓN USUARIOS -->
   <div id="section-usr" class="section">
-    <!-- ... (tabla de usuarios) ... -->
+    <button id="btnCopyAll" class="btn-copy">Copiar todos</button>
+    <table id="users-table">
+      <thead><tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Acción</th></tr></thead>
+      <tbody></tbody>
+    </table>
   </div>
 
   <!-- SECCIÓN PEDIDOS -->
@@ -139,7 +177,44 @@
     <button id="btnNewOrder" class="btn-copy">+ Nuevo Pedido</button>
 
     <div id="orderFormContainer" style="display:none;">
-      <!-- ... (formulario de pedido) ... -->
+      <h3 id="orderFormTitle">Nuevo Pedido</h3>
+      <form id="formularioOrder" novalidate>
+        <div class="form-grid">
+          <select id="orderClient"><option value="">Selecciona cliente…</option></select>
+          <input id="orderClientPhone" placeholder="Teléfono" readonly/>
+        </div>
+        <div class="form-grid">
+          <input id="orderVehicleURL" type="url" placeholder="URL Copart"/>
+          <input id="precioEstimado" type="number" placeholder="Precio estimado (USD)"/>
+        </div>
+        <div class="form-grid">
+          <label for="orderCopartInvoice">Subir factura (PDF)</label>
+          <input id="orderCopartInvoice" type="file" accept="application/pdf"/>
+          <label for="orderCopartPhotos">Subir fotos Copart</label>
+          <input id="orderCopartPhotos" type="file" multiple accept="image/*"/>
+        </div>
+        <div class="form-grid">
+          <input id="valorGrua" type="number" placeholder="Costo grúa (USD)"/>
+          <input id="valorBarco" type="number" placeholder="Costo barco (USD)"/>
+        </div>
+        <div class="form-grid">
+          <textarea id="textoEnvioHnd" rows="2" placeholder="Detalles de llegada a HND"></textarea>
+          <textarea id="textoAduana" rows="2" placeholder="Detalles de aduana"></textarea>
+        </div>
+        <div class="form-grid">
+          <textarea id="textoEntrega" rows="2" placeholder="Detalles de entrega final"></textarea>
+          <input id="precioFinal" type="number" placeholder="Precio final (LPS)"/>
+        </div>
+        <div class="form-grid">
+          <label for="fotosEntregaFinal">Fotos entrega final</label>
+          <input id="fotosEntregaFinal" type="file" multiple accept="image/*"/>
+          <div></div>
+        </div>
+        <div style="margin-top:1rem; display:flex; gap:10px;">
+          <button type="submit">Guardar Pedido</button>
+          <button id="btnCancelOrder" type="button" style="background:#e74c3c;color:#fff;">Cancelar</button>
+        </div>
+      </form>
     </div>
 
     <div class="orders-filters">
@@ -217,14 +292,12 @@
     document.getElementById('formularioAuto').onsubmit = saveVehicle;
     document.getElementById('btnCancelarEdicion').onclick = resetVehicleForm;
     fetchVehicles();
-
     // Usuarios
     document.getElementById('btnCopyAll').onclick = () => {
       navigator.clipboard.writeText(clientsCache.map(c=>c.phone).join(', '))
         .then(()=>alert('Teléfonos copiados'));
     };
     fetchClients();
-
     // Pedidos
     document.getElementById('btnNewOrder').onclick = () => {
       editingOrderId = null; resetOrderForm();
@@ -383,7 +456,6 @@
       const d = o.data, disp = getDisplayStatus(d);
       if (sf && disp!==sf) return;
       if (cf && d.clientName!==cf) return;
-      // Header
       const header = `
         <div class="accordion-header" data-acc="${o.id}">
           <div style="display:flex; align-items:center; gap:8px;">
@@ -396,12 +468,10 @@
             <button class="btn-delete-inline" onclick="deleteOrder('${o.id}')">Eliminar</button>
           </div>
         </div>`;
-      // Steps
       const steps = STEPS.map((s,i)=>{
         const cls = i < STEPS.indexOf(disp) ? 'done' : (i===STEPS.indexOf(disp)?'active':'');
         return `<li class="${cls}">${s}</li>`;
       }).join('');
-      // Galleries
       const copartGallery = d.copartPhotos?.length
         ? `<a href="#" class="toggle-detail" data-detail="cp-${o.id}">Ver fotos Copart</a>
            <div id="cp-${o.id}" class="gallery" style="display:none;">
@@ -412,14 +482,10 @@
            <div id="dp-${o.id}" class="gallery" style="display:none;">
              ${d.entrega.deliveryPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}
            </div>` : '-';
-      // Content
       const content = `
         <div id="acc-${o.id}" class="accordion-content">
           <ul class="tracker">${steps}</ul>
           <ul class="summary">
-            <li><strong>Comprobante Depósito:</strong> ${d.depositReceiptUrl
-              ? `<a href="${d.depositReceiptUrl}" target="_blank">Ver comprobante</a>` : '-'
-            }</li>
             <li><strong>Estimado:</strong> ${d.precioEstimado||'-'} USD</li>
             <li><strong>Factura:</strong> ${d.copartInvoiceUrl
               ? `<a href="${d.copartInvoiceUrl}" target="_blank">Ver PDF</a>` : '-'
@@ -450,7 +516,6 @@
       ordersContainer.appendChild(card);
     });
 
-    // Hooks
     document.querySelectorAll('.accordion-header').forEach(h=>{
       h.onclick = ()=> document.getElementById('acc-'+h.dataset.acc).classList.toggle('open');
     });
@@ -528,7 +593,7 @@
       db.collection('orders').doc(id).delete();
   }
 
-  // Lightbox
+  // ————— Lightbox JS —————
   let lbGallery = [], lbIndex = 0;
   const lbEl     = document.getElementById('lightbox');
   const lbImg    = document.querySelector('.lightbox-img');
@@ -561,6 +626,7 @@
   btnNext.onclick  = ()=> { lbIndex = (lbIndex+1)%lbGallery.length; updateLightbox(); };
   btnClose.onclick = closeLightbox;
   lbEl.onclick = e => { if(e.target===lbEl) closeLightbox(); };
+  // ——————————————————
 </script>
 </body>
 </html>
