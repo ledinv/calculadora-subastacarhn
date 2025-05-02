@@ -6,10 +6,105 @@
   <title>Panel de Administración | SubastaCarHN</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style>
-    :root { /*…misma definición…*/ }
+    :root {
+      --blue: #002f6c;
+      --blue2: #004aad;
+      --yellow: #ffc20e;
+      --text: #333;
+      --light: #f9f9f9;
+      --shadow: rgba(0,0,0,0.1);
+      --max-width: 1200px;
+    }
     *, *::before, *::after { box-sizing: border-box; margin:0; padding:0 }
-    body { /*…mismos estilos…*/ }
-    /*…resto de estilos intactos…*/
+    body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text); }
+    header { background:var(--blue); color:#fff; padding:1rem; }
+    header .logo { font-size:1.5rem; font-weight:bold; }
+    header nav ul { list-style:none; display:flex; gap:1rem; }
+    header nav a { color:#fff; text-decoration:none; }
+    #adminApp { display:none; max-width:var(--max-width); margin:1rem auto; }
+
+    .tabs { display:flex; border-bottom:2px solid var(--blue2); }
+    .tab { flex:1; padding:.75rem; background:var(--blue2); color:#fff; text-align:center; cursor:pointer; font-weight:600; }
+    .tab.active { background:var(--blue); }
+    .section { display:none; background:#fff; border-radius:8px; box-shadow:0 2px 10px var(--shadow); margin-top:1rem; padding:1rem; }
+    .section.active { display:block; }
+
+    /* Formularios / Grids */
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:1rem; }
+    form input, form select, form textarea, form button {
+      width:100%; margin:.5rem 0; padding:.75rem; border:1px solid #ccc; border-radius:4px; font-size:1rem;
+    }
+    form button { background:var(--yellow); color:var(--blue); border:none; font-weight:600; cursor:pointer; }
+    .preview img { width:60px; height:60px; object-fit:cover; margin:4px; border:1px solid #ccc; border-radius:4px; }
+
+    /* Tablas */
+    table { width:100%; border-collapse:collapse; font-size:.9rem; margin-top:.5rem; }
+    th, td { padding:.5rem; border:1px solid #ddd; text-align:left; vertical-align:middle; }
+    th { background:var(--blue2); color:#fff; }
+    img.thumb { width:50px; height:auto; object-fit:cover; border-radius:4px; }
+    .actions button { margin-right:4px; padding:2px 6px; font-size:.8rem; border:none; border-radius:4px; cursor:pointer; }
+    .btn-sold { background:var(--yellow); color:var(--text); }
+    .btn-edit { background:var(--blue); color:#fff; }
+    .btn-delete { background:#e74c3c; color:#fff; }
+    .btn-copy { background:var(--blue); color:#fff; padding:4px 8px; border:none; border-radius:4px; cursor:pointer; }
+
+    /* Pedidos: acordeón, filtros, grid */
+    .orders-filters { display:flex; gap:10px; margin:1rem 0; }
+    .orders-grid { display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); }
+    .order-card { border:1px solid #ddd; border-radius:6px; overflow:hidden; background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+
+    .accordion-header {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:.75rem 1rem; background:var(--blue2); color:#fff; cursor:pointer;
+    }
+    .status-badge { background:var(--yellow); color:var(--text); padding:2px 8px; border-radius:4px; font-size:.8rem; }
+
+    /* Botones inline (Editar / Eliminar) */
+    .btn-edit-inline, .btn-delete-inline {
+      background:transparent; border:1px solid #fff; color:#fff;
+      padding:2px 6px; border-radius:4px; font-size:.8rem; cursor:pointer;
+    }
+    .btn-edit-inline:hover, .btn-delete-inline:hover { background:rgba(255,255,255,0.2); }
+
+    .accordion-content { max-height:0; overflow:hidden; transition:max-height .3s ease, padding .3s ease; padding:0 1rem; }
+    .accordion-content.open { padding:1rem; max-height:800px; }
+
+    .tracker { list-style:none; display:flex; gap:.5rem; padding:0; margin-bottom:.75rem; flex-wrap:wrap; }
+    .tracker li { position:relative; padding-left:1.2rem; font-size:.8rem; }
+    .tracker li::before { content:''; position:absolute; left:0; top:.2rem; width:.8rem; height:.8rem; border-radius:50%; background:#ccc; }
+    .tracker li.done::before { background:var(--yellow); }
+    .tracker li.active::before { background:var(--blue); }
+
+    .summary { list-style:none; padding:0; margin:0; font-size:.9rem; }
+    .summary li { margin-bottom:.5rem; }
+
+    .gallery { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
+    .gallery img { width:60px; height:60px; object-fit:cover; border:1px solid #ddd; border-radius:4px; }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed; top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.8);
+      display: none; align-items: center; justify-content: center;
+      z-index: 9999;
+    }
+    .lightbox-img {
+      max-width: 90%; max-height: 80%; border-radius: 4px;
+    }
+    .lightbox-close {
+      position: absolute; top: 1rem; right: 1.5rem;
+      font-size: 2rem; color: #fff; cursor: pointer;
+    }
+    .lightbox-nav {
+      position: absolute; bottom: 2rem; display: flex; gap:1rem;
+    }
+    .lightbox-nav button {
+      background: rgba(255,255,255,0.3); border: none;
+      color: #fff; font-size: 2rem; padding: 0.2rem 0.5rem;
+      border-radius: 4px; cursor:pointer;
+    }
+
+    footer { background:var(--blue); color:#fff; padding:1rem; text-align:center; margin-top:2rem; }
   </style>
 </head>
 <body>
@@ -36,19 +131,54 @@
 
   <!-- SECCIÓN AÑADIR VEHÍCULO -->
   <div id="section-add" class="section active">
-    <!-- …tu formulario de vehículos original sin cambios… -->
+    <form id="formularioAuto">
+      <div class="form-grid">
+        <input id="marca" name="marca" placeholder="Marca" required/>
+        <input id="modelo" name="modelo" placeholder="Modelo" required/>
+        <input id="motor" name="motor" placeholder="Motor" required/>
+        <input id="anio" name="anio" type="number" placeholder="Año" required/>
+        <input id="precio" name="precio" type="number" placeholder="Precio (LPS)" required/>
+        <input id="kilometraje" name="kilometraje" type="number" placeholder="Kilometraje" required/>
+        <input id="color" name="color" placeholder="Color" required/>
+        <select id="tipo" name="tipo" required>
+          <option value="">Tipo de Vehículo…</option>
+          <option>Sedán</option>
+          <option>SUV</option>
+          <option>Pickup</option>
+          <option>Camioneta</option>
+          <option>Eléctrico</option>
+        </select>
+        <textarea id="descripcion" name="descripcion" rows="2" placeholder="Descripción"></textarea>
+        <input id="imagenes" name="imagenes" type="file" multiple accept="image/*"/>
+      </div>
+      <div id="preview" class="preview"></div>
+      <button id="btnAgregar" type="submit">Guardar Vehículo</button>
+      <button id="btnCancelarEdicion" type="button" style="background:#e74c3c;color:#fff;display:none;">Cancelar</button>
+    </form>
   </div>
 
   <!-- SECCIÓN INVENTARIO -->
   <div id="section-inv" class="section">
-    <!-- …tu tabla de inventario original… -->
+    <table id="inventory-table">
+      <thead>
+        <tr>
+          <th>Foto</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Precio</th><th>Est.</th><th>Acc.</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
   <!-- SECCIÓN USUARIOS -->
   <div id="section-usr" class="section">
-    <!-- …tu tabla de usuarios original… -->
+    <button id="btnCopyAll" class="btn-copy">Copiar todos</button>
+    <table id="users-table">
+      <thead>
+        <tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Acción</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
-
   <!-- SECCIÓN PEDIDOS -->
   <div id="section-ped" class="section">
     <button id="btnNewOrder" class="btn-copy">+ Nuevo Pedido</button>
@@ -64,11 +194,10 @@
           <input id="orderClientPhone" placeholder="Teléfono" readonly/>
         </div>
 
-        <!-- *** NUEVO: Comprobante de depósito *** -->
+        <!-- Comprobante de depósito -->
         <div class="form-grid">
           <label for="orderDepositReceipt">Subir comprobante de depósito (LPS)</label>
           <input id="orderDepositReceipt"
-                 name="orderDepositReceipt"
                  type="file"
                  accept="application/pdf,image/*"/>
         </div>
@@ -79,75 +208,43 @@
           <input id="precioEstimado" type="number" placeholder="Precio estimado (USD)"/>
         </div>
 
-        <!-- …el resto de tu formulario va aquí (factura Copart, fotos, grúa, barco, etc.)… -->
         <!-- Factura Copart y Fotos Copart -->
         <div class="form-grid">
           <label for="orderCopartInvoice">Subir factura (PDF)</label>
-          <input id="orderCopartInvoice"
-                 name="orderCopartInvoice"
-                 type="file"
-                 accept="application/pdf"/>
+          <input id="orderCopartInvoice" type="file" accept="application/pdf"/>
           <label for="orderCopartPhotos">Subir fotos Copart</label>
-          <input id="orderCopartPhotos"
-                 name="orderCopartPhotos"
-                 type="file"
-                 multiple
-                 accept="image/*"/>
+          <input id="orderCopartPhotos" type="file" multiple accept="image/*"/>
         </div>
 
         <!-- Costos de grúa y barco -->
         <div class="form-grid">
-          <input id="valorGrua"
-                 name="valorGrua"
-                 type="number"
-                 placeholder="Costo grúa (USD)"/>
-          <input id="valorBarco"
-                 name="valorBarco"
-                 type="number"
-                 placeholder="Costo barco (USD)"/>
+          <input id="valorGrua" type="number" placeholder="Costo grúa (USD)"/>
+          <input id="valorBarco" type="number" placeholder="Costo barco (USD)"/>
         </div>
 
         <!-- Detalles de llegada y aduana -->
         <div class="form-grid">
-          <textarea id="textoEnvioHnd"
-                    name="textoEnvioHnd"
-                    rows="2"
-                    placeholder="Detalles de llegada a HND"></textarea>
-          <textarea id="textoAduana"
-                    name="textoAduana"
-                    rows="2"
-                    placeholder="Detalles de aduana"></textarea>
+          <textarea id="textoEnvioHnd" rows="2" placeholder="Detalles de llegada a HND"></textarea>
+          <textarea id="textoAduana" rows="2" placeholder="Detalles de aduana"></textarea>
         </div>
 
         <!-- Detalles de entrega y precio final -->
         <div class="form-grid">
-          <textarea id="textoEntrega"
-                    name="textoEntrega"
-                    rows="2"
-                    placeholder="Detalles de entrega final"></textarea>
-          <input id="precioFinal"
-                 name="precioFinal"
-                 type="number"
-                 placeholder="Precio final (LPS)"/>
+          <textarea id="textoEntrega" rows="2" placeholder="Detalles de entrega final"></textarea>
+          <input id="precioFinal" type="number" placeholder="Precio final (LPS)"/>
         </div>
 
         <!-- Fotos de entrega final -->
         <div class="form-grid">
           <label for="fotosEntregaFinal">Fotos entrega final</label>
-          <input id="fotosEntregaFinal"
-                 name="fotosEntregaFinal"
-                 type="file"
-                 multiple
-                 accept="image/*"/>
+          <input id="fotosEntregaFinal" type="file" multiple accept="image/*"/>
           <div></div>
         </div>
 
         <!-- Botones -->
         <div style="margin-top:1rem; display:flex; gap:10px;">
           <button type="submit">Guardar Pedido</button>
-          <button id="btnCancelOrder"
-                  type="button"
-                  style="background:#e74c3c;color:#fff;">
+          <button id="btnCancelOrder" type="button" style="background:#e74c3c;color:#fff;">
             Cancelar
           </button>
         </div>
@@ -189,7 +286,7 @@
   <div class="logo">SubastaCarHN</div>
   <p>© 2025 SubastaCarHN. Todos los derechos reservados.</p>
 </footer>
-<!-- Parte 3: Scripts y lógica de Pedidos (subida y visualización de depósito) -->
+<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -203,7 +300,8 @@
     projectId: "subastacarhn-40554",
     storageBucket: "subastacarhn-40554.firebasestorage.app",
     messagingSenderId: "536785797974",
-    appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7"
+    appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+    measurementId: "G-QM5N60K8C0"
   });
   const db = firebase.firestore();
   const storage = firebase.storage().ref();
@@ -211,7 +309,7 @@
   let clientsCache = [], ordersCache = [], editingOrderId = null;
   const STEPS = ['Inicio','Pago Pendiente','Pagado','Enviado','Aduana','Finalizado'];
 
-  // Pestañas
+  // Manejo de pestañas
   document.querySelectorAll('.tab').forEach(tab => {
     tab.onclick = () => {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -231,6 +329,7 @@
   });
 
   function initApp() {
+    // Botones del formulario de Pedidos
     document.getElementById('btnNewOrder').onclick = () => {
       editingOrderId = null;
       resetOrderForm();
@@ -248,11 +347,12 @@
     document.getElementById('statusFilter').onchange = renderOrders;
     document.getElementById('clientFilter').onchange = renderOrders;
     document.getElementById('formularioOrder').onsubmit = saveOrder;
+
     fetchClients();
     fetchOrders();
   }
 
-  // — Clientes —
+  // Cargar lista de clientes
   async function fetchClients() {
     const snap = await db.collection('clients').orderBy('fullName').get();
     clientsCache = snap.docs.map(d => d.data());
@@ -264,7 +364,7 @@
     document.getElementById('userCount').textContent = clientsCache.length;
   }
 
-  // — Pedidos —
+  // Determinar estado de un pedido
   function getDisplayStatus(d) {
     if (d.entrega?.deliveryPhotos?.length) return 'Finalizado';
     if (d.aduana?.detail) return 'Aduana';
@@ -275,6 +375,7 @@
     return 'Inicio';
   }
 
+  // Escuchar cambios en pedidos
   function fetchOrders() {
     db.collection('orders').orderBy('createdAt','desc')
       .onSnapshot(snap => {
@@ -283,6 +384,7 @@
       });
   }
 
+  // Renderizar tarjetas de pedidos
   function renderOrders() {
     const sf = statusFilter.value, cf = clientFilter.value;
     ordersContainer.innerHTML = '';
@@ -302,7 +404,7 @@
           </div>
         </div>`;
 
-      // Galerías Copart y Entrega
+      // Galerías
       const copartG = d.copartPhotos?.length
         ? `<a href="#" class="toggle-detail" data-detail="cp-${o.id}">Fotos Copart</a>
            <div id="cp-${o.id}" class="gallery" style="display:none;">
@@ -314,11 +416,11 @@
              ${d.entrega.deliveryPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}
            </div>` : '-';
 
-      // Resumen con comprobante de depósito
+      // Resumen con comprobante de depósito y factura
       const summary = `
         <ul class="summary">
           <li><strong>Depósito:</strong> ${d.depositAmount||'-'} LPS</li>
-          <li><strong>Comprobante Depósito:</strong>
+          <li><strong>Comprobante de Depósito:</strong>
             ${d.depositReceiptUrl
               ? `<a href="#" class="toggle-detail" data-detail="dep-${o.id}">Ver Comprobante</a>
                  <div id="dep-${o.id}" style="display:none;margin:.5rem 0;">
@@ -342,7 +444,7 @@
           <li><strong>Precio Final:</strong> ${d.entrega?.precioFinal||'-'} LPS</li>
         </ul>`;
 
-      // Armar tarjeta
+      // Componer tarjeta
       const card = document.createElement('div');
       card.className = 'order-card';
       card.innerHTML = header + `
@@ -355,17 +457,14 @@
             }).join('')}
           </ul>
           ${summary}
-          <p class="order-meta">
-            Última actualización: ${d.updatedAt?.toDate().toLocaleString('es-HN')||'-'}
-          </p>
+          <p class="order-meta">Última actualización: ${d.updatedAt?.toDate().toLocaleString('es-HN')||'-'}</p>
         </div>`;
       ordersContainer.appendChild(card);
     });
 
     // Hooks acordeón y toggles
     document.querySelectorAll('.accordion-header').forEach(h => {
-      h.onclick = () =>
-        document.getElementById('acc-' + h.dataset.acc).classList.toggle('open');
+      h.onclick = () => document.getElementById('acc-' + h.dataset.acc).classList.toggle('open');
     });
     document.querySelectorAll('.toggle-detail').forEach(a => {
       a.onclick = e => {
@@ -374,10 +473,9 @@
         tgt.style.display = tgt.style.display==='none'?'block':'none';
       };
     });
-    initLightboxHooks();
   }
 
-  // Guardar Pedido con depósito
+  // Guardar o actualizar pedido
   async function saveOrder(e) {
     e.preventDefault();
     const c = clientsCache.find(x=>x.email===orderClient.value) || {};
@@ -414,6 +512,7 @@
         .put(f);
       payload.copartPhotos.push(await snap.ref.getDownloadURL());
     }
+
     // Subir factura Copart
     if (orderCopartInvoice.files[0]) {
       const snapInv = await storage
@@ -421,7 +520,8 @@
         .put(orderCopartInvoice.files[0]);
       payload.copartInvoiceUrl = await snapInv.ref.getDownloadURL();
     }
-    // Subir fotos entrega
+
+    // Subir fotos de entrega final
     for (let f of fotosEntregaFinal.files) {
       const snap = await storage
         .child(`orders/${editingOrderId||'new'}/delivery/${f.name}`)
@@ -437,19 +537,40 @@
     document.getElementById('orderFormContainer').style.display = 'none';
   }
 
+  // Editar pedido existente
   function editOrder(id) {
-    /* …igual a tu original… */
+    const o = ordersCache.find(x=>x.id===id);
+    if (!o) return;
+    editingOrderId = id;
+    resetOrderForm();
+    fetchClients().then(() => {
+      document.getElementById('orderFormContainer').style.display = 'block';
+      document.getElementById('orderFormTitle').innerText = 'Editar Pedido';
+      const d = o.data;
+      orderClient.value = d.clientEmail; orderClient.onchange();
+      orderVehicleURL.value = d.vehicleURL;
+      precioEstimado.value = d.precioEstimado||'';
+      valorGrua.value = d.recogida?.valorGrua||'';
+      valorBarco.value = d.recogida?.valorBarco||'';
+      textoEnvioHnd.value = d.envioHnd?.detail||'';
+      textoAduana.value = d.aduana?.detail||'';
+      textoEntrega.value = d.entrega?.detail||'';
+      precioFinal.value = d.entrega?.precioFinal||'';
+    });
   }
+
+  // Reset form de pedidos
   function resetOrderForm() {
     formularioOrder.reset();
-    orderFormTitle.innerText = 'Nuevo Pedido';
+    document.getElementById('orderFormTitle').innerText = 'Nuevo Pedido';
   }
+
+  // Eliminar pedido
   function deleteOrder(id) {
     if (confirm('¿Eliminar este pedido?'))
       db.collection('orders').doc(id).delete();
   }
 </script>
-<!-- Parte 4: Lightbox y cierre del documento -->
 <script>
   // Lightbox para galería de imágenes
   let lbGallery = [], lbIndex = 0;
@@ -487,10 +608,8 @@
     if (e.target === lbEl) btnClose.onclick();
   };
 
-  // Inicializa hooks al cargar las tarjetas
-  document.addEventListener('DOMContentLoaded', () => {
-    initLightboxHooks();
-  });
+  // Inicializa hooks al cargar el contenido
+  document.addEventListener('DOMContentLoaded', initLightboxHooks);
 </script>
 </body>
 </html>
