@@ -30,47 +30,40 @@
     a { text-decoration:none; color:inherit }
     ul { list-style:none }
 
-    /* Contenedor principal */
+    /* Contenedor */
     .container { max-width:var(--max-width); margin:0 auto; padding:0 1rem }
 
     /* HEADER */
     .site-header {
-      background:var(--blue);
-      position: sticky; top:0; z-index:1000;
+      background:var(--blue); position:sticky; top:0; z-index:1000;
     }
     .header-inner {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:.75rem 1rem;
+      display:flex; align-items:center; justify-content:space-between; padding:.75rem 1rem;
     }
-    .brand {
-      color:#fff; font-size:1.5rem; font-weight:700;
-    }
-    .nav-list {
-      display:flex; gap:1rem;
-    }
-    .nav-list a {
-      color:var(--yellow); font-weight:600;
-    }
+    .brand { color:#fff; font-size:1.5rem; font-weight:700; }
+    .nav-list { display:flex; gap:1rem; }
+    .nav-list a { color:var(--yellow); font-weight:600; }
     .menu-icon {
       display:none; background:var(--yellow); color:var(--blue);
       border:none; padding:.5rem; border-radius:6px; cursor:pointer;
     }
-    @media(max-width:767px) {
+    @media(max-width:767px){
       .nav-list { display:none; }
       .menu-icon { display:block; }
     }
     .mobile-nav {
       display:none; flex-direction:column; background:#fff; padding:1rem;
-      box-shadow:0 2px 8px var(--shadow); position: absolute; top:100%; width:100%;
+      box-shadow:0 2px 8px var(--shadow);
+      position:absolute; top:100%; width:100%;
     }
     .mobile-nav.open { display:flex; }
-    .mobile-nav a {
-      padding:.75rem 0; border-bottom:1px solid #eee; color:var(--blue); font-weight:600;
-    }
+    .mobile-nav a { padding:.75rem 0; border-bottom:1px solid #eee; color:var(--blue); }
 
-    /* MAIN */
+    /* MAIN y TABS */
     main { padding:2rem 1rem; }
-    .tabs { display:flex; border-bottom:2px solid var(--blue2); margin-bottom:1rem; }
+    .tabs {
+      display:flex; border-bottom:2px solid var(--blue2); margin-bottom:1rem;
+    }
     .tab {
       flex:1; padding:.75rem; background:var(--blue2);
       color:#fff; text-align:center; cursor:pointer; font-weight:600;
@@ -85,18 +78,18 @@
       box-shadow:0 4px 12px var(--shadow);
     }
     .profile-form h2 { margin-bottom:1rem; color:var(--blue); }
-    .profile-form label {
-      display:block; margin-top:1rem; font-weight:600;
-    }
+    .profile-form label { display:block; margin-top:1rem; font-weight:600; }
     .profile-form input {
       width:100%; padding:.75rem; margin-top:.25rem;
       border:1px solid var(--blue2); border-radius:4px;
     }
-    .profile-form input.readonly { background:#e4e4e4; }
-    .profile-form button {
+    .profile-form input[readonly] { background:#e4e4e4; }
+    .profile-form button, .profile-form .btn-secondary {
       margin-top:1.5rem; width:100%; padding:.75rem;
-      background:var(--yellow); color:var(--blue); border:none;
       border-radius:4px; font-weight:600; cursor:pointer;
+    }
+    .profile-form button {
+      background:var(--yellow); color:var(--blue); border:none;
     }
     .profile-form .btn-secondary {
       background:transparent; border:2px solid var(--yellow);
@@ -136,10 +129,20 @@
       padding:0 1rem;
     }
     .accordion-content.open {
-      padding:1rem; max-height:600px;
+      padding:1rem; max-height:800px;
     }
-    .summary { list-style:none; padding:0; font-size:.9rem; }
+    .tracker { list-style:none; display:flex; gap:.5rem; padding:0; margin-bottom:.75rem; flex-wrap:wrap; }
+    .tracker li { position:relative; padding-left:1.2rem; font-size:.8rem; }
+    .tracker li::before {
+      content:''; position:absolute; left:0; top:.2rem;
+      width:.8rem; height:.8rem; border-radius:50%; background:#ccc;
+    }
+    .tracker li.done::before { background:var(--yellow) }
+    .tracker li.active::before { background:var(--blue) }
+    .summary { list-style:none; padding:0; margin:0; font-size:.9rem; }
     .summary li { margin-bottom:.5rem; }
+    .gallery { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
+    .gallery img { width:60px; height:60px; object-fit:cover; border:1px solid #ddd; border-radius:4px; }
 
     /* HISTORIAL */
     .hist-card {
@@ -150,7 +153,6 @@
       width:100%; border:none; background:transparent;
       font-weight:600; color:var(--blue2); margin-bottom:.5rem;
     }
-    .hist-card small { display:block; color:#666; margin-bottom:.5rem; }
 
     /* FOOTER */
     footer.site-footer {
@@ -185,8 +187,9 @@
   </header>
 
   <!-- MAIN -->
-  <main>
-    <!-- PESTAÑAS -->
+  <main class="container">
+
+    <!-- TABS -->
     <div class="tabs">
       <div class="tab active" data-sec="perfil">Perfil</div>
       <div class="tab" data-sec="gestion">Gestión</div>
@@ -199,26 +202,19 @@
         <h2>Mi Perfil</h2>
         <label for="name">Nombre completo</label>
         <input type="text" id="name" required />
-
         <label for="email">Correo electrónico</label>
-        <input type="email" id="email" class="readonly" readonly />
-
+        <input type="email" id="email" readonly />
         <label for="phone">Teléfono</label>
-        <input type="tel" id="phone" class="readonly" readonly />
-
+        <input type="tel" id="phone" readonly />
         <label for="address">Dirección</label>
         <input type="text" id="address" />
-
         <label for="dni">DNI</label>
         <input type="text" id="dni" />
-
         <label for="birthYear">Año de nacimiento</label>
         <input type="number" id="birthYear" min="1900" max="2100" />
-
         <button type="submit">Guardar cambios</button>
         <button type="button" class="btn-secondary" onclick="sendPasswordReset()">Cambiar contraseña</button>
         <button type="button" class="btn-secondary" onclick="logout()">Cerrar sesión</button>
-
         <div id="successMsg" class="success-msg" style="display:none;">
           ✅ Tus datos han sido actualizados con éxito.
         </div>
@@ -265,25 +261,27 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 
   <script>
-    // Toggle móvil
+    // Toggle menú móvil
     function toggleMenu() {
       document.getElementById('mobile-nav').classList.toggle('open');
     }
 
-    // Inicializar Firebase
+    // Inicializar Firebase — apuntando al bucket firebasestorage.app
     firebase.initializeApp({
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
-      storageBucket: "subastacarhn-40554.appspot.com",
+      storageBucket: "subastacarhn-40554.firebasestorage.app",
       messagingSenderId: "536785797974",
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7"
     });
     const auth = firebase.auth();
     const db = firebase.firestore();
-    const storage = firebase.storage().ref();
+    const storage = firebase.app()
+      .storage("gs://subastacarhn-40554.firebasestorage.app")
+      .ref();
 
-    // Pestañas
+    // Manejo de pestañas
     document.querySelectorAll('.tab').forEach(tab => {
       tab.onclick = () => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -293,31 +291,30 @@
       };
     });
 
-    // Estado de auth y carga inicial
+    // Autenticación y carga inicial
     auth.onAuthStateChanged(async user => {
       if (!user) return location = 'login.html';
-      loadProfile(user.uid);
+      await loadProfile(user.uid);
       cargarHistorial();
       fetchClientOrders();
     });
 
-    // Cargar perfil
+    // PERFIL
     async function loadProfile(uid) {
       const doc = await db.collection('clients').doc(uid).get();
-      const d = doc.exists ? doc.data() : {};
-      document.getElementById('name').value = d.fullName||'';
-      document.getElementById('email').value = d.email||'';
-      document.getElementById('phone').value = d.phone||'';
-      document.getElementById('address').value = d.address||'';
-      document.getElementById('dni').value = d.dni||'';
+      if (!doc.exists) return;
+      const d = doc.data();
+      document.getElementById('name').value      = d.fullName||'';
+      document.getElementById('email').value     = d.email   ||'';
+      document.getElementById('phone').value     = d.phone   ||'';
+      document.getElementById('address').value   = d.address ||'';
+      document.getElementById('dni').value       = d.dni     ||'';
       document.getElementById('birthYear').value = d.birthYear||'';
     }
-
-    // Guardar perfil
     document.getElementById('profileForm').onsubmit = async e => {
       e.preventDefault();
-      const user = auth.currentUser;
-      await db.collection('clients').doc(user.uid).update({
+      const u = auth.currentUser;
+      await db.collection('clients').doc(u.uid).update({
         fullName: document.getElementById('name').value,
         address : document.getElementById('address').value,
         dni     : document.getElementById('dni').value,
@@ -327,78 +324,159 @@
       msg.style.display = 'block';
       setTimeout(() => msg.style.display = 'none', 3000);
     };
-
     function sendPasswordReset() {
       auth.sendPasswordResetEmail(auth.currentUser.email)
-        .then(() => alert('🔗 Enlace enviado al correo.'));
+        .then(()=>alert('🔗 Enlace enviado al correo.'));
     }
     function logout() {
-      auth.signOut().then(() => location = 'login.html');
+      auth.signOut().then(()=>location = 'login.html');
     }
 
-    // Gestión de depósito
+    // GESTIÓN
     document.getElementById('btnStartGestion').onclick = () => {
       document.getElementById('depositForm').style.display = 'block';
     };
     document.getElementById('btnUploadDeposit').onclick = async () => {
       const file = document.getElementById('depositFile').files[0];
       if (!file) return alert('Selecciona un comprobante antes de enviar.');
-      const user = auth.currentUser;
-      const snap = await storage.child(`orders/${user.uid}/deposit/${Date.now()}_${file.name}`).put(file);
-      const url = await snap.ref.getDownloadURL();
-      await db.collection('orders').add({
-        clientName: user.displayName||user.email,
-        clientEmail: user.email,
-        clientPhone: document.getElementById('phone').value,
-        depositReceiptUrl: url,
-        depositAmount:5000,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-      document.getElementById('depositSuccess').style.display = 'block';
-      fetchClientOrders();
+      const btn = document.getElementById('btnUploadDeposit');
+      btn.disabled = true; btn.textContent = 'Subiendo...';
+      try {
+        const user = auth.currentUser;
+        const snap = await storage.child(
+          `orders/${user.uid}/deposit/${Date.now()}_${file.name}`
+        ).put(file);
+        const url = await snap.ref.getDownloadURL();
+        await db.collection('orders').add({
+          clientName: user.displayName||user.email,
+          clientEmail: user.email,
+          clientPhone: document.getElementById('phone').value,
+          vehicleURL: null,
+          precioEstimado: null,
+          depositReceiptUrl: url,
+          depositAmount: 5000,
+          copartInvoiceUrl: null,
+          copartPhotos: [],
+          recogida: { valorGrua:0, valorBarco:0 },
+          envioHnd: { detail:'' },
+          aduana: { detail:'' },
+          entrega: { detail:'', precioFinal:0, deliveryPhotos:[] },
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        document.getElementById('depositSuccess').style.display = 'block';
+        fetchClientOrders();
+      } catch(err) {
+        alert('❌ Error al subir el comprobante: ' + err.message);
+      } finally {
+        btn.disabled = false; btn.textContent = 'Enviar comprobante';
+      }
     };
 
-    // Mostrar órdenes del cliente
+    function getDisplayStatus(o) {
+      if (o.depositReceiptUrl) return 'Pago Pendiente';
+      if (o.entrega?.deliveryPhotos?.length) return 'Finalizado';
+      if (o.aduana?.detail) return 'Aduana';
+      if (o.recogida?.valorGrua||o.recogida?.valorBarco) return 'Enviado';
+      if (o.copartInvoiceUrl) return 'Pagado';
+      return 'Inicio';
+    }
+
     async function fetchClientOrders() {
       const user = auth.currentUser;
-      const snap = await db.collection('orders')
-        .where('clientEmail','==',user.email)
-        .orderBy('createdAt','desc')
-        .get();
+      if (!user) return;
+      const STEPS = ['Inicio','Pago Pendiente','Pagado','Enviado','Aduana','Finalizado'];
       const cont = document.getElementById('clientOrdersContainer');
       cont.innerHTML = '';
+      const snap = await db.collection('orders')
+        .where('clientEmail','==',user.email)
+        .orderBy('createdAt','desc').get();
       if (snap.empty) {
         cont.innerHTML = '<p style="text-align:center;">Aún no tienes gestiones iniciadas.</p>';
         return;
       }
       snap.forEach(doc => {
-        const o = doc.data();
-        const status = o.depositReceiptUrl ? 'Pago Pendiente' : 'Finalizado';
+        const o = doc.data(), status = getDisplayStatus(o);
+        const stepsHtml = STEPS.map((s,i) => {
+          const cls = i < STEPS.indexOf(status) ? 'done'
+                    : i === STEPS.indexOf(status)  ? 'active' : '';
+          return `<li class="${cls}">${s}</li>`;
+        }).join('');
+        const cpG = o.copartPhotos?.length
+          ? `<a href="#" class="toggle-detail" data-detail="cp-${doc.id}">Ver fotos Copart</a>
+             <div id="cp-${doc.id}" class="gallery" style="display:none;">
+               ${o.copartPhotos.map(u=>`<img src="${u}">`).join('')}
+             </div>` : '-';
+        const dpG = o.entrega?.deliveryPhotos?.length
+          ? `<a href="#" class="toggle-detail" data-detail="dp-${doc.id}">Ver fotos Entrega</a>
+             <div id="dp-${doc.id}" class="gallery" style="display:none;">
+               ${o.entrega.deliveryPhotos.map(u=>`<img src="${u}">`).join('')}
+             </div>` : '-';
         const card = document.createElement('div');
         card.className = 'order-card';
         card.innerHTML = `
-          <div class="accordion-header">
-            <span>#${doc.id.slice(0,6)}</span>
-            <span class="status-badge">${status}</span>
+          <div class="accordion-header" data-acc="${doc.id}">
+            <div><strong>#${doc.id.slice(0,6)}</strong> ${o.clientName}</div>
+            <div><span class="status-badge">${status}</span></div>
           </div>
-          <div class="accordion-content">
+          <div id="acc-${doc.id}" class="accordion-content">
+            <ul class="tracker">${stepsHtml}</ul>
             <ul class="summary">
+              <li><strong>Vehículo:</strong> ${o.vehicleURL
+                ? `<a href="${o.vehicleURL}" target="_blank">Ver vehículo</a>` : '-'}
+              </li>
+              <li><strong>Estimado:</strong> ${o.precioEstimado||'-'} USD</li>
               <li><strong>Depósito:</strong> ${o.depositAmount} LPS</li>
-              <li><strong>Comprobante:</strong> <a href="${o.depositReceiptUrl}" target="_blank">Ver</a></li>
+              <li><strong>Comprobante:</strong> ${o.depositReceiptUrl
+                ? `<a href="${o.depositReceiptUrl}" target="_blank">Ver comprobante</a>` : '-'}
+              </li>
+              <li><strong>Factura Copart:</strong> ${o.copartInvoiceUrl
+                ? `<a href="${o.copartInvoiceUrl}" target="_blank">Ver PDF</a>` : '-'}
+              </li>
+              <li><strong>Fotos Copart:</strong> ${cpG}</li>
+              <li><strong>Grúa:</strong> ${o.recogida.valorGrua||'-'} USD</li>
+              <li><strong>Barco:</strong> ${o.recogida.valorBarco||'-'} USD</li>
+              <li><strong>Aduana:</strong>
+                <a href="#" class="toggle-detail" data-detail="adu-${doc.id}">Ver</a>
+                <div id="adu-${doc.id}" style="display:none;margin:.5rem 0;">
+                  ${o.aduana.detail||'-'}
+                </div>
+              </li>
+              <li><strong>Entrega Final:</strong>
+                <a href="#" class="toggle-detail" data-detail="ent-${doc.id}">Ver</a>
+                <div id="ent-${doc.id}" style="display:none;margin:.5rem 0;">
+                  ${o.entrega.detail||'-'}
+                </div>
+              </li>
+              <li><strong>Fotos Entrega:</strong> ${dpG}</li>
+              <li><strong>Precio Final:</strong> ${o.entrega.precioFinal||'-'} LPS</li>
+              <li><strong>Últ. actualización:</strong>
+                ${o.updatedAt?.toDate().toLocaleString('es-HN')||'-'}
+              </li>
             </ul>
           </div>`;
-        card.querySelector('.accordion-header').onclick = () => {
-          card.querySelector('.accordion-content').classList.toggle('open');
-        };
         cont.appendChild(card);
+      });
+      // Hooks acordeón y toggles
+      document.querySelectorAll('.accordion-header').forEach(h => {
+        h.onclick = () => {
+          document.getElementById('acc-' + h.dataset.acc)
+            .classList.toggle('open');
+        };
+      });
+      document.querySelectorAll('.toggle-detail').forEach(a => {
+        a.onclick = e => {
+          e.preventDefault();
+          const tgt = document.getElementById(a.dataset.detail);
+          tgt.style.display = tgt.style.display==='none'?'block':'none';
+        };
       });
     }
 
-    // Historial de cálculos
+    // HISTORIAL
     async function cargarHistorial() {
-      const user = auth.currentUser;
-      const snap = await db.collection('clients').doc(user.uid)
+      const uid = auth.currentUser.uid;
+      const snap = await db.collection('clients').doc(uid)
         .collection('historial').orderBy('fecha','desc').limit(100).get();
       const cont = document.getElementById('historialContainer');
       if (snap.empty) {
@@ -406,31 +484,90 @@
         return;
       }
       cont.innerHTML = snap.docs.map(doc => {
-        const d = doc.data();
-        const fecha = d.fecha?.toDate().toLocaleString('es-HN') || '';
+        const d = doc.data(), fecha = d.fecha?.toDate().toLocaleString('es-HN')||'';
         return `
           <div class="hist-card" id="historial-${doc.id}">
             <input type="text" value="${d.nombre||'Sin título'}"
-              onchange="renombrarHistorial('${doc.id}',this.value)" />
+              onchange="renombrarHistorial('${doc.id}', this.value)" />
             <small>${fecha}</small><br>
-            <strong>L ${d.total||'-'}</strong>
+            <strong>L ${d.total||'-'}</strong><br>
+            <button class="styled-btn" onclick="verDetallesHistorial('${doc.id}')">Ver detalles</button>
+            <button class="styled-btn" onclick="descargarHistorialPDF('${doc.id}')">Descargar PDF</button>
+            <button class="styled-btn" onclick="eliminarHistorial('${doc.id}')">Eliminar</button>
           </div>`;
       }).join('');
     }
+
     async function renombrarHistorial(id,nuevo) {
       try {
         await db.collection('clients').doc(auth.currentUser.uid)
-          .collection('historial').doc(id).update({ nombre:nuevo });
+          .collection('historial').doc(id).update({ nombre: nuevo });
         const cont = document.getElementById(`historial-${id}`);
         const msg = document.createElement('div');
-        msg.className = 'success-msg'; msg.textContent = '✅ Renombrado';
+        msg.className = 'success-msg'; msg.textContent = '✅ Nombre actualizado';
         cont.appendChild(msg);
         setTimeout(()=>msg.remove(),3000);
       } catch {
         alert('❌ No se pudo renombrar.');
       }
     }
-  </script>
 
+    function eliminarHistorial(id) {
+      if (!confirm('¿Eliminar este historial?')) return;
+      db.collection('clients').doc(auth.currentUser.uid)
+        .collection('historial').doc(id).delete()
+        .then(cargarHistorial)
+        .catch(()=>alert('❌ No se pudo eliminar.'));
+    }
+
+    function verDetallesHistorial(id) {
+      document.querySelectorAll('.detalle-abierto').forEach(e=>e.remove());
+      db.collection('clients').doc(auth.currentUser.uid)
+        .collection('historial').doc(id).get()
+        .then(doc => {
+          if (!doc.exists) return alert('❌ No se encontró este cálculo.');
+          const d = doc.data();
+          const cont = document.getElementById(`historial-${id}`);
+          const detalle = document.createElement('div');
+          detalle.classList.add('detalle-abierto');
+          detalle.innerHTML = `
+            <div style="margin-top:1rem;border:1px dashed #ccc;border-radius:6px;
+                        padding:10px;background:#f0f8ff;">
+              <table style="width:100%;border-collapse:collapse;">
+                <tr><th>Concepto</th><th>Valor</th></tr>
+                ${d.detalles.map(i=>`
+                  <tr><td style="border:1px solid #ddd;padding:6px;">${i.titulo}</td>
+                      <td style="border:1px solid #ddd;padding:6px;">${i.valor}</td></tr>
+                `).join('')}
+              </table>
+              <button class="styled-btn" onclick="this.closest('.detalle-abierto').remove()">Cerrar</button>
+            </div>`;
+          cont.appendChild(detalle);
+        });
+    }
+
+    function descargarHistorialPDF(id) {
+      db.collection('clients').doc(auth.currentUser.uid)
+        .collection('historial').doc(id).get()
+        .then(doc => {
+          if (!doc.exists) return alert('❌ No se encontró este cálculo.');
+          const d = doc.data();
+          const w = window.open('', '_blank', 'width=800,height=600');
+          w.document.write(`
+            <html><head><title>${d.nombre}</title>
+            <style>
+              body{font-family:Arial;margin:20px;}
+              table{width:100%;border-collapse:collapse;}
+              th,td{border:1px solid #ccc;padding:8px;}
+            </style></head><body>
+            <h2 style="text-align:center;">${d.nombre}</h2>
+            <p><strong>Total Final:</strong> ${d.total}</p>
+            <table><tr><th>Concepto</th><th>Valor</th></tr>
+              ${d.detalles.map(i=>`<tr><td>${i.titulo}</td><td>${i.valor}</td></tr>`).join('')}
+            </table></body></html>`);
+          setTimeout(()=>w.print(),500);
+        });
+    }
+  </script>
 </body>
 </html>
