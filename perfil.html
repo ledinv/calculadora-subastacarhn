@@ -4,8 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mi Perfil – SubastaCarHN</title>
-
-  <!-- Fuentes e íconos -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
   <meta name="theme-color" content="#002f6c">
 
@@ -81,7 +79,7 @@
 
     /* Historial */
     #historialContainer .hist-item { background:#f0f8ff; padding:1rem; border-radius:10px; margin-bottom:1rem; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
-    .hist-details { background:#fff; padding:1rem; margin-bottom:1rem; border-radius:8px; border:1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); }
+    .hist-details { background:#fff; padding:1rem; border-radius:8px; border:1px solid #ddd; margin-top:1rem; }
   </style>
 </head>
 <body>
@@ -113,7 +111,6 @@
     <div class="contenido-central">
       <h1>Mi Perfil</h1>
 
-      <!-- TABS -->
       <div id="tabs">
         <button class="tab-btn" data-tab="perfil" onclick="showSection('perfil')">Perfil</button>
         <button class="tab-btn" data-tab="gestiones" onclick="showSection('gestiones')">Gestiones</button>
@@ -167,7 +164,6 @@
       </section>
     </div>
   </main>
-
   <footer class="site-footer" style="background:var(--blue2); color:#fff; text-align:center; padding:1rem; margin-top:2rem;">
     <div class="container footer-inner">
       <nav class="footer-nav">
@@ -242,7 +238,7 @@
           <div class="hist-item" id="hist-${doc.id}">
             <input type="text" value="${d.nombre||'Sin título'}"
               onchange="renombrarHistorial('${doc.id}', this.value)"
-              style="font-weight:bold;border:none;background:transparent;color:var(--blue2);width:100%;"/>
+              style="font-weight:bold;border:none;background:transparent;color:var(--blue2);width:100%;"/>  
             <small>${fecha}</small><br>
             <strong style="color:var(--blue2);">L ${d.total||'-'}</strong><br><br>
             <button class="styled-btn" onclick="verDetallesHistorial('${doc.id}')">Ver detalles</button>
@@ -271,7 +267,7 @@
         detailEl.textContent = 'No se encontraron detalles.';
       } else {
         const d = doc.data();
-        let html = '<ul>';
+        let html = '<ul style="padding-left:1rem;">';
         Object.entries(d).forEach(([key, val]) => {
           if (key === 'fecha') {
             html += `<li><strong>Fecha:</strong> ${val.toDate().toLocaleString('es-HN')}</li>`;
