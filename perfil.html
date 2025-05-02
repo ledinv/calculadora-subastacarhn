@@ -254,7 +254,7 @@
 
     const auth = firebase.auth();
     const db = firebase.firestore();
-    const storage = firebase.storage().ref();
+    const storage = firebase.app().storage("gs://subastacarhn-40554.firebasestorage.app").ref();
 
     function toggleMenu() {
       document.getElementById('mobile-menu-links').classList.toggle('open');
