@@ -1,20 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mi Perfil – SubastaCarHN</title>
-
-  <!-- Fuentes e íconos -->
+  <title>Panel de Administración | SubastaCarHN</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <link rel="manifest" href="Img/site.webmanifest">
-  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
-  <meta name="theme-color" content="#002f6c">
-
   <style>
     :root {
       --blue: #002f6c;
@@ -26,484 +16,622 @@
       --max-width: 1200px;
     }
     *, *::before, *::after { box-sizing: border-box; margin:0; padding:0 }
-    body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text); line-height:1.6 }
-    a { text-decoration:none; color:inherit }
-    ul { list-style:none }
-    .container { max-width:var(--max-width); margin:0 auto; padding:0 1rem }
+    body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text); }
+    header { background:var(--blue); color:#fff; padding:1rem; }
+    header .logo { font-size:1.5rem; font-weight:bold; }
+    header nav ul { list-style:none; display:flex; gap:1rem; }
+    header nav a { color:#fff; text-decoration:none; }
+    #adminApp { display:none; max-width:var(--max-width); margin:1rem auto; }
 
-    /* Header */
-    .site-header {
-      background:var(--blue);
-      position: sticky; top:0; z-index:1000;
-    }
-    .header-inner { display:flex; align-items:center; justify-content:space-between; padding:.75rem }
-    .brand { color:#fff; font-size:1.5rem; font-weight:700 }
-    .nav-list { display:flex; gap:1rem; margin-left:auto }
-    .nav-list a, .nav-list span { color:var(--yellow); font-weight:600; font-size:.95rem }
-    .menu-icon {
-      background:var(--yellow); color:var(--blue); border:none;
-      padding:.5rem; border-radius:6px; cursor:pointer;
-      box-shadow:0 2px 8px var(--shadow);
-    }
-    .mobile-nav {
-      display:none; flex-direction:column; background:#fff; padding:1rem;
-      box-shadow:0 2px 8px var(--shadow);
-    }
-    .mobile-nav.open { display:flex; }
-    .mobile-nav a, .mobile-nav span {
-      font-weight:700; padding:.75rem; border-radius:4px;
-      transition:background .2s; color:var(--blue);
-    }
-    .mobile-nav a:hover, .mobile-nav span:hover { background:rgba(0,47,108,0.1) }
-    @media (max-width:767px) { .nav-list { display:none; } }
-    @media (min-width:768px) { .menu-icon { display:none; } }
-
-    /* Main Layout */
-    main.layout { padding:2rem 1rem }
-    .contenido-central {
-      max-width:500px; margin:0 auto; background:#fff;
-      padding:2rem; border-radius:15px;
-      box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    }
-    .contenido-central h1 { text-align:center; color:var(--blue); margin-bottom:1.5rem }
-    label { display:block; font-weight:bold; color:var(--blue); margin-top:10px }
-    input, textarea {
-      width:100%; padding:8px; border-radius:8px;
-      border:1px solid var(--blue2); background:#f0f8ff;
-      margin-top:5px; font-size:14px; box-sizing:border-box;
-    }
-    .readonly { background:#e4e4e4; color:#555; }
-    small.note { font-size:12px; color:#666; display:block; margin:-.2rem 0 1rem; }
-    .styled-btn {
-      background:var(--yellow); color:var(--blue); font-weight:bold;
-      border:none; border-radius:8px; padding:10px; margin-top:20px;
-      width:100%; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.2);
-    }
-    .styled-btn:hover { background:#e6ac00; }
-    .success-msg {
-      background:#d4edda; color:#155724; border:1px solid #c3e6cb;
-      padding:10px; border-radius:6px; text-align:center; margin-top:10px;
-    }
-
-    /* Tabs moderno */
-    .tabs {
-      display:flex; border-bottom:2px solid var(--blue2); margin-top:2rem;
-    }
-    .tab {
-      flex:1; padding:.75rem; background:var(--blue2);
-      color:#fff; text-align:center; cursor:pointer; font-weight:600;
-    }
+    .tabs { display:flex; border-bottom:2px solid var(--blue2); }
+    .tab { flex:1; padding:.75rem; background:var(--blue2); color:#fff; text-align:center; cursor:pointer; font-weight:600; }
     .tab.active { background:var(--blue); }
-    .section { display:none; }
-    .section.active { display:block; margin-top:1rem; }
+    .section { display:none; background:#fff; border-radius:8px; box-shadow:0 2px 10px var(--shadow); margin-top:1rem; padding:1rem; }
+    .section.active { display:block; }
 
-    /* Gestión de Vehículos dentro de sección */
-    .orders-grid {
-      display:grid; gap:1rem;
-      grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-      margin-top:1rem;
+    /* Formularios / Grids */
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:1rem; }
+    form input, form select, form textarea, form button {
+      width:100%; margin:.5rem 0; padding:.75rem; border:1px solid #ccc; border-radius:4px; font-size:1rem;
     }
-    .order-card {
-      border:1px solid #ddd; border-radius:6px; overflow:hidden;
-      background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.1);
-    }
+    form button { background:var(--yellow); color:var(--blue); border:none; font-weight:600; cursor:pointer; }
+    .preview img { width:60px; height:60px; object-fit:cover; margin:4px; border:1px solid #ccc; border-radius:4px; }
+
+    /* Tablas */
+    table { width:100%; border-collapse:collapse; font-size:.9rem; margin-top:.5rem; }
+    th, td { padding:.5rem; border:1px solid #ddd; text-align:left; vertical-align:middle; }
+    th { background:var(--blue2); color:#fff; }
+    img.thumb { width:50px; height:auto; object-fit:cover; border-radius:4px; }
+    .actions button { margin-right:4px; padding:2px 6px; font-size:.8rem; border:none; border-radius:4px; cursor:pointer; }
+    .btn-sold { background:var(--yellow); color:var(--text); }
+    .btn-edit { background:var(--blue); color:#fff; }
+    .btn-delete { background:#e74c3c; color:#fff; }
+    .btn-copy { background:var(--blue); color:#fff; padding:4px 8px; border:none; border-radius:4px; cursor:pointer; }
+
+    /* Pedidos: acordeón, filtros, grid */
+    .orders-filters { display:flex; gap:10px; margin:1rem 0; }
+    .orders-grid { display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); }
+    .order-card { border:1px solid #ddd; border-radius:6px; overflow:hidden; background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+
     .accordion-header {
       display:flex; justify-content:space-between; align-items:center;
       padding:.75rem 1rem; background:var(--blue2); color:#fff; cursor:pointer;
     }
-    .status-badge {
-      background:var(--yellow); color:var(--text);
-      padding:2px 8px; border-radius:4px; font-size:.8rem;
+    .status-badge { background:var(--yellow); color:var(--text); padding:2px 8px; border-radius:4px; font-size:.8rem; }
+
+    /* Botones inline (Editar / Eliminar) */
+    .btn-edit-inline, .btn-delete-inline {
+      background:transparent; border:1px solid #fff; color:#fff;
+      padding:2px 6px; border-radius:4px; font-size:.8rem; cursor:pointer;
     }
-    .accordion-content {
-      max-height:0; overflow:hidden;
-      transition:max-height .3s ease, padding .3s ease;
-      padding:0 1rem;
-    }
-    .accordion-content.open {
-      padding:1rem; max-height:800px;
-    }
-    .tracker {
-      list-style:none; display:flex; gap:.5rem;
-      padding:0; margin-bottom:.75rem; flex-wrap:wrap;
-    }
-    .tracker li {
-      position:relative; padding-left:1.2rem; font-size:.8rem;
-    }
-    .tracker li::before {
-      content:''; position:absolute; left:0; top:.2rem;
-      width:.8rem; height:.8rem; border-radius:50%; background:#ccc;
-    }
-    .tracker li.done::before { background:var(--yellow) }
-    .tracker li.active::before { background:var(--blue) }
+    .btn-edit-inline:hover, .btn-delete-inline:hover { background:rgba(255,255,255,0.2); }
+
+    .accordion-content { max-height:0; overflow:hidden; transition:max-height .3s ease, padding .3s ease; padding:0 1rem; }
+    .accordion-content.open { padding:1rem; max-height:800px; }
+
+    .tracker { list-style:none; display:flex; gap:.5rem; padding:0; margin-bottom:.75rem; flex-wrap:wrap; }
+    .tracker li { position:relative; padding-left:1.2rem; font-size:.8rem; }
+    .tracker li::before { content:''; position:absolute; left:0; top:.2rem; width:.8rem; height:.8rem; border-radius:50%; background:#ccc; }
+    .tracker li.done::before { background:var(--yellow); }
+    .tracker li.active::before { background:var(--blue); }
+
     .summary { list-style:none; padding:0; margin:0; font-size:.9rem; }
     .summary li { margin-bottom:.5rem; }
-    .gallery {
-      display:flex; flex-wrap:wrap; gap:4px; margin-top:4px;
+
+    .gallery { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
+    .gallery img { width:60px; height:60px; object-fit:cover; border:1px solid #ddd; border-radius:4px; }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed; top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.8);
+      display: none; align-items: center; justify-content: center;
+      z-index: 9999;
     }
-    .gallery img {
-      width:60px; height:60px; object-fit:cover;
-      border:1px solid #ddd; border-radius:4px;
+    .lightbox-img {
+      max-width: 90%; max-height: 80%; border-radius: 4px;
+    }
+    .lightbox-close {
+      position: absolute; top: 1rem; right: 1.5rem;
+      font-size: 2rem; color: #fff; cursor: pointer;
+    }
+    .lightbox-nav {
+      position: absolute; bottom: 2rem; display: flex; gap:1rem;
+    }
+    .lightbox-nav button {
+      background: rgba(255,255,255,0.3); border: none;
+      color: #fff; font-size: 2rem; padding: 0.2rem 0.5rem;
+      border-radius: 4px; cursor: pointer;
     }
 
-    /* Footer */
-    .site-footer {
-      background:var(--blue2); color:#fff; text-align:center;
-      padding:1rem; margin-top:2rem;
-    }
-    .site-footer a { color:var(--yellow); text-decoration:none; }
+    footer { background:var(--blue); color:#fff; padding:1rem; text-align:center; margin-top:2rem; }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="index.html" class="brand">SubastaCarHN</a>
-      <ul class="nav-list">
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="calculadora.html">Calculadora</a></li>
-        <li><a href="inventario.html">Vehículos</a></li>
-        <li><a href="cursos.html">Cursos</a></li>
-        <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
-      </ul>
-      <button class="menu-icon" onclick="toggleMenu()">☰</button>
-    </div>
-    <nav id="mobile-menu-links" class="mobile-nav">
-      <a href="index.html">Inicio</a>
-      <a href="calculadora.html">Calculadora</a>
-      <a href="inventario.html">Vehículos</a>
-      <a href="cursos.html">Cursos</a>
-      <a href="#" onclick="logout()">Cerrar sesión</a>
-    </nav>
-  </header>
+<header>
+  <div class="logo">SubastaCarHN</div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="inventario.html">Inventario</a></li>
+      <li><a href="admin.html">Admin</a></li>
+      <li><a href="#" onclick="firebase.auth().signOut()">Salir</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <!-- MAIN -->
-  <main class="layout">
-    <div class="contenido-central">
+<div id="adminApp">
+  <div class="tabs">
+    <div class="tab active" data-sec="add">Añadir</div>
+    <div class="tab" data-sec="inv">Inventario</div>
+    <div class="tab" data-sec="usr">Usuarios (<span id="userCount">0</span>)</div>
+    <div class="tab" data-sec="ped">Pedidos</div>
+  </div>
 
-      <!-- Perfil -->
-      <h1>Mi Perfil</h1>
-      <form id="profileForm">
-        <label for="name">Nombre completo</label>
-        <input type="text" id="name" required />
+  <!-- SECCIÓN AÑADIR VEHÍCULO -->
+  <div id="section-add" class="section active">
+    <form id="formularioAuto">
+      <div class="form-grid">
+        <input id="marca" name="marca" placeholder="Marca" required/>
+        <input id="modelo" name="modelo" placeholder="Modelo" required/>
+        <input id="motor" name="motor" placeholder="Motor" required/>
+        <input id="anio" name="anio" type="number" placeholder="Año" required/>
+        <input id="precio" name="precio" type="number" placeholder="Precio (LPS)" required/>
+        <input id="kilometraje" name="kilometraje" type="number" placeholder="Kilometraje" required/>
+        <input id="color" name="color" placeholder="Color" required/>
+        <select id="tipo" name="tipo" required>
+          <option value="">Tipo de Vehículo…</option>
+          <option>Sedán</option><option>SUV</option><option>Pickup</option><option>Camioneta</option><option>Eléctrico</option>
+        </select>
+        <textarea id="descripcion" name="descripcion" rows="2" placeholder="Descripción"></textarea>
+        <input id="imagenes" name="imagenes" type="file" multiple accept="image/*"/>
+      </div>
+      <div id="preview" class="preview"></div>
+      <button id="btnAgregar" type="submit">Guardar Vehículo</button>
+      <button id="btnCancelarEdicion" type="button" style="background:#e74c3c;color:#fff;display:none;">Cancelar</button>
+    </form>
+  </div>
 
-        <label for="email">Correo electrónico</label>
-        <input type="email" id="email" class="readonly" readonly />
+  <!-- SECCIÓN INVENTARIO -->
+  <div id="section-inv" class="section">
+    <table id="inventory-table">
+      <thead>
+        <tr><th>Foto</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Precio</th><th>Est.</th><th>Acc.</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
-        <label for="phone">Teléfono</label>
-        <input type="tel" id="phone" class="readonly" readonly />
+  <!-- SECCIÓN USUARIOS -->
+  <div id="section-usr" class="section">
+    <button id="btnCopyAll" class="btn-copy">Copiar todos</button>
+    <table id="users-table">
+      <thead><tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Acción</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
-        <label for="address">Dirección</label>
-        <input type="text" id="address" />
+  <!-- SECCIÓN PEDIDOS -->
+  <div id="section-ped" class="section">
+    <button id="btnNewOrder" class="btn-copy">+ Nuevo Pedido</button>
 
-        <label for="dni">DNI</label>
-        <input type="text" id="dni" />
-
-        <label for="birthYear">Año de nacimiento</label>
-        <input type="number" id="birthYear" min="1900" max="2100" />
-        <small class="note">El DNI y el año de nacimiento te ayudarán a recuperar tu cuenta si pierdes el acceso.</small>
-
-        <button type="submit" class="styled-btn">Guardar cambios</button>
-        <button type="button" class="styled-btn" onclick="sendPasswordReset()">Cambiar contraseña</button>
-        <button type="button" class="styled-btn" onclick="logout()">Cerrar sesión</button>
-
-        <div id="successMsg" class="success-msg" style="display:none;">
-          ✅ Tus datos han sido actualizados con éxito.
+    <div id="orderFormContainer" style="display:none;">
+      <h3 id="orderFormTitle">Nuevo Pedido</h3>
+      <form id="formularioOrder" novalidate>
+        <div class="form-grid">
+          <select id="orderClient"><option value="">Selecciona cliente…</option></select>
+          <input id="orderClientPhone" placeholder="Teléfono" readonly/>
+        </div>
+        <div class="form-grid">
+          <input id="orderVehicleURL" type="url" placeholder="URL Copart"/>
+          <input id="precioEstimado" type="number" placeholder="Precio estimado (USD)"/>
+        </div>
+        <div class="form-grid">
+          <label for="orderCopartInvoice">Subir factura (PDF)</label>
+          <input id="orderCopartInvoice" type="file" accept="application/pdf"/>
+          <label for="orderCopartPhotos">Subir fotos Copart</label>
+          <input id="orderCopartPhotos" type="file" multiple accept="image/*"/>
+        </div>
+        <div class="form-grid">
+          <input id="valorGrua" type="number" placeholder="Costo grúa (USD)"/>
+          <input id="valorBarco" type="number" placeholder="Costo barco (USD)"/>
+        </div>
+        <div class="form-grid">
+          <textarea id="textoEnvioHnd" rows="2" placeholder="Detalles de llegada a HND"></textarea>
+          <textarea id="textoAduana" rows="2" placeholder="Detalles de aduana"></textarea>
+        </div>
+        <div class="form-grid">
+          <textarea id="textoEntrega" rows="2" placeholder="Detalles de entrega final"></textarea>
+          <input id="precioFinal" type="number" placeholder="Precio final (LPS)"/>
+        </div>
+        <div class="form-grid">
+          <label for="fotosEntregaFinal">Fotos entrega final</label>
+          <input id="fotosEntregaFinal" type="file" multiple accept="image/*"/>
+          <div></div>
+        </div>
+        <div style="margin-top:1rem; display:flex; gap:10px;">
+          <button type="submit">Guardar Pedido</button>
+          <button id="btnCancelOrder" type="button" style="background:#e74c3c;color:#fff;">Cancelar</button>
         </div>
       </form>
-
-      <!-- Tabs para secciones -->
-      <div class="tabs">
-        <div class="tab active" data-sec="gestion">Gestión</div>
-        <div class="tab" data-sec="historial">Historial</div>
-      </div>
-
-      <!-- Sección Gestión -->
-      <div id="section-gestion" class="section active">
-        <button id="btnStartGestion" class="styled-btn">Comenzar gestión</button>
-        <div id="depositForm" style="display:none; margin-top:1rem;">
-          <h3>Subir comprobante de depósito (5,000 LPS)</h3>
-          <input type="file" id="depositFile" accept="application/pdf,image/*" />
-          <button id="btnUploadDeposit">Enviar comprobante</button>
-        </div>
-        <div id="depositSuccess" class="success-msg" style="display:none;">
-          ✅ Comprobante enviado. Pronto comenzaremos la gestión.
-        </div>
-        <h4 style="margin-top:2rem; color:var(--blue);">Mis Gestiones</h4>
-        <div id="clientOrdersContainer" class="orders-grid"></div>
-      </div>
-
-      <!-- Sección Historial -->
-      <div id="section-historial" class="section">
-        <h4 style="color:var(--blue);">Historial de Cálculos</h4>
-        <div id="historialContainer" style="margin-top:1rem;"></div>
-      </div>
-
     </div>
-  </main>
 
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <a href="index.html">Inicio</a> •
-    <a href="calculadora.html">Calculadora</a> •
-    <a href="inventario.html">Vehículos</a> •
-    <a href="cursos.html">Cursos</a>
-    <p>&copy; 2025 SubastaCarHN. Todos los derechos reservados.</p>
-  </footer>
+    <div class="orders-filters">
+      <select id="statusFilter">
+        <option value="">Todos los estados</option>
+        <option>Inicio</option><option>Pago Pendiente</option><option>Pagado</option>
+        <option>Enviado</option><option>Aduana</option><option>Finalizado</option>
+      </select>
+      <select id="clientFilter"><option value="">Todos los clientes</option></select>
+    </div>
 
-  <!-- Firebase SDKs y lógica -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+    <div id="ordersContainer" class="orders-grid"></div>
+  </div>
+</div>
 
-  <script>
-    // Configuración Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
-      authDomain: "subastacarhn-40554.firebaseapp.com",
-      projectId: "subastacarhn-40554",
-      storageBucket: "subastacarhn-40554.appspot.com",
-      messagingSenderId: "536785797974",
-      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7"
+<!-- Lightbox Modal -->
+<div id="lightbox" class="lightbox">
+  <span class="lightbox-close">&times;</span>
+  <img class="lightbox-img" src="" />
+  <div class="lightbox-nav">
+    <button id="lightbox-prev">&larr;</button>
+    <button id="lightbox-next">&rarr;</button>
+  </div>
+</div>
+
+<footer>
+  <div class="logo">SubastaCarHN</div>
+  <p>© 2025 SubastaCarHN. Todos los derechos reservados.</p>
+</footer>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+<script>
+  // Configuración e Inicialización Firebase
+  firebase.initializeApp({
+    apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+    authDomain: "subastacarhn-40554.firebaseapp.com",
+    projectId: "subastacarhn-40554",
+    storageBucket: "subastacarhn-40554.firebasestorage.app",
+    messagingSenderId: "536785797974",
+    appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+    measurementId: "G-QM5N60K8C0"
+  });
+  const db = firebase.firestore();
+  const storage = firebase.storage().ref();
+
+  let clientsCache = [], ordersCache = [], editingVehicleId = null, editingOrderId = null;
+  const STEPS = ['Inicio','Pago Pendiente','Pagado','Enviado','Aduana','Finalizado'];
+
+  // Manejo de pestañas
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.onclick = () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('section-'+tab.dataset.sec).classList.add('active');
     };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-    const storage = firebase.app().storage("gs://subastacarhn-40554.firebasestorage.app").ref();
+  });
 
-    // Menú móvil
-    function toggleMenu() {
-      document.getElementById('mobile-menu-links').classList.toggle('open');
-    }
+  // Autenticación y arranque
+  firebase.auth().onAuthStateChanged(user => {
+    if (!user) return location='login.html';
+    const admins = ['ledinvvv@gmail.com','ledinvvv1995@yopmail.com'];
+    if (!admins.includes(user.email)) return location='/';
+    document.getElementById('adminApp').style.display = 'block';
+    initApp();
+  });
 
-    // Gestión de depósito
-    const btnStartGestion  = document.getElementById('btnStartGestion');
-    const depositForm      = document.getElementById('depositForm');
-    const depositFile      = document.getElementById('depositFile');
-    const btnUploadDeposit = document.getElementById('btnUploadDeposit');
-    const depositSuccess   = document.getElementById('depositSuccess');
-
-    btnStartGestion.onclick = () => {
-      depositForm.style.display = 'block';
-      btnStartGestion.style.display = 'none';
-      depositSuccess.style.display = 'none';
-      depositForm.scrollIntoView({ behavior: 'smooth' });
+  function initApp(){
+    // Vehículos
+    document.getElementById('imagenes').onchange = showVehPreview;
+    document.getElementById('formularioAuto').onsubmit = saveVehicle;
+    document.getElementById('btnCancelarEdicion').onclick = resetVehicleForm;
+    fetchVehicles();
+    // Usuarios
+    document.getElementById('btnCopyAll').onclick = () => {
+      navigator.clipboard.writeText(clientsCache.map(c=>c.phone).join(', '))
+        .then(()=>alert('Teléfonos copiados'));
     };
-
-    btnUploadDeposit.onclick = async () => {
-      if (!depositFile.files[0]) {
-        alert('Selecciona un comprobante antes de enviar.');
-        return;
-      }
-      btnUploadDeposit.disabled = true;
-      btnUploadDeposit.textContent = 'Subiendo...';
-      try {
-        const user = auth.currentUser;
-        const file = depositFile.files[0];
-        const filePath = `orders/${user.uid}/deposit/${Date.now()}_${file.name}`;
-        const snap = await storage.child(filePath).put(file);
-        const url = await snap.ref.getDownloadURL();
-        const payload = {
-          clientName: user.displayName||user.email,
-          clientEmail: user.email,
-          clientPhone: document.getElementById('phone').value,
-          precioEstimado: null,
-          depositReceiptUrl: url,
-          depositAmount: 5000,
-          copartPhotos: [],
-          recogida: { valorGrua:0, valorBarco:0 },
-          envioHnd: { detail:'' },
-          aduana: { detail:'' },
-          entrega: { detail:'', precioFinal:0, deliveryPhotos:[] },
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        };
-        await db.collection('orders').add(payload);
-        depositForm.style.display = 'none';
-        depositSuccess.style.display = 'block';
-        fetchClientOrders();
-      } catch (err) {
-        console.error(err);
-        alert('❌ Error al subir el comprobante: '+err.message);
-      } finally {
-        btnUploadDeposit.disabled = false;
-        btnUploadDeposit.textContent = 'Enviar comprobante';
-      }
+    fetchClients();
+    // Pedidos
+    document.getElementById('btnNewOrder').onclick = () => {
+      editingOrderId = null; resetOrderForm();
+      fetchClients().then(()=>document.getElementById('orderFormContainer').style.display='block');
     };
+    document.getElementById('btnCancelOrder').onclick = () => document.getElementById('orderFormContainer').style.display='none';
+    document.getElementById('orderClient').onchange = () => {
+      const c = clientsCache.find(x=>x.email===orderClient.value);
+      orderClientPhone.value = c? c.phone : '';
+    };
+    document.getElementById('statusFilter').onchange = renderOrders;
+    document.getElementById('clientFilter').onchange = renderOrders;
+    document.getElementById('formularioOrder').onsubmit = saveOrder;
+    fetchOrders();
+  }
 
-    // Perfil y autenticación
-    auth.onAuthStateChanged(async user => {
-      if (!user) return window.location='login.html';
-      document.getElementById('userGreeting').textContent   = `Hola, ${user.displayName||user.email}`;
-      document.getElementById('mobileGreeting').textContent = `Hola, ${user.displayName||user.email}`;
-      const doc = await db.collection('clients').doc(user.uid).get();
-      if (doc.exists) {
-        const d = doc.data();
-        document.getElementById('name').value      = d.fullName||'';
-        document.getElementById('email').value     = d.email   ||user.email;
-        document.getElementById('phone').value     = d.phone   ||'';
-        document.getElementById('address').value   = d.address ||'';
-        document.getElementById('dni').value       = d.dni     ||'';
-        document.getElementById('birthYear').value = d.birthYear||'';
-      }
-      cargarHistorial();
-      fetchClientOrders();
+  /* — Vehículos — */
+  function showVehPreview(){
+    const pr = document.getElementById('preview'); pr.innerHTML = '';
+    Array.from(imagenes.files).forEach(f=>{
+      const r = new FileReader();
+      r.onload = e=> pr.innerHTML += `<img src="${e.target.result}"/>`;
+      r.readAsDataURL(f);
     });
-
-    document.getElementById('profileForm').onsubmit = async e => {
-      e.preventDefault();
-      const user = auth.currentUser;
-      const data = {
-        fullName: document.getElementById('name').value,
-        address : document.getElementById('address').value,
-        dni     : document.getElementById('dni').value,
-        birthYear: document.getElementById('birthYear').value
-      };
-      await db.collection('clients').doc(user.uid).update(data);
-      const msg = document.getElementById('successMsg');
-      msg.style.display = 'block';
-      setTimeout(()=>msg.style.display='none',3000);
+  }
+  async function saveVehicle(e){
+    e.preventDefault();
+    const f = e.target;
+    const data = {
+      marca: f.marca.value, modelo: f.modelo.value, motor: f.motor.value,
+      anio: +f.anio.value, precio: +f.precio.value, kilometraje: +f.kilometraje.value,
+      color: f.color.value, tipo: f.tipo.value, descripcion: f.descripcion.value
     };
-
-    function sendPasswordReset() {
-      auth.sendPasswordResetEmail(auth.currentUser.email)
-        .then(()=>alert('🔗 Enlace enviado al correo.'))
-        .catch(()=>alert('❌ Error al enviar enlace.'));
-    }
-    function logout() {
-      auth.signOut().then(()=>window.location='login.html');
-    }
-
-    // Historial
-    async function cargarHistorial() {
-      const uid = auth.currentUser.uid;
-      const snap = await db.collection('clients').doc(uid)
-        .collection('historial').orderBy('fecha','desc').limit(100).get();
-      const cont = document.getElementById('historialContainer');
-      if (snap.empty) {
-        cont.innerHTML = '<p style="text-align:center;">Aún no hay cálculos guardados.</p>';
-        return;
+    if (editingVehicleId) {
+      await db.collection('inventario').doc(editingVehicleId).update(data);
+    } else {
+      const id = `${data.modelo.toLowerCase()}${data.anio}-${Date.now()}`;
+      const urls = [];
+      for (let file of imagenes.files) {
+        const up = await storage.child(`inventario/${id}/${file.name}`).put(file);
+        urls.push(await up.ref.getDownloadURL());
       }
-      cont.innerHTML = snap.docs.map(doc => {
-        const d = doc.data();
-        const fecha = d.fecha?.toDate().toLocaleString('es-HN')||'Fecha desconocida';
-        return `
-          <div style="background:#f0f8ff;padding:1rem;border-radius:10px;margin-bottom:1rem;box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-            <input type="text" value="${d.nombre||'Sin título'}"
-              onchange="renombrarHistorial('${doc.id}',this.value)"
-              style="font-weight:bold;border:none;background:transparent;color:var(--blue2);width:100%;"/>
-            <small>${fecha}</small><br>
-            <strong style="color:var(--blue2);">L ${d.total||'-'}</strong><br><br>
-            <button class="styled-btn" onclick="verDetallesHistorial('${doc.id}')">Ver detalles</button>
+      Object.assign(data, {
+        id,
+        imagenes: urls,
+        vendido: false,
+        fecha: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      await db.collection('inventario').doc(id).set(data);
+    }
+    resetVehicleForm();
+    fetchVehicles();
+  }
+  function resetVehicleForm(){
+    editingVehicleId = null;
+    formularioAuto.reset();
+    preview.innerHTML = '';
+    btnCancelarEdicion.style.display = 'none';
+    btnAgregar.textContent = 'Guardar Vehículo';
+  }
+  function fetchVehicles(){
+    db.collection('inventario').orderBy('fecha','desc').get().then(snap=>{
+      const tbody = document.querySelector('#inventory-table tbody');
+      tbody.innerHTML = '';
+      snap.forEach(async d=>{
+        const v = d.data();
+        let imgUrl = '';
+        if (v.imagenes?.[0]) {
+          try{ imgUrl = await firebase.storage().refFromURL(v.imagenes[0]).getDownloadURL(); } catch{}
+        }
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><img src="${imgUrl}" class="thumb"/></td>
+          <td>${v.marca}</td><td>${v.modelo}</td><td>${v.anio}</td>
+          <td>${v.precio} LPS</td><td>${v.vendido?'Vendido':'Disp.'}</td>
+          <td class="actions">
+            ${!v.vendido
+              ? `<button class="btn-sold" onclick="markSold('${d.id}')">V</button>`
+              : `<button class="btn-sold" disabled>V</button>`}
+            <button class="btn-edit" onclick="editVehicle('${d.id}')">E</button>
+            <button class="btn-delete" onclick="deleteVehicle('${d.id}')">X</button>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+    });
+  }
+  function markSold(id){
+    if (confirm('¿Marcar vendido?'))
+      db.collection('inventario').doc(id).update({vendido:true}).then(fetchVehicles);
+  }
+  function deleteVehicle(id){
+    if (confirm('¿Eliminar este vehículo?'))
+      db.collection('inventario').doc(id).delete().then(fetchVehicles);
+  }
+  function editVehicle(id){
+    db.collection('inventario').doc(id).get().then(doc=>{
+      const v = doc.data(), f = formularioAuto;
+      ['marca','modelo','motor','anio','precio','kilometraje','color','tipo','descripcion']
+        .forEach(k=>f[k].value = v[k] || '');
+      editingVehicleId = id;
+      btnAgregar.textContent = 'Guardar Cambios';
+      btnCancelarEdicion.style.display = 'inline-block';
+      window.scrollTo({ top:0, behavior:'smooth' });
+    });
+  }
+
+  /* — Usuarios — */
+  function fetchClients(){
+    return db.collection('clients').orderBy('fullName').get().then(snap=>{
+      clientsCache = [];
+      const sel = document.getElementById('orderClient');
+      sel.innerHTML = '<option value="">Selecciona cliente…</option>';
+      const usersTbody = document.querySelector('#users-table tbody');
+      usersTbody.innerHTML = '';
+      snap.forEach(d=>{
+        const u = d.data();
+        clientsCache.push(u);
+        sel.innerHTML += `<option value="${u.email}">${u.fullName}</option>`;
+        usersTbody.innerHTML += `
+          <tr>
+            <td>${u.fullName}</td>
+            <td>${u.email}</td>
+            <td>${u.phone}</td>
+            <td><button class="btn-copy" onclick="navigator.clipboard.writeText('${u.phone}')">Copiar</button></td>
+          </tr>`;
+      });
+      document.getElementById('userCount').textContent = clientsCache.length;
+    });
+  }
+
+  /* — Pedidos — */
+  function getDisplayStatus(d){
+    if (d.entrega?.deliveryPhotos?.length) return 'Finalizado';
+    if (d.aduana?.detail) return 'Aduana';
+    if (d.recogida?.valorGrua || d.recogida?.valorBarco) return 'Enviado';
+    if (d.copartInvoiceUrl) return 'Pagado';
+    if (d.vehicleURL) return 'Pago Pendiente';
+    return 'Inicio';
+  }
+  function fetchOrders(){
+    db.collection('orders').orderBy('createdAt','desc').onSnapshot(snap=>{
+      ordersCache = [];
+      snap.forEach(d=>ordersCache.push({id:d.id,data:d.data()}));
+      const cf = document.getElementById('clientFilter');
+      cf.innerHTML = '<option value="">Todos los clientes</option>';
+      [...new Set(ordersCache.map(o=>o.data.clientName))].forEach(n=>{
+        cf.innerHTML += `<option>${n}</option>`;
+      });
+      renderOrders();
+    });
+  }
+  function renderOrders(){
+    const sf = statusFilter.value, cf = clientFilter.value;
+    ordersContainer.innerHTML = '';
+    ordersCache.forEach(o=>{
+      const d = o.data, disp = getDisplayStatus(d);
+      if (sf && disp!==sf) return;
+      if (cf && d.clientName!==cf) return;
+      // Header
+      const header = `
+        <div class="accordion-header" data-acc="${o.id}">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <strong>#${o.id.slice(0,6)}</strong>
+            <span>${d.clientName}</span>
           </div>
-        `;
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="status-badge">${disp}</span>
+            <button class="btn-edit-inline" onclick="editOrder('${o.id}')">Editar</button>
+            <button class="btn-delete-inline" onclick="deleteOrder('${o.id}')">Eliminar</button>
+          </div>
+        </div>`;
+      // Steps
+      const steps = STEPS.map((s,i)=>{
+        const cls = i < STEPS.indexOf(disp) ? 'done' : (i===STEPS.indexOf(disp)?'active':'');
+        return `<li class="${cls}">${s}</li>`;
       }).join('');
-    }
+      // Galleries
+      const copartGallery = d.copartPhotos?.length
+        ? `<a href="#" class="toggle-detail" data-detail="cp-${o.id}">Ver fotos</a>
+           <div id="cp-${o.id}" class="gallery" style="display:none;">
+             ${d.copartPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}
+           </div>` : '-';
+      const deliveryGallery = d.entrega?.deliveryPhotos?.length
+        ? `<a href="#" class="toggle-detail" data-detail="dp-${o.id}">Ver fotos</a>
+           <div id="dp-${o.id}" class="gallery" style="display:none;">
+             ${d.entrega.deliveryPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}
+           </div>` : '-';
+      // Content
+      const content = `
+        <div id="acc-${o.id}" class="accordion-content">
+          <ul class="tracker">${steps}</ul>
+          <ul class="summary">
+            <li><strong>Estimado:</strong> ${d.precioEstimado||'-'} USD</li>
+            <li><strong>Factura:</strong> ${d.copartInvoiceUrl
+              ? `<a href="${d.copartInvoiceUrl}" target="_blank">Ver PDF</a>` : '-'
+            }</li>
+            <li><strong>Fotos Copart:</strong> ${copartGallery}</li>
+            <li><strong>Grúa:</strong> ${d.recogida?.valorGrua||'-'} USD</li>
+            <li><strong>Barco:</strong> ${d.recogida?.valorBarco||'-'} USD</li>
+            <li><strong>Llegada HND:</strong>
+              <a href="#" class="toggle-detail" data-detail="hnd-${o.id}">Ver</a>
+              <div id="hnd-${o.id}" style="display:none;margin:.5rem 0;">${d.envioHnd?.detail||'-'}</div>
+            </li>
+            <li><strong>Aduana:</strong>
+              <a href="#" class="toggle-detail" data-detail="adu-${o.id}">Ver</a>
+              <div id="adu-${o.id}" style="display:none;margin:.5rem 0;">${d.aduana?.detail||'-'}</div>
+            </li>
+            <li><strong>Entrega Final:</strong>
+              <a href="#" class="toggle-detail" data-detail="ent-${o.id}">Ver</a>
+              <div id="ent-${o.id}" style="display:none;margin:.5rem 0;">${d.entrega?.detail||'-'}</div>
+            </li>
+            <li><strong>Fotos Entrega:</strong> ${deliveryGallery}</li>
+            <li><strong>Precio Final:</strong> ${d.entrega?.precioFinal||'-'} LPS</li>
+          </ul>
+          <p class="order-meta">Última actualización: ${d.updatedAt?.toDate().toLocaleString('es-HN')||'-'}</p>
+        </div>`;
+      const card = document.createElement('div');
+      card.className = 'order-card';
+      card.innerHTML = header + content;
+      ordersContainer.appendChild(card);
+    });
 
-    async function renombrarHistorial(id,nombre) {
-      try {
-        await db.collection('clients').doc(auth.currentUser.uid)
-          .collection('historial').doc(id).update({ nombre });
-        // confirmación
-        const cont = document.getElementById(`historial-${id}`);
-        const msg = document.createElement('div');
-        msg.className='success-msg';
-        msg.textContent='✅ Nombre actualizado';
-        cont.appendChild(msg);
-        setTimeout(()=>msg.remove(),3000);
-      } catch {
-        alert('❌ No se pudo renombrar.');
-      }
-    }
-
-    function verDetallesHistorial(id) {
-      document.querySelectorAll('.detalle-abierto').forEach(e=>e.remove());
-      db.collection('clients').doc(auth.currentUser.uid)
-        .collection('historial').doc(id).get()
-        .then(doc=>{
-          if(!doc.exists) return alert('❌ No se encontró este cálculo.');
-          const d=doc.data();
-          const cont=document.getElementById(`historial-${id}`);
-          const detalle=document.createElement('div');
-          detalle.classList.add('detalle-abierto');
-          detalle.innerHTML=`
-            <div style="margin-top:1rem;border:1px dashed #ccc;border-radius:10px;padding:10px;">
-              <table style="width:100%;border-collapse:collapse;">
-                <tr><th>Concepto</th><th>Valor</th></tr>
-                ${d.detalles.map(i=>`
-                  <tr><td style="border:1px solid #ddd;padding:6px;">${i.titulo}</td>
-                      <td style="border:1px solid #ddd;padding:6px;">${i.valor}</td></tr>
-                `).join('')}
-              </table>
-              <button class="styled-btn" onclick="this.closest('.detalle-abierto').remove()">Cerrar</button>
-            </div>
-          `;
-          cont.appendChild(detalle);
-        });
-    }
-
-    // Gestión de órdenes
-    function getDisplayStatus(o) {
-      if (o.depositReceiptUrl) return 'Pago Pendiente';
-      if (o.entrega?.deliveryPhotos?.length) return 'Finalizado';
-      if (o.aduana?.detail) return 'Aduana';
-      if (o.recogida?.valorGrua||o.recogida?.valorBarco) return 'Enviado';
-      return 'Inicio';
-    }
-    async function fetchClientOrders() {
-      const user=auth.currentUser;
-      if(!user)return;
-      const STEPS=['Inicio','Pago Pendiente','Pagado','Enviado','Aduana','Finalizado'];
-      const cont=document.getElementById('clientOrdersContainer');
-      cont.innerHTML='';
-      const snap=await db.collection('orders')
-        .where('clientEmail','==',user.email)
-        .orderBy('createdAt','desc').get();
-      if(snap.empty){
-        cont.innerHTML='<p style="text-align:center;">Aún no tienes gestiones iniciadas.</p>';
-        return;
-      }
-      snap.docs.forEach(doc=>{
-        const o=doc.data(), status=getDisplayStatus(o);
-        const steps=o? STEPS.map((s,i)=>{
-          const cls=i<STEPS.indexOf(status)?'done':i===STEPS.indexOf(status)?'active':'';
-          return `<li class="${cls}">${s}</li>`;
-        }).join(''): '';
-        const card=document.createElement('div');
-        card.className='order-card';
-        card.innerHTML=`
-          <div class="accordion-header" data-acc="${doc.id}">
-            <div><strong>#${doc.id.slice(0,6)}</strong> ${o.clientName}</div>
-            <div><span class="status-badge">${status}</span></div>
-          </div>
-          <div id="acc-${doc.id}" class="accordion-content">
-            <ul class="tracker">${steps}</ul>
-            <ul class="summary">
-              <li><strong>Depósito:</strong> ${o.depositAmount||'-'} LPS</li>
-              <li><strong>Comprobante:</strong> ${o.depositReceiptUrl
-                ? `<a href="${o.depositReceiptUrl}" target="_blank">Ver comprobante</a>`:'-'}</li>
-            </ul>
-          </div>
-        `;
-        cont.appendChild(card);
-      });
-      document.querySelectorAll('.accordion-header').forEach(h=>h.onclick=()=>{
-        const acc=document.getElementById('acc-'+h.dataset.acc);
-        acc.classList.toggle('open');
-      });
-    }
-
-    // Lógica de pestañas
-    document.querySelectorAll('.tab').forEach(tab=>{
-      tab.onclick=()=>{
-        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-        document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById('section-'+tab.dataset.sec).classList.add('active');
+    // Hooks
+    document.querySelectorAll('.accordion-header').forEach(h => {
+      h.onclick = () => document.getElementById('acc-'+h.dataset.acc).classList.toggle('open');
+    });
+    document.querySelectorAll('.toggle-detail').forEach(a => {
+      a.onclick = e => {
+        e.preventDefault();
+        const tgt = document.getElementById(a.dataset.detail);
+        tgt.style.display = tgt.style.display==='none'?'block':'none';
       };
     });
-  </script>
+    initLightboxHooks();
+  }
+
+  async function saveOrder(e){
+    e.preventDefault();
+    const c = clientsCache.find(x=>x.email===orderClient.value)||{};
+    let payload = {
+      clientName: c.fullName||'',
+      clientEmail: c.email||'',
+      clientPhone: c.phone||'',
+      vehicleURL: orderVehicleURL.value||'',
+      precioEstimado: +precioEstimado.value||0,
+      copartPhotos: [], copartInvoiceUrl: null,
+      recogida: { valorGrua:+valorGrua.value||0, valorBarco:+valorBarco.value||0 },
+      envioHnd: { detail:textoEnvioHnd.value||'' },
+      aduana: { detail:textoAduana.value||'' },
+      entrega: { detail:textoEntrega.value||'', precioFinal:+precioFinal.value||0, deliveryPhotos:[] },
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    for (let f of orderCopartPhotos.files) {
+      const snap = await storage.child(`orders/${editingOrderId||'new'}/copart/${f.name}`).put(f);
+      payload.copartPhotos.push(await snap.ref.getDownloadURL());
+    }
+    if (orderCopartInvoice.files[0]) {
+      const snap = await storage.child(`orders/${editingOrderId||'new'}/receipt.pdf`).put(orderCopartInvoice.files[0]);
+      payload.copartInvoiceUrl = await snap.ref.getDownloadURL();
+    }
+    for (let f of fotosEntregaFinal.files) {
+      const snap = await storage.child(`orders/${editingOrderId||'new'}/delivery/${f.name}`).put(f);
+      payload.entrega.deliveryPhotos.push(await snap.ref.getDownloadURL());
+    }
+    if (editingOrderId)
+      await db.collection('orders').doc(editingOrderId).update(payload);
+    else
+      await db.collection('orders').add(payload);
+
+    document.getElementById('orderFormContainer').style.display = 'none';
+  }
+
+  async function editOrder(id){
+    const o = ordersCache.find(x=>x.id===id); if (!o) return;
+    editingOrderId = id; resetOrderForm(); await fetchClients();
+    document.getElementById('orderFormContainer').style.display = 'block';
+    document.getElementById('orderFormTitle').innerText = 'Editar Pedido';
+    const d = o.data;
+    orderClient.value = d.clientEmail; orderClient.onchange();
+    orderVehicleURL.value = d.vehicleURL;
+    precioEstimado.value = d.precioEstimado||'';
+    valorGrua.value = d.recogida?.valorGrua||'';
+    valorBarco.value = d.recogida?.valorBarco||'';
+    textoEnvioHnd.value = d.envioHnd?.detail||'';
+    textoAduana.value = d.aduana?.detail||'';
+    textoEntrega.value = d.entrega?.detail||'';
+    precioFinal.value = d.entrega?.precioFinal||'';
+  }
+
+  function resetOrderForm(){
+    formularioOrder.reset();
+    orderFormTitle.innerText = 'Nuevo Pedido';
+  }
+
+  function deleteOrder(id){
+    if (confirm('¿Eliminar este pedido?'))
+      db.collection('orders').doc(id).delete();
+  }
+
+  // ————— Lightbox JS —————
+  let lbGallery = [], lbIndex = 0;
+  const lbEl     = document.getElementById('lightbox');
+  const lbImg    = document.querySelector('.lightbox-img');
+  const btnPrev  = document.getElementById('lightbox-prev');
+  const btnNext  = document.getElementById('lightbox-next');
+  const btnClose = document.querySelector('.lightbox-close');
+
+  function initLightboxHooks() {
+    document.querySelectorAll('.gallery img').forEach(img => {
+      img.style.cursor = 'pointer';
+      img.onclick = e => {
+        const container = e.target.parentNode;
+        lbGallery = Array.from(container.querySelectorAll('img')).map(i=>i.src);
+        lbIndex   = lbGallery.indexOf(e.target.src);
+        openLightbox();
+      };
+    });
+  }
+  function openLightbox(){
+    lbEl.style.display = 'flex';
+    updateLightbox();
+  }
+  function closeLightbox(){
+    lbEl.style.display = 'none';
+  }
+  function updateLightbox(){
+    lbImg.src = lbGallery[lbIndex];
+  }
+  btnPrev.onclick  = ()=> { lbIndex = (lbIndex-1+lbGallery.length)%lbGallery.length; updateLightbox(); };
+  btnNext.onclick  = ()=> { lbIndex = (lbIndex+1)%lbGallery.length; updateLightbox(); };
+  btnClose.onclick = closeLightbox;
+  lbEl.onclick = e => { if(e.target===lbEl) closeLightbox(); };
+  // ——————————————————
+</script>
 </body>
 </html>
