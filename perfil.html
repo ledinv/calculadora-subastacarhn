@@ -23,57 +23,76 @@
       --text: #333;
       --light: #f9f9f9;
       --shadow: rgba(0,0,0,0.1);
-      --max-width: 1000px;
+      --max-width: 1200px;
     }
     *, *::before, *::after { box-sizing: border-box; margin:0; padding:0 }
-    body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text); line-height:1.5 }
+    body { font-family:'Montserrat',sans-serif; background:var(--light); color:var(--text); line-height:1.6 }
     a { text-decoration:none; color:inherit }
     ul { list-style:none }
-    header.site-header {
-      background:var(--blue); padding:1rem;
-      position:sticky; top:0; z-index:1000;
+
+    /* Contenedor principal */
+    .container { max-width:var(--max-width); margin:0 auto; padding:0 1rem }
+
+    /* HEADER */
+    .site-header {
+      background:var(--blue);
+      position: sticky; top:0; z-index:1000;
     }
-    .header-inner { max-width:var(--max-width); margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
-    .brand { color:#fff; font-size:1.75rem; font-weight:700 }
-    .nav-list { display:flex; gap:1rem }
-    .nav-list a { color:var(--yellow); font-weight:600 }
+    .header-inner {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:.75rem 1rem;
+    }
+    .brand {
+      color:#fff; font-size:1.5rem; font-weight:700;
+    }
+    .nav-list {
+      display:flex; gap:1rem;
+    }
+    .nav-list a {
+      color:var(--yellow); font-weight:600;
+    }
     .menu-icon {
       display:none; background:var(--yellow); color:var(--blue);
       border:none; padding:.5rem; border-radius:6px; cursor:pointer;
     }
     @media(max-width:767px) {
-      .nav-list { display:none }
-      .menu-icon { display:block }
+      .nav-list { display:none; }
+      .menu-icon { display:block; }
     }
     .mobile-nav {
-      display:none; position:absolute; top:100%; left:0; right:0;
-      background:#fff; box-shadow:0 2px 8px var(--shadow); flex-direction:column;
+      display:none; flex-direction:column; background:#fff; padding:1rem;
+      box-shadow:0 2px 8px var(--shadow); position: absolute; top:100%; width:100%;
     }
-    .mobile-nav.open { display:flex }
-    .mobile-nav a { padding:1rem; border-bottom:1px solid #eee; color:var(--blue); font-weight:600 }
+    .mobile-nav.open { display:flex; }
+    .mobile-nav a {
+      padding:.75rem 0; border-bottom:1px solid #eee; color:var(--blue); font-weight:600;
+    }
 
-    main { max-width:var(--max-width); margin:2rem auto; padding:0 1rem }
-    .tabs { display:flex; border-bottom:2px solid var(--blue2); }
+    /* MAIN */
+    main { padding:2rem 1rem; }
+    .tabs { display:flex; border-bottom:2px solid var(--blue2); margin-bottom:1rem; }
     .tab {
-      flex:1; padding:.75rem; background:var(--blue2); color:#fff;
-      text-align:center; cursor:pointer; font-weight:600;
+      flex:1; padding:.75rem; background:var(--blue2);
+      color:#fff; text-align:center; cursor:pointer; font-weight:600;
     }
     .tab.active { background:var(--blue); }
-    section { display:none; margin-top:1rem }
-    section.active { display:block }
+    section { display:none; }
+    section.active { display:block; }
 
     /* PERFIL */
-    form.profile-form {
+    .profile-form {
       background:#fff; padding:2rem; border-radius:8px;
       box-shadow:0 4px 12px var(--shadow);
     }
-    .profile-form h2 { margin-bottom:1rem; color:var(--blue) }
-    .profile-form label { display:block; margin-top:1rem; font-weight:600; }
+    .profile-form h2 { margin-bottom:1rem; color:var(--blue); }
+    .profile-form label {
+      display:block; margin-top:1rem; font-weight:600;
+    }
     .profile-form input {
       width:100%; padding:.75rem; margin-top:.25rem;
       border:1px solid var(--blue2); border-radius:4px;
     }
-    .profile-form input.readonly { background:#e4e4e4 }
+    .profile-form input.readonly { background:#e4e4e4; }
     .profile-form button {
       margin-top:1.5rem; width:100%; padding:.75rem;
       background:var(--yellow); color:var(--blue); border:none;
@@ -95,17 +114,17 @@
       font-weight:600; width:100%; margin-top:1rem;
     }
     .orders-grid {
-      display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
       gap:1rem; margin-top:1rem;
     }
     .order-card {
       background:#fff; border:1px solid #ddd; border-radius:6px;
-      overflow:hidden; box-shadow:0 2px 6px var(--shadow);
+      box-shadow:0 2px 6px var(--shadow); overflow:hidden;
     }
     .accordion-header {
       background:var(--blue2); color:#fff; padding:.75rem 1rem;
-      cursor:pointer; display:flex; justify-content:space-between;
-      align-items:center;
+      display:flex; justify-content:space-between; align-items:center;
+      cursor:pointer;
     }
     .status-badge {
       background:var(--yellow); color:var(--text);
@@ -119,18 +138,8 @@
     .accordion-content.open {
       padding:1rem; max-height:600px;
     }
-    .tracker { list-style:none; display:flex; gap:.5rem; flex-wrap:wrap; padding:0; margin-bottom:1rem }
-    .tracker li {
-      position:relative; padding-left:1.2rem; font-size:.8rem;
-    }
-    .tracker li::before {
-      content:''; position:absolute; left:0; top:.2rem;
-      width:.8rem; height:.8rem; border-radius:50%; background:#ccc;
-    }
-    .tracker li.done::before { background:var(--yellow) }
-    .tracker li.active::before { background:var(--blue) }
-    .summary { list-style:none; padding:0; font-size:.9rem }
-    .summary li { margin-bottom:.5rem }
+    .summary { list-style:none; padding:0; font-size:.9rem; }
+    .summary li { margin-bottom:.5rem; }
 
     /* HISTORIAL */
     .hist-card {
@@ -141,21 +150,21 @@
       width:100%; border:none; background:transparent;
       font-weight:600; color:var(--blue2); margin-bottom:.5rem;
     }
-    .hist-card small { display:block; color:#666; margin-bottom:.5rem }
+    .hist-card small { display:block; color:#666; margin-bottom:.5rem; }
 
     /* FOOTER */
     footer.site-footer {
       background:var(--blue2); color:#fff; text-align:center;
       padding:1rem; margin-top:2rem;
     }
-    footer.site-footer a { color:var(--yellow); margin:0 .5rem }
+    footer.site-footer a { color:var(--yellow); margin:0 .5rem; }
   </style>
 </head>
 <body>
 
   <!-- HEADER -->
   <header class="site-header">
-    <div class="header-inner">
+    <div class="container header-inner">
       <a href="index.html" class="brand">SubastaCarHN</a>
       <ul class="nav-list">
         <li><a href="index.html">Inicio</a></li>
@@ -175,10 +184,9 @@
     </nav>
   </header>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main>
-
-    <!-- TABS -->
+    <!-- PESTAÑAS -->
     <div class="tabs">
       <div class="tab active" data-sec="perfil">Perfil</div>
       <div class="tab" data-sec="gestion">Gestión</div>
@@ -257,25 +265,25 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 
   <script>
-    // Toggle mobile nav
+    // Toggle móvil
     function toggleMenu() {
       document.getElementById('mobile-nav').classList.toggle('open');
     }
 
-    // Initialize Firebase
+    // Inicializar Firebase
     firebase.initializeApp({
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
       storageBucket: "subastacarhn-40554.appspot.com",
       messagingSenderId: "536785797974",
-      appId: "1:536785797974:web=e3eabb4dcd898c2ffe8cf7"
+      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7"
     });
     const auth = firebase.auth();
     const db = firebase.firestore();
     const storage = firebase.storage().ref();
 
-    // TAB functionality
+    // Pestañas
     document.querySelectorAll('.tab').forEach(tab => {
       tab.onclick = () => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -285,7 +293,7 @@
       };
     });
 
-    // Auth state & load initial data
+    // Estado de auth y carga inicial
     auth.onAuthStateChanged(async user => {
       if (!user) return location = 'login.html';
       loadProfile(user.uid);
@@ -293,30 +301,33 @@
       fetchClientOrders();
     });
 
-    // Load and handle profile form
+    // Cargar perfil
     async function loadProfile(uid) {
       const doc = await db.collection('clients').doc(uid).get();
-      const data = doc.exists ? doc.data() : {};
-      document.getElementById('name').value = data.fullName || '';
-      document.getElementById('email').value = data.email || '';
-      document.getElementById('phone').value = data.phone || '';
-      document.getElementById('address').value = data.address || '';
-      document.getElementById('dni').value = data.dni || '';
-      document.getElementById('birthYear').value = data.birthYear || '';
+      const d = doc.exists ? doc.data() : {};
+      document.getElementById('name').value = d.fullName||'';
+      document.getElementById('email').value = d.email||'';
+      document.getElementById('phone').value = d.phone||'';
+      document.getElementById('address').value = d.address||'';
+      document.getElementById('dni').value = d.dni||'';
+      document.getElementById('birthYear').value = d.birthYear||'';
     }
+
+    // Guardar perfil
     document.getElementById('profileForm').onsubmit = async e => {
       e.preventDefault();
       const user = auth.currentUser;
       await db.collection('clients').doc(user.uid).update({
         fullName: document.getElementById('name').value,
-        address: document.getElementById('address').value,
-        dni: document.getElementById('dni').value,
+        address : document.getElementById('address').value,
+        dni     : document.getElementById('dni').value,
         birthYear: document.getElementById('birthYear').value
       });
       const msg = document.getElementById('successMsg');
       msg.style.display = 'block';
       setTimeout(() => msg.style.display = 'none', 3000);
     };
+
     function sendPasswordReset() {
       auth.sendPasswordResetEmail(auth.currentUser.email)
         .then(() => alert('🔗 Enlace enviado al correo.'));
@@ -325,22 +336,22 @@
       auth.signOut().then(() => location = 'login.html');
     }
 
-    // Gestión: deposit upload
+    // Gestión de depósito
     document.getElementById('btnStartGestion').onclick = () => {
       document.getElementById('depositForm').style.display = 'block';
     };
     document.getElementById('btnUploadDeposit').onclick = async () => {
       const file = document.getElementById('depositFile').files[0];
-      if (!file) return alert('Selecciona un comprobante.');
+      if (!file) return alert('Selecciona un comprobante antes de enviar.');
       const user = auth.currentUser;
       const snap = await storage.child(`orders/${user.uid}/deposit/${Date.now()}_${file.name}`).put(file);
       const url = await snap.ref.getDownloadURL();
       await db.collection('orders').add({
-        clientName: user.displayName || user.email,
+        clientName: user.displayName||user.email,
         clientEmail: user.email,
         clientPhone: document.getElementById('phone').value,
         depositReceiptUrl: url,
-        depositAmount: 5000,
+        depositAmount:5000,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
@@ -348,15 +359,19 @@
       fetchClientOrders();
     };
 
-    // Fetch and render client orders
+    // Mostrar órdenes del cliente
     async function fetchClientOrders() {
       const user = auth.currentUser;
       const snap = await db.collection('orders')
-        .where('clientEmail', '==', user.email)
-        .orderBy('createdAt', 'desc')
+        .where('clientEmail','==',user.email)
+        .orderBy('createdAt','desc')
         .get();
-      const container = document.getElementById('clientOrdersContainer');
-      container.innerHTML = '';
+      const cont = document.getElementById('clientOrdersContainer');
+      cont.innerHTML = '';
+      if (snap.empty) {
+        cont.innerHTML = '<p style="text-align:center;">Aún no tienes gestiones iniciadas.</p>';
+        return;
+      }
       snap.forEach(doc => {
         const o = doc.data();
         const status = o.depositReceiptUrl ? 'Pago Pendiente' : 'Finalizado';
@@ -376,11 +391,11 @@
         card.querySelector('.accordion-header').onclick = () => {
           card.querySelector('.accordion-content').classList.toggle('open');
         };
-        container.appendChild(card);
+        cont.appendChild(card);
       });
     }
 
-    // Historial: load, rename
+    // Historial de cálculos
     async function cargarHistorial() {
       const user = auth.currentUser;
       const snap = await db.collection('clients').doc(user.uid)
@@ -412,9 +427,10 @@
         cont.appendChild(msg);
         setTimeout(()=>msg.remove(),3000);
       } catch {
-        alert('❌ No se pudo renombrar');
+        alert('❌ No se pudo renombrar.');
       }
     }
   </script>
+
 </body>
 </html>
