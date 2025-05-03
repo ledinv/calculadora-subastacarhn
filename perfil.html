@@ -560,7 +560,7 @@
           .then(cargarHistorial)
           .catch(()=>alert('❌ No se pudo eliminar.'));
       }
-
+      window.eliminarHistorial      = eliminarHistorial;
       function verDetallesHistorial(id) {
         document.querySelectorAll('.detalle-abierto').forEach(e=>e.remove());
         db.collection('clients').doc(auth.currentUser.uid)
@@ -586,7 +586,7 @@
             cont.appendChild(detalle);
           });
       }
-
+      window.verDetallesHistorial   = verDetallesHistorial;
       function descargarHistorialPDF(id) {
         db.collection('clients').doc(auth.currentUser.uid)
           .collection('historial').doc(id).get()
@@ -609,7 +609,7 @@
             setTimeout(()=>w.print(),500);
           });
       }
-
+      window.descargarHistorialPDF  = descargarHistorialPDF;
       // LIGHTBOX
       let lbGallery = [], lbIndex = 0;
       const lbEl    = document.getElementById('lightbox'),
