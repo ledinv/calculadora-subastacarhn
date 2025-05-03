@@ -363,6 +363,8 @@
         auth.sendPasswordResetEmail(auth.currentUser.email)
           .then(()=>alert('🔗 Enlace enviado al correo.'));
       }
+      window.sendPasswordReset = sendPasswordReset;
+
       function logout() {
         auth.signOut().then(()=>location = 'login.html');
       }
