@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- Página principal -->
+  <url>
+    <loc>https://comocomprarcarros.com/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Calculadora -->
+  <url>
+    <loc>https://comocomprarcarros.com/calculadora.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Inventario -->
+  <url>
+    <loc>https://comocomprarcarros.com/inventario.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Cursos -->
+  <url>
+    <loc>https://comocomprarcarros.com/cursos.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Contacto (si existe) -->
+  <url>
+    <loc>https://comocomprarcarros.com/contacto.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+</urlset>
