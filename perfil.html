@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mi Perfil – SubastaCarHN</title>
 
@@ -154,71 +154,6 @@
       font-weight:600; color:var(--blue2); margin-bottom:.5rem;
     }
 
-    /* CHATBOT */
-    .chat-container {
-      max-width:400px;
-      margin:2rem auto;
-      border:1px solid #ccc;
-      padding:1rem;
-      border-radius:8px;
-      background:#fff;
-    }
-    #chat-messages {
-      height:250px;
-      overflow-y:auto;
-      margin-bottom:1rem;
-      border:1px solid #eee;
-      padding:.5rem;
-      background:#fafafa;
-    }
-    .message {
-      padding:.5rem;
-      margin:.3rem 0;
-      border-radius:4px;
-      max-width:80%;
-      word-wrap:break-word;
-    }
-    .message.user {
-      background:#e4f0ff;
-      margin-left:auto;
-      text-align:right;
-    }
-    .message.bot {
-      background:#fff3cd;
-      margin-right:auto;
-      text-align:left;
-    }
-    #chat-input {
-      width:75%;
-      padding:.5rem;
-      border:1px solid #ccc;
-      border-radius:4px;
-    }
-    #chat-send {
-      width:20%;
-      padding:.5rem;
-      margin-left:5%;
-      background:#004aad;
-      color:#fff;
-      border:none;
-      border-radius:4px;
-      cursor:pointer;
-      font-weight:600;
-    }
-    #faq-list {
-      margin-top:1rem;
-      font-size:.9rem;
-      padding-left:1rem;
-    }
-    #faq-list li {
-      cursor:pointer;
-      color:#004aad;
-      margin:4px 0;
-    }
-    #faq-list li:hover {
-      text-decoration:underline;
-    }
-
     /* LIGHTBOX MODAL */
     .lightbox {
       position:fixed; top:0; left:0; right:0; bottom:0;
@@ -331,17 +266,6 @@
     </section>
 
   </main>
-
-  <!-- CHATBOT -->
-  <div class="chat-container">
-    <div id="chat-messages"></div>
-    <div style="display:flex; align-items:center;">
-      <input id="chat-input" type="text" placeholder="Escribe tu pregunta…" />
-      <button id="chat-send">Enviar</button>
-    </div>
-    <h4>Preguntas frecuentes</h4>
-    <ul id="faq-list"></ul>
-  </div>
 
   <!-- LIGHTBOX MODAL -->
   <div id="lightbox" class="lightbox">
@@ -723,66 +647,6 @@
         if (e.key==='ArrowLeft')  btnPrev.onclick();
         if (e.key==='ArrowRight') btnNext.onclick();
         if (e.key==='Escape')     btnClose.onclick();
-      });
-
-      // CHATBOT LÓGICA
-      const faqs = [
-        "¿Cómo hago el depósito?",
-        "¿Qué sucede si no sigo tras ganar?",
-        "¿Cuándo y dónde entregan el vehículo?",
-        "¿Cómo devuelven el depósito si no sigo?"
-      ];
-      const faqResponses = {
-        "¿Cómo hago el depósito?": "Sube tu comprobante en la sección de Gestión. Aceptamos PDF o imagen.",
-        "¿Qué sucede si no sigo tras ganar?": "Si no continúas, Copart multa $600 mínimo; nosotros pedimos L.5,000 como garantía.",
-        "¿Cuándo y dónde entregan el vehículo?": "El tiempo estimado es 6–8 semanas, entrega en Puerto Cortés.",
-        "¿Cómo devuelven el depósito si no sigo?": "Si cancelas antes de ganar, devolvemos íntegro tu depósito."
-      };
-      const chatMessages = document.getElementById('chat-messages');
-      const chatInput = document.getElementById('chat-input');
-      const chatSend = document.getElementById('chat-send');
-      const faqList = document.getElementById('faq-list');
-
-      // Render FAQs
-      faqs.forEach(q => {
-        const li = document.createElement('li');
-        li.textContent = q;
-        li.onclick = () => handleUserMessage(q);
-        faqList.appendChild(li);
-      });
-
-      function appendMessage(text, sender) {
-        const div = document.createElement('div');
-        div.className = 'message ' + sender;
-        div.textContent = text;
-        chatMessages.appendChild(div);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      }
-
-      function handleUserMessage(msg) {
-        appendMessage(msg, 'user');
-        if (faqResponses[msg]) {
-          appendMessage(faqResponses[msg], 'bot');
-        } else {
-          appendMessage("Lo siento, no tengo esa respuesta. ¿Quieres hablar con un representante?", 'bot');
-          const btn = document.createElement('button');
-          btn.textContent = "Sí, hablar con representante";
-          btn.onclick = () => {
-            // Aquí podrías implementar envío de la consulta al representante
-            appendMessage("Tu pregunta ha sido enviada a un representante.", 'bot');
-          };
-          chatMessages.appendChild(btn);
-        }
-      }
-
-      chatSend.onclick = () => {
-        const msg = chatInput.value.trim();
-        if (!msg) return;
-        handleUserMessage(msg);
-        chatInput.value = '';
-      };
-      chatInput.addEventListener('keypress', e => {
-        if (e.key === 'Enter') chatSend.click();
       });
     });
   </script>
