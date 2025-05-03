@@ -373,18 +373,15 @@
       }
     };
 
-    // Lógica de estado unificada (igual que en admin)
     function getDisplayStatus(o) {
+      if (o.depositReceiptUrl) return 'Pago Pendiente';
       if (o.entrega?.deliveryPhotos?.length) return 'Finalizado';
-      if (o.aduana?.detail)               return 'Aduana';
-      if (o.recogida?.valorGrua || o.recogida?.valorBarco) return 'Enviado';
-      if (o.copartInvoiceUrl)            return 'Pagado';
-      if (o.depositReceiptUrl)           return 'Pago Pendiente';
-      if (o.vehicleURL)                  return 'Pago Pendiente';
+      if (o.aduana?.detail) return 'Aduana';
+      if (o.recogida?.valorGrua||o.recogida?.valorBarco) return 'Enviado';
+      if (o.copartInvoiceUrl) return 'Pagado';
       return 'Inicio';
     }
 
-    // Cargar gestiones del cliente
     async function fetchClientOrders() {
       const user = auth.currentUser;
       if (!user) return;
@@ -402,7 +399,7 @@
         const o = doc.data(), status = getDisplayStatus(o);
         const stepsHtml = STEPS.map((s,i) => {
           const cls = i < STEPS.indexOf(status) ? 'done'
-                    : i === STEPS.indexOf(status)   ? 'active' : '';
+                    : i === STEPS.indexOf(status)  ? 'active' : '';
           return `<li class="${cls}">${s}</li>`;
         }).join('');
         const cpG = o.copartPhotos?.length
@@ -412,7 +409,7 @@
              </div>` : '-';
         const dpG = o.entrega?.deliveryPhotos?.length
           ? `<a href="#" class="toggle-detail" data-detail="dp-${doc.id}">Ver fotos Entrega</a>
-             <div id="dp-${doc.id}" class="gallery" style="display:none;">
+             <di id="dp-${doc.id}" class="gallery" style="display:none;">
                ${o.entrega.deliveryPhotos.map(u=>`<img src="${u}">`).join('')}
              </div>` : '-';
         const card = document.createElement('div');
@@ -429,7 +426,7 @@
                 ? `<a href="${o.vehicleURL}" target="_blank">Ver vehículo</a>` : '-'}
               </li>
               <li><strong>Estimado:</strong> ${o.precioEstimado||'-'} USD</li>
-              <li><strong>Depósito:</strong> ${o.depositAmount||'-'} LPS</li>
+              <li><strong>Depósito:</strong> ${o.depositAmount} LPS</li>
               <li><strong>Comprobante:</strong> ${o.depositReceiptUrl
                 ? `<a href="${o.depositReceiptUrl}" target="_blank">Ver comprobante</a>` : '-'}
               </li>
@@ -474,6 +471,7 @@
           tgt.style.display = tgt.style.display==='none'?'block':'none';
         };
       });
+      initLightboxHooks();
     }
 
     // HISTORIAL
@@ -571,6 +569,83 @@
           setTimeout(()=>w.print(),500);
         });
     }
+
+    // LIGHTBOX PARA FOTOS y TECLADO
+    let lbGallery = [], lbIndex = 0;
+    const lbEl = document.getElementById('lightbox'),
+          lbImg = document.querySelector('.lightbox-img'),
+          btnPrev = document.getElementById('lightbox-prev'),
+          btnNext = document.getElementById('lightbox-next'),
+          btnClose = document.querySelector('.lightbox-close');
+
+    function initLightboxHooks(){
+      document.querySelectorAll('.gallery img').forEach(img=>{
+        img.style.cursor='pointer';
+        img.onclick=()=>{
+          const container=img.parentNode;
+          lbGallery=Array.from(container.querySelectorAll('img')).map(i=>i.src);
+          lbIndex=lbGallery.indexOf(img.src);
+          lbEl.style.display='flex';
+          lbImg.src=lbGallery[lbIndex];
+        };
+      });
+    }
+    btnPrev.onclick=()=>{
+      lbIndex=(lbIndex-1+lbGallery.length)%lbGallery.length;
+      lbImg.src=lbGallery[lbIndex];
+    };
+    btnNext.onclick=()=>{
+      lbIndex=(lbIndex+1)%lbGallery.length;
+      lbImg.src=lbGallery[lbIndex];
+    };
+    btnClose.onclick=()=>{
+      lbEl.style.display='none';
+    };
+    lbEl.onclick=e=>{
+      if(e.target===lbEl) btnClose.onclick();
+    };
+
+    // Soporte flechas de teclado y Escape
+    document.addEventListener('keydown', e => {
+      if (lbEl.style.display !== 'flex') return;
+      switch (e.key) {
+        case 'ArrowLeft':
+          lbIndex = (lbIndex - 1 + lbGallery.length) % lbGallery.length;
+          lbImg.src = lbGallery[lbIndex];
+          break;
+        case 'ArrowRight':
+          lbIndex = (lbIndex + 1) % lbGallery.length;
+          lbImg.src = lbGallery[lbIndex];
+          break;
+        case 'Escape':
+          lbEl.style.display = 'none';
+          break;
+      }
+    });
   </script>
+
+  <!-- LIGHTBOX MODAL (fuera del script para parte visual) -->
+  <div id="lightbox" class="lightbox" style="
+       position:fixed;top:0;left:0;right:0;bottom:0;
+       background:rgba(0,0,0,0.8);display:none;
+       align-items:center;justify-content:center;z-index:9999;">
+    <span class="lightbox-close" style="
+          position:absolute;top:1rem;right:1.5rem;
+          font-size:2rem;color:#fff;cursor:pointer;">&times;</span>
+    <img class="lightbox-img" src="" style="
+         max-width:90%;max-height:80%;border-radius:4px;" />
+    <div class="lightbox-nav" style="
+         position:absolute;bottom:2rem;display:flex;gap:1rem;">
+      <button id="lightbox-prev" style="
+              background:rgba(255,255,255,0.3);border:none;
+              color:#fff;font-size:2rem;padding:.2rem .5rem;
+              border-radius:4px;cursor:pointer;">&larr;</button>
+      <button id="lightbox-next" style="
+              background:rgba(255,255,255,0.3);border:none;
+              color:#fff;font-size:2rem;padding:.2rem .5rem;
+              border-radius:4px;cursor:pointer;">&rarr;</button>
+    </div>
+  </div>
+
 </body>
 </html>
