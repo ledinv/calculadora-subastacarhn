@@ -373,15 +373,18 @@
       }
     };
 
+    // Lógica de estado unificada (igual que en admin)
     function getDisplayStatus(o) {
-      if (o.depositReceiptUrl) return 'Pago Pendiente';
       if (o.entrega?.deliveryPhotos?.length) return 'Finalizado';
-      if (o.aduana?.detail) return 'Aduana';
-      if (o.recogida?.valorGrua||o.recogida?.valorBarco) return 'Enviado';
-      if (o.copartInvoiceUrl) return 'Pagado';
+      if (o.aduana?.detail)               return 'Aduana';
+      if (o.recogida?.valorGrua || o.recogida?.valorBarco) return 'Enviado';
+      if (o.copartInvoiceUrl)            return 'Pagado';
+      if (o.depositReceiptUrl)           return 'Pago Pendiente';
+      if (o.vehicleURL)                  return 'Pago Pendiente';
       return 'Inicio';
     }
 
+    // Cargar gestiones del cliente
     async function fetchClientOrders() {
       const user = auth.currentUser;
       if (!user) return;
@@ -399,7 +402,7 @@
         const o = doc.data(), status = getDisplayStatus(o);
         const stepsHtml = STEPS.map((s,i) => {
           const cls = i < STEPS.indexOf(status) ? 'done'
-                    : i === STEPS.indexOf(status)  ? 'active' : '';
+                    : i === STEPS.indexOf(status)   ? 'active' : '';
           return `<li class="${cls}">${s}</li>`;
         }).join('');
         const cpG = o.copartPhotos?.length
@@ -426,7 +429,7 @@
                 ? `<a href="${o.vehicleURL}" target="_blank">Ver vehículo</a>` : '-'}
               </li>
               <li><strong>Estimado:</strong> ${o.precioEstimado||'-'} USD</li>
-              <li><strong>Depósito:</strong> ${o.depositAmount} LPS</li>
+              <li><strong>Depósito:</strong> ${o.depositAmount||'-'} LPS</li>
               <li><strong>Comprobante:</strong> ${o.depositReceiptUrl
                 ? `<a href="${o.depositReceiptUrl}" target="_blank">Ver comprobante</a>` : '-'}
               </li>
