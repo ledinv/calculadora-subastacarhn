@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat – SubastaCarHN</title>
+  <style>
+    :root {
+      --blue: #002f6c;
+      --yellow: #ffc20e;
+      --light: #f9f9f9;
+      --shadow: rgba(0,0,0,0.1);
+      --max-width: 400px;
+    }
+    body {
+      background: var(--light);
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+    }
+    #chat-widget {
+      width: 100%;
+      max-width: var(--max-width);
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px var(--shadow);
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+    }
+    #chat-messages {
+      flex: 1;
+      height: 300px;
+      overflow-y: auto;
+      padding: 0.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    .message {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+    .message.user {
+      text-align: right;
+      color: var(--blue);
+    }
+    .message.bot {
+      text-align: left;
+      color: #333;
+    }
+    #chat-input-area {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.5rem;
+    }
+    #chat-input {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #chat-send {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: var(--yellow);
+      color: var(--blue);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #chat-faq {
+      width: 100%;
+      max-width: var(--max-width);
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px var(--shadow);
+      padding: 1rem;
+    }
+    #chat-faq h4 {
+      margin: 0 0 0.5rem 0;
+      color: var(--blue);
+    }
+    #faq-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    #faq-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      color: #444;
+    }
+    #faq-list li:hover {
+      background: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Chat widget -->
+  <div id="chat-widget">
+    <div id="chat-messages"></div>
+    <div id="chat-input-area">
+      <input type="text" id="chat-input" placeholder="Escribe tu pregunta…" />
+      <button id="chat-send">Enviar</button>
+    </div>
+  </div>
+
+  <!-- Preguntas frecuentes -->
+  <div id="chat-faq">
+    <h4>Preguntas frecuentes</h4>
+    <ul id="faq-list"></ul>
+  </div>
+
+  <script>
+    // 1) Definimos el glosario FAQ
+    const FAQ = {
+      "¿qué es el depósito de garantía?": 
+        "Hola, un placer poder trabajar contigo.\n" +
+        "Nos encontramos en San Pedro Sula.\n\n" +
+        "Para comenzar con el proceso de importación, pedimos un depósito de garantía de L.5,000.\n" +
+        "Este depósito es muy importante porque si ganamos el vehículo y el cliente decide no continuar, Copart aplica una multa mínima de $600.\n" +
+        "Y si el valor del carro supera los $6,000, la multa puede ser de hasta el 10% del valor de la apuesta.\n\n" +
+        "Nosotros confiamos en nuestros clientes, por eso solo pedimos L.5,000, confiando en que si alguien decide abandonar el proceso luego de ganar, será honesto y responsable para cubrir el faltante si es necesario.",
+      "¿cómo devuelven el depósito?": 
+        "Si el cliente decide no seguir antes de ganar el auto, el depósito se devuelve sin problema. " +
+        "Una vez hecho tu depósito de L.5,000, solo avísanos y te lo reembolsamos completamente.",
+      "¿cuándo recibo mi vehículo?": 
+        "El tiempo estimado de entrega es de 6 a 8 semanas y la entrega se hace en Puerto Cortés.",
+      "¿dónde están ubicados?": 
+        "Nuestra oficina principal está en San Pedro Sula. La entrega final del vehículo se realiza en Puerto Cortés.",
+      "¿cuáles son los honorarios?": 
+        "Cuando se gana el auto:\n" +
+        " • Se devuelve el depósito\n" +
+        " • Te entregamos la factura para el pago del vehículo\n" +
+        " • Se pagan los honorarios de L.5,000",
+      "¿cómo inicio la gestión?": 
+        "Para iniciar la gestión, presiona el botón “Comenzar gestión” y sube tu comprobante de depósito de L.5,000.\n" +
+        "Si prefieres, pulsa “Continuar con la gestión” aquí abajo para hablar directamente conmigo.",
+      "continuar con la gestión": 
+        "¡Perfecto! Te conectaré con un asesor para completar el proceso. 😊"
+    };
+
+    // 2) Función para añadir mensajes al chat
+    function addMessage(text, sender) {
+      const container = document.getElementById('chat-messages');
+      const msg = document.createElement('div');
+      msg.className = 'message ' + sender;
+      // preservamos saltos de línea
+      msg.innerText = text;
+      container.appendChild(msg);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // 3) Manejador de entrada
+    function handle(input) {
+      const key = input.trim().toLowerCase();
+      if (FAQ[key]) {
+        addMessage(FAQ[key], 'bot');
+      } else {
+        addMessage(
+          "Lo siento, aún no tengo esa respuesta. " +
+          "¿Quieres continuar con la gestión o preguntar algo más?",
+          'bot'
+        );
+      }
+    }
+
+    // 4) Envío con botón y tecla Enter
+    document.getElementById('chat-send').onclick = () => {
+      const inputEl = document.getElementById('chat-input');
+      const text = inputEl.value.trim();
+      if (!text) return;
+      addMessage(text, 'user');
+      inputEl.value = '';
+      handle(text);
+    };
+    document.getElementById('chat-input').addEventListener('keypress', e => {
+      if (e.key === 'Enter') {
+        document.getElementById('chat-send').click();
+      }
+    });
+
+    // 5) Generar lista de FAQs clicables
+    const faqListEl = document.getElementById('faq-list');
+    Object.keys(FAQ).forEach(question => {
+      const li = document.createElement('li');
+      li.innerText = question.charAt(0).toUpperCase() + question.slice(1);
+      li.onclick = () => {
+        addMessage(li.innerText, 'user');
+        handle(li.innerText);
+      };
+      faqListEl.appendChild(li);
+    });
+  </script>
+
+</body>
+</html>
