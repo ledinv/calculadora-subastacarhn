@@ -154,7 +154,7 @@
       font-weight:600; color:var(--blue2); margin-bottom:.5rem;
     }
 
-    /* LIGHTBOX */
+    /* LIGHTBOX MODAL */
     .lightbox {
       position:fixed; top:0; left:0; right:0; bottom:0;
       background:rgba(0,0,0,0.8); display:none;
@@ -267,6 +267,16 @@
 
   </main>
 
+  <!-- LIGHTBOX MODAL -->
+  <div id="lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-img" src="" />
+    <div class="lightbox-nav">
+      <button id="lightbox-prev">&larr;</button>
+      <button id="lightbox-next">&rarr;</button>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer class="site-footer">
     <a href="index.html">Inicio</a> •
@@ -283,381 +293,362 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 
   <script>
-    // Toggle menú móvil
-    function toggleMenu() {
-      document.getElementById('mobile-nav').classList.toggle('open');
-    }
+    // Esperamos a que cargue todo el DOM
+    document.addEventListener('DOMContentLoaded', () => {
+      // Toggle menú móvil
+      function toggleMenu() {
+        document.getElementById('mobile-nav').classList.toggle('open');
+      }
+      document.querySelector('.menu-icon').onclick = toggleMenu;
 
-    // Inicializar Firebase — apuntando al bucket firebasestorage.app
-    firebase.initializeApp({
-      apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
-      authDomain: "subastacarhn-40554.firebaseapp.com",
-      projectId: "subastacarhn-40554",
-      storageBucket: "subastacarhn-40554.firebasestorage.app",
-      messagingSenderId: "536785797974",
-      appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7"
-    });
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-    const storage = firebase.app()
-      .storage("gs://subastacarhn-40554.firebasestorage.app")
-      .ref();
-
-    // Manejo de pestañas
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.onclick = () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById(tab.dataset.sec).classList.add('active');
-      };
-    });
-
-    // Autenticación y carga inicial
-    auth.onAuthStateChanged(async user => {
-      if (!user) return location = 'login.html';
-      await loadProfile(user.uid);
-      cargarHistorial();
-      fetchClientOrders();
-    });
-
-    // PERFIL
-    async function loadProfile(uid) {
-      const doc = await db.collection('clients').doc(uid).get();
-      if (!doc.exists) return;
-      const d = doc.data();
-      document.getElementById('name').value      = d.fullName||'';
-      document.getElementById('email').value     = d.email   ||'';
-      document.getElementById('phone').value     = d.phone   ||'';
-      document.getElementById('address').value   = d.address ||'';
-      document.getElementById('dni').value       = d.dni     ||'';
-      document.getElementById('birthYear').value = d.birthYear||'';
-    }
-    document.getElementById('profileForm').onsubmit = async e => {
-      e.preventDefault();
-      const u = auth.currentUser;
-      await db.collection('clients').doc(u.uid).update({
-        fullName: document.getElementById('name').value,
-        address : document.getElementById('address').value,
-        dni     : document.getElementById('dni').value,
-        birthYear: document.getElementById('birthYear').value
+      // Inicializar Firebase — apuntando al bucket firebasestorage.app
+      firebase.initializeApp({
+        apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+        authDomain: "subastacarhn-40554.firebaseapp.com",
+        projectId: "subastacarhn-40554",
+        storageBucket: "subastacarhn-40554.firebasestorage.app",
+        messagingSenderId: "536785797974",
+        appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7"
       });
-      const msg = document.getElementById('successMsg');
-      msg.style.display = 'block';
-      setTimeout(() => msg.style.display = 'none', 3000);
-    };
-    function sendPasswordReset() {
-      auth.sendPasswordResetEmail(auth.currentUser.email)
-        .then(()=>alert('🔗 Enlace enviado al correo.'));
-    }
-    function logout() {
-      auth.signOut().then(()=>location = 'login.html');
-    }
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+      const storage = firebase.app()
+        .storage("gs://subastacarhn-40554.firebasestorage.app")
+        .ref();
 
-    // GESTIÓN
-    document.getElementById('btnStartGestion').onclick = () => {
-      document.getElementById('depositForm').style.display = 'block';
-    };
-    document.getElementById('btnUploadDeposit').onclick = async () => {
-      const file = document.getElementById('depositFile').files[0];
-      if (!file) return alert('Selecciona un comprobante antes de enviar.');
-      const btn = document.getElementById('btnUploadDeposit');
-      btn.disabled = true; btn.textContent = 'Subiendo...';
-      try {
-        const user = auth.currentUser;
-        const snap = await storage.child(
-          `orders/${user.uid}/deposit/${Date.now()}_${file.name}`
-        ).put(file);
-        const url = await snap.ref.getDownloadURL();
-        await db.collection('orders').add({
-          clientName: user.displayName||user.email,
-          clientEmail: user.email,
-          clientPhone: document.getElementById('phone').value,
-          vehicleURL: null,
-          precioEstimado: null,
-          depositReceiptUrl: url,
-          depositAmount: 5000,
-          copartInvoiceUrl: null,
-          copartPhotos: [],
-          recogida: { valorGrua:0, valorBarco:0 },
-          envioHnd: { detail:'' },
-          aduana: { detail:'' },
-          entrega: { detail:'', precioFinal:0, deliveryPhotos:[] },
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        document.getElementById('depositSuccess').style.display = 'block';
+      // Pestañas
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.onclick = () => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById(tab.dataset.sec).classList.add('active');
+        };
+      });
+
+      // Auth y carga inicial
+      auth.onAuthStateChanged(async user => {
+        if (!user) return location = 'login.html';
+        await loadProfile(user.uid);
+        cargarHistorial();
         fetchClientOrders();
-      } catch(err) {
-        alert('❌ Error al subir el comprobante: ' + err.message);
-      } finally {
-        btn.disabled = false; btn.textContent = 'Enviar comprobante';
-      }
-    };
-
-    // ESTADOS (igual que admin)
-    function getDisplayStatus(o) {
-      if (o.entrega?.deliveryPhotos?.length) return 'Finalizado';
-      if (o.aduana?.detail)               return 'Aduana';
-      if (o.recogida?.valorGrua || o.recogida?.valorBarco) return 'Enviado';
-      if (o.copartInvoiceUrl)            return 'Pagado';
-      if (o.depositReceiptUrl)           return 'Pago Pendiente';
-      if (o.vehicleURL)                  return 'Pago Pendiente';
-      return 'Inicio';
-    }
-
-    // Cargar gestiones
-    async function fetchClientOrders() {
-      const user = auth.currentUser;
-      if (!user) return;
-      const STEPS = ['Inicio','Pago Pendiente','Pagado','Enviado','Aduana','Finalizado'];
-      const cont = document.getElementById('clientOrdersContainer');
-      cont.innerHTML = '';
-      const snap = await db.collection('orders')
-        .where('clientEmail','==',user.email)
-        .orderBy('createdAt','desc').get();
-      if (snap.empty) {
-        cont.innerHTML = '<p style="text-align:center;">Aún no tienes gestiones iniciadas.</p>';
-        return;
-      }
-      snap.forEach(doc => {
-        const o = doc.data(), status = getDisplayStatus(o);
-        const stepsHtml = STEPS.map((s,i) => {
-          const cls = i < STEPS.indexOf(status) ? 'done'
-                    : i === STEPS.indexOf(status)   ? 'active' : '';
-          return `<li class="${cls}">${s}</li>`;
-        }).join('');
-        const cpG = o.copartPhotos?.length
-          ? `<a href="#" class="toggle-detail" data-detail="cp-${doc.id}">Ver fotos Copart</a>
-             <div id="cp-${doc.id}" class="gallery" style="display:none;">
-               ${o.copartPhotos.map(u=>`<img src="${u}">`).join('')}
-             </div>` : '-';
-        const dpG = o.entrega?.deliveryPhotos?.length
-          ? `<a href="#" class="toggle-detail" data-detail="dp-${doc.id}">Ver fotos Entrega</a>
-             <div id="dp-${doc.id}" class="gallery" style="display:none;">
-               ${o.entrega.deliveryPhotos.map(u=>`<img src="${u}">`).join('')}
-             </div>` : '-';
-        const card = document.createElement('div');
-        card.className = 'order-card';
-        card.innerHTML = `
-          <div class="accordion-header" data-acc="${doc.id}">
-            <div><strong>#${doc.id.slice(0,6)}</strong> ${o.clientName}</div>
-            <div><span class="status-badge">${status}</span></div>
-          </div>
-          <div id="acc-${doc.id}" class="accordion-content">
-            <ul class="tracker">${stepsHtml}</ul>
-            <ul class="summary">
-              <li><strong>Vehículo:</strong> ${o.vehicleURL
-                ? `<a href="${o.vehicleURL}" target="_blank">Ver vehículo</a>` : '-'}
-              </li>
-              <li><strong>Estimado:</strong> ${o.precioEstimado||'-'} USD</li>
-              <li><strong>Depósito:</strong> ${o.depositAmount||'-'} LPS</li>
-              <li><strong>Comprobante:</strong> ${o.depositReceiptUrl
-                ? `<a href="${o.depositReceiptUrl}" target="_blank">Ver comprobante</a>` : '-'}
-              </li>
-              <li><strong>Factura Copart:</strong> ${o.copartInvoiceUrl
-                ? `<a href="${o.copartInvoiceUrl}" target="_blank">Ver PDF</a>` : '-'}
-              </li>
-              <li><strong>Fotos Copart:</strong> ${cpG}</li>
-              <li><strong>Grúa:</strong> ${o.recogida.valorGrua||'-'} USD</li>
-              <li><strong>Barco:</strong> ${o.recogida.valorBarco||'-'} USD</li>
-              <li><strong>Aduana:</strong>
-                <a href="#" class="toggle-detail" data-detail="adu-${doc.id}">Ver</a>
-                <div id="adu-${doc.id}" style="display:none;margin:.5rem 0;">
-                  ${o.aduana.detail||'-'}
-                </div>
-              </li>
-              <li><strong>Entrega Final:</strong>
-                <a href="#" class="toggle-detail" data-detail="ent-${doc.id}">Ver</a>
-                <div id="ent-${doc.id}" style="display:none;margin:.5rem 0;">
-                  ${o.entrega.detail||'-'}
-                </div>
-              </li>
-              <li><strong>Fotos Entrega:</strong> ${dpG}</li>
-              <li><strong>Precio Final:</strong> ${o.entrega.precioFinal||'-'} LPS</li>
-              <li><strong>Últ. actualización:</strong>
-                ${o.updatedAt?.toDate().toLocaleString('es-HN')||'-'}
-              </li>
-            </ul>
-          </div>`;
-        cont.appendChild(card);
       });
-      // Hooks acordeón y toggles
-      document.querySelectorAll('.accordion-header').forEach(h => {
-        h.onclick = () => {
-          document.getElementById('acc-' + h.dataset.acc)
-            .classList.toggle('open');
-        };
-      });
-      document.querySelectorAll('.toggle-detail').forEach(a => {
-        a.onclick = e => {
-          e.preventDefault();
-          const tgt = document.getElementById(a.dataset.detail);
-          tgt.style.display = tgt.style.display==='none'?'block':'none';
-        };
-      });
-      initLightboxHooks();
-    }
 
-    // HISTORIAL
-    async function cargarHistorial() {
-      const uid = auth.currentUser.uid;
-      const snap = await db.collection('clients').doc(uid)
-        .collection('historial').orderBy('fecha','desc').limit(100).get();
-      const cont = document.getElementById('historialContainer');
-      if (snap.empty) {
-        cont.innerHTML = '<p style="text-align:center;">Aún no hay cálculos guardados.</p>';
-        return;
+      // PERFIL
+      async function loadProfile(uid) {
+        const doc = await db.collection('clients').doc(uid).get();
+        if (!doc.exists) return;
+        const d = doc.data();
+        document.getElementById('name').value      = d.fullName||'';
+        document.getElementById('email').value     = d.email   ||'';
+        document.getElementById('phone').value     = d.phone   ||'';
+        document.getElementById('address').value   = d.address ||'';
+        document.getElementById('dni').value       = d.dni     ||'';
+        document.getElementById('birthYear').value = d.birthYear||'';
       }
-      cont.innerHTML = snap.docs.map(doc => {
-        const d = doc.data(), fecha = d.fecha?.toDate().toLocaleString('es-HN')||'';
-        return `
-          <div class="hist-card" id="historial-${doc.id}">
-            <input type="text" value="${d.nombre||'Sin título'}"
-              onchange="renombrarHistorial('${doc.id}', this.value)" />
-            <small>${fecha}</small><br>
-            <strong>L ${d.total||'-'}</strong><br>
-            <button class="styled-btn" onclick="verDetallesHistorial('${doc.id}')">Ver detalles</button>
-            <button class="styled-btn" onclick="descargarHistorialPDF('${doc.id}')">Descargar PDF</button>
-            <button class="styled-btn" onclick="eliminarHistorial('${doc.id}')">Eliminar</button>
-          </div>`;
-      }).join('');
-    }
-
-    async function renombrarHistorial(id,nuevo) {
-      try {
-        await db.collection('clients').doc(auth.currentUser.uid)
-          .collection('historial').doc(id).update({ nombre: nuevo });
-        const cont = document.getElementById(`historial-${id}`);
-        const msg = document.createElement('div');
-        msg.className = 'success-msg'; msg.textContent = '✅ Nombre actualizado';
-        cont.appendChild(msg);
-        setTimeout(()=>msg.remove(),3000);
-      } catch {
-        alert('❌ No se pudo renombrar.');
+      document.getElementById('profileForm').onsubmit = async e => {
+        e.preventDefault();
+        const u = auth.currentUser;
+        await db.collection('clients').doc(u.uid).update({
+          fullName: document.getElementById('name').value,
+          address : document.getElementById('address').value,
+          dni     : document.getElementById('dni').value,
+          birthYear: document.getElementById('birthYear').value
+        });
+        const msg = document.getElementById('successMsg');
+        msg.style.display = 'block';
+        setTimeout(() => msg.style.display = 'none', 3000);
+      };
+      function sendPasswordReset() {
+        auth.sendPasswordResetEmail(auth.currentUser.email)
+          .then(()=>alert('🔗 Enlace enviado al correo.'));
       }
-    }
+      function logout() {
+        auth.signOut().then(()=>location = 'login.html');
+      }
 
-    function eliminarHistorial(id) {
-      if (!confirm('¿Eliminar este historial?')) return;
-      db.collection('clients').doc(auth.currentUser.uid)
-        .collection('historial').doc(id).delete()
-        .then(cargarHistorial)
-        .catch(()=>alert('❌ No se pudo eliminar.'));
-    }
+      // GESTIÓN
+      document.getElementById('btnStartGestion').onclick = () => {
+        document.getElementById('depositForm').style.display = 'block';
+      };
+      document.getElementById('btnUploadDeposit').onclick = async () => {
+        const file = document.getElementById('depositFile').files[0];
+        if (!file) return alert('Selecciona un comprobante antes de enviar.');
+        const btn = document.getElementById('btnUploadDeposit');
+        btn.disabled = true; btn.textContent = 'Subiendo...';
+        try {
+          const user = auth.currentUser;
+          const snap = await storage.child(
+            `orders/${user.uid}/deposit/${Date.now()}_${file.name}`
+          ).put(file);
+          const url = await snap.ref.getDownloadURL();
+          await db.collection('orders').add({
+            clientName: user.displayName||user.email,
+            clientEmail: user.email,
+            clientPhone: document.getElementById('phone').value,
+            vehicleURL: null,
+            precioEstimado: null,
+            depositReceiptUrl: url,
+            depositAmount: 5000,
+            copartInvoiceUrl: null,
+            copartPhotos: [],
+            recogida: { valorGrua:0, valorBarco:0 },
+            envioHnd: { detail:'' },
+            aduana: { detail:'' },
+            entrega: { detail:'', precioFinal:0, deliveryPhotos:[] },
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          document.getElementById('depositSuccess').style.display = 'block';
+          fetchClientOrders();
+        } catch(err) {
+          alert('❌ Error al subir el comprobante: ' + err.message);
+        } finally {
+          btn.disabled = false; btn.textContent = 'Enviar comprobante';
+        }
+      };
 
-    function verDetallesHistorial(id) {
-      document.querySelectorAll('.detalle-abierto').forEach(e=>e.remove());
-      db.collection('clients').doc(auth.currentUser.uid)
-        .collection('historial').doc(id).get()
-        .then(doc => {
-          if (!doc.exists) return alert('❌ No se encontró este cálculo.');
-          const d = doc.data();
-          const cont = document.getElementById(`historial-${id}`);
-          const detalle = document.createElement('div');
-          detalle.classList.add('detalle-abierto');
-          detalle.innerHTML = `
-            <div style="margin-top:1rem;border:1px dashed #ccc;border-radius:6px;
-                        padding:10px;background:#f0f8ff;">
-              <table style="width:100%;border-collapse:collapse;">
-                <tr><th>Concepto</th><th>Valor</th></tr>
-                ${d.detalles.map(i=>`
-                  <tr><td style="border:1px solid #ddd;padding:6px;">${i.titulo}</td>
-                      <td style="border:1px solid #ddd;padding:6px;">${i.valor}</td></tr>
-                `).join('')}
-              </table>
-              <button class="styled-btn" onclick="this.closest('.detalle-abierto').remove()">Cerrar</button>
+      // Estado igual que en admin
+      function getDisplayStatus(o) {
+        if (o.entrega?.deliveryPhotos?.length) return 'Finalizado';
+        if (o.aduana?.detail)               return 'Aduana';
+        if (o.recogida?.valorGrua || o.recogida?.valorBarco) return 'Enviado';
+        if (o.copartInvoiceUrl)            return 'Pagado';
+        if (o.depositReceiptUrl)           return 'Pago Pendiente';
+        if (o.vehicleURL)                  return 'Pago Pendiente';
+        return 'Inicio';
+      }
+
+      // Cargar gestiones cliente
+      async function fetchClientOrders() {
+        const user = auth.currentUser;
+        if (!user) return;
+        const STEPS = ['Inicio','Pago Pendiente','Pagado','Enviado','Aduana','Finalizado'];
+        const cont = document.getElementById('clientOrdersContainer');
+        cont.innerHTML = '';
+        const snap = await db.collection('orders')
+          .where('clientEmail','==',user.email)
+          .orderBy('createdAt','desc').get();
+        if (snap.empty) {
+          cont.innerHTML = '<p style="text-align:center;">Aún no tienes gestiones iniciadas.</p>';
+          return;
+        }
+        snap.forEach(doc => {
+          const o = doc.data(), status = getDisplayStatus(o);
+          const stepsHtml = STEPS.map((s,i) => {
+            const cls = i < STEPS.indexOf(status) ? 'done'
+                      : i === STEPS.indexOf(status)   ? 'active' : '';
+            return `<li class="${cls}">${s}</li>`;
+          }).join('');
+          const cpG = o.copartPhotos?.length
+            ? `<a href="#" class="toggle-detail" data-detail="cp-${doc.id}">Ver fotos Copart</a>
+               <div id="cp-${doc.id}" class="gallery" style="display:none;">
+                 ${o.copartPhotos.map(u=>`<img src="${u}">`).join('')}
+               </div>` : '-';
+          const dpG = o.entrega?.deliveryPhotos?.length
+            ? `<a href="#" class="toggle-detail" data-detail="dp-${doc.id}">Ver fotos Entrega</a>
+               <div id="dp-${doc.id}" class="gallery" style="display:none;">
+                 ${o.entrega.deliveryPhotos.map(u=>`<img src="${u}">`).join('')}
+               </div>` : '-';
+          const card = document.createElement('div');
+          card.className = 'order-card';
+          card.innerHTML = `
+            <div class="accordion-header" data-acc="${doc.id}">
+              <div><strong>#${doc.id.slice(0,6)}</strong> ${o.clientName}</div>
+              <div><span class="status-badge">${status}</span></div>
+            </div>
+            <div id="acc-${doc.id}" class="accordion-content">
+              <ul class="tracker">${stepsHtml}</ul>
+              <ul class="summary">
+                <li><strong>Vehículo:</strong> ${o.vehicleURL
+                  ? `<a href="${o.vehicleURL}" target="_blank">Ver vehículo</a>` : '-'}
+                </li>
+                <li><strong>Estimado:</strong> ${o.precioEstimado||'-'} USD</li>
+                <li><strong>Depósito:</strong> ${o.depositAmount||'-'} LPS</li>
+                <li><strong>Comprobante:</strong> ${o.depositReceiptUrl
+                  ? `<a href="${o.depositReceiptUrl}" target="_blank">Ver comprobante</a>` : '-'}
+                </li>
+                <li><strong>Factura Copart:</strong> ${o.copartInvoiceUrl
+                  ? `<a href="${o.copartInvoiceUrl}" target="_blank">Ver PDF</a>` : '-'}
+                </li>
+                <li><strong>Fotos Copart:</strong> ${cpG}</li>
+                <li><strong>Grúa:</strong> ${o.recogida.valorGrua||'-'} USD</li>
+                <li><strong>Barco:</strong> ${o.recogida.valorBarco||'-'} USD</li>
+                <li><strong>Aduana:</strong>
+                  <a href="#" class="toggle-detail" data-detail="adu-${doc.id}">Ver</a>
+                  <div id="adu-${doc.id}" style="display:none;margin:.5rem 0;">
+                    ${o.aduana.detail||'-'}
+                  </div>
+                </li>
+                <li><strong>Entrega Final:</strong>
+                  <a href="#" class="toggle-detail" data-detail="ent-${doc.id}">Ver</a>
+                  <div id="ent-${doc.id}" style="display:none;margin:.5rem 0;">
+                    ${o.entrega.detail||'-'}
+                  </div>
+                </li>
+                <li><strong>Fotos Entrega:</strong> ${dpG}</li>
+                <li><strong>Precio Final:</strong> ${o.entrega.precioFinal||'-'} LPS</li>
+                <li><strong>Últ. actualización:</strong>
+                  ${o.updatedAt?.toDate().toLocaleString('es-HN')||'-'}
+                </li>
+              </ul>
             </div>`;
-          cont.appendChild(detalle);
+          cont.appendChild(card);
         });
-    }
 
-    function descargarHistorialPDF(id) {
-      db.collection('clients').doc(auth.currentUser.uid)
-        .collection('historial').doc(id).get()
-        .then(doc => {
-          if (!doc.exists) return alert('❌ No se encontró este cálculo.');
-          const d = doc.data();
-          const w = window.open('', '_blank', 'width=800,height=600');
-          w.document.write(`
-            <html><head><title>${d.nombre}</title>
-            <style>
-              body{font-family:Arial;margin:20px;}
-              table{width:100%;border-collapse:collapse;}
-              th,td{border:1px solid #ccc;padding:8px;}
-            </style></head><body>
-            <h2 style="text-align:center;">${d.nombre}</h2>
-            <p><strong>Total Final:</strong> ${d.total}</p>
-            <table><tr><th>Concepto</th><th>Valor</th></tr>
-              ${d.detalles.map(i=>`<tr><td>${i.titulo}</td><td>${i.valor}</td></tr>`).join('')}
-            </table></body></html>`);
-          setTimeout(()=>w.print(),500);
+        // Hooks acordeón y toggles
+        document.querySelectorAll('.accordion-header').forEach(h => {
+          h.onclick = () => {
+            document.getElementById('acc-' + h.dataset.acc).classList.toggle('open');
+          };
         });
-    }
+        document.querySelectorAll('.toggle-detail').forEach(a => {
+          a.onclick = e => {
+            e.preventDefault();
+            const tgt = document.getElementById(a.dataset.detail);
+            tgt.style.display = tgt.style.display==='none'?'block':'none';
+          };
+        });
 
-    // LIGHTBOX PARA FOTOS y TECLADO
-    let lbGallery = [], lbIndex = 0;
-    const lbEl = document.getElementById('lightbox'),
-          lbImg = document.querySelector('.lightbox-img'),
-          btnPrev = document.getElementById('lightbox-prev'),
-          btnNext = document.getElementById('lightbox-next'),
-          btnClose = document.querySelector('.lightbox-close');
-
-    function initLightboxHooks(){
-      document.querySelectorAll('.gallery img').forEach(img=>{
-        img.style.cursor='pointer';
-        img.onclick=()=>{
-          const container=img.parentNode;
-          lbGallery=Array.from(container.querySelectorAll('img')).map(i=>i.src);
-          lbIndex=lbGallery.indexOf(img.src);
-          lbEl.style.display='flex';
-          lbImg.src=lbGallery[lbIndex];
-        };
-      });
-    }
-    btnPrev.onclick=()=>{
-      lbIndex=(lbIndex-1+lbGallery.length)%lbGallery.length;
-      lbImg.src=lbGallery[lbIndex];
-    };
-    btnNext.onclick=()=>{
-      lbIndex=(lbIndex+1)%lbGallery.length;
-      lbImg.src=lbGallery[lbIndex];
-    };
-    btnClose.onclick=()=>{
-      lbEl.style.display='none';
-    };
-    lbEl.onclick=e=>{
-      if(e.target===lbEl) btnClose.onclick();
-    };
-
-    // Flechas de teclado y Escape
-    document.addEventListener('keydown', e => {
-      if (lbEl.style.display !== 'flex') return;
-      switch (e.key) {
-        case 'ArrowLeft':
-          lbIndex = (lbIndex - 1 + lbGallery.length) % lbGallery.length;
-          lbImg.src = lbGallery[lbIndex];
-          break;
-        case 'ArrowRight':
-          lbIndex = (lbIndex + 1) % lbGallery.length;
-          lbImg.src = lbGallery[lbIndex];
-          break;
-        case 'Escape':
-          lbEl.style.display = 'none';
-          break;
+        // Inicializa lightbox
+        initLightboxHooks();
       }
+
+      // HISTORIAL
+      async function cargarHistorial() {
+        const uid = auth.currentUser.uid;
+        const snap = await db.collection('clients').doc(uid)
+          .collection('historial').orderBy('fecha','desc').limit(100).get();
+        const cont = document.getElementById('historialContainer');
+        if (snap.empty) {
+          cont.innerHTML = '<p style="text-align:center;">Aún no hay cálculos guardados.</p>';
+          return;
+        }
+        cont.innerHTML = snap.docs.map(doc => {
+          const d = doc.data(), fecha = d.fecha?.toDate().toLocaleString('es-HN')||'';
+          return `
+            <div class="hist-card" id="historial-${doc.id}">
+              <input type="text" value="${d.nombre||'Sin título'}"
+                onchange="renombrarHistorial('${doc.id}', this.value)" />
+              <small>${fecha}</small><br>
+              <strong>L ${d.total||'-'}</strong><br>
+              <button class="styled-btn" onclick="verDetallesHistorial('${doc.id}')">Ver detalles</button>
+              <button class="styled-btn" onclick="descargarHistorialPDF('${doc.id}')">Descargar PDF</button>
+              <button class="styled-btn" onclick="eliminarHistorial('${doc.id}')">Eliminar</button>
+            </div>`;
+        }).join('');
+      }
+
+      async function renombrarHistorial(id,nuevo) {
+        try {
+          await db.collection('clients').doc(auth.currentUser.uid)
+            .collection('historial').doc(id).update({ nombre: nuevo });
+          const cont = document.getElementById(`historial-${id}`);
+          const msg = document.createElement('div');
+          msg.className = 'success-msg'; msg.textContent = '✅ Nombre actualizado';
+          cont.appendChild(msg);
+          setTimeout(()=>msg.remove(),3000);
+        } catch {
+          alert('❌ No se pudo renombrar.');
+        }
+      }
+
+      function eliminarHistorial(id) {
+        if (!confirm('¿Eliminar este historial?')) return;
+        db.collection('clients').doc(auth.currentUser.uid)
+          .collection('historial').doc(id).delete()
+          .then(cargarHistorial)
+          .catch(()=>alert('❌ No se pudo eliminar.'));
+      }
+
+      function verDetallesHistorial(id) {
+        document.querySelectorAll('.detalle-abierto').forEach(e=>e.remove());
+        db.collection('clients').doc(auth.currentUser.uid)
+          .collection('historial').doc(id).get()
+          .then(doc => {
+            if (!doc.exists) return alert('❌ No se encontró este cálculo.');
+            const d = doc.data();
+            const cont = document.getElementById(`historial-${id}`);
+            const detalle = document.createElement('div');
+            detalle.classList.add('detalle-abierto');
+            detalle.innerHTML = `
+              <div style="margin-top:1rem;border:1px dashed #ccc;border-radius:6px;
+                          padding:10px;background:#f0f8ff;">
+                <table style="width:100%;border-collapse:collapse;">
+                  <tr><th>Concepto</th><th>Valor</th></tr>
+                  ${d.detalles.map(i=>`
+                    <tr><td style="border:1px solid #ddd;padding:6px;">${i.titulo}</td>
+                        <td style="border:1px solid #ddd;padding:6px;">${i.valor}</td></tr>
+                  `).join('')}
+                </table>
+                <button class="styled-btn" onclick="this.closest('.detalle-abierto').remove()">Cerrar</button>
+              </div>`;
+            cont.appendChild(detalle);
+          });
+      }
+
+      function descargarHistorialPDF(id) {
+        db.collection('clients').doc(auth.currentUser.uid)
+          .collection('historial').doc(id).get()
+          .then(doc => {
+            if (!doc.exists) return alert('❌ No se encontró este cálculo.');
+            const d = doc.data();
+            const w = window.open('', '_blank', 'width=800,height=600');
+            w.document.write(`
+              <html><head><title>${d.nombre}</title>
+              <style>
+                body{font-family:Arial;margin:20px;}
+                table{width:100%;border-collapse:collapse;}
+                th,td{border:1px solid #ccc;padding:8px;}
+              </style></head><body>
+              <h2 style="text-align:center;">${d.nombre}</h2>
+              <p><strong>Total Final:</strong> ${d.total}</p>
+              <table><tr><th>Concepto</th><th>Valor</th></tr>
+                ${d.detalles.map(i=>`<tr><td>${i.titulo}</td><td>${i.valor}</td></tr>`).join('')}
+              </table></body></html>`);
+            setTimeout(()=>w.print(),500);
+          });
+      }
+
+      // LIGHTBOX
+      let lbGallery = [], lbIndex = 0;
+      const lbEl    = document.getElementById('lightbox'),
+            lbImg   = document.querySelector('.lightbox-img'),
+            btnPrev = document.getElementById('lightbox-prev'),
+            btnNext = document.getElementById('lightbox-next'),
+            btnClose= document.querySelector('.lightbox-close');
+
+      function initLightboxHooks(){
+        document.querySelectorAll('.gallery img').forEach(img=>{
+          img.style.cursor='pointer';
+          img.onclick=()=>{
+            const container=img.parentNode;
+            lbGallery=Array.from(container.querySelectorAll('img')).map(i=>i.src);
+            lbIndex=lbGallery.indexOf(img.src);
+            lbEl.style.display='flex';
+            lbImg.src=lbGallery[lbIndex];
+          };
+        });
+      }
+      btnPrev.onclick = ()=> {
+        lbIndex=(lbIndex-1+lbGallery.length)%lbGallery.length;
+        lbImg.src=lbGallery[lbIndex];
+      };
+      btnNext.onclick = ()=> {
+        lbIndex=(lbIndex+1)%lbGallery.length;
+        lbImg.src=lbGallery[lbIndex];
+      };
+      btnClose.onclick = ()=> lbEl.style.display='none';
+      lbEl.onclick = e => { if(e.target===lbEl) lbEl.style.display='none'; };
+
+      // Flechas teclado y Escape
+      document.addEventListener('keydown', e => {
+        if (lbEl.style.display !== 'flex') return;
+        if (e.key==='ArrowLeft')  btnPrev.onclick();
+        if (e.key==='ArrowRight') btnNext.onclick();
+        if (e.key==='Escape')     btnClose.onclick();
+      });
     });
   </script>
-
-  <!-- LIGHTBOX MODAL -->
-  <div id="lightbox" class="lightbox">
-    <span class="lightbox-close">&times;</span>
-    <img class="lightbox-img" src="" />
-    <div class="lightbox-nav">
-      <button id="lightbox-prev">&larr;</button>
-      <button id="lightbox-next">&rarr;</button>
-    </div>
-  </div>
-
 </body>
 </html>
