@@ -113,8 +113,8 @@
       <div class="form-grid">
         <input id="marca" name="marca" placeholder="Marca" required/>
         <input id="modelo" name="modelo" placeholder="Modelo" required/>
-        <input id="motor" name="motor" placeholder="Motor" required/>
-        <input id="anio" name="anio" type="number" placeholder="Año" required/>
+        <input id="motor"  name="motor"  placeholder="Motor" required/>
+        <input id="anio"   name="anio"   type="number" placeholder="Año" required/>
         <input id="precio" name="precio" type="number" placeholder="Precio (LPS)" required/>
         <input id="kilometraje" name="kilometraje" type="number" placeholder="Kilometraje" required/>
         <input id="color" name="color" placeholder="Color" required/>
@@ -386,7 +386,8 @@
   }
   function fetchOrders(){
     db.collection('orders').orderBy('createdAt','desc').onSnapshot(snap=>{
-      ordersCache=[]; snap.forEach(d=>ordersCache.push({id:d.id,data:d.data()}));
+      ordersCache=[];
+      snap.forEach(d=>ordersCache.push({id:d.id,data:d.data()}));
       const cf=document.getElementById('clientFilter');
       const names=[...new Set(ordersCache.map(o=>o.data.clientName))];
       cf.innerHTML='<option value="">Todos los clientes</option>';
@@ -407,6 +408,16 @@
         return `<li class="${cls}">${s}</li>`;
       }).join('');
       const updated=d.updatedAt?.toDate().toLocaleString('es-HN')||'-';
+      const cpG=d.copartPhotos?.length
+        ? `<a href="#" class="toggle-detail" data-detail="cp-${o.id}">Ver</a>
+           <div id="cp-${o.id}" class="gallery" style="display:none;">
+             ${d.copartPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}
+           </div>`:'-';
+      const dpG=d.entrega?.deliveryPhotos?.length
+        ? `<a href="#" class="toggle-detail" data-detail="dp-${o.id}">Ver</a>
+           <div id="dp-${o.id}" class="gallery" style="display:none;">
+             ${d.entrega.deliveryPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}
+           </div>`:'-';
       const card=document.createElement('div'); card.className='order-card';
       card.innerHTML=`
         <div class="accordion-header" data-acc="${o.id}">
@@ -422,13 +433,11 @@
           <ul class="summary">
             <li><strong>Estimado:</strong> ${d.precioEstimado||'-'} USD</li>
             <li><strong>Factura:</strong> ${d.copartInvoiceUrl? `<a href="${d.copartInvoiceUrl}" target="_blank">Ver PDF</a>`:'-'}</li>
-            <li><strong>Fotos Copart:</strong> ${d.copartPhotos?.length? `<a href="#" class="toggle-detail" data-detail="cp-${o.id}">Ver</a>
-              <div id="cp-${o.id}" class="gallery" style="display:none;">${d.copartPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}</div>`:'-'}</li>
+            <li><strong>Fotos Copart:</strong> ${cpG}</li>
             <li><strong>Grúa:</strong> ${d.recogida?.valorGrua||'-'} USD</li>
             <li><strong>Barco:</strong> ${d.recogida?.valorBarco||'-'} USD</li>
             <li><strong>Entrega Final:</strong> ${d.entrega?.detail||'-'}</li>
-            <li><strong>Fotos Entrega:</strong> ${d.entrega?.deliveryPhotos?.length? `<a href="#" class="toggle-detail" data-detail="dp-${o.id}">Ver</a>
-              <div id="dp-${o.id}" class="gallery" style="display:none;">${d.entrega.deliveryPhotos.map(u=>`<img src="${u}" class="thumb"/>`).join('')}</div>`:'-'}</li>
+            <li><strong>Fotos Entrega:</strong> ${dpG}</li>
             <li><strong>Precio Final:</strong> ${d.entrega?.precioFinal||'-'} LPS</li>
           </ul>
           <p class="order-meta">Última actualización: ${updated}</p>
@@ -436,13 +445,9 @@
       cont.appendChild(card);
     });
     document.querySelectorAll('.accordion-header').forEach(h=>h.onclick=()=>document.getElementById('acc-'+h.dataset.acc).classList.toggle('open'));
-    document.querySelectorAll('.toggle-detail').forEach(a=>{
-      a.onclick=e=>{ e.preventDefault(); const tgt=document.getElementById(a.dataset.detail);
-        tgt.style.display=tgt.style.display==='none'?'block':'none'; };
-    });
+    document.querySelectorAll('.toggle-detail').forEach(a=>{ a.onclick=e=>{ e.preventDefault(); const tgt=document.getElementById(a.dataset.detail); tgt.style.display=tgt.style.display==='none'?'block':'none'; }; });
     initLightboxHooks();
   }
-
   async function saveOrder(e){
     e.preventDefault();
     const c=clientsCache.find(x=>x.email===orderClient.value)||{};
@@ -503,7 +508,7 @@
   function initLightboxHooks(){
     document.querySelectorAll('.gallery img').forEach(img=>{
       img.style.cursor='pointer';
-      img.onclick=()=>{ 
+      img.onclick=()=>{
         const container=img.parentNode;
         lbGallery=Array.from(container.querySelectorAll('img')).map(i=>i.src);
         lbIndex=lbGallery.indexOf(img.src);
@@ -516,6 +521,13 @@
   btnClose.onclick=()=>{ lbEl.style.display='none'; };
   lbEl.onclick=e=>{ if(e.target===lbEl) btnClose.onclick(); };
 
+  // Navegación con teclado
+  document.addEventListener('keydown', e=>{
+    if (getComputedStyle(lbEl).display!=='flex') return;
+    if (e.key==='ArrowLeft')  btnPrev.click();
+    if (e.key==='ArrowRight') btnNext.click();
+    if (e.key==='Escape')     btnClose.click();
+  });
 </script>
 </body>
 </html>
