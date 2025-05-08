@@ -4,7 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalle del Vehículo | SubastaCarHN</title>
+  <!-- Fuentes e íconos -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-pY1Y6FhF6CtaMzp4+O+Wk2XQYO+Gg60GvFpVZwwxwW6oRIeHcBS+P8n1hEJtOWJkO9Fbbm2I6b0I4XvY1G2+DQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"
+  />
   <style>
     :root {
       --blue: #002f6c;
@@ -13,7 +20,7 @@
       --text: #333;
       --light: #f9f9f9;
       --shadow: rgba(0,0,0,0.1);
-      --max-width: 1200px;
+      --max-width: 75rem; /* 1200px */
     }
     *, *::before, *::after {
       box-sizing: border-box;
@@ -24,32 +31,24 @@
       font-family: 'Montserrat', sans-serif;
       background: var(--light);
       color: var(--text);
+      line-height: 1.6;
     }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-    ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
     .container {
       max-width: var(--max-width);
       margin: 0 auto;
       padding: 1rem;
     }
+
+    /* ===== HEADER ===== */
     .site-header {
       background: linear-gradient(to right, var(--blue), var(--blue2));
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      position: sticky; top: 0; z-index: 1000;
     }
     .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 1rem;
     }
     .brand {
       color: #fff;
@@ -71,49 +70,61 @@
       color: var(--blue);
       border: none;
       padding: 0.5rem;
-      border-radius: 6px;
+      border-radius: 0.375rem;
       cursor: pointer;
-      box-shadow: 0 2px 8px var(--shadow);
+      box-shadow: 0 0.25rem 0.5rem var(--shadow);
     }
     .mobile-nav {
       display: none;
       flex-direction: column;
       background: #fff;
       padding: 1rem;
-      box-shadow: 0 2px 8px var(--shadow);
+      box-shadow: 0 0.25rem 0.5rem var(--shadow);
     }
     .mobile-nav.open {
       display: flex;
-      gap: 0.5rem;
     }
     .mobile-nav a, .mobile-nav span {
       font-weight: 700;
       padding: 0.75rem;
-      border-radius: 4px;
+      border-radius: 0.25rem;
       transition: background 0.2s;
     }
     .mobile-nav a:hover, .mobile-nav span:hover {
       background: rgba(0,47,108,0.1);
     }
-    @media (max-width: 767px) {
+    @media (max-width: 47.99rem) {
       .nav-list { display: none; }
     }
-    @media (min-width: 768px) {
+    @media (min-width: 48rem) {
       .menu-icon { display: none; }
     }
-    main.vehicle-detail {
-      text-align: center;
-      padding: 2rem 1rem;
+
+    /* ===== VEHICLE DETAIL ===== */
+    .vehicle-detail .card {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 0.5rem 1rem var(--shadow);
+      overflow: hidden;
+      margin: 2rem 0;
     }
-    .img-wrapper {
+    @media (min-width: 48rem) {
+      .vehicle-detail .card {
+        flex-direction: row;
+      }
+    }
+    .card-left {
+      flex: 1;
       position: relative;
-      display: inline-block;
+      background: #f4f4f4;
+      min-height: 15rem;
     }
-    #mainImage {
+    .card-left img {
       width: 100%;
-      max-width: 600px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px var(--shadow);
+      height: 100%;
+      object-fit: cover;
     }
     .arrow {
       position: absolute;
@@ -122,66 +133,93 @@
       background: rgba(0,0,0,0.4);
       color: #fff;
       border: none;
-      width: 32px;
-      height: 32px;
+      width: 2rem;
+      height: 2rem;
       border-radius: 50%;
       cursor: pointer;
     }
-    .arrow.prev { left: 8px; }
-    .arrow.next { right: 8px; }
-    h1 {
-      margin-top: 1rem;
+    .arrow.prev { left: 1rem; }
+    .arrow.next { right: 1rem; }
+
+    .card-right {
+      flex: 1;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      border-top: 1px solid var(--shadow);
+    }
+    @media (min-width: 48rem) {
+      .card-right {
+        border-top: none;
+        border-left: 1px solid var(--shadow);
+      }
+    }
+    .vehicle-detail h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
       color: var(--blue);
-      font-weight: 700;
-      font-size: 1.75rem;
     }
     .price {
-      color: var(--yellow);
       font-size: 1.5rem;
+      color: var(--yellow);
       font-weight: 700;
-      margin: 0.5rem 0;
+      margin-bottom: 1rem;
+    }
+    .info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
     }
     .info p {
+      background: #f9f9f9;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
       font-size: 0.95rem;
-      margin: 0.25rem 0;
     }
     .description {
-      margin: 1rem auto 0;
-      max-width: 700px;
-      text-align: left;
       font-size: 0.95rem;
       line-height: 1.4;
-      color: var(--text);
       white-space: pre-line;
+      margin-top: 1rem;
     }
     .btns {
+      margin-top: auto;
       display: flex;
       gap: 1rem;
-      justify-content: center;
-      margin-top: 1.5rem;
     }
     .btn {
-      background: var(--yellow);
-      color: var(--blue);
-      padding: 1rem 2rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 2px 6px var(--shadow);
-      transition: background 0.2s;
+      flex: 1;
       display: flex;
       align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      border: none;
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
       gap: 0.5rem;
     }
-    .btn:hover {
-      background: #e6ac00;
+    .whatsapp {
+      background: #25D366;
+      color: #fff;
+    }
+    .whatsapp:hover {
+      background: #1ebe5b;
+    }
+    .share {
+      background: var(--blue);
+      color: #fff;
+    }
+    .share:hover {
+      background: var(--blue2);
     }
     .gallery-container {
       margin-top: 1.5rem;
       overflow: hidden;
-      padding: 0 1rem;
     }
     .gallery-track {
       display: flex;
@@ -189,25 +227,27 @@
       transition: transform 0.3s ease;
     }
     .gallery-track img {
-      width: 80px;
-      height: 50px;
+      width: 5rem;
+      height: 3rem;
       object-fit: cover;
-      border-radius: 4px;
+      border-radius: 0.5rem;
       cursor: pointer;
     }
+
+    /* ===== FOOTER ===== */
     .site-footer {
       background: var(--blue2);
       color: #fff;
       text-align: center;
       padding: 1rem 0;
     }
-    .footer-nav .footer-list {
+    .footer-list {
       display: flex;
       justify-content: center;
       gap: 1.5rem;
       margin-bottom: 1rem;
     }
-    .footer-nav .footer-list a, .social-links a {
+    .footer-list a, .social-links a {
       color: var(--yellow);
       font-weight: 500;
     }
@@ -218,6 +258,7 @@
   </style>
 </head>
 <body>
+
   <!-- HEADER -->
   <header class="site-header">
     <div class="container header-inner">
@@ -232,7 +273,7 @@
       </ul>
       <button class="menu-icon" onclick="toggleMenu()">☰</button>
     </div>
-    <nav id="mobile-menu-links" class="mobile-nav">
+    <nav id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
       <a href="index.html">Inicio</a>
       <a href="calculadora.html">Calculadora</a>
       <a href="inventario.html">Vehículos</a>
@@ -243,20 +284,20 @@
   </header>
 
   <!-- DETALLE DEL VEHÍCULO -->
-  <main class="container vehicle-detail" id="detalleVehiculo"></main>
+  <main class="container vehicle-detail" id="detalleVehiculo">
+    <!-- Se inyecta contenido dinámico aquí -->
+  </main>
 
   <!-- FOOTER -->
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <nav class="footer-nav">
-        <ul class="footer-list">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="calculadora.html">Calculadora</a></li>
-          <li><a href="inventario.html">Vehículos</a></li>
-          <li><a href="cursos.html">Cursos</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
-        </ul>
-      </nav>
+    <div class="container">
+      <ul class="footer-list">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="calculadora.html">Calculadora</a></li>
+        <li><a href="inventario.html">Vehículos</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
       <div class="social-links">
         <a href="https://facebook.com/Subasta-Car-HN" target="_blank">Facebook</a> |
         <a href="https://instagram.com/subastacar1" target="_blank">Instagram</a> |
@@ -271,7 +312,8 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script>
-    const cfg = {
+    // Configuración Firebase
+    const firebaseConfig = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
@@ -279,18 +321,20 @@
       messagingSenderId: "536785797974",
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7"
     };
-    firebase.initializeApp(cfg);
+    firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
+    // Toggle menú móvil
     function toggleMenu() {
       document.getElementById('mobile-menu-links').classList.toggle('open');
     }
 
-    firebase.auth().onAuthStateChanged(u => {
+    // Autenticación & saludos
+    firebase.auth().onAuthStateChanged(user => {
       const d = document.getElementById('userGreeting'),
             m = document.getElementById('mobileGreeting');
-      if (u) {
-        const name = (u.displayName || u.email.split('@')[0])
+      if (user) {
+        const name = (user.displayName || user.email.split('@')[0])
                        .replace(/^./, c => c.toUpperCase());
         d.innerHTML = `<a href="perfil.html">Hola, ${name}</a> | <a href="#" onclick="logout()">Cerrar sesión</a>`;
         m.innerHTML = d.innerHTML;
@@ -299,101 +343,99 @@
         m.innerHTML = d.innerHTML;
       }
     });
-
     function logout() {
       firebase.auth().signOut().then(() => location.reload());
     }
 
+    // Carga y renderizado del detalle
     const id = new URLSearchParams(location.search).get('id'),
-          detEl = document.getElementById('detalleVehiculo');
-    let carouselIndex = 0, carouselImages = [];
+          cont = document.getElementById('detalleVehiculo');
+    let imgs = [], idx = 0;
 
     async function cargarVehiculo() {
       if (!id) {
-        detEl.innerHTML = '<p>Vehículo no encontrado.</p>';
+        cont.innerHTML = '<p>Vehículo no encontrado.</p>';
         return;
       }
       try {
         const doc = await db.collection('inventario').doc(id).get();
         if (!doc.exists) {
-          detEl.innerHTML = '<p>Vehículo no disponible.</p>';
+          cont.innerHTML = '<p>Vehículo no disponible.</p>';
           return;
         }
         const a = { id: doc.id, ...doc.data() };
-        carouselImages = Array.isArray(a.imagenes) ? a.imagenes : [];
+        imgs = Array.isArray(a.imagenes) ? a.imagenes : [];
 
-        const thumbs = carouselImages.map((url,i) =>
-          `<img src="${url}" onclick="goTo(${i})">`
+        const thumbs = imgs.map((u,i) =>
+          `<img src="${u}" onclick="goTo(${i})">`
         ).join('');
-        const gallery = carouselImages.length
+        const gallery = imgs.length
           ? `<div class="gallery-container"><div class="gallery-track">${thumbs}</div></div>`
           : '';
 
-        detEl.innerHTML = `
-          <div class="img-wrapper">
-            <img id="mainImage" src="${carouselImages[0]||''}">
-            <button class="arrow prev" onclick="prev()">‹</button>
-            <button class="arrow next" onclick="next()">›</button>
+        cont.innerHTML = `
+          <div class="card">
+            <div class="card-left">
+              <img id="mainImage" src="${imgs[0]||'Img/placeholder.jpg'}" alt="">
+              <button class="arrow prev" onclick="prev()">‹</button>
+              <button class="arrow next" onclick="next()">›</button>
+            </div>
+            <div class="card-right">
+              <h1>${a.marca} ${a.modelo} (${a.anio})</h1>
+              <div class="price">L ${typeof a.precio==='number'
+                ? a.precio.toLocaleString() : 'N/A'}</div>
+              <div class="info">
+                <p><strong>Motor:</strong> ${a.motor||'–'}</p>
+                <p><strong>Color:</strong> ${a.color||'–'}</p>
+                <p><strong>Tipo:</strong> ${a.tipo||'–'}</p>
+                <p><strong>Kilometraje:</strong> ${typeof a.kilometraje==='number'
+                  ? a.kilometraje.toLocaleString()+' km' : '–'}</p>
+              </div>
+              ${a.descripcion
+                ? `<div class="description">${a.descripcion.replace(/\n/g,'<br>')}</div>`
+                : ''}
+              <div class="btns">
+                <button class="btn whatsapp" onclick="waInterest()">
+                  <i class="fab fa-whatsapp"></i> Me interesa
+                </button>
+                <button class="btn share" onclick="shareLink()">
+                  <i class="fas fa-share-alt"></i> Compartir
+                </button>
+              </div>
+              ${gallery}
+            </div>
           </div>
-          <h1>${a.marca} ${a.modelo} (${a.anio})</h1>
-          <div class="price">L ${(typeof a.precio==='number') ? a.precio.toLocaleString() : 'N/A'}</div>
-          <div class="info">
-            <p><strong>Motor:</strong> ${a.motor||'–'}</p>
-            <p><strong>Color:</strong> ${a.color||'–'}</p>
-            <p><strong>Tipo:</strong> ${a.tipo||'–'}</p>
-            <p><strong>Kilometraje:</strong> ${(typeof a.kilometraje==='number') ? a.kilometraje.toLocaleString()+' km' : '–'}</p>
-          </div>
-          ${ a.descripcion
-             ? `<div class="description">${a.descripcion.replace(/\n/g, '<br>')}</div>`
-             : ''
-          }
-          <div class="btns">
-            <button class="btn" onclick="shareWhatsAppContact()">🤝 ¡Me interesa este vehículo!</button>
-            <button class="btn" onclick="shareWhatsAppLink()">🔗 Compartir vehículo</button>
-          </div>
-          ${gallery}
         `;
-      } catch(e) {
+      } catch (e) {
         console.error(e);
-        detEl.innerHTML = '<p>Error al cargar vehículo.</p>';
+        cont.innerHTML = '<p>Error al cargar vehículo.</p>';
       }
     }
 
-    function updateCarousel(){
-      document.querySelector('.gallery-track')
-        .style.transform = `translateX(-${carouselIndex * 88}px)`;
+    function updateCarousel() {
+      const track = document.querySelector('.gallery-track');
+      if (track) track.style.transform = `translateX(-${idx * 5.5}rem)`;
+      document.getElementById('mainImage').src = imgs[idx];
     }
-    function prev(){
-      if (carouselIndex > 0){
-        carouselIndex--;
-        updateCarousel();
-        setMain();
-      }
+    function prev() {
+      if (idx > 0) { idx--; updateCarousel(); }
     }
-    function next(){
-      if (carouselIndex < carouselImages.length - 1){
-        carouselIndex++;
-        updateCarousel();
-        setMain();
-      }
+    function next() {
+      if (idx < imgs.length - 1) { idx++; updateCarousel(); }
     }
-    function goTo(i){
-      carouselIndex = i;
-      updateCarousel();
-      setMain();
+    function goTo(i) {
+      idx = i; updateCarousel();
     }
-    function setMain(){
-      document.getElementById('mainImage').src = carouselImages[carouselIndex];
-    }
-
-    function shareWhatsAppContact(){
-      const msg = encodeURIComponent(`¡Hola! Me interesa este vehículo: ${location.href}`);
+    function waInterest() {
+      const msg = encodeURIComponent(`Hola, me interesa el vehículo: ${location.href}`);
       window.open(`https://wa.me/50497330137?text=${msg}`, '_blank');
     }
-
-    function shareWhatsAppLink(){
-      const msg = encodeURIComponent(`Mira este vehículo: ${location.href}`);
-      window.open(`https://wa.me/?text=${msg}`, '_blank');
+    function shareLink() {
+      if (navigator.share) {
+        navigator.share({ title: 'Vehículo SubastaCarHN', url: location.href });
+      } else {
+        prompt('Copia este enlace:', location.href);
+      }
     }
 
     document.addEventListener('DOMContentLoaded', cargarVehiculo);
