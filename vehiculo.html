@@ -23,10 +23,7 @@
       --max-width: 75rem;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
+    html, body { height: 100%; margin: 0; }
     body {
       font-family: 'Montserrat', sans-serif;
       background: var(--light);
@@ -42,173 +39,119 @@
       padding: 1rem;
       width: 100%;
     }
+
     /* HEADER */
     .site-header {
       background: linear-gradient(to right, var(--blue), var(--blue2));
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      position: sticky; top: 0; z-index: 1000;
     }
     .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       padding: 1rem;
     }
     .brand {
-      color: #fff;
-      font-size: 1.5rem;
-      font-weight: 700;
+      color: #fff; font-size: 1.5rem; font-weight: 700;
     }
     .nav-list {
-      display: flex;
-      gap: 1rem;
-      margin-left: auto;
+      display: flex; gap: 1rem; margin-left: auto;
     }
     .nav-list a, .nav-list span {
-      color: var(--yellow);
-      font-weight: 600;
+      color: var(--yellow); font-weight: 600;
     }
+
     /* VEHICLE DETAIL */
     main.vehicle-detail {
-      flex: 1;
-      overflow: hidden;
+      flex: 1; overflow: hidden;
     }
     .card {
-      display: flex;
-      flex-direction: column;
-      background: #fff;
-      border-radius: 1rem;
+      display: flex; flex-direction: column;
+      background: #fff; border-radius: 1rem;
       box-shadow: 0 .5rem 1rem var(--shadow);
-      margin: 2rem auto;
-      height: 80vh;
-      max-height: 80vh;
+      margin: 2rem auto; height: 80vh; max-height: 80vh;
       overflow: hidden;
     }
     @media (min-width: 768px) {
       .card { flex-direction: row; }
     }
-    .card-left, .card-right {
-      height: 100%;
-    }
+    .card-left, .card-right { height: 100%; }
     .card-left {
-      flex: 1;
-      position: relative;
-      background: #f4f4f4;
+      flex: 1; position: relative; background: #000;
+      min-height: 300px; /* para móviles */
     }
     .card-left img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      width: 100%; height: 100%;
+      object-fit: contain; /* contener sin cortar */
+      background: #000; /* letterboxing */
+      transition: opacity .5s ease;
     }
     .arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0,0,0,0.4);
-      color: #fff;
-      border: none;
-      width: 2rem;
-      height: 2rem;
-      border-radius: 50%;
-      cursor: pointer;
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,0.4); color: #fff;
+      border: none; width: 2rem; height: 2rem;
+      border-radius: 50%; cursor: pointer;
     }
     .arrow.prev { left: 1rem; }
     .arrow.next { right: 1rem; }
+
     .card-right {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 1.5rem;
-      overflow-y: auto;
+      flex: 1; display: flex; flex-direction: column;
+      padding: 1.5rem; overflow-y: auto;
     }
     .card-right h1 {
-      font-size: 1.75rem;
-      color: var(--blue);
+      font-size: 1.75rem; color: var(--blue);
       margin-bottom: .5rem;
     }
     .price {
-      font-size: 1.25rem;
-      color: var(--yellow);
-      font-weight: 700;
-      margin-bottom: 1rem;
+      font-size: 1.25rem; color: var(--yellow);
+      font-weight: 700; margin-bottom: 1rem;
     }
     .info {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: .75rem;
-      margin-bottom: 1rem;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: .75rem; margin-bottom: 1rem;
     }
     .info p {
-      background: #f9f9f9;
-      padding: .75rem;
-      border-radius: .5rem;
-      font-size: .9rem;
+      background: #f9f9f9; padding: .75rem;
+      border-radius: .5rem; font-size: .9rem;
     }
     .description {
-      font-size: .9rem;
-      line-height: 1.3;
-      white-space: pre-line;
-      margin-bottom: 1rem;
+      font-size: .9rem; line-height: 1.3;
+      white-space: pre-line; margin-bottom: 1rem;
     }
     .btns {
-      display: flex;
-      gap: .75rem;
-      margin-bottom: 1rem;
+      display: flex; gap: .75rem; margin-bottom: 1rem;
     }
     .btn {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: .5rem;
-      padding: .75rem;
-      border: none;
-      border-radius: .5rem;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
+      flex: 1; display: flex; align-items: center;
+      justify-content: center; gap: .5rem;
+      padding: .75rem; border: none;
+      border-radius: .5rem; font-size: 1rem;
+      font-weight: 600; cursor: pointer;
       transition: background .2s;
     }
-    .whatsapp {
-      background: #25D366; color: #fff;
-    }
-    .share {
-      background: var(--blue); color: #fff;
-    }
+    .whatsapp { background: #25D366; color: #fff; }
+    .share    { background: var(--blue); color: #fff; }
     .btn:hover { opacity: .9; }
+
     .gallery-container {
-      display: flex;
-      gap: .5rem;
-      overflow-x: auto;
+      display: flex; gap: .5rem; overflow-x: auto;
     }
     .gallery-container img {
-      width: 4rem;
-      height: 3rem;
-      object-fit: cover;
-      border-radius: .5rem;
+      width: 4rem; height: 3rem;
+      object-fit: cover; border-radius: .5rem;
       cursor: pointer;
     }
+
     /* FOOTER */
     .site-footer {
-      background: var(--blue2);
-      color: #fff;
-      text-align: center;
-      padding: 1rem 0;
+      background: var(--blue2); color: #fff;
+      text-align: center; padding: 1rem 0;
     }
     .footer-list {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: .5rem;
+      display: flex; justify-content: center;
+      gap: 1rem; margin-bottom: .5rem;
     }
-    .footer-list a {
-      color: var(--yellow);
-    }
-    .footer-copy {
-      font-size: .85rem;
-      opacity: .8;
-    }
+    .footer-list a { color: var(--yellow); }
+    .footer-copy { font-size: .85rem; opacity: .8; }
   </style>
 </head>
 <body>
@@ -251,7 +194,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script>
     // Inicializar Firebase
-    const firebaseConfig = {
+    const cfg = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
@@ -259,101 +202,108 @@
       messagingSenderId: "536785797974",
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7"
     };
-    firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(cfg);
     const db = firebase.firestore();
 
-    // Autenticación
-    firebase.auth().onAuthStateChanged(user => {
+    // Salud, menú móvil omitido por brevedad
+    firebase.auth().onAuthStateChanged(u => {
       const d = document.getElementById('userGreeting');
-      if (user) {
-        const name = (user.displayName || user.email.split('@')[0])
-                       .replace(/^./, c => c.toUpperCase());
+      if (u) {
+        const name = (u.displayName||u.email.split('@')[0]).replace(/^./,c=>c.toUpperCase());
         d.innerHTML = `<a href="perfil.html">Hola, ${name}</a> | <a href="#" onclick="logout()">Cerrar sesión</a>`;
       } else {
         d.innerHTML = `<a href="login.html">Iniciar sesión</a>`;
       }
     });
-    function logout() {
-      firebase.auth().signOut();
+    function logout(){ firebase.auth().signOut(); }
+
+    // Carrusel
+    let imgs = [], idx = 0, carouselTimer;
+    function startCarousel() {
+      stopCarousel();
+      carouselTimer = setInterval(next, 4000);
     }
-
-    // Cargar detalle de vehículo
-    const id = new URLSearchParams(location.search).get('id'),
-          cont = document.getElementById('detalleVehiculo');
-    let imgs = [], idx = 0;
-
-    async function cargarVehiculo() {
-      if (!id) {
-        cont.innerHTML = '<p>Vehículo no encontrado.</p>';
-        return;
-      }
-      try {
-        const doc = await db.collection('inventario').doc(id).get();
-        if (!doc.exists) {
-          cont.innerHTML = '<p>Vehículo no disponible.</p>';
-          return;
-        }
-        const a = { id: doc.id, ...doc.data() };
-        imgs = Array.isArray(a.imagenes) ? a.imagenes : [];
-
-        // Generar HTML
-        cont.innerHTML = `
-          <div class="card">
-            <div class="card-left">
-              <img id="mainImage" src="${imgs[0]||'Img/placeholder.jpg'}" alt="">
-              <button class="arrow prev" onclick="prev()">‹</button>
-              <button class="arrow next" onclick="next()">›</button>
-            </div>
-            <div class="card-right">
-              <h1>${a.marca} ${a.modelo} (${a.anio})</h1>
-              <div class="price">L ${typeof a.precio==='number' ? a.precio.toLocaleString() : 'N/A'}</div>
-              <div class="info">
-                <p><strong>Motor:</strong> ${a.motor||'–'}</p>
-                <p><strong>Color:</strong> ${a.color||'–'}</p>
-                <p><strong>Tipo:</strong> ${a.tipo||'–'}</p>
-                <p><strong>Kilometraje:</strong> ${typeof a.kilometraje==='number' ? a.kilometraje.toLocaleString()+' km' : '–'}</p>
-              </div>
-              <div class="description">${(a.descripcion||'').replace(/\n/g,'<br>')}</div>
-              <div class="btns">
-                <button class="btn whatsapp" onclick="waInterest()">
-                  <i class="fab fa-whatsapp"></i> Me interesa
-                </button>
-                <button class="btn share" onclick="shareLink()">
-                  <i class="fas fa-share-alt"></i> Compartir
-                </button>
-              </div>
-              <div class="gallery-container">
-                ${imgs.map((u,i) => `<img src="${u}" onclick="goTo(${i})">`).join('')}
-              </div>
-            </div>
-          </div>
-        `;
-      } catch (e) {
-        console.error(e);
-        cont.innerHTML = '<p>Error al cargar vehículo.</p>';
-      }
+    function stopCarousel() {
+      clearInterval(carouselTimer);
     }
-
-    function update() {
-      document.getElementById('mainImage').src = imgs[idx];
+    function updateImage() {
+      const imgEl = document.getElementById('mainImage');
+      imgEl.style.opacity = 0;
+      setTimeout(()=>{
+        imgEl.src = imgs[idx];
+        imgEl.style.opacity = 1;
+      }, 300);
     }
-    function prev() { if (idx>0) idx--, update(); }
-    function next() { if (idx<imgs.length-1) idx++, update(); }
-    function goTo(i) { idx = i; update(); }
-
+    function next() {
+      if (imgs.length<2) return;
+      idx = (idx+1)%imgs.length;
+      updateImage();
+    }
+    function prev() {
+      if (imgs.length<2) return;
+      idx = (idx-1+imgs.length)%imgs.length;
+      updateImage();
+    }
+    function goTo(i) {
+      idx = i;
+      updateImage();
+    }
     function waInterest() {
       const msg = encodeURIComponent(`Hola, me interesa el vehículo: ${location.href}`);
       window.open(`https://wa.me/50497330137?text=${msg}`, '_blank');
     }
     function shareLink() {
-      if (navigator.share) {
-        navigator.share({ title: 'SubastaCarHN', url: location.href });
-      } else {
-        prompt('Copia este enlace:', location.href);
-      }
+      if (navigator.share) navigator.share({ title:'SubastaCarHN', url:location.href });
+      else prompt('Copia este enlace:', location.href);
     }
 
-    document.addEventListener('DOMContentLoaded', cargarVehiculo);
+    // Cargar y renderizar detalle
+    document.addEventListener('DOMContentLoaded', async ()=>{
+      const id = new URLSearchParams(location.search).get('id'),
+            cont = document.getElementById('detalleVehiculo');
+      if (!id) return cont.innerHTML = '<p>Vehículo no encontrado.</p>';
+      try {
+        const doc = await db.collection('inventario').doc(id).get();
+        if (!doc.exists) return cont.innerHTML = '<p>Vehículo no disponible.</p>';
+        const a = { id: doc.id, ...doc.data() };
+        imgs = Array.isArray(a.imagenes)?a.imagenes:['Img/placeholder.jpg'];
+        cont.innerHTML = `
+          <div class="card">
+            <div class="card-left" id="carousel" >
+              <img id="mainImage" src="${imgs[0]}" alt="">
+              <button class="arrow prev" onclick="prev()">‹</button>
+              <button class="arrow next" onclick="next()">›</button>
+            </div>
+            <div class="card-right">
+              <h1>${a.marca} ${a.modelo} (${a.anio})</h1>
+              <div class="price">L ${typeof a.precio==='number'?a.precio.toLocaleString():'N/A'}</div>
+              <div class="info">
+                <p><strong>Motor:</strong> ${a.motor||'–'}</p>
+                <p><strong>Color:</strong> ${a.color||'–'}</p>
+                <p><strong>Tipo:</strong> ${a.tipo||'–'}</p>
+                <p><strong>Kilometraje:</strong> ${typeof a.kilometraje==='number'?a.kilometraje.toLocaleString()+' km':'–'}</p>
+              </div>
+              <div class="description">${(a.descripcion||'').replace(/\n/g,'<br>')}</div>
+              <div class="btns">
+                <button class="btn whatsapp" onclick="waInterest()"><i class="fab fa-whatsapp"></i> Me interesa</button>
+                <button class="btn share" onclick="shareLink()"><i class="fas fa-share-alt"></i> Compartir</button>
+              </div>
+              <div class="gallery-container">
+                ${imgs.map((u,i)=>`<img src="${u}" onclick="goTo(${i})">`).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+        // iniciar auto-rotación y hover
+        startCarousel();
+        const left = document.getElementById('carousel');
+        left.addEventListener('mouseenter', stopCarousel);
+        left.addEventListener('mouseleave', startCarousel);
+      } catch(e) {
+        console.error(e);
+        cont.innerHTML = '<p>Error al cargar vehículo.</p>';
+      }
+    });
   </script>
 </body>
 </html>
