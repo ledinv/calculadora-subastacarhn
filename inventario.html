@@ -10,6 +10,15 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
+  <!-- Font Awesome para íconos -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-pY1Y6FhF6CtaMzp4+O+Wk2XQYO+Gg60GvFpVZwwxwW6oRIeHcBS+P8n1hEJtOWJkO9Fbbm2I6b0I4XvY1G2+DQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
   <style>
     :root {
       --blue: #002f6c;
@@ -19,7 +28,6 @@
       --light: #f9f9f9;
       --max-width: 1200px;
     }
-    /* Reset & base */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Montserrat', sans-serif;
@@ -30,28 +38,25 @@
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
 
-    /* Container */
     .container {
-      width: 100%;
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0 1rem;
+      width: 100%; max-width: var(--max-width);
+      margin: 0 auto; padding: 0 1rem;
     }
 
-    /* ===== HEADER ===== */
+    /* HEADER */
     .site-header {
       background: linear-gradient(to right, var(--blue), var(--blue2));
       position: sticky; top: 0; z-index: 1000;
     }
     .site-header .header-inner {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0.75rem 0;
+      padding: 0.75rem 1rem;
     }
     .site-header .brand {
       color: #fff; font-size: 1.5rem; font-weight: 700;
     }
     .site-header .nav-list {
-      display: flex; gap: 1.5rem; margin-left: auto;
+      display: flex; gap: 1.5rem;
     }
     .site-header .nav-list a,
     .site-header .nav-list span {
@@ -59,36 +64,30 @@
     }
     .menu-icon {
       background: var(--yellow); color: var(--blue);
-      border: none; padding: 0.5rem; border-radius: 6px;
-      cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      border: none; padding: 0.5rem; border-radius: 0.375rem;
+      cursor: pointer; box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.2);
     }
-
-    /* Menú móvil */
     .mobile-nav {
       display: none; flex-direction: column; background: #fff;
-      padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      padding: 1rem; box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.2);
     }
-    .mobile-nav.open {
-      display: flex; gap: 1rem;
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a, .mobile-nav span {
+      padding: 0.75rem; border-radius: 0.25rem;
+      font-weight: 700; transition: background 0.2s;
     }
-    .mobile-nav a,
-    .mobile-nav span {
-      display: block; font-weight: 700; font-size: 1rem;
-      padding: 0.75rem 1rem; border-radius: 4px;
-      transition: background 0.2s;
-    }
-    .mobile-nav a:hover,
-    .mobile-nav span:hover {
+    .mobile-nav a:hover, .mobile-nav span:hover {
       background: rgba(0,47,108,0.1);
+    }
+    @media (max-width: 767px) {
+      .site-header .nav-list { display: none; }
+      .menu-icon { display: block; }
     }
     @media (min-width: 768px) {
       .menu-icon { display: none; }
     }
-    @media (max-width: 767px) {
-      .site-header .nav-list { display: none; }
-    }
 
-    /* ===== INVENTARIO ===== */
+    /* INVENTARIO */
     .inventory-section {
       padding: 3rem 0; background: #fff;
     }
@@ -96,94 +95,104 @@
       text-align: center; font-size: 2rem; margin-bottom: 1.5rem;
       font-weight: 700; color: var(--blue);
     }
-    #autosGrid {
-      display: grid; gap: 1.5rem;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    }
-
-    /* ===== BÚSQUEDA ===== */
     .search-wrapper {
       text-align: center; margin-bottom: 2rem;
     }
     .search-input {
-      width: 100%; max-width: 400px;
-      padding: 0.6rem 1rem;
-      border: 2px solid var(--blue);
-      border-radius: 6px;
-      font-size: 1rem;
-      transition: border-color 0.2s;
+      width: 100%; max-width: 25rem;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--blue); border-radius: 0.375rem;
+      font-size: 1rem; transition: border-color 0.2s;
     }
     .search-input:focus {
-      outline: none;
-      border-color: var(--blue2);
+      outline: none; border-color: var(--blue2);
     }
 
-    /* ===== TARJETA ===== */
+    #autosGrid {
+      display: grid; gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    }
+
+    /* TARJETA MODERNA */
     .card {
-      background: #fff; border-radius: 8px; overflow: hidden;
+      background: #fff; border-radius: 0.75rem;
+      overflow: hidden; display: flex; flex-direction: column;
+      box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
       transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer; display: flex; flex-direction: column;
-      border: 1px solid rgba(0,0,0,0.05);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
     .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      transform: translateY(-0.25rem);
+      box-shadow: 0 0.75rem 1.5rem rgba(0,0,0,0.15);
     }
-    .card img {
-      width: 100%; height: 160px; object-fit: cover;
+    .card-body {
+      display: flex; flex-direction: column;
     }
-    .card-content {
-      flex: 1; padding: 1rem;
-      display: flex; flex-direction: column; justify-content: space-between;
+    @media (min-width: 600px) {
+      .card-body { flex-direction: row; }
     }
-    .card-content h3 {
-      font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--dark);
+
+    .card-left {
+      flex: 1; position: relative;
+      min-height: 15rem;
     }
-    .card-content p {
-      font-size: 0.95rem; margin-bottom: 1rem;
-      color: var(--blue); font-weight: 600;
+    .carousel {
+      height: 100%; display: flex; align-items: center;
+      justify-content: center; background: #f4f4f4;
+      position: relative; overflow: hidden;
     }
-    .card-content .styled-btn {
-      background: var(--yellow); color: var(--blue);
-      padding: 0.5rem; border-radius: 6px;
-      text-align: center; font-size: 0.9rem; font-weight: 600;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    .carousel img {
+      max-width: 100%; max-height: 100%;
+      object-fit: cover; display: block;
+    }
+    .carousel-btn {
+      position: absolute; top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.4); color: #fff;
+      border: none; padding: 0.5rem;
+      border-radius: 50%; cursor: pointer;
+    }
+    .carousel-btn.prev { left: 0.5rem; }
+    .carousel-btn.next { right: 0.5rem; }
+
+    .card-right {
+      flex: 1; padding: 1.5rem;
+      display: flex; flex-direction: column;
+      gap: 1rem;
+    }
+    .card-right h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    .card-right .price {
+      font-size: 1.125rem; color: var(--blue2);
+      font-weight: 700;
+    }
+    .card-right .detail {
+      font-size: 1rem; color: var(--dark);
+    }
+    .actions {
+      margin-top: auto; display: flex; gap: 1rem;
+    }
+    .btn {
+      flex: 1; display: flex; align-items: center;
+      justify-content: center; padding: 0.75rem;
+      border-radius: 0.375rem; font-size: 1rem;
+      font-weight: 600; cursor: pointer;
       transition: background 0.2s;
-      width: 100%; margin-top: auto;
     }
-    .card-content .styled-btn:hover {
-      background: #e6ac00;
+    .wa-btn {
+      background: #25D366; color: #fff;
     }
+    .wa-btn:hover { background: #1ebe5b; }
+    .share-btn {
+      background: var(--blue); color: #fff;
+    }
+    .share-btn:hover { background: var(--blue2); }
 
-    /* ===== FOOTER ===== */
-    .site-footer {
-      background: var(--blue2); color: #fff; text-align: center;
-      padding: 2rem 0;
-    }
-    .site-footer .footer-list {
-      display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem;
-    }
-    .site-footer .footer-list a {
-      color: var(--yellow); font-weight: 500;
-    }
-    .site-footer .social-links a {
-      color: var(--yellow); margin: 0 0.5rem; font-weight: 500;
-    }
-    .site-footer .footer-copy {
-      font-size: 0.85rem; opacity: 0.8;
-    }
-
-    /* ===== AJUSTES RESPONSIVE ===== */
-    @media (max-width: 600px) {
-      .search-input { max-width: 100%; }
-      #autosGrid { grid-template-columns: 1fr; }
-      .card img { height: 200px; }
+    /* FONDOS ALTERNOS */
+    #autosGrid .card:nth-child(even) {
+      background: #f9f9f9;
     }
   </style>
 </head>
 <body>
-
   <!-- HEADER -->
   <header class="site-header">
     <div class="container header-inner">
@@ -279,10 +288,10 @@
     });
     function logout(){ firebase.auth().signOut().then(()=>location.reload()); }
 
-    // Lista global para filtrado
+    // Datos y filtrado
     let autosList = [];
+    const carouselIndex = {};
 
-    // Carga inventario
     async function cargarInventario(){
       try {
         const snap = await db.collection('inventario').get();
@@ -293,48 +302,94 @@
       }
     }
 
-    // Mostrar tarjetas
-    function mostrarAutos(autos){
+    function mostrarAutos(list){
       const grid = document.getElementById('autosGrid');
       grid.innerHTML = '';
-      if (!autos.length){
+      if (!list.length) {
         grid.innerHTML = "<p>No hay vehículos disponibles.</p>";
         return;
       }
-      autos.forEach(a=>{
-        const img = Array.isArray(a.imagenes)&&a.imagenes[0] 
-                      ? a.imagenes[0] 
-                      : 'Img/placeholder.jpg';
+      list.forEach(a=>{
+        const imgs = Array.isArray(a.imagenes) ? a.imagenes : [];
+        carouselIndex[a.id] = 0;
+        const firstImg = imgs[0] || 'Img/placeholder.jpg';
         const precio = typeof a.precio==='number'
           ? a.precio.toLocaleString('es-HN',{style:'currency',currency:'HNL'})
           : 'N/A';
+
         const card = document.createElement('div');
-        card.className='card';
+        card.className = 'card';
         card.innerHTML = `
-          <img src="${img}" alt="${a.marca} ${a.modelo}">
-          <div class="card-content">
-            <h3>${a.marca} ${a.modelo} (${a.anio})</h3>
-            <p>${precio}</p>
-            <div class="styled-btn">Ver detalle</div>
+          <div class="card-body">
+            <div class="card-left">
+              <div class="carousel">
+                <button class="carousel-btn prev" onclick="prevImg('${a.id}')">
+                  &#10094;
+                </button>
+                <img id="carousel-img-${a.id}" src="${firstImg}" alt="${a.marca} ${a.modelo}">
+                <button class="carousel-btn next" onclick="nextImg('${a.id}')">
+                  &#10095;
+                </button>
+              </div>
+            </div>
+            <div class="card-right">
+              <h3>${a.marca} ${a.modelo} (${a.anio})</h3>
+              <p class="price">${precio}</p>
+              <p class="detail">Kilometraje: ${a.kilometraje||'N/D'}</p>
+              <div class="actions">
+                <a
+                  href="https://wa.me/50497330137?text=Hola,%20estoy%20interesado%20en%20${encodeURIComponent(a.marca+' '+a.modelo+' ('+a.anio+')')}"
+                  class="btn wa-btn"
+                  target="_blank"
+                >
+                  <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <button
+                  class="btn share-btn"
+                  onclick="shareVehicle('${a.marca} ${a.modelo} (${a.anio})', window.location.href+'?id=${a.id}')"
+                >
+                  <i class="fas fa-share-alt"></i> Compartir
+                </button>
+              </div>
+            </div>
           </div>`;
-        card.onclick = ()=> window.location.href=`vehiculo.html?id=${a.id}`;
+
         grid.appendChild(card);
       });
     }
 
-    // Filtrado en tiempo real
+    function nextImg(id){
+      const imgs = autosList.find(a=>a.id===id).imagenes||[];
+      if(!imgs.length) return;
+      carouselIndex[id] = (carouselIndex[id] + 1) % imgs.length;
+      document.getElementById(`carousel-img-${id}`).src = imgs[carouselIndex[id]];
+    }
+    function prevImg(id){
+      const imgs = autosList.find(a=>a.id===id).imagenes||[];
+      if(!imgs.length) return;
+      carouselIndex[id] = (carouselIndex[id] - 1 + imgs.length) % imgs.length;
+      document.getElementById(`carousel-img-${id}`).src = imgs[carouselIndex[id]];
+    }
+
+    async function shareVehicle(title, url){
+      if(navigator.share){
+        await navigator.share({ title, url });
+      } else {
+        prompt('Copia este enlace para compartir:', url);
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       cargarInventario();
       document.getElementById('searchInput').addEventListener('input', e => {
         const term = e.target.value.trim().toLowerCase();
-        const filtrados = autosList.filter(a =>
+        const filtered = autosList.filter(a =>
           a.marca.toLowerCase().includes(term) ||
           a.modelo.toLowerCase().includes(term)
         );
-        mostrarAutos(filtrados);
+        mostrarAutos(filtered);
       });
     });
   </script>
-
 </body>
 </html>
