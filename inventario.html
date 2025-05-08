@@ -63,7 +63,7 @@
       cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
 
-    /* Menú móvil: oculto por defecto, abre solo con .open */
+    /* Menú móvil */
     .mobile-nav {
       display: none;
       flex-direction: column;
@@ -267,7 +267,9 @@
         return;
       }
       autos.forEach(a=>{
-        const img = Array.isArray(a.imagenes)&&a.imagenes[0]?a.imagenes[0]:'Img/placeholder.jpg';
+        // usar portadaIndex si existe
+        const idx = typeof a.portadaIndex==='number' ? a.portadaIndex : 0;
+        const img = Array.isArray(a.imagenes) && a.imagenes[idx] ? a.imagenes[idx] : 'Img/placeholder.jpg';
         const precio = typeof a.precio==='number'
           ? a.precio.toLocaleString('es-HN',{style:'currency',currency:'HNL'})
           : 'N/A';
