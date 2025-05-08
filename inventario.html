@@ -63,31 +63,24 @@
       cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
 
-    /* Menú móvil: oculto por defecto, abre solo con .open */
+    /* Menú móvil */
     .mobile-nav {
-      display: none;
-      flex-direction: column;
-      background: #fff;
-      padding: 1rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      display: none; flex-direction: column; background: #fff;
+      padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
     .mobile-nav.open {
       display: flex; gap: 1rem;
     }
     .mobile-nav a,
     .mobile-nav span {
-      display: block;
-      font-weight: 700;
-      font-size: 1rem;
-      padding: 0.75rem 1rem;
-      border-radius: 4px;
+      display: block; font-weight: 700; font-size: 1rem;
+      padding: 0.75rem 1rem; border-radius: 4px;
       transition: background 0.2s;
     }
     .mobile-nav a:hover,
     .mobile-nav span:hover {
       background: rgba(0,47,108,0.1);
     }
-
     @media (min-width: 768px) {
       .menu-icon { display: none; }
     }
@@ -97,8 +90,7 @@
 
     /* ===== INVENTARIO ===== */
     .inventory-section {
-      padding: 3rem 0;
-      background: #fff;
+      padding: 3rem 0; background: #fff;
     }
     .inventory-section h1 {
       text-align: center; font-size: 2rem; margin-bottom: 1.5rem;
@@ -108,11 +100,31 @@
       display: grid; gap: 1.5rem;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     }
+
+    /* ===== BÚSQUEDA ===== */
+    .search-wrapper {
+      text-align: center; margin-bottom: 2rem;
+    }
+    .search-input {
+      width: 100%; max-width: 400px;
+      padding: 0.6rem 1rem;
+      border: 2px solid var(--blue);
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--blue2);
+    }
+
+    /* ===== TARJETA ===== */
     .card {
       background: #fff; border-radius: 8px; overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       transition: transform 0.2s, box-shadow 0.2s;
       cursor: pointer; display: flex; flex-direction: column;
+      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
     .card:hover {
       transform: translateY(-4px);
@@ -138,6 +150,7 @@
       text-align: center; font-size: 0.9rem; font-weight: 600;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       transition: background 0.2s;
+      width: 100%; margin-top: auto;
     }
     .card-content .styled-btn:hover {
       background: #e6ac00;
@@ -159,6 +172,13 @@
     }
     .site-footer .footer-copy {
       font-size: 0.85rem; opacity: 0.8;
+    }
+
+    /* ===== AJUSTES RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .search-input { max-width: 100%; }
+      #autosGrid { grid-template-columns: 1fr; }
+      .card img { height: 200px; }
     }
   </style>
 </head>
@@ -187,11 +207,22 @@
       <span id="mobileGreeting"></span>
     </nav>
   </header>
-
   <!-- INVENTARIO -->
   <section class="inventory-section">
     <div class="container">
       <h1>Inventario de Vehículos</h1>
+
+      <!-- BARRA DE BÚSQUEDA -->
+      <div class="search-wrapper">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Buscar por marca o modelo…"
+        />
+      </div>
+
+      <!-- GRID DE VEHÍCULOS -->
       <div id="autosGrid"></div>
     </div>
   </section>
@@ -214,7 +245,6 @@
       <div class="footer-copy">&copy; 2025 SubastaCarHN. Todos los derechos reservados.</div>
     </div>
   </footer>
-
   <script>
     // Firebase init
     const firebaseConfig = {
@@ -230,8 +260,7 @@
 
     // Toggle menú móvil
     function toggleMenu() {
-      document.getElementById('mobile-menu-links')
-              .classList.toggle('open');
+      document.getElementById('mobile-menu-links').classList.toggle('open');
     }
 
     // Autenticación & saludos
@@ -239,7 +268,8 @@
       const d = document.getElementById('userGreeting');
       const m = document.getElementById('mobileGreeting');
       if (user) {
-        const name = (user.displayName||user.email.split('@')[0]).replace(/^./,c=>c.toUpperCase());
+        const name = (user.displayName||user.email.split('@')[0])
+                       .replace(/^./,c=>c.toUpperCase());
         d.innerHTML = `<a href="perfil.html">Hola, ${name}</a> | <a href="#" onclick="logout()">Cerrar sesión</a>`;
         m.innerHTML = d.innerHTML;
       } else {
@@ -249,16 +279,21 @@
     });
     function logout(){ firebase.auth().signOut().then(()=>location.reload()); }
 
+    // Lista global para filtrado
+    let autosList = [];
+
     // Carga inventario
     async function cargarInventario(){
       try {
         const snap = await db.collection('inventario').get();
-        const list = snap.docs.map(d=>({ id:d.id, ...d.data() }));
-        mostrarAutos(list);
+        autosList = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        mostrarAutos(autosList);
       } catch {
         document.getElementById('autosGrid').innerHTML = "<p>Error al cargar inventario.</p>";
       }
     }
+
+    // Mostrar tarjetas
     function mostrarAutos(autos){
       const grid = document.getElementById('autosGrid');
       grid.innerHTML = '';
@@ -267,11 +302,14 @@
         return;
       }
       autos.forEach(a=>{
-        const img = Array.isArray(a.imagenes)&&a.imagenes[0]?a.imagenes[0]:'Img/placeholder.jpg';
+        const img = Array.isArray(a.imagenes)&&a.imagenes[0] 
+                      ? a.imagenes[0] 
+                      : 'Img/placeholder.jpg';
         const precio = typeof a.precio==='number'
           ? a.precio.toLocaleString('es-HN',{style:'currency',currency:'HNL'})
           : 'N/A';
-        const card = document.createElement('div'); card.className='card';
+        const card = document.createElement('div');
+        card.className='card';
         card.innerHTML = `
           <img src="${img}" alt="${a.marca} ${a.modelo}">
           <div class="card-content">
@@ -283,7 +321,19 @@
         grid.appendChild(card);
       });
     }
-    document.addEventListener('DOMContentLoaded', cargarInventario);
+
+    // Filtrado en tiempo real
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarInventario();
+      document.getElementById('searchInput').addEventListener('input', e => {
+        const term = e.target.value.trim().toLowerCase();
+        const filtrados = autosList.filter(a =>
+          a.marca.toLowerCase().includes(term) ||
+          a.modelo.toLowerCase().includes(term)
+        );
+        mostrarAutos(filtrados);
+      });
+    });
   </script>
 
 </body>
