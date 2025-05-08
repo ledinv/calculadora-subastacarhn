@@ -83,19 +83,24 @@
       .menu-icon { display: none; }
     }
 
-    /* VEHLCE DETAIL */
-    main.vehicle-detail { flex: 1; overflow: hidden; }
+    /* VEHICLE DETAIL */
+    main.vehicle-detail {
+      flex: 1;
+      overflow: auto;    /* permitir scroll si hace falta */
+      padding: 2rem 1rem;
+    }
     .card {
       display: flex; flex-direction: column;
       background: #fff; border-radius: 1rem;
       box-shadow: 0 .5rem 1rem var(--shadow);
-      margin: 2rem auto; height: 80vh; max-height: 80vh;
+      margin: 0 auto;
+      /* altura automática, quitar height:80vh */
       overflow: hidden;
     }
     @media (min-width: 768px) {
       .card { flex-direction: row; }
     }
-    .card-left, .card-right { height: 100%; }
+    .card-left, .card-right { height: auto; }
 
     /* Carousel */
     .card-left {
@@ -125,8 +130,7 @@
     }
     .card-right h1 {
       font-size: 2rem; color: var(--blue);
-      margin-bottom: .5rem;
-      position: relative;
+      margin-bottom: .5rem; position: relative;
     }
     .card-right h1::after {
       content: '';
@@ -139,7 +143,8 @@
       font-size: 1.5rem; color: var(--yellow);
       font-weight: 700; margin: .75rem 0;
     }
-    /* Chips */
+
+    /* Specs como chips */
     .specs {
       display: flex; flex-wrap: wrap; gap: .5rem;
       margin-bottom: 1rem;
@@ -155,17 +160,19 @@
       transform: translateY(-2px);
       box-shadow: 0 4px 12px var(--shadow);
     }
+
     /* Extras grid */
     .extras-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px,1fr));
-      gap: .75rem;
+      grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+      gap: 1rem;
       margin: 1rem 0;
     }
     .extra-card {
-      background: #fff; border-radius: .5rem;
-      box-shadow: 0 2px 6px var(--shadow);
+      background: #f9f9f9; border-radius: .5rem;
       padding: .75rem; text-align: center;
+      font-size: .9rem; line-height: 1.3;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
       transition: transform .2s, box-shadow .2s;
     }
     .extra-card i {
@@ -174,13 +181,15 @@
     }
     .extra-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 4px 12px var(--shadow);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
+
     .description {
       font-size: .95rem; line-height: 1.4;
       white-space: pre-line; margin-bottom: 1rem;
     }
-    /* Buttons */
+
+    /* Botones */
     .btns {
       display: flex; gap: 1rem; margin-bottom: 1rem;
     }
@@ -196,7 +205,7 @@
     .whatsapp { background: #25D366; color: #fff; }
     .share    { background: var(--blue); color: #fff; }
 
-    /* Gallery thumbs */
+    /* Thumbnails */
     .gallery-container {
       display: flex; gap: .5rem; overflow-x: auto;
     }
@@ -265,13 +274,13 @@
     </div>
   </footer>
 
-  <!-- Firebase y Lógica -->
+  <!-- Firebase y lógica -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script>
     // Inicializar Firebase
-    const firebaseConfig = {
+    const cfg = {
       apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
       authDomain: "subastacarhn-40554.firebaseapp.com",
       projectId: "subastacarhn-40554",
@@ -279,7 +288,7 @@
       messagingSenderId: "536785797974",
       appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7"
     };
-    firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(cfg);
     const db = firebase.firestore();
 
     // Menú móvil
@@ -293,7 +302,7 @@
       const m = document.getElementById('mobileGreeting');
       if (user) {
         const name = (user.displayName || user.email.split('@')[0])
-                            .replace(/^./, c => c.toUpperCase());
+                     .replace(/^./, c => c.toUpperCase());
         d.innerHTML = `<a href="perfil.html">Hola, ${name}</a> | <a href="#" onclick="logout()">Cerrar sesión</a>`;
         m.innerHTML = d.innerHTML;
       } else {
@@ -307,7 +316,10 @@
     let imgs = [], idx = 0, carouselTimer;
     function startCarousel() {
       clearInterval(carouselTimer);
-      carouselTimer = setInterval(()=>{ idx=(idx+1)%imgs.length; updateImage(); }, 4000);
+      carouselTimer = setInterval(()=>{
+        idx = (idx+1) % imgs.length;
+        updateImage();
+      }, 4000);
     }
     function stopCarousel() { clearInterval(carouselTimer); }
     function updateImage() {
@@ -320,7 +332,7 @@
     }
     function next() { if(imgs.length>1){ idx=(idx+1)%imgs.length; updateImage(); } }
     function prev() { if(imgs.length>1){ idx=(idx-1+imgs.length)%imgs.length; updateImage(); } }
-    function goTo(i) { idx=i; updateImage(); }
+    function goTo(i)     { idx = i; updateImage(); }
 
     function waInterest() {
       const msg = encodeURIComponent(`Hola, me interesa el vehículo: ${location.href}`);
@@ -340,20 +352,23 @@
         const doc = await db.collection('inventario').doc(id).get();
         if (!doc.exists) return cont.innerHTML = '<p>Vehículo no disponible.</p>';
         const a = { id: doc.id, ...doc.data() };
-        imgs = Array.isArray(a.imagenes) && a.imagenes.length ? a.imagenes : ['Img/placeholder.jpg'];
+        imgs = Array.isArray(a.imagenes) && a.imagenes.length
+               ? a.imagenes
+               : ['Img/placeholder.jpg'];
 
         // Specs chips
         const specs = [
-          ['fas fa-cogs', `Motor: ${a.motor||'–'}`],
-          ['fas fa-palette', `Color: ${a.color||'–'}`],
-          ['fas fa-car', `Tipo: ${a.tipo||'–'}`],
+          ['fas fa-cogs',          `Motor: ${a.motor||'–'}`],
+          ['fas fa-palette',       `Color: ${a.color||'–'}`],
+          ['fas fa-car',           `Tipo: ${a.tipo||'–'}`],
           ['fas fa-tachometer-alt', `${a.kilometraje?.toLocaleString()||'–'} km`]
         ].map(c=>`<span class="chip"><i class="${c[0]}"></i>${c[1]}</span>`).join('');
 
-        // Extras grid (si a.extras es array de strings)
+        // Extras grid if a.extras exists
         const extras = Array.isArray(a.extras)
           ? `<div class="extras-grid">${a.extras.map(e=>
-              `<div class="extra-card"><i class="fas fa-check-circle"></i><span>${e}</span></div>`).join('')}</div>`
+              `<div class="extra-card"><i class="fas fa-check-circle"></i><span>${e}</span></div>`
+            ).join('')}</div>`
           : '';
 
         cont.innerHTML = `
@@ -365,7 +380,10 @@
             </div>
             <div class="card-right">
               <h1>${a.marca} ${a.modelo} (${a.anio})</h1>
-              <div class="price">L ${typeof a.precio==='number'?a.precio.toLocaleString():'N/A'}</div>
+              <div class="price">L ${typeof a.precio==='number'
+                ? a.precio.toLocaleString()
+                : 'N/A'
+              }</div>
               <div class="specs">${specs}</div>
               ${extras}
               <div class="description">${(a.descripcion||'').replace(/\n/g,'<br>')}</div>
@@ -384,7 +402,7 @@
           </div>
         `;
 
-        // Iniciar carrusel y hover-pausa
+        // Iniciar carrusel y pausa on hover
         startCarousel();
         const carEl = document.getElementById('carousel');
         carEl.addEventListener('mouseenter', stopCarousel);
