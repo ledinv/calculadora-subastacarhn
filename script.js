@@ -5,7 +5,7 @@ const firebaseConfig = {
   projectId: "subastacarhn-40554",
   storageBucket: "subastacarhn-40554.appspot.com",
   messagingSenderId: "536785797974",
-  appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+  appId: "1:536785797974:web=e3eabb4dcd898c2ffe8cf7",
   measurementId: "G-QM5N60K8C0"
 };
 firebase.initializeApp(firebaseConfig);
@@ -16,40 +16,37 @@ const db   = firebase.firestore();
 const formatear    = v => new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
 const formatearUSD = v => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
 
-// === PROTECCIÓN DE SESIÓN Y CONFIGURACIÓN INICIAL ===
+// === PROTECCIÓN DE SESIÓN ===
 auth.onAuthStateChanged(user => {
   if (!user) {
     alert("❗ Debes iniciar sesión para usar la calculadora.");
-    window.location.href = 'login.html';
-    return;
+    return window.location.href = 'login.html';
   }
+  // Si está autenticado, mostramos el contenido y cargamos datos
   document.getElementById("content").style.display = "block";
   obtenerTipoCambioAutomatico();
   obtenerContador();
+  initMotorHandlers();
+});
 
+// === INICIALIZACIÓN DEL SELECT MOTOR ===
+function initMotorHandlers() {
   const grupoMotor = document.getElementById("grupoMotor");
   const vinSelect  = document.getElementById("vin");
-  if (vinSelect && grupoMotor) {
-    vinSelect.addEventListener("change", bloquearMotorPorVin);
-    bloquearMotorPorVin();
-  }
-
+  vinSelect.addEventListener("change", bloquearMotorPorVin);
+  bloquearMotorPorVin();
   const hibrido = document.getElementById("hibrido");
-  if (hibrido && grupoMotor) {
-    const actualizarMotor = () => {
-      grupoMotor.style.display = hibrido.value === "si" ? "none" : "block";
-    };
-    hibrido.addEventListener("change", actualizarMotor);
-    actualizarMotor();
-  }
-});
+  hibrido.addEventListener("change", () => {
+    grupoMotor.style.display = hibrido.value === "si" ? "none" : "block";
+  });
+}
 
 // === MENÚ MÓVIL ===
 function toggleMenu() {
   document.getElementById("mobile-menu-links").classList.toggle("open");
 }
 
-// === Oculta o muestra “Cilindraje” según el VIN ===
+// === BLOQUEAR/OCULTAR CILINDRAJE SEGÚN VIN ===
 function bloquearMotorPorVin() {
   const vin   = document.getElementById("vin").value;
   const grupo = document.getElementById("grupoMotor");
@@ -70,16 +67,19 @@ function logout() {
 
 // === OBTENER TIPO DE CAMBIO AUTOMÁTICO ===
 async function obtenerTipoCambioAutomatico() {
+  console.log("Fetch tipo de cambio...");
   try {
     const res       = await fetch("https://subastacar-bch-api.onrender.com/api/tipo-cambio-bch");
-    const { valor } = await res.json();
-    if (valor) {
-      const e2 = document.getElementById("e2");
-      e2.value    = valor;
-      e2.readOnly = true;
-    }
+    const data      = await res.json();
+    const valor     = data.valor ?? data.value;  // en caso cambie la propiedad
+    if (!valor) throw new Error("El API no devolvió 'valor'");
+    const e2 = document.getElementById("e2");
+    e2.value    = valor;
+    e2.readOnly = true;
+    console.log("Tipo de cambio actualizado:", valor);
   } catch (e) {
     console.error("Error al obtener tipo de cambio:", e);
+    // Si falla, dejamos el valor por defecto
   }
 }
 
@@ -124,8 +124,8 @@ function buscarValor(tabla, valor) {
   }
   return 0;
 }
-const buscarBuyerFee      = m => m > 15000 ? +(m*0.06).toFixed(2) : buscarValor(buyerFees, m);
-const buscarVirtualBidFee = m => m > 8000  ? 160              : buscarValor(virtualBidFees, m);
+const buscarBuyerFee      = m => m > 15000 ? +(m * 0.06).toFixed(2)       : buscarValor(buyerFees, m);
+const buscarVirtualBidFee = m => m > 8000  ? 160                          : buscarValor(virtualBidFees, m);
 
 // === FUNCIÓN CALCULAR ===
 function calcular() {
@@ -143,12 +143,12 @@ function calcular() {
   const esHibrido   = getEl("hibrido").value === "si";
   const usaAmnistia = anio <= 2005;
 
-  // 1) Validación campos obligatorios
+  // 1) Validación básica
   if (!montoOferta || !tipoCambio || !vin || !tipo) {
     alert("Por favor completa todos los campos requeridos.");
     return;
   }
-  // 2) Validar cilindraje sólo cuando VIN sea "otros"
+  // 2) Solo exigir motor cuando VIN sea "otros"
   if (vin === "otros" && tipo === "TURISMO" && !esHibrido && !motor) {
     alert("Por favor selecciona el cilindraje del motor.");
     return;
@@ -166,7 +166,7 @@ function calcular() {
   // --- conversión a Lempiras ---
   const totalCIFHNL = totalCIFUSD * tipoCambio;
   const o3          = 50 * tipoCambio;
-  const o4          = totalSubastaUSD * tipoCambio * 0.015;
+  const o4          = totalSubastaUSD * tipoCambio * 0.015; // primero USD→LPS, luego 1.5%
   const baseImp     = totalCIFHNL + o3 + o4 + gateFee * tipoCambio;
 
   // --- impuestos DAI / ISC / ISV ---
@@ -204,30 +204,30 @@ function calcular() {
 
   const totalImportacion = totalCIFHNL + dai + isc + isv + gastosFijos;
 
-  // --- prepara detalles y muestra ---
+  // --- preparar detalles y mostrar ---
   const detalles = [
-    ["MONTO DE OFERTA",     montoOferta,       "usd"],
-    ["ENVIRONMENTAL FEE",   environmentalFee,  "usd"],
-    ["VIRTUAL BID FEE",     virtualFee,        "usd"],
-    ["BUYER FEE",           buyerFee,          "usd"],
-    ["GATE FEE",            gateFee,           "usd"],
-    ["TOTAL PRECIO SUBASTA",totalSubastaUSD,   "usd"],
-    ["VALOR DE BARCO",      precioBarco,       "usd"],
-    ["PRECIO DE GRÚA",      precioGrua,        "usd"],
-    ["TOTAL ENVÍO MARÍTIMO",totalEnvioUSD,     "usd"],
-    ["TOTAL CIF EN USD",    totalCIFUSD,       "usd"],
-    ["TOTAL CIF EN HNL",    totalCIFHNL,       "hnl"],
-    ["DAI",                 dai,               "hnl"],
-    ["ISC",                 isc,               "hnl"],
-    ["ISV",                 isv,               "hnl"],
-    ["ECOTASA",             ecotasa,           "hnl"],
-    ["ADUANERO",            aduanero,          "hnl"],
-    ["VOTAINER",            votainer,          "hnl"],
-    ["TRANSFERENCIA INT.",  transferencia,     "hnl"],
-    ["MATRÍCULA",           matricula,         "hnl"],
-    ["PAQUETE AMNISTÍA",    paqueteAmnistia,   "hnl"],
-    ["TOTAL GASTOS FIJOS",  gastosFijos,       "hnl"],
-    ["TOTAL FINAL",         totalImportacion,  "hnl"]
+    ["MONTO DE OFERTA",     montoOferta,      "usd"],
+    ["ENVIRONMENTAL FEE",   environmentalFee, "usd"],
+    ["VIRTUAL BID FEE",     virtualFee,       "usd"],
+    ["BUYER FEE",           buyerFee,         "usd"],
+    ["GATE FEE",            gateFee,          "usd"],
+    ["TOTAL PRECIO SUBASTA",totalSubastaUSD,  "usd"],
+    ["VALOR DE BARCO",      precioBarco,      "usd"],
+    ["PRECIO DE GRÚA",      precioGrua,       "usd"],
+    ["TOTAL ENVÍO MARÍTIMO",totalEnvioUSD,    "usd"],
+    ["TOTAL CIF EN USD",    totalCIFUSD,      "usd"],
+    ["TOTAL CIF EN HNL",    totalCIFHNL,      "hnl"],
+    ["DAI",                 dai,              "hnl"],
+    ["ISC",                 isc,              "hnl"],
+    ["ISV",                 isv,              "hnl"],
+    ["ECOTASA",             ecotasa,          "hnl"],
+    ["ADUANERO",            aduanero,         "hnl"],
+    ["VOTAINER",            votainer,         "hnl"],
+    ["TRANSFERENCIA INT.",  transferencia,    "hnl"],
+    ["MATRÍCULA",           matricula,        "hnl"],
+    ["PAQUETE AMNISTÍA",    paqueteAmnistia,  "hnl"],
+    ["TOTAL GASTOS FIJOS",  gastosFijos,      "hnl"],
+    ["TOTAL FINAL",         totalImportacion, "hnl"]
   ];
 
   mostrarResultados(detalles);
@@ -324,3 +324,5 @@ async function guardarHistorial(detalles, total) {
     console.error("❌ Error guardando historial:", e);
   }
 }
+
+// === FIN DEL SCRIPT ===
