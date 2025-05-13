@@ -27,10 +27,8 @@ function bloquearMotorPorVin() {
 }
 
 // Formato monetario
-const formatear = v =>
-  new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
-const formatearUSD = v =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
+const formatear = v => new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
+const formatearUSD = v => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
 
 // Obtener tipo de cambio automático
 async function obtenerTipoCambioAutomatico() {
@@ -98,7 +96,6 @@ function calcular() {
   const o3 = 50 * e2;
   const o4 = c6 * 0.015 * e2;
 
-  // === LÓGICA PERSONALIZADA DE IMPUESTOS ===
   const tieneCafta = c13 === "1,4,5";
   let c15 = 0;
 
@@ -197,6 +194,32 @@ function calcular() {
   guardarHistorial(detallesFormateados, formatear(c26));
 }
 
+// Guardar historial en Firebase
+async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  try {
+    const historialRef = db.collection("clients").doc(user.uid).collection("historial");
+    const snapshot = await historialRef.orderBy("fecha", "desc").get();
+
+    if (snapshot.size >= 100) {
+      const ultimo = snapshot.docs[snapshot.size - 1];
+      await historialRef.doc(ultimo.id).delete();
+    }
+
+    await historialRef.add({
+      nombre: "Sin título",
+      fecha: firebase.firestore.FieldValue.serverTimestamp(),
+      detalles: detallesFormateados,
+      total: totalFinalFormateado
+    });
+
+  } catch (error) {
+    console.error("❌ Error al guardar historial:", error);
+  }
+}
+
 function mostrarDetalles() {
   const tabla = document.getElementById("detalleResultados");
   const btn = document.getElementById("toggleBtn");
@@ -257,18 +280,17 @@ function reiniciar() {
   bloquearMotorPorVin();
 }
 
-// Firebase login control
+// Firebase login
 firebase.auth().onAuthStateChanged(user => {
   const desktop = document.getElementById('userGreeting');
   const mobile = document.getElementById('mobileGreeting');
   if (user) {
-    const name = (user.displayName || user.email.split('@')[0])
-      .replace(/^./, c => c.toUpperCase());
-    desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
-    mobile.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
+    const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
+    if (desktop) desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
+    if (mobile) mobile.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
   } else {
-    desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
-    mobile.innerHTML = desktop.innerHTML;
+    if (desktop) desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+    if (mobile) mobile.innerHTML = desktop.innerHTML;
   }
 });
 
@@ -282,7 +304,8 @@ async function obtenerContador() {
   try {
     const res = await fetch(endpoint);
     const data = await res.json();
-    document.getElementById('contadorClics').textContent = `Cálculos: ${data.clics}`;
+    const el = document.getElementById('contadorClics');
+    if (el) el.textContent = `Cálculos: ${data.clics}`;
   } catch (e) {
     console.error("Error al obtener el contador:", e);
   }
@@ -291,13 +314,14 @@ async function registrarClic() {
   try {
     const res = await fetch(endpoint, { method: "POST" });
     const data = await res.json();
-    document.getElementById('contadorClics').textContent = `Cálculos: ${data.clics}`;
+    const el = document.getElementById('contadorClics');
+    if (el) el.textContent = `Cálculos: ${data.clics}`;
   } catch (e) {
     console.error("Error al registrar clic:", e);
   }
 }
 
-// Inicialización al cargar
+// Al cargar la página
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("c13").value = "OTROS";
   bloquearMotorPorVin();
