@@ -4,175 +4,190 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Calculadora – SubastaCarHN</title>
-
-  <!-- Íconos -->
-  <link rel="manifest" href="Img/site.webmanifest">
-  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
   <meta name="theme-color" content="#002f6c">
 
   <!-- Fuentes -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
-
-  <!-- Estilos -->
+  <!-- Estilos externos -->
   <link rel="stylesheet" href="estilos.css">
 </head>
 
 <body onload="cargarEstados();">
 
-<header class="site-header">
-  <div class="container header-inner">
-    <a href="index.html" class="brand">SubastaCarHN</a>
-    <nav class="nav-links">
-      <a href="calculadora.html">Calculadora</a>
-      <a href="cursos.html">Cursos</a>
-      <a href="inventario.html">Vehículos</a>
-      <a href="https://wa.me/50497330137" target="_blank">Soporte</a>
-      <span id="userGreeting"></span>
-      <span id="contadorClics"></span>
-    </nav>
-    <button class="menu-icon" onclick="toggleMenu()">☰</button>
-  </div>
-  <ul id="mobile-menu-links" class="mobile-nav">
-    <li><a href="calculadora.html">Calculadora</a></li>
-    <li><a href="cursos.html">Cursos</a></li>
-    <li><a href="inventario.html">Vehículos</a></li>
-    <li><a href="https://wa.me/50497330137" target="_blank">Soporte</a></li>
-    <li><span id="mobileGreeting"></span></li>
-  </ul>
-</header>
-
-<div id="content" style="display:none;">
-  <h1 class="titulo">Calculadora de Importación de Vehículos</h1>
-  <p class="soporte">
-    ¿Necesitás ayuda? <a href="https://wa.me/50497330137" target="_blank">Soporte gratuito</a> al
-    <span style="color:green;">+504 9733-0137</span>
-  </p>
-
-  <div class="layout">
-
-    <!-- Banner lateral -->
-    <div class="banner izquierda">
-      <img src="lateral izquierdo.jpeg" alt="Banner Izquierdo">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">SubastaCarHN</a>
+      <nav class="nav-links" aria-label="Menú principal">
+        <a href="calculadora.html">Calculadora</a>
+        <a href="cursos.html">Cursos</a>
+        <a href="inventario.html">Vehículos</a>
+        <a href="https://wa.me/50497330137" target="_blank">Soporte</a>
+        <span id="userGreeting"></span>
+        <span id="contadorClics"></span>
+      </nav>
+      <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
     </div>
+    <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
+      <li><a href="calculadora.html">Calculadora</a></li>
+      <li><a href="cursos.html">Cursos</a></li>
+      <li><a href="inventario.html">Vehículos</a></li>
+      <li><a href="https://wa.me/50497330137" target="_blank">Soporte</a></li>
+      <li><span id="mobileGreeting"></span></li>
+    </ul>
+  </header>
 
-    <!-- Formulario principal -->
-    <div class="contenido-central">
-      <label for="c1">Monto de Oferta $:</label>
-      <input type="number" id="c1" />
+  <div id="content" style="display:none;">
+    <h1 class="titulo">Calculadora de Importación de Vehículos</h1>
+    <p class="soporte">
+      ¿Necesitás ayuda?
+      <a href="https://wa.me/50497330137" target="_blank">Soporte gratuito</a>
+      al <span style="color:green;">+504 9733-0137</span>
+    </p>
 
-      <label for="c7">Precio de Barco $:</label>
-      <input type="number" id="c7" />
-
-      <label for="c8">Precio de Grúa $:</label>
-      <input type="number" id="c8" />
-
-      <label for="e2">Tipo de Cambio:</label>
-      <input type="number" id="e2" value="25.90" readonly />
-
-      <label for="c13">VIN:</label>
-      <select id="c13" onchange="bloquearMotorPorVin()">
-        <option value="OTROS" selected>OTROS</option>
-        <option value="1,4,5">1,4,5</option>
-      </select>
-
-      <label for="c14">Tipo de Vehículo:</label>
-      <select id="c14">
-        <option value="OTROS">OTROS</option>
-        <option value="PICK UP">PICK UP</option>
-      </select>
-
-      <label for="motor">Tipo de Motor:</label>
-      <select id="motor">
-        <option value="">Seleccionar...</option>
-        <option value="1.5 Inferior">1.5 Inferior</option>
-        <option value="Superior 1.5">Superior a 1.5</option>
-      </select>
-
-      <button class="styled-btn" onclick="calcular()">Calcular</button>
-      <button class="styled-btn" onclick="reiniciar()">Reiniciar</button>
-    </div>
-
-    <!-- Buscador de grúas -->
-    <div id="buscador-gruas" class="formulario-box">
-      <h3 style="margin-bottom: 10px;">Busca el precio de tu grúa</h3>
-
-      <label for="estadoSelect">Estado:</label>
-      <select id="estadoSelect" onchange="cargarCiudades()">
-        <option value="">Selecciona un estado</option>
-      </select>
-
-      <label for="ciudadSelect">Ciudad:</label>
-      <select id="ciudadSelect">
-        <option value="">Selecciona una ciudad</option>
-      </select>
-
-      <label for="vehiculoSelect">Tipo de vehículo:</label>
-      <select id="vehiculoSelect">
-        <option value="">Selecciona tipo de vehículo</option>
-        <option>Turismos Pequeños</option>
-        <option>Turismos Grande</option>
-        <option>Camionetas Regulares</option>
-        <option>Camionetas Grandes</option>
-        <option>Camionetas XL</option>
-        <option>Motos Regulares</option>
-        <option>Marcas Exclusivas</option>
-        <option>Cabina Sencilla (no excediendo 16')</option>
-        <option>Cabina y Media (baja)</option>
-        <option>Cabina y Media (alto) y doble cabina</option>
-        <option>Extra Grandes (más de 17'3'')</option>
-        <option>Pick Up’s / Vehículos Extra-Dimensionados</option>
-      </select>
-
-      <button onclick="buscarRuta()">Buscar precios</button>
-
-      <div id="resultadoGrua" style="margin-top: 10px; display: none;">
-        <p id="precioBarco"></p>
-        <p id="precioGrua"></p>
+    <div class="layout">
+      <!-- Banner izquierdo -->
+      <div class="banner izquierda">
+        <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20izquierdo.jpeg"
+             alt="Banner Izquierdo">
       </div>
 
-      <div id="mensajeError" style="margin-top: 10px; color: red; display: none;">
-        ❌ No hay datos para esa combinación. Por favor consulte directamente con su naviera.
+      <!-- Formulario principal -->
+      <div class="contenido-central">
+        <label for="c1">Monto de Oferta $:</label>
+        <input type="number" id="c1" />
+
+        <label for="c7">Precio de Barco $:</label>
+        <input type="number" id="c7" />
+
+        <label for="c8">Precio de Grúa $:</label>
+        <input type="number" id="c8" />
+
+        <label for="e2">Tipo de Cambio:</label>
+        <input type="number" id="e2" value="25.90" readonly />
+
+        <label for="vin">VIN:</label>
+        <select id="vin" onchange="bloquearMotorPorVin()">
+          <option value="otros" selected>Otros</option>
+          <option value="145">1, 4 o 5</option>
+        </select>
+
+        <label for="tipoVehiculo">Tipo de Vehículo:</label>
+        <select id="tipoVehiculo">
+          <option value="TURISMO">Turismo</option>
+          <option value="PICKUP">Pick-Up</option>
+          <option value="MOTO">Motocicleta</option>
+          <option value="CAMION">Camión</option>
+          <option value="AGRICOLA">Maquinaria Agrícola</option>
+        </select>
+
+        <label for="año">Año del Vehículo:</label>
+        <select id="año">
+          <option value="2005">2005 o menor</option>
+          <option value="2006">2006 o mayor</option>
+        </select>
+
+        <label for="hibrido">Vehículo Híbrido:</label>
+        <select id="hibrido" onchange="ocultarMotorSiHibrido()">
+          <option value="no">No</option>
+          <option value="si">Sí</option>
+        </select>
+
+        <div id="grupoMotor">
+          <label for="motor">Cilindraje:</label>
+          <select id="motor">
+            <option value="">Seleccionar...</option>
+            <option value="1.5 Inferior">1.5 Inferior</option>
+            <option value="Superior 1.5">Superior a 1.5</option>
+          </select>
+        </div>
+
+        <div class="botones-detalle">
+          <button class="styled-btn" onclick="calcular()">Calcular</button>
+          <button class="styled-btn" onclick="reiniciar()">Reiniciar</button>
+        </div>
       </div>
 
-      <p style="font-size: 0.85rem; margin-top: 10px; color: #666;">
-        ⚠️ Estos precios son <strong>referenciales</strong>. Consulte con su naviera para valores exactos.
-      </p>
+      <!-- Buscador de grúas -->
+      <div id="buscador-gruas" class="formulario-box">
+        <h3>Busca el precio de tu grúa</h3>
+
+        <label for="estadoSelect">Estado:</label>
+        <select id="estadoSelect" onchange="cargarCiudades()">
+          <option value="">Selecciona un estado</option>
+        </select>
+
+        <label for="ciudadSelect">Ciudad:</label>
+        <select id="ciudadSelect">
+          <option value="">Selecciona una ciudad</option>
+        </select>
+
+        <label for="vehiculoSelect">Tipo de vehículo:</label>
+        <select id="vehiculoSelect">
+          <option value="">Selecciona tipo de vehículo</option>
+          <option>Turismos Pequeños</option>
+          <option>Turismos Grandes</option>
+          <option>Camionetas Regulares</option>
+          <option>Camionetas Grandes</option>
+          <option>Camionetas XL</option>
+          <option>Motos Regulares</option>
+          <option>Marcas Exclusivas</option>
+          <option>Cabina Sencilla (≤16')</option>
+          <option>Cabina y Media (baja)</option>
+          <option>Cabina y Media (alto/doble)</option>
+          <option>Extra Grandes (>17'3")</option>
+          <option>Pick Up’s / Extra-Dimensionados</option>
+        </select>
+
+        <button class="styled-btn" onclick="buscarRuta()">Buscar precios</button>
+
+        <div id="resultadoGrua" class="resultado-grua" style="display:none;">
+          <p id="precioBarco"></p>
+          <p id="precioGrua"></p>
+        </div>
+
+        <div id="mensajeError" class="mensaje-error" style="display:none;">
+          ❌ No hay datos para esa combinación. Consulte directamente con su naviera.
+        </div>
+
+        <p class="nota-grua">
+          ⚠️ Estos precios son <strong>referenciales</strong>. Consulte con su naviera para valores exactos.
+        </p>
+      </div>
     </div>
 
+    <div id="results"></div>
+
+    <a href="https://wa.me/50497330137" class="soporte-gratis" target="_blank">
+      Cotízalo ya
+    </a>
   </div>
 
-  <div id="results"></div>
-  <a href="https://wa.me/50497330137" class="soporte-gratis" target="_blank">Cotízalo ya</a>
-</div>
-
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <nav class="footer-nav">
-      <ul class="footer-list">
-        <li><a href="calculadora.html">Calculadora</a></li>
-        <li><a href="inventario.html">Vehículos</a></li>
-        <li><a href="cursos.html">Cursos</a></li>
-        <li><a href="contacto.html">Contacto</a></li>
-      </ul>
-    </nav>
-    <div class="social-links">
-      <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
-      <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
-      <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <nav class="footer-nav" aria-label="Enlaces de pie de página">
+        <ul class="footer-list">
+          <li><a href="calculadora.html">Calculadora</a></li>
+          <li><a href="inventario.html">Vehículos</a></li>
+          <li><a href="cursos.html">Cursos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="social-links">
+        <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
+        <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
+        <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
+      </div>
+      <div class="footer-copy">&copy; 2025 SubastaCarHN. Todos los derechos reservados.</div>
     </div>
-    <div class="footer-copy">&copy; 2025 SubastaCarHN. Todos los derechos reservados.</div>
-  </div>
-</footer>
+  </footer>
 
-<!-- Firebase + Scripts -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-<script src="script.js"></script>
-<script src="gruas.js"></script>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <!-- Lógica de grúas y calculadora -->
+  <script src="gruas.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
