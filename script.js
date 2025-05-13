@@ -5,7 +5,7 @@ const firebaseConfig = {
   projectId: "subastacarhn-40554",
   storageBucket: "subastacarhn-40554.appspot.com",
   messagingSenderId: "536785797974",
-  appId: "1:536785797974:web=e3eabb4dcd898c2ffe8cf7",
+  appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
   measurementId: "G-QM5N60K8C0"
 };
 firebase.initializeApp(firebaseConfig);
@@ -35,17 +35,17 @@ auth.onAuthStateChanged(user => {
   obtenerTipoCambioAutomatico();
   obtenerContador();
 
-  // ————— Grupo Motor —————
+  // ————— Grupo Motor (cilindraje) —————
   const grupoMotor = document.getElementById("grupoMotor");
 
   // ————— Ocultar/Motor según VIN —————
   const vinSelect = document.getElementById("vin");
   if (vinSelect && grupoMotor) {
     vinSelect.addEventListener("change", bloquearMotorPorVin);
-    bloquearMotorPorVin(); // aplica al cargar
+    bloquearMotorPorVin(); // aplicación inicial
   }
 
-  // ————— Mostrar u ocultar motor si es híbrido —————
+  // ————— Mostrar/Ocultar motor si es híbrido —————
   const hibrido = document.getElementById("hibrido");
   if (hibrido && grupoMotor) {
     const actualizarMotor = () => {
@@ -69,11 +69,11 @@ function bloquearMotorPorVin() {
 
   if (vin === "otros") {
     grupo.style.display = "block";   // mostrar
-    motor.disabled = false;            // habilitar
+    motor.disabled = false;          // habilitar
   } else {
     grupo.style.display = "none";    // ocultar
     motor.value = "";                // limpiar
-    motor.disabled = true;            // deshabilitar
+    motor.disabled = true;           // deshabilitar
   }
 }
 
@@ -81,22 +81,22 @@ function logout() {
   firebase.auth().signOut().then(() => location.reload());
 }
 
-// === OBTENER TIPO DE CAMBIO AUTOMÁTICO (BCH desde backend) ===
+// === OBTENER TIPO DE CAMBIO AUTOMÁTICO ===
 async function obtenerTipoCambioAutomatico() {
   try {
     const res = await fetch("https://subastacar-bch-api.onrender.com/api/tipo-cambio-bch");
-    const data = await res.json();
-    if (data.valor) {
+    const { valor } = await res.json();
+    if (valor) {
       const e2 = document.getElementById("e2");
-      e2.value = data.valor;
+      e2.value = valor;
       e2.readOnly = true;
     }
-  } catch (error) {
-    console.error("Error al obtener tipo de cambio:", error);
+  } catch (e) {
+    console.error("Error al obtener tipo de cambio:", e);
   }
 }
 
-// === CONTADOR DE CLICS (Cálculos realizados) ===
+// === CONTADOR DE CLICS ===
 const endpointContador = "https://contador-clics-backend.onrender.com/contador";
 
 async function obtenerContador() {
@@ -104,8 +104,8 @@ async function obtenerContador() {
     const res = await fetch(endpointContador);
     const { clics } = await res.json();
     document.getElementById("contadorClics").textContent = `Cálculos: ${clics}`;
-  } catch (error) {
-    console.error("Error al obtener contador:", error);
+  } catch (e) {
+    console.error("Error al obtener contador:", e);
   }
 }
 
@@ -114,25 +114,24 @@ async function registrarClic() {
     const res = await fetch(endpointContador, { method: "POST" });
     const { clics } = await res.json();
     document.getElementById("contadorClics").textContent = `Cálculos: ${clics}`;
-  } catch (error) {
-    console.error("Error al registrar clic:", error);
+  } catch (e) {
+    console.error("Error al registrar clic:", e);
   }
 }
 
-// === TABLAS DE FEES COPART ===
+// === TABLAS DE FEES ===
 const buyerFees = [
-  [50, 1], [100, 25], [200, 60], [300, 85], [350, 100], [400, 125],
-  [450, 135], [500, 145], [550, 155], [600, 170], [700, 195], [800, 215],
-  [900, 230], [1000, 250], [1200, 270], [1300, 285], [1400, 300], [1500, 315],
-  [1600, 330], [1700, 350], [1800, 370], [2000, 390], [2400, 425], [2500, 460],
-  [3000, 505], [3500, 555], [4000, 600], [4500, 625], [5000, 650], [5500, 675],
-  [6000, 700], [7000, 755], [7500, 775], [8000, 800], [8500, 820], [9000, 820],
-  [10000, 850], [11000, 850], [11500, 860], [12000, 875], [12500, 890], [13000, 890],
-  [14000, 900], [15000, 900]
+  [50,1],[100,25],[200,60],[300,85],[350,100],[400,125],[450,135],[500,145],
+  [550,155],[600,170],[700,195],[800,215],[900,230],[1000,250],[1200,270],
+  [1300,285],[1400,300],[1500,315],[1600,330],[1700,350],[1800,370],[2000,390],
+  [2400,425],[2500,460],[3000,505],[3500,555],[4000,600],[4500,625],[5000,650],
+  [5500,675],[6000,700],[7000,755],[7500,775],[8000,800],[8500,820],[9000,820],
+  [10000,850],[11000,850],[11500,860],[12000,875],[12500,890],[13000,890],
+  [14000,900],[15000,900]
 ];
 const virtualBidFees = [
-  [100, 50], [500, 65], [1000, 85], [1500, 95], [2000, 110], [4000, 125],
-  [6000, 145], [8000, 160], [9000, 160], [10000, 160], [200000, 160]
+  [100,50],[500,65],[1000,85],[1500,95],[2000,110],[4000,125],
+  [6000,145],[8000,160],[9000,160],[10000,160],[200000,160]
 ];
 
 function buscarValor(tabla, valor) {
@@ -146,11 +145,11 @@ const buscarBuyerFee = monto =>
 const buscarVirtualBidFee = monto =>
   monto > 8000 ? 160 : buscarValor(virtualBidFees, monto);
 
-// === FUNCIÓN PRINCIPAL ===
+// === FUNCIÓN CALCULAR ===
 function calcular() {
   registrarClic();
 
-  const getEl = (...ids) => ids.map(id => document.getElementById(id)).find(el => el);
+  const getEl = id => document.getElementById(id);
   const montoOferta = parseFloat(getEl("c1").value) || 0;
   const precioBarco = parseFloat(getEl("c7").value) || 0;
   const precioGrua = parseFloat(getEl("c8").value) || 0;
@@ -162,7 +161,8 @@ function calcular() {
   const esHibrido = getEl("hibrido").value === "si";
   const usaAmnistia = anio <= 2005;
 
-  if (!montoOferta || !tipoCambio || !vin || !tipo || (tipo === "TURISMO" && !esHibrido && !motor)) {
+  if (!montoOferta || !tipoCambio || !vin || !tipo ||
+      (tipo === "TURISMO" && !esHibrido && !motor)) {
     alert("Por favor completa todos los campos requeridos.");
     return;
   }
@@ -179,7 +179,7 @@ function calcular() {
   // Conversión a Lempiras
   const totalCIFHNL = totalCIFUSD * tipoCambio;
   const o3 = 50 * tipoCambio;
-  const o4 = totalSubastaUSD * tipoCambio * 0.015;
+  const o4 = totalSubastaUSD * tipoCambio * 0.015; // Convertir primero a LPS y luego aplicar 1.5%
   const baseImponible = totalCIFHNL + o3 + o4 + gateFee * tipoCambio;
 
   // Impuestos
@@ -190,22 +190,14 @@ function calcular() {
         ? baseImponible * (motor === "1.5 Inferior" ? 0.05 : 0.15)
         : ["PICKUP","MOTO","CAMION"].includes(tipo)
         ? baseImponible * 0.10
-        : tipo === "AGRICOLA"
-        ? baseImponible * 0.05
         : 0;
     }
     if (!["PICKUP","CAMION","AGRICOLA"].includes(tipo)) {
-      isc = tipo === "MOTO"
-        ? baseImponible * 0.10
-        : totalCIFUSD <= 7000
-        ? baseImponible * 0.10
-        : totalCIFUSD <= 10000
-        ? baseImponible * 0.15
-        : totalCIFUSD <= 20000
-        ? baseImponible * 0.20
-        : totalCIFUSD <= 30000
-        ? baseImponible * 0.30
-        : baseImponible * 0.45;
+      if (totalCIFUSD <= 7000)          isc = baseImponible * 0.10;
+      else if (totalCIFUSD <= 10000)    isc = baseImponible * 0.15;
+      else if (totalCIFUSD <= 20000)    isc = baseImponible * 0.20;
+      else if (totalCIFUSD <= 50000)    isc = baseImponible * 0.30;
+      else                               isc = baseImponible * 0.45;
     }
   }
   if (!esHibrido && tipo !== "AGRICOLA") {
@@ -214,7 +206,7 @@ function calcular() {
 
   // Ecotasa y gastos fijos
   const ecotasa = (!usaAmnistia && !esHibrido)
-    ? montoOferta <= 15000 ? 5000 : montoOferta <= 25000 ? 7000 : 10000
+    ? (montoOferta <= 15000 ? 5000 : montoOferta <= 25000 ? 7000 : 10000)
     : 0;
   const aduanero = 4000;
   const votainer = 7500;
@@ -243,9 +235,9 @@ function calcular() {
     ["ISV", isv, "hnl"],
     ["ECOTASA", ecotasa, "hnl"],
     ["ADUANERO", aduanero, "hnl"],
-    ["VOTAINER - CONSOLIDADOS HN", votainer, "hnl"],
-    ["TRANSFERENCIA INTERNACIONAL", transferencia, "hnl"],
-    ["MATRÍCULA Y PLACAS", matricula, "hnl"],
+    ["VOTAINER", votainer, "hnl"],
+    ["TRANSFERENCIA INT.", transferencia, "hnl"],
+    ["MATRÍCULA", matricula, "hnl"],
     ["PAQUETE AMNISTÍA", paqueteAmnistia, "hnl"],
     ["TOTAL GASTOS FIJOS", gastosFijos, "hnl"],
     ["TOTAL FINAL", totalImportacion, "hnl"]
@@ -253,15 +245,21 @@ function calcular() {
 
   mostrarResultados(detalles);
   guardarHistorial(
-    detalles.map(([t,v,u]) => ({ titulo: t, valor: u==="usd"?formatearUSD(v):formatear(v) })),
+    detalles.map(([t, v, u]) => ({
+      titulo: t,
+      valor: u === "usd" ? formatearUSD(v) : formatear(v)
+    })),
     formatear(totalImportacion)
   );
 }
 
 function mostrarResultados(detalles) {
-  const filas = detalles.map(d => `<tr><td>${d[0]}</td><td>${d[2]==="usd"?formatearUSD(d[1]):formatear(d[1])}</td></tr>`).join('');
-  const totalFinal = formatear(detalles[detalles.length-1][1]);
-  document.getElementById('results').innerHTML = `
+  const filas = detalles
+    .map(([t, v, u]) =>
+      `<tr><td>${t}</td><td>${u === "usd" ? formatearUSD(v) : formatear(v)}</td></tr>`
+    ).join("");
+  const totalFinal = formatear(detalles[detalles.length - 1][1]);
+  document.getElementById("results").innerHTML = `
     <div style="text-align:center;">
       <p><strong>Total Final:</strong> ${totalFinal}</p>
       <div class="botones-detalle">
@@ -269,53 +267,85 @@ function mostrarResultados(detalles) {
         <button onclick="descargarPDF()" class="styled-btn">Descargar en PDF</button>
         <button onclick="compartirWhatsApp()" class="styled-btn">Compartir por WhatsApp</button>
       </div>
-      <div id="detalleResultados" style="display:none;"></div>
+      <div id="detalleResultados" style="display:none;">
+        <table class="tabla-detalles">
+          <tr><th>Concepto</th><th>Valor</th></tr>
+          ${filas}
+        </table>
+      </div>
     </div>`;
-  document.querySelector('#detalleResultados').innerHTML = `<table class="tabla-detalles"><tr><th>Concepto</th><th>Valor</th></tr>${filas}</table>`;
 }
 
 function mostrarDetalles() {
   const tabla = document.getElementById("detalleResultados");
   const btn = document.getElementById("toggleBtn");
   const visible = tabla.style.display === "block";
-  tabla.style.display = visible?"none":"block";
-  btn.textContent = visible?"Ver detalles":"Ocultar detalles";
+  tabla.style.display = visible ? "none" : "block";
+  btn.textContent = visible ? "Ver detalles" : "Ocultar detalles";
 }
 
 function descargarPDF() {
   mostrarDetalles();
-  const contenido = document.getElementById('results').innerHTML;
-  const w = window.open('','_blank','width=800,height=600');
-  w.document.write(`<html><head><title>PDF</title><style>body{font-family:Helvetica;margin:20px;} .tabla-detalles{margin:20px auto;border-collapse:collapse;width:100%;max-width:600px;} .tabla-detalles th, .tabla-detalles td{padding:8px 12px;border:1px solid #ddd;} .tabla-detalles th{background:#f2f2f2;}</style></head><body>${contenido}</body></html>`);
+  const contenido = document.getElementById("results").innerHTML;
+  const w = window.open("", "_blank", "width=800,height=600");
+  w.document.write(`
+    <html><head><title>PDF</title>
+    <style>
+      body { font-family: Helvetica; margin: 20px; }
+      .tabla-detalles {
+        margin: 20px auto;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 600px;
+      }
+      .tabla-detalles th, .tabla-detalles td {
+        padding: 8px 12px; border: 1px solid #ddd;
+      }
+      .tabla-detalles th { background: #f2f2f2; }
+    </style></head><body>${contenido}</body></html>`);
   w.document.close();
-  setTimeout(()=>w.print(),500);
+  setTimeout(() => w.print(), 500);
 }
 
 function compartirWhatsApp() {
   let texto = "¡Hola! Este es tu cálculo de importación:\n\n";
-  document.querySelectorAll("#detalleResultados table tr").forEach(row=>{
-    const cols=row.querySelectorAll("td,th");
-    if(cols.length===2) texto+=`${cols[0].innerText}: ${cols[1].innerText}\n`;
+  document.querySelectorAll("#detalleResultados table tr").forEach(row => {
+    const cols = row.querySelectorAll("td, th");
+    if (cols.length === 2) {
+      texto += `${cols[0].innerText}: ${cols[1].innerText}\n`;
+    }
   });
-  window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`,'_blank');
+  window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, "_blank");
 }
 
 function reiniciar() {
-  ['c1','c7','c8'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('e2').value='25.90';
-  ['vin','tipoVehiculo','año','hibrido'].forEach(id=>document.getElementById(id).selectedIndex=0);
-  const motor=document.getElementById('motor'); if(motor) motor.value='';
-  const grupo = document.getElementById('grupoMotor'); if(grupo) grupo.style.display='block';
-  document.getElementById('results').innerHTML='';
+  ["c1", "c7", "c8"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("e2").value = "25.90";
+  ["vin", "tipoVehiculo", "año", "hibrido"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el.tagName === "SELECT") el.selectedIndex = 0;
+  });
+  const motor = document.getElementById("motor");
+  if (motor) motor.value = "";
+  const grupo = document.getElementById("grupoMotor");
+  if (grupo) grupo.style.display = "block";
+  document.getElementById("results").innerHTML = "";
 }
 
-async function guardarHistorial(detalles,totalFormateado) {
+async function guardarHistorial(detalles, totalFormateado) {
   const user = auth.currentUser;
-  if(!user)return;
-  try{
-    const ref = db.collection('clients').doc(user.uid).collection('historial');
-    const snap = await ref.orderBy('fecha','desc').get();
-    if(snap.size>=100) await ref.doc(snap.docs[snap.size-1].id).delete();
-    await ref.add({ nombre:'Sin título', fecha:firebase.firestore.FieldValue.serverTimestamp(), detalles, total:totalFormateado });
-  }catch(e){console.error('❌ Error guardando historial:',e);}  
+  if (!user) return;
+  try {
+    const ref = db.collection("clients").doc(user.uid).collection("historial");
+    const snap = await ref.orderBy("fecha", "desc").get();
+    if (snap.size >= 100) await ref.doc(snap.docs[snap.size-1].id).delete();
+    await ref.add({
+      nombre: "Sin título",
+      fecha: firebase.firestore.FieldValue.serverTimestamp(),
+      detalles,
+      total: totalFormateado
+    });
+  } catch (e) {
+    console.error("❌ Error guardando historial:", e);
+  }
 }
