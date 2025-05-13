@@ -338,7 +338,7 @@ async function guardarHistorial(detalles, totalFormateado) {
   try {
     const ref = db.collection("clients").doc(user.uid).collection("historial");
     const snap = await ref.orderBy("fecha", "desc").get();
-    if (snap.size >= 100) await ref.doc(snap.docs[snap.size-1].id).delete();
+    if (snap.size >= 100) await ref.doc(snap.docs[snap.size - 1].id).delete();
     await ref.add({
       nombre: "Sin título",
       fecha: firebase.firestore.FieldValue.serverTimestamp(),
