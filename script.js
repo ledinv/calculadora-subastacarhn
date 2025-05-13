@@ -33,9 +33,18 @@ auth.onAuthStateChanged(user => {
     obtenerTipoCambioAutomatico();
     obtenerContador();
 
+    // ————— Grupo Motor —————
+    const grupoMotor = document.getElementById("grupoMotor");
+
+    // ————— Ocultar/Motor según VIN —————
+    const vinSelect = document.getElementById("vin");
+    if (vinSelect && grupoMotor) {
+      vinSelect.addEventListener("change", bloquearMotorPorVin);
+      bloquearMotorPorVin(); // aplica al cargar
+    }
+
     // Mostrar u ocultar motor si es híbrido
     const hibrido = document.getElementById("hibrido");
-    const grupoMotor = document.getElementById("grupoMotor");
     if (hibrido && grupoMotor) {
       const actualizarMotor = () => {
         grupoMotor.style.display = hibrido.value === "si" ? "none" : "block";
@@ -51,9 +60,26 @@ function toggleMenu() {
   document.getElementById("mobile-menu-links").classList.toggle("open");
 }
 
+// ————— Oculta o muestra el bloque “Cilindraje” según el VIN —————
+function bloquearMotorPorVin() {
+  const vin = document.getElementById("vin").value;
+  const grupo = document.getElementById("grupoMotor");
+  const motor = document.getElementById("motor");
+
+  if (vin === "otros") {
+    grupo.style.display = "block";   // mostrar
+    motor.disabled = false;            // habilitar
+  } else {
+    grupo.style.display = "none";    // ocultar
+    motor.value = "";                // limpiar
+    motor.disabled = true;            // deshabilitar
+  }
+}
+
 function logout() {
   firebase.auth().signOut().then(() => location.reload());
 }
+
 // === OBTENER TIPO DE CAMBIO AUTOMÁTICO (BCH desde backend) ===
 async function obtenerTipoCambioAutomatico() {
   try {
@@ -119,6 +145,7 @@ const buscarBuyerFee = c1 =>
   c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
 const buscarVirtualBidFee = c1 =>
   c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
+
 function calcular() {
   registrarClic();
 
@@ -164,7 +191,8 @@ function calcular() {
   const totalCIFHNL = totalCIFUSD * tipoCambio;
 
   const o3 = 50 * tipoCambio;
-  const o4 = totalCIFHNL * 0.015;
+  // o4: convertir primero totalSubastaUSD a LPS y luego aplicar 1.5%
+  const o4 = totalSubastaUSD * tipoCambio * 0.015;
   const baseImponible = totalCIFHNL + o3 + o4 + gateFee * tipoCambio;
 
   // Impuestos
@@ -245,6 +273,7 @@ function calcular() {
     formatear(totalImportacion)
   );
 }
+
 function mostrarResultados(detalles) {
   const filas = detalles.map(([t, v, u]) =>
     `<tr><td>${t}</td><td>${u === "usd" ? formatearUSD(v) : formatear(v)}</td></tr>`
@@ -299,64 +328,4 @@ function descargarPDF() {
       .tabla-detalles th { background: #f2f2f2; }
     </style></head><body>${contenido}</body></html>
   `);
-  ventana.document.close();
-  setTimeout(() => ventana.print(), 500);
-}
-
-function compartirWhatsApp() {
-  let texto = "¡Hola! Este es tu cálculo de importación:\n\n";
-  document.querySelectorAll("#detalleResultados table tr").forEach(row => {
-    const cols = row.querySelectorAll("td, th");
-    if (cols.length === 2) {
-      texto += `${cols[0].innerText}: ${cols[1].innerText}\n`;
-    }
-  });
-  texto += "\nCalculado en https://comocomprarcarros.com";
-  const link = `https://wa.me/?text=${encodeURIComponent(texto)}`;
-  window.open(link, "_blank");
-}
-
-function reiniciar() {
-  ["c1", "c7", "c8"].forEach(id => document.getElementById(id).value = "");
-  document.getElementById("e2").value = "25.90";
-
-  const selects = ["vin", "c13", "tipoVehiculo", "c14", "año", "anio"];
-  selects.forEach(id => {
-    const el = document.getElementById(id);
-    if (el && el.tagName === "SELECT") el.selectedIndex = 0;
-  });
-
-  const hibrido = document.getElementById("hibrido");
-  if (hibrido) hibrido.selectedIndex = 0;
-
-  const motor = document.getElementById("motor");
-  if (motor) motor.value = "";
-
-  const grupoMotor = document.getElementById("grupoMotor");
-  if (grupoMotor) grupoMotor.style.display = "block";
-
-  document.getElementById("results").innerHTML = "";
-}
-
-async function guardarHistorial(detalles, totalFormateado) {
-  const user = auth.currentUser;
-  if (!user) return;
-
-  try {
-    const ref = db.collection("clients").doc(user.uid).collection("historial");
-    const snap = await ref.orderBy("fecha", "desc").get();
-
-    if (snap.size >= 100) {
-      await ref.doc(snap.docs[snap.size - 1].id).delete();
-    }
-
-    await ref.add({
-      nombre: "Sin título",
-      fecha: firebase.firestore.FieldValue.serverTimestamp(),
-      detalles,
-      total: totalFormateado
-    });
-  } catch (e) {
-    console.error("❌ Error guardando historial:", e);
-  }
-}
+  ventana.document
