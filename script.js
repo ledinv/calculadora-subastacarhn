@@ -164,7 +164,7 @@ function calcular() {
   const totalCIFHNL = totalCIFUSD * tipoCambio;
 
   const o3 = 50 * tipoCambio;
-  const o4 = totalSubastaUSD * 0.015 * tipoCambio;
+  const o4 = totalCIFHNL * 0.015;
   const baseImponible = totalCIFHNL + o3 + o4 + gateFee * tipoCambio;
 
   // Impuestos
