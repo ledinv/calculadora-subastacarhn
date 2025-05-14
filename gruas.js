@@ -113,7 +113,7 @@ const tarifarioGruasPuertoFlorida = {
     "San Jose": 1400.00,
     "Sun valley": 1400.00,
     "Van Nuys": 1400.00
-  }
+  },
     
   "Missouri": {
     "Kansas City": 850.00,
