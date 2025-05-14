@@ -12,6 +12,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+// El resto del código se insertará a continuación...
 // Menú desplegable móvil
 function toggleMenu() {
   const menu = document.getElementById("mobile-menu-links");
@@ -68,8 +69,6 @@ const buscarValor = (tabla, valor) => {
 
 const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
 const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
-
-// Función principal
 function calcular() {
   registrarClic();
   const c1 = parseFloat(document.getElementById('c1').value.trim());
@@ -93,20 +92,33 @@ function calcular() {
   const c9 = c7 + c8;
   const c10 = c6 + c9;
   const c11 = c10 * e2;
-  const o3 = 50 * e2;
-  const o4 = c6 * 0.015 * e2;
+
+  // O3 y O4 en dólares y lempiras
+  const o3usd = 50;
+  const o4usd = c6 * 0.015;
+  const o3 = o3usd * e2;
+  const o4 = o4usd * e2;
 
   const tieneCafta = c13 === "1,4,5";
-  let c15 = 0;
 
+  // === C15 – DAI ===
+  let c15 = 0;
   if (!tieneCafta) {
-    if (c14 === "MAQUINARIA") c15 = (c11 + o3 + o4 + c5) * 0.05;
-    else if (c14 === "HIBRIDO") c15 = (c11 + o3 + o4 + c5) * 0.10;
-    else if (["PICK UP", "CAMION", "BUS", "MOTO"].includes(c14)) c15 = (c11 + o3 + o4 + c5) * 0.10;
-    else if (motor === "1.5 Inferior") c15 = (c11 + o3 + o4 + c5) * 0.05;
-    else c15 = (c11 + o3 + o4 + c5) * 0.15;
+    const baseDAI = c11 + o3 + o4;
+    if (c14 === "MAQUINARIA") {
+      c15 = baseDAI * 0.05;
+    } else if (c14 === "HIBRIDO") {
+      c15 = baseDAI * 0.10;
+    } else if (["PICK UP", "CAMION", "BUS", "MOTO"].includes(c14)) {
+      c15 = baseDAI * 0.10;
+    } else if (motor === "1.5 Inferior") {
+      c15 = baseDAI * 0.05;
+    } else {
+      c15 = baseDAI * 0.15;
+    }
   }
 
+  // === C16 – ISC ===
   let c16 = 0;
   if (c14 === "HIBRIDO") {
     c16 = (c11 + o3 + o4 + c15) * 0.05;
@@ -115,28 +127,35 @@ function calcular() {
   } else if (["CAMION", "BUS", "MAQUINARIA"].includes(c14)) {
     c16 = 0;
   } else {
-    let isc = 0;
-    if (c10 <= 7000) isc = 0.10;
-    else if (c10 <= 10000) isc = 0.15;
-    else if (c10 <= 20000) isc = 0.20;
-    else if (c10 <= 30000) isc = 0.30;
-    else isc = 0.45;
-    c16 = (c11 + o3 + o4 + c15) * isc;
+    const baseISCusd = c10 + o3usd + o4usd;
+    let tasaISC = 0;
+    if (baseISCusd <= 7000) tasaISC = 0.10;
+    else if (baseISCusd <= 10000) tasaISC = 0.15;
+    else if (baseISCusd <= 20000) tasaISC = 0.20;
+    else if (baseISCusd <= 30000) tasaISC = 0.30;
+    else tasaISC = 0.45;
+
+    c16 = (c11 + o3 + o4 + c15) * tasaISC;
   }
 
+  // === C17 – ISV ===
   let c17 = 0;
   if (c14 !== "MAQUINARIA") {
     c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
   }
 
   const c18 = c15 + c16 + c17;
-
+  // === C20 – ECOTASA ===
   let c20 = 5000;
   if (c10 > 15000 && c10 <= 25000) c20 = 7000;
   else if (c10 > 25000) c20 = 10000;
   if (c14 === "MAQUINARIA") c20 = 0;
 
-  const c21 = 4000, c22 = 7500, c23 = 4000, c24 = 55 * e2;
+  const c21 = 4000;
+  const c22 = 7500;
+  const c23 = 4000;
+  const c24 = 55 * e2;
+
   const c25 = c20 + c21 + c22 + c23 + c24;
   const c26 = c11 + c18 + c25;
 
@@ -193,7 +212,6 @@ function calcular() {
 
   guardarHistorial(detallesFormateados, formatear(c26));
 }
-
 // Guardar historial en Firebase
 async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
   const user = auth.currentUser;
