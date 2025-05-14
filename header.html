@@ -1,25 +1,20 @@
-<!-- header.html -->
-<header class="site-header" style="background: #00309e; color: #ffc20e; padding: .75rem 0;">
-  <div class="container header-inner" style="display:flex; align-items:center; justify-content:space-between;">
-    <a href="index.html" class="brand" style="font-weight:700; font-size:1.25rem; color:#fff;">SubastaCarHN</a>
-    <nav class="nav-links" aria-label="Menú principal" style="display:flex; gap:1.5rem;">
-      <a href="calculadora.html" style="color:#ffc20e; font-weight:600;">Calculadora</a>
-      <a href="cursos.html"      style="color:#ffc20e; font-weight:600;">Cursos</a>
-      <a href="inventario.html"  style="color:#ffc20e; font-weight:600;">Vehículos</a>
-      <a href="https://wa.me/50497330137" target="_blank" style="color:#ffc20e; font-weight:600;">Soporte</a>
-      <span id="userGreeting"   style="color:#ffc20e; font-weight:600;"></span>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">SubastaCarHN</a>
+    <nav class="nav-links" aria-label="Menú principal">
+      <a href="calculadora.html">Calculadora</a>
+      <a href="#cursos" id="linkCursos">Cursos</a>
+      <a href="inventario.html">Vehículos</a>
+      <a href="https://wa.me/50497330137" target="_blank">Soporte</a>
+      <span id="userGreeting"></span>
     </nav>
-    <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()"
-            style="background:#ffc20e; border:none; padding:.5rem; border-radius:4px; color:#00309e; font-size:1.25rem; cursor:pointer;">
-      ☰
-    </button>
+    <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
   </div>
-  <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil"
-      style="display:none; flex-direction:column; background:#00309e; padding:1rem; gap:.5rem;">
-    <li><a href="calculadora.html" style="color:#ffc20e; font-weight:700;">Calculadora</a></li>
-    <li><a href="cursos.html"      style="color:#ffc20e; font-weight:700;">Cursos</a></li>
-    <li><a href="inventario.html"  style="color:#ffc20e; font-weight:700;">Vehículos</a></li>
-    <li><a href="https://wa.me/50497330137" target="_blank" style="color:#ffc20e; font-weight:700;">Soporte</a></li>
-    <li><span id="mobileGreeting" style="color:#ffc20e; font-weight:700;"></span></li>
+  <ul id="mobile-menu-links" class="mobile-nav" aria-label="Menú móvil">
+    <li><a href="calculadora.html">Calculadora</a></li>
+    <li><a href="#cursos" id="linkCursosMobile">Cursos</a></li>
+    <li><a href="inventario.html">Vehículos</a></li>
+    <li><a href="https://wa.me/50497330137" target="_blank">Soporte</a></li>
+    <li><span id="mobileGreeting"></span></li>
   </ul>
 </header>
