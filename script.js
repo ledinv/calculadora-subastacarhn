@@ -145,7 +145,7 @@ function calcular() {
     c16 = 0; // PICK UP nunca paga ISC
   } else if (c14 === "HIBRIDO") {
     c16 = (c11 + o3 + o4 + c15) * 0.05;
-  } else if (["CAMION", "BUS", "MAQUINARIA", "MOTO"].includes(c14)) {
+  } else if (["CAMION", "BUS", "MAQUINARIA"].includes(c14)) {
     c16 = 0;
     }else if (c14 === "MOTO") {
   c16 = (c11 + o3 + o4 + c15) * 0.10;
