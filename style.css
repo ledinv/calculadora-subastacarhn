@@ -1,4 +1,4 @@
-/* style.css */
+/* === BASE === */
 body {
   font-family: 'Montserrat', sans-serif;
   background: #f9f9f9;
@@ -7,16 +7,26 @@ body {
   padding: 0;
 }
 
-header {
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* === HEADER === */
+.site-header {
   background: linear-gradient(to right, #002f6c, #004aad);
   position: sticky;
   top: 0;
   z-index: 999;
-  padding: 0.75rem 1rem;
+}
+
+.site-header .header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: white;
+  padding: 0.75rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .brand {
@@ -26,11 +36,9 @@ header {
   text-decoration: none;
 }
 
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+.nav-links {
+  display: none;
+  gap: 1.5rem;
 }
 
 .nav-links a,
@@ -38,7 +46,6 @@ header {
   color: #ffc20e;
   font-size: 0.9375rem;
   font-weight: 600;
-  margin-left: 1rem;
   text-decoration: none;
 }
 
@@ -46,10 +53,11 @@ header {
   background: #ffc20e;
   color: #002f6c;
   border: none;
-  font-size: 1rem;
+  font-size: 1.25rem;
   padding: 0.5rem;
   border-radius: 6px;
   cursor: pointer;
+  display: inline-block;
 }
 
 .mobile-nav {
@@ -65,14 +73,37 @@ header {
   z-index: 998;
 }
 
+.mobile-nav.open {
+  display: flex;
+}
+
 .mobile-nav a,
 .mobile-nav span {
   display: block;
   color: #002f6c;
   font-weight: 700;
   font-size: 0.9375rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
 }
 
+.mobile-nav a:hover,
+.mobile-nav span:hover {
+  background: rgba(0, 47, 108, 0.1);
+}
+
+/* === RESPONSIVE === */
+@media (min-width: 768px) {
+  .nav-links {
+    display: flex;
+  }
+
+  .menu-icon {
+    display: none;
+  }
+}
+
+/* === CONTENIDO PRINCIPAL === */
 .layout {
   display: flex;
   justify-content: center;
@@ -99,6 +130,7 @@ header {
   padding: 20px;
 }
 
+/* === FORMULARIOS === */
 label {
   font-weight: bold;
   color: #002f6c;
@@ -118,6 +150,7 @@ select {
   box-sizing: border-box;
 }
 
+/* === BOTONES === */
 .styled-btn {
   background: #ffc20e;
   color: #002f6c;
@@ -135,6 +168,7 @@ select {
   background: #e6ac00;
 }
 
+/* === TEXTOS === */
 .titulo {
   text-align: center;
   font-size: 1.8rem;
@@ -157,6 +191,7 @@ select {
   color: green;
 }
 
+/* === FOOTER === */
 footer {
   background: #004aad;
   color: white;
@@ -171,11 +206,12 @@ footer a {
   margin: 0 0.5rem;
 }
 
+/* === BOTÓN FLOTANTE WHATSAPP === */
 .soporte-gratis {
   position: fixed;
   bottom: 80px;
   right: 20px;
-  background-color: rgba(0,74,173,0.85);
+  background-color: rgba(0, 74, 173, 0.85);
   color: white;
   border-radius: 50px;
   padding: 5px 10px;
@@ -183,11 +219,12 @@ footer a {
   font-size: 13px;
   display: flex;
   align-items: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-decoration: none;
   z-index: 999;
 }
 
+/* === RESPONSIVE EXTRA === */
 @media (max-width: 768px) {
   .banner {
     display: none;
