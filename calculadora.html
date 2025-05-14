@@ -138,18 +138,6 @@
   <div id="footer-placeholder"></div>
 
   <!-- Autenticación y carga de estados -->
-  <script>
-
-    firebase.initializeApp(firebaseConfig);
-
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        document.getElementById("body").style.display = "block";
-        cargarEstados();
-      } else {
-        window.location.href = "login.html";
-      }
-    });
-  </script>
+  
 </body>
 </html>
