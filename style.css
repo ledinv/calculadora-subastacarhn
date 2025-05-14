@@ -223,6 +223,36 @@ footer a {
   text-decoration: none;
   z-index: 999;
 }
+.formulario-cotizacion {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.formulario-cotizacion form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formulario-cotizacion label {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.formulario-cotizacion select,
+.formulario-cotizacion button {
+  margin-top: 5px;
+  padding: 8px;
+  font-size: 1em;
+}
+
+@media (max-width: 600px) {
+  .formulario-cotizacion form {
+    flex-direction: column;
+  }
+}
+
 
 /* === RESPONSIVE EXTRA === */
 @media (max-width: 768px) {
