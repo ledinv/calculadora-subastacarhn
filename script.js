@@ -1,3 +1,5 @@
+// script.js
+
 // Inicializa Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
@@ -5,14 +7,13 @@ const firebaseConfig = {
   projectId: "subastacarhn-40554",
   storageBucket: "subastacarhn-40554.appspot.com",
   messagingSenderId: "536785797974",
-  appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+  appId: "1:536785797974:web=e3eabb4dcd898c2ffe8cf7",
   measurementId: "G-QM5N60K8C0"
 };
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// El resto del código se insertará a continuación...
 // Menú desplegable móvil
 function toggleMenu() {
   const menu = document.getElementById("mobile-menu-links");
@@ -28,8 +29,10 @@ function bloquearMotorPorVin() {
 }
 
 // Formato monetario
-const formatear = v => new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
-const formatearUSD = v => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
+const formatear = v =>
+  new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
+const formatearUSD = v =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
 
 // Obtener tipo de cambio automático
 async function obtenerTipoCambioAutomatico() {
@@ -67,14 +70,20 @@ const buscarValor = (tabla, valor) => {
   return 0;
 };
 
-const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
-const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
+const buscarBuyerFee = c1 =>
+  c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
+
+const buscarVirtualBidFee = c1 =>
+  c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
+
+// Función principal de cálculo
 function calcular() {
   registrarClic();
-  const c1 = parseFloat(document.getElementById('c1').value.trim());
-  const c7 = parseFloat(document.getElementById('c7').value.trim());
-  const c8 = parseFloat(document.getElementById('c8').value.trim());
-  const e2 = parseFloat(document.getElementById('e2').value.trim());
+
+  const c1  = parseFloat(document.getElementById('c1').value.trim());
+  const c7  = parseFloat(document.getElementById('c7').value.trim());
+  const c8  = parseFloat(document.getElementById('c8').value.trim());
+  const e2  = parseFloat(document.getElementById('e2').value.trim());
   const c13 = document.getElementById('c13').value;
   const c14 = document.getElementById('c14').value;
   const motor = document.getElementById('motor').value;
@@ -109,7 +118,7 @@ function calcular() {
       c15 = baseDAI * 0.05;
     } else if (c14 === "HIBRIDO") {
       c15 = baseDAI * 0.10;
-    } else if (["PICK UP", "CAMION", "BUS", "MOTO"].includes(c14)) {
+    } else if (["PICK UP","CAMION","BUS","MOTO"].includes(c14)) {
       c15 = baseDAI * 0.10;
     } else if (motor === "1.5 Inferior") {
       c15 = baseDAI * 0.05;
@@ -124,17 +133,16 @@ function calcular() {
     c16 = (c11 + o3 + o4 + c15) * 0.05;
   } else if (c14 === "PICK UP" && !tieneCafta) {
     c16 = (c11 + o3 + o4 + c15) * 0.10;
-  } else if (["CAMION", "BUS", "MAQUINARIA"].includes(c14)) {
+  } else if (["CAMION","BUS","MAQUINARIA"].includes(c14)) {
     c16 = 0;
   } else {
     const baseISCusd = c10 + o3usd + o4usd;
     let tasaISC = 0;
-    if (baseISCusd <= 7000) tasaISC = 0.10;
-    else if (baseISCusd <= 10000) tasaISC = 0.15;
-    else if (baseISCusd <= 20000) tasaISC = 0.20;
-    else if (baseISCusd <= 30000) tasaISC = 0.30;
-    else tasaISC = 0.45;
-
+    if      (baseISCusd <= 7000)   tasaISC = 0.10;
+    else if (baseISCusd <= 10000)  tasaISC = 0.15;
+    else if (baseISCusd <= 20000)  tasaISC = 0.20;
+    else if (baseISCusd <= 30000)  tasaISC = 0.30;
+    else                            tasaISC = 0.45;
     c16 = (c11 + o3 + o4 + c15) * tasaISC;
   }
 
@@ -145,11 +153,12 @@ function calcular() {
   }
 
   const c18 = c15 + c16 + c17;
+
   // === C20 – ECOTASA ===
   let c20 = 5000;
-  if (c10 > 15000 && c10 <= 25000) c20 = 7000;
-  else if (c10 > 25000) c20 = 10000;
-  if (c14 === "MAQUINARIA") c20 = 0;
+  if      (c10 > 15000 && c10 <= 25000) c20 = 7000;
+  else if (c10 > 25000)                 c20 = 10000;
+  if (c14 === "MAQUINARIA")             c20 = 0;
 
   const c21 = 4000;
   const c22 = 7500;
@@ -160,28 +169,28 @@ function calcular() {
   const c26 = c11 + c18 + c25;
 
   const detalles = [
-    ['MONTO DE OFERTA', c1, 'usd'],
-    ['ENVIRONMENTAL FEE', c2, 'usd'],
-    ['VIRTUAL BID FEE', c3, 'usd'],
-    ['BUYER FEE', c4, 'usd'],
-    ['GATE Y TITLE PICK FEE', c5, 'usd'],
-    ['TOTAL PRECIO SUBASTA', c6, 'usd'],
-    ['VALOR DE BARCO', c7, 'usd'],
-    ['PRECIO DE GRÚA', c8, 'usd'],
-    ['TOTAL DE ENVÍO MARÍTIMO', c9, 'usd'],
-    ['TOTAL CIF EN DÓLARES', c10, 'usd'],
-    ['TOTAL CIF EN LEMPIRAS', c11, 'hnl'],
-    ['DAI', c15, 'hnl'],
-    ['ISC', c16, 'hnl'],
-    ['ISV', c17, 'hnl'],
+    ['MONTO DE OFERTA',       c1,  'usd'],
+    ['ENVIRONMENTAL FEE',     c2,  'usd'],
+    ['VIRTUAL BID FEE',       c3,  'usd'],
+    ['BUYER FEE',             c4,  'usd'],
+    ['GATE Y TITLE PICK FEE', c5,  'usd'],
+    ['TOTAL PRECIO SUBASTA',  c6,  'usd'],
+    ['VALOR DE BARCO',        c7,  'usd'],
+    ['PRECIO DE GRÚA',        c8,  'usd'],
+    ['TOTAL DE ENVÍO MARÍTIMO',c9,  'usd'],
+    ['TOTAL CIF EN DÓLARES',   c10, 'usd'],
+    ['TOTAL CIF EN LEMPIRAS',  c11, 'hnl'],
+    ['DAI',                    c15, 'hnl'],
+    ['ISC',                    c16, 'hnl'],
+    ['ISV',                    c17, 'hnl'],
     ['TOTAL DE IMPUESTOS HONDURAS', c18, 'hnl'],
-    ['ECOTASA', c20, 'hnl'],
-    ['ADUANERO', c21, 'hnl'],
-    ['VOTAINER - CONSOLIDADOS HN', c22, 'hnl'],
-    ['MATRÍCULA Y PLACAS', c23, 'hnl'],
-    ['TRANSFERENCIA INTERNACIONAL', c24, 'hnl'],
-    ['TOTAL DE GASTOS FIJOS', c25, 'hnl'],
-    ['TOTAL FINAL', c26, 'hnl']
+    ['ECOTASA',                c20, 'hnl'],
+    ['ADUANERO',               c21, 'hnl'],
+    ['VOTAINER - CONSOLIDADOS HN', c22,'hnl'],
+    ['MATRÍCULA Y PLACAS',     c23, 'hnl'],
+    ['TRANSFERENCIA INTERNACIONAL', c24,'hnl'],
+    ['TOTAL DE GASTOS FIJOS',  c25, 'hnl'],
+    ['TOTAL FINAL',            c26, 'hnl']
   ];
 
   document.getElementById('results').innerHTML = `
@@ -195,31 +204,34 @@ function calcular() {
       <div id="detalleResultados" style="display:none;">
         <table class="tabla-detalles">
           <tr><th>Concepto</th><th>Valor</th></tr>
-          ${detalles.map(([titulo, valor, tipo]) => `
+          ${detalles.map(([t,v,tipo]) => `
             <tr>
-              <td>${titulo}</td>
-              <td>${tipo === 'usd' ? formatearUSD(valor) : formatear(valor)}</td>
+              <td>${t}</td>
+              <td>${tipo==='usd'?formatearUSD(v):formatear(v)}</td>
             </tr>`).join('')}
         </table>
       </div>
     </div>
   `;
 
-  const detallesFormateados = detalles.map(([titulo, valor, tipo]) => ({
-    titulo,
-    valor: tipo === 'usd' ? formatearUSD(valor) : formatear(valor)
+  const detallesFormateados = detalles.map(([t,v,tipo]) => ({
+    titulo: t,
+    valor: tipo==='usd'?formatearUSD(v):formatear(v)
   }));
 
   guardarHistorial(detallesFormateados, formatear(c26));
 }
+
 // Guardar historial en Firebase
 async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
   const user = auth.currentUser;
   if (!user) return;
 
   try {
-    const historialRef = db.collection("clients").doc(user.uid).collection("historial");
-    const snapshot = await historialRef.orderBy("fecha", "desc").get();
+    const historialRef = db.collection("clients")
+      .doc(user.uid)
+      .collection("historial");
+    const snapshot = await historialRef.orderBy("fecha","desc").get();
 
     if (snapshot.size >= 100) {
       const ultimo = snapshot.docs[snapshot.size - 1];
@@ -232,19 +244,20 @@ async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
       detalles: detallesFormateados,
       total: totalFinalFormateado
     });
-
   } catch (error) {
     console.error("❌ Error al guardar historial:", error);
   }
 }
 
+// Mostrar u ocultar detalles
 function mostrarDetalles() {
   const tabla = document.getElementById("detalleResultados");
-  const btn = document.getElementById("toggleBtn");
+  const btn   = document.getElementById("toggleBtn");
   tabla.style.display = tabla.style.display === "none" ? "block" : "none";
   btn.textContent = tabla.style.display === "block" ? "Ocultar detalles" : "Ver detalles";
 }
 
+// Descargar PDF
 function descargarPDF() {
   const detalleDiv = document.getElementById("detalleResultados");
   if (detalleDiv.style.display === "none") mostrarDetalles();
@@ -256,14 +269,10 @@ function descargarPDF() {
     <style>
       body { font-family: Helvetica; margin: 20px; }
       .tabla-detalles {
-        margin: 20px auto;
-        border-collapse: collapse;
-        width: auto;
-        max-width: 600px;
+        margin: 20px auto; border-collapse: collapse; width: auto; max-width: 600px;
       }
       .tabla-detalles th, .tabla-detalles td {
-        padding: 8px 12px;
-        border: 1px solid #ddd;
+        padding: 8px 12px; border: 1px solid #ddd;
       }
       .tabla-detalles th { background: #f2f2f2; }
       th:first-child, td:first-child { text-align: left; }
@@ -275,17 +284,21 @@ function descargarPDF() {
   setTimeout(() => w.print(), 500);
 }
 
+// Compartir por WhatsApp
 function compartirWhatsApp() {
   let texto = "¡Hola! Aquí tienes el cálculo de importación de tu vehículo:\n\n";
   document.querySelectorAll("#detalleResultados table tr").forEach(fila => {
     const cols = fila.querySelectorAll("td, th");
-    if (cols.length === 2) texto += `${cols[0].innerText}: ${cols[1].innerText}\n`;
+    if (cols.length === 2) {
+      texto += `${cols[0].innerText}: ${cols[1].innerText}\n`;
+    }
   });
   texto += "\nCalculado con SUBASTACARHN 👉 https://ledinv.github.io/calculadora-subastacarhn/";
   const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
   window.open(url, "_blank");
 }
 
+// Reiniciar campos
 function reiniciar() {
   document.getElementById('c1').value = "";
   document.getElementById('c7').value = "";
@@ -298,25 +311,27 @@ function reiniciar() {
   bloquearMotorPorVin();
 }
 
-// Firebase login
-firebase.auth().onAuthStateChanged(user => {
-  const desktop = document.getElementById('userGreeting');
-  const mobile = document.getElementById('mobileGreeting');
-  if (user) {
-    const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
-    if (desktop) desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
-    if (mobile) mobile.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
-  } else {
-    if (desktop) desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
-    if (mobile) mobile.innerHTML = desktop.innerHTML;
-  }
-});
-
+// Logout
 function logout() {
   firebase.auth().signOut().then(() => location.reload());
 }
 
-// Contador
+// Firebase auth state listener
+firebase.auth().onAuthStateChanged(user => {
+  const desktop = document.getElementById('userGreeting');
+  const mobile  = document.getElementById('mobileGreeting');
+  if (user) {
+    const name = (user.displayName || user.email.split('@')[0])
+                   .replace(/^./, c => c.toUpperCase());
+    if (desktop) desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
+    if (mobile)  mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
+  } else {
+    if (desktop) desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+    if (mobile)  mobile.innerHTML  = desktop.innerHTML;
+  }
+});
+
+// Contador de cálculos
 const endpoint = "https://contador-clics-backend.onrender.com/contador";
 async function obtenerContador() {
   try {
@@ -339,8 +354,24 @@ async function registrarClic() {
   }
 }
 
-// Al cargar la página
+// Al cargar la página: inyectar header/footer y ejecutar inicializaciones
 document.addEventListener("DOMContentLoaded", () => {
+  // Inyectar header
+  fetch('header.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('header-placeholder').innerHTML = html;
+      // Aquí podrías volver a enganchar toggleMenu o auth listeners si fuese necesario
+    });
+
+  // Inyectar footer
+  fetch('footer.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('footer-placeholder').innerHTML = html;
+    });
+
+  // Inicializaciones de la calculadora
   document.getElementById("c13").value = "OTROS";
   bloquearMotorPorVin();
   obtenerContador();
