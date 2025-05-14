@@ -138,7 +138,7 @@ function calcular() {
     if      (baseISCusd <= 7000)   tasaISC = 0.10;
     else if (baseISCusd <= 10000)  tasaISC = 0.15;
     else if (baseISCusd <= 20000)  tasaISC = 0.20;
-    else if (baseISCusd <= 50000)  tasaISC = 0.30;
+    else if (baseISCusd <= 30000)  tasaISC = 0.30;
     else                            tasaISC = 0.45;
     c16 = (c11 + o3 + o4 + c15) * tasaISC;
   }
@@ -368,4 +368,26 @@ document.addEventListener("DOMContentLoaded", () => {
           cursosLinkMobile.addEventListener('click', e => {
             e.preventDefault();
             toggleMenu();
-            document.getElementById('videoCursos')?.scrollIntoView({
+            document.getElementById('videoCursos')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => {
+              document.querySelector('#videoCursos .play-button')?.click();
+            }, 600);
+          });
+        } else {
+          cursosLink.href = 'cursos.html';
+          cursosLinkMobile.href = 'cursos.html';
+        }
+      }, 100);
+    });
+
+  fetch('footer.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('footer-placeholder').innerHTML = html;
+    });
+
+  document.getElementById("c13").value = "OTROS";
+  bloquearMotorPorVin();
+  obtenerContador();
+  obtenerTipoCambioAutomatico();
+});
