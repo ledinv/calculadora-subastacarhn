@@ -28,7 +28,8 @@
   <!-- Script principal -->
   <script defer src="script.js"></script>
 </head>
-<body>
+
+<body style="display: none;" id="body">
   <!-- HEADER -->
   <div id="header-placeholder"></div>
 
@@ -37,7 +38,6 @@
     <p class="soporte">¿Necesitás ayuda? <a href="https://wa.me/50497330137" target="_blank">Soporte gratuito</a> al <span class="verde">+504 9733-0137</span></p>
 
     <div class="layout">
-      <!-- Imagen izquierda -->
       <div class="banner">
         <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20izquierdo.jpeg" alt="Banner Izquierdo" />
       </div>
@@ -83,7 +83,6 @@
         <button type="button" class="styled-btn" onclick="calcular()">Calcular</button>
         <button type="button" class="styled-btn" onclick="reiniciar()">Reiniciar</button>
 
-        <!-- Resultados -->
         <div id="results" style="margin-top: 1rem;"></div>
       </div>
 
@@ -138,10 +137,27 @@
   <!-- FOOTER -->
   <div id="footer-placeholder"></div>
 
-  <!-- Inicializar carga de estados -->
+  <!-- Autenticación y carga de estados -->
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      cargarEstados();
+    const firebaseConfig = {
+      // 🔐 Coloca aquí tus credenciales de Firebase reales
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_DOMINIO.firebaseapp.com",
+      projectId: "TU_PROJECT_ID",
+      storageBucket: "TU_BUCKET",
+      messagingSenderId: "TU_SENDER_ID",
+      appId: "TU_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById("body").style.display = "block";
+        cargarEstados();
+      } else {
+        window.location.href = "login.html";
+      }
     });
   </script>
 </body>
