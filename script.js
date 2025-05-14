@@ -108,7 +108,7 @@ function calcular() {
   const o4 = o4usd * e2;
 
   const tieneCafta = c13 === "1,4,5";
-
+  // === C15 – DAI ===
   let c15 = 0;
   if (!tieneCafta) {
     const baseDAI = c11 + o3 + o4;
@@ -125,6 +125,7 @@ function calcular() {
     }
   }
 
+  // === C16 – ISC ===
   let c16 = 0;
   if (c14 === "HIBRIDO") {
     c16 = (c11 + o3 + o4 + c15) * 0.05;
@@ -143,13 +144,13 @@ function calcular() {
     c16 = (c11 + o3 + o4 + c15) * tasaISC;
   }
 
+  // === C17 – ISV ===
   let c17 = 0;
   if (c14 !== "MAQUINARIA") {
     c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
   }
 
   const c18 = c15 + c16 + c17;
-
   let c20 = 5000;
   if      (c10 > 15000 && c10 <= 25000) c20 = 7000;
   else if (c10 > 25000)                 c20 = 10000;
@@ -159,7 +160,6 @@ function calcular() {
   const c22 = 7500;
   const c23 = 4000;
   const c24 = 55 * e2;
-
   const c25 = c20 + c21 + c22 + c23 + c24;
   const c26 = c11 + c18 + c25;
 
@@ -216,7 +216,6 @@ function calcular() {
 
   guardarHistorial(detallesFormateados, formatear(c26));
 }
-
 // Guardar historial en Firebase
 async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
   const user = auth.currentUser;
@@ -244,6 +243,7 @@ async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
   }
 }
 
+// Mostrar u ocultar detalles
 function mostrarDetalles() {
   const tabla = document.getElementById("detalleResultados");
   const btn   = document.getElementById("toggleBtn");
@@ -251,6 +251,7 @@ function mostrarDetalles() {
   btn.textContent = tabla.style.display === "block" ? "Ocultar detalles" : "Ver detalles";
 }
 
+// Descargar PDF
 function descargarPDF() {
   const detalleDiv = document.getElementById("detalleResultados");
   if (detalleDiv.style.display === "none") mostrarDetalles();
@@ -277,6 +278,7 @@ function descargarPDF() {
   setTimeout(() => w.print(), 500);
 }
 
+// Compartir por WhatsApp
 function compartirWhatsApp() {
   let texto = "¡Hola! Aquí tienes el cálculo de importación de tu vehículo:\n\n";
   document.querySelectorAll("#detalleResultados table tr").forEach(fila => {
@@ -290,6 +292,7 @@ function compartirWhatsApp() {
   window.open(url, "_blank");
 }
 
+// Reiniciar campos
 function reiniciar() {
   document.getElementById('c1').value = "";
   document.getElementById('c7').value = "";
@@ -302,10 +305,12 @@ function reiniciar() {
   bloquearMotorPorVin();
 }
 
+// Logout
 function logout() {
   firebase.auth().signOut().then(() => location.reload());
 }
 
+// Firebase auth state listener
 firebase.auth().onAuthStateChanged(user => {
   const desktop = document.getElementById('userGreeting');
   const mobile  = document.getElementById('mobileGreeting');
@@ -320,6 +325,7 @@ firebase.auth().onAuthStateChanged(user => {
   }
 });
 
+// Contador de cálculos
 const endpoint = "https://contador-clics-backend.onrender.com/contador";
 async function obtenerContador() {
   try {
@@ -342,6 +348,7 @@ async function registrarClic() {
   }
 }
 
+// Al cargar la página: inyectar header/footer y ejecutar inicializaciones
 document.addEventListener("DOMContentLoaded", () => {
   fetch('header.html')
     .then(res => res.text())
@@ -349,33 +356,32 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById('header-placeholder').innerHTML = html;
 
       setTimeout(() => {
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
         const cursosLink = document.getElementById('linkCursos');
         const cursosLinkMobile = document.getElementById('linkCursosMobile');
-
-        if (currentPage === 'index.html') {
-          cursosLink.href = '#cursos';
-          cursosLinkMobile.href = '#cursos';
-
-          cursosLink.addEventListener('click', e => {
-            e.preventDefault();
-            document.getElementById('videoCursos')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => {
-              document.querySelector('#videoCursos .play-button')?.click();
-            }, 600);
-          });
-
-          cursosLinkMobile.addEventListener('click', e => {
-            e.preventDefault();
-            toggleMenu();
-            document.getElementById('videoCursos')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => {
-              document.querySelector('#videoCursos .play-button')?.click();
-            }, 600);
-          });
-        } else {
-          cursosLink.href = 'cursos.html';
-          cursosLinkMobile.href = 'cursos.html';
+        const currentPage = window.location.pathname.split("/").pop();
+        if (cursosLink && cursosLinkMobile) {
+          if (currentPage === '' || currentPage === 'index.html') {
+            cursosLink.href = '#cursos';
+            cursosLinkMobile.href = '#cursos';
+            cursosLink.addEventListener('click', e => {
+              e.preventDefault();
+              document.getElementById('videoCursos')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              setTimeout(() => {
+                document.querySelector('#videoCursos .play-button')?.click();
+              }, 600);
+            });
+            cursosLinkMobile.addEventListener('click', e => {
+              e.preventDefault();
+              toggleMenu();
+              document.getElementById('videoCursos')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              setTimeout(() => {
+                document.querySelector('#videoCursos .play-button')?.click();
+              }, 600);
+            });
+          } else {
+            cursosLink.href = 'cursos.html';
+            cursosLinkMobile.href = 'cursos.html';
+          }
         }
       }, 100);
     });
