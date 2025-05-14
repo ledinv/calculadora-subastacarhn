@@ -119,6 +119,7 @@ const tarifarioGruasPuertoFlorida = {
     "Kansas City": 850.00,
     "St. Louis": 875.00
   },
+
   "Nebraska": {
     "Omaha": 900.00
   },
