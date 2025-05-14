@@ -23,10 +23,10 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
-  <!-- Script principal -->
-  <script defer src="script.js"></script>
   <!-- Script de tarifas -->
   <script defer src="gruas.js"></script>
+  <!-- Script principal -->
+  <script defer src="script.js"></script>
 </head>
 <body>
   <!-- HEADER -->
@@ -137,5 +137,12 @@
 
   <!-- FOOTER -->
   <div id="footer-placeholder"></div>
+
+  <!-- Inicializar carga de estados -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      cargarEstados();
+    });
+  </script>
 </body>
 </html>
