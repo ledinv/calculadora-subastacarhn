@@ -80,56 +80,54 @@
 
         <button type="button" class="styled-btn" onclick="calcular()">Calcular</button>
         <button type="button" class="styled-btn" onclick="reiniciar()">Reiniciar</button>
-      </div>
-      <!-- Eliminado: Imagen derecha -->
 
+        <!-- Resultados -->
+        <div id="results" style="margin-top: 1rem;"></div>
+      </div>
+
+      <!-- Consulta de Grúa y Barco -->
+      <div class="contenido-central">
+        <h3 style="text-align:center;">Consulta Automática de Grúa y Barco</h3>
+
+        <label for="estadoSelect">Estado:</label>
+        <select id="estadoSelect" onchange="cargarCiudades()"></select>
+
+        <label for="ciudadSelect">Ciudad:</label>
+        <select id="ciudadSelect"></select>
+
+        <label for="vehiculoSelect">Tipo de vehículo:</label>
+        <select id="vehiculoSelect">
+          <option value="Turismos Pequeños">Turismos Pequeños</option>
+          <option value="Turismos Grande">Turismos Grande</option>
+          <option value="Camionetas Regulares">Camionetas Regulares</option>
+          <option value="Camionetas Grandes">Camionetas Grandes</option>
+          <option value="Camionetas XL">Camionetas XL</option>
+          <option value="Motos Regulares">Motos Regulares</option>
+          <option value="Marcas Exclusivas">Marcas Exclusivas</option>
+          <option value="Cabina Sencilla (no excediendo 16')">Cabina Sencilla</option>
+          <option value="Cabina y Media (baja)">Cabina y Media (baja)</option>
+          <option value="Cabina y Media (alto) y doble cabina">Cabina y Media (alto)</option>
+          <option value="Extra Grandes (más de 17'3'')">Extra Grandes</option>
+        </select>
+
+        <button onclick="buscarRuta()" class="styled-btn" style="margin-top:1rem;">Buscar</button>
+
+        <div id="resultadoGrua" style="margin-top:1rem; display:none;">
+          <p id="precioBarco"></p>
+          <p id="precioGrua"></p>
+        </div>
+
+        <div id="mensajeError" style="color:red; display:none; margin-top:1rem;">
+          No se encontró una coincidencia para tu búsqueda.
+        </div>
+
+        <div style="margin-top:1rem; text-align:center;">
+          <a href="https://wa.me/50497330137?text=Hola,%20quiero%20coordinar%20una%20revisión%20de%20grúa%20y%20barco" class="styled-btn" target="_blank">
+            Coordina con nosotros
+          </a>
+        </div>
+      </div>
     </div>
-
-    <!-- Formulario para cálculo de grúa y barco -->
-    <div class="contenido-central" style="margin-top:2rem;">
-      <h3>Consulta Automática de Grúa y Barco</h3>
-
-      <label for="estadoSelect">Estado:</label>
-      <select id="estadoSelect" onchange="cargarCiudades()"></select>
-
-      <label for="ciudadSelect">Ciudad:</label>
-      <select id="ciudadSelect"></select>
-
-      <label for="vehiculoSelect">Tipo de vehículo:</label>
-      <select id="vehiculoSelect">
-        <option value="Turismos Pequeños">Turismos Pequeños</option>
-        <option value="Turismos Grande">Turismos Grande</option>
-        <option value="Camionetas Regulares">Camionetas Regulares</option>
-        <option value="Camionetas Grandes">Camionetas Grandes</option>
-        <option value="Camionetas XL">Camionetas XL</option>
-        <option value="Motos Regulares">Motos Regulares</option>
-        <option value="Marcas Exclusivas">Marcas Exclusivas</option>
-        <option value="Cabina Sencilla (no excediendo 16')">Cabina Sencilla</option>
-        <option value="Cabina y Media (baja)">Cabina y Media (baja)</option>
-        <option value="Cabina y Media (alto) y doble cabina">Cabina y Media (alto)</option>
-        <option value="Extra Grandes (más de 17'3'')">Extra Grandes</option>
-      </select>
-
-      <button onclick="buscarRuta()" class="styled-btn" style="margin-top:1rem;">Buscar</button>
-
-      <div id="resultadoGrua" style="margin-top:1rem; display:none;">
-        <p id="precioBarco"></p>
-        <p id="precioGrua"></p>
-      </div>
-
-      <div id="mensajeError" style="color:red; display:none; margin-top:1rem;">
-        No se encontró una coincidencia para tu búsqueda. Intenta con otro estado o ciudad.
-      </div>
-
-      <div style="margin-top:1rem;">
-        <a href="https://wa.me/50497330137?text=Hola,%20quiero%20coordinar%20una%20revisión%20de%20grúa%20y%20barco" class="styled-btn" target="_blank">
-          Coordina con nosotros
-        </a>
-      </div>
-    </div>
-
-    <!-- Resultados de la cotización -->
-    <div id="results"></div>
 
     <!-- Soporte flotante -->
     <a href="https://wa.me/50497330137" class="soporte-gratis" target="_blank">Cotízalo ya</a>
