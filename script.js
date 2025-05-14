@@ -147,6 +147,9 @@ function calcular() {
     c16 = (c11 + o3 + o4 + c15) * 0.05;
   } else if (["CAMION", "BUS", "MAQUINARIA", "MOTO"].includes(c14)) {
     c16 = 0;
+    }else if (c14 === "MOTO") {
+  c16 = (c11 + o3 + o4 + c15) * 0.10;
+}
   } else {
     const baseISCusd = c10 + o3usd + o4usd;
     let tasaISC = 0;
