@@ -1,4 +1,4 @@
-// script.js
+// === script.js PARTE 1 de 4 ===
 
 // Inicializa Firebase
 const firebaseConfig = {
@@ -48,6 +48,7 @@ async function obtenerTipoCambioAutomatico() {
     console.error("Error al conectar con el backend:", error);
   }
 }
+// === script.js PARTE 2 de 4 ===
 
 // Buyer fees y virtual bid fees
 const buyerFees = [
@@ -108,6 +109,19 @@ function calcular() {
   const o4 = o4usd * e2;
 
   const tieneCafta = c13 === "1,4,5";
+
+  // === LÓGICA DE AMNISTÍA COMENTADA ===
+  // const anio = parseInt(document.getElementById("anio").value);
+  // if (anio <= 2005) {
+  //   const totalAmnistia = c11 + 20000;
+  //   document.getElementById('results').innerHTML = `
+  //     <div style="text-align:center;">
+  //       <p><strong>Este vehículo aplica para amnistía.</strong></p>
+  //       <p><strong>Total Final:</strong> ${formatear(totalAmnistia)}</p>
+  //     </div>`;
+  //   guardarHistorial([{ titulo: "Vehículo con amnistía", valor: formatear(totalAmnistia) }], formatear(totalAmnistia));
+  //   return;
+  // }
   // === C15 – DAI ===
   let c15 = 0;
   if (!tieneCafta) {
@@ -116,7 +130,7 @@ function calcular() {
       c15 = baseDAI * 0.05;
     } else if (c14 === "HIBRIDO") {
       c15 = baseDAI * 0.10;
-    } else if (["PICK UP","CAMION","BUS","MOTO"].includes(c14)) {
+    } else if (["PICK UP", "CAMION", "BUS", "MOTO"].includes(c14)) {
       c15 = baseDAI * 0.10;
     } else if (motor === "1.5 Inferior") {
       c15 = baseDAI * 0.05;
@@ -127,11 +141,11 @@ function calcular() {
 
   // === C16 – ISC ===
   let c16 = 0;
-  if (c14 === "HIBRIDO") {
+  if (c14 === "PICK UP") {
+    c16 = 0; // PICK UP nunca paga ISC
+  } else if (c14 === "HIBRIDO") {
     c16 = (c11 + o3 + o4 + c15) * 0.05;
-  } else if (c14 === "PICK UP" && !tieneCafta) {
-    c16 = (c11 + o3 + o4 + c15) * 0.10;
-  } else if (["CAMION","BUS","MAQUINARIA"].includes(c14)) {
+  } else if (["CAMION", "BUS", "MAQUINARIA"].includes(c14)) {
     c16 = 0;
   } else {
     const baseISCusd = c10 + o3usd + o4usd;
@@ -139,7 +153,7 @@ function calcular() {
     if      (baseISCusd <= 7000)   tasaISC = 0.10;
     else if (baseISCusd <= 10000)  tasaISC = 0.15;
     else if (baseISCusd <= 20000)  tasaISC = 0.20;
-    else if (baseISCusd <= 30000)  tasaISC = 0.30;
+    else if (baseISCusd <= 50000)  tasaISC = 0.30;
     else                            tasaISC = 0.45;
     c16 = (c11 + o3 + o4 + c15) * tasaISC;
   }
@@ -187,8 +201,7 @@ function calcular() {
     ['TOTAL DE GASTOS FIJOS',  c25, 'hnl'],
     ['TOTAL FINAL',            c26, 'hnl']
   ];
-
-  document.getElementById('results').innerHTML = `
+    document.getElementById('results').innerHTML = `
     <div style="text-align:center;">
       <p><strong>Total Final:</strong> ${formatear(c26)}</p>
       <div class="botones-detalle">
@@ -216,16 +229,15 @@ function calcular() {
 
   guardarHistorial(detallesFormateados, formatear(c26));
 }
+
 // Guardar historial en Firebase
 async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
   const user = auth.currentUser;
   if (!user) return;
 
   try {
-    const historialRef = db.collection("clients")
-      .doc(user.uid)
-      .collection("historial");
-    const snapshot = await historialRef.orderBy("fecha","desc").get();
+    const historialRef = db.collection("clients").doc(user.uid).collection("historial");
+    const snapshot = await historialRef.orderBy("fecha", "desc").get();
 
     if (snapshot.size >= 100) {
       const ultimo = snapshot.docs[snapshot.size - 1];
@@ -243,7 +255,6 @@ async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
   }
 }
 
-// Mostrar u ocultar detalles
 function mostrarDetalles() {
   const tabla = document.getElementById("detalleResultados");
   const btn   = document.getElementById("toggleBtn");
@@ -251,7 +262,6 @@ function mostrarDetalles() {
   btn.textContent = tabla.style.display === "block" ? "Ocultar detalles" : "Ver detalles";
 }
 
-// Descargar PDF
 function descargarPDF() {
   const detalleDiv = document.getElementById("detalleResultados");
   if (detalleDiv.style.display === "none") mostrarDetalles();
@@ -278,7 +288,6 @@ function descargarPDF() {
   setTimeout(() => w.print(), 500);
 }
 
-// Compartir por WhatsApp
 function compartirWhatsApp() {
   let texto = "¡Hola! Aquí tienes el cálculo de importación de tu vehículo:\n\n";
   document.querySelectorAll("#detalleResultados table tr").forEach(fila => {
@@ -292,7 +301,6 @@ function compartirWhatsApp() {
   window.open(url, "_blank");
 }
 
-// Reiniciar campos
 function reiniciar() {
   document.getElementById('c1').value = "";
   document.getElementById('c7').value = "";
@@ -305,18 +313,16 @@ function reiniciar() {
   bloquearMotorPorVin();
 }
 
-// Logout
+// Login
 function logout() {
   firebase.auth().signOut().then(() => location.reload());
 }
 
-// Firebase auth state listener
 firebase.auth().onAuthStateChanged(user => {
   const desktop = document.getElementById('userGreeting');
   const mobile  = document.getElementById('mobileGreeting');
   if (user) {
-    const name = (user.displayName || user.email.split('@')[0])
-                   .replace(/^./, c => c.toUpperCase());
+    const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
     if (desktop) desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
     if (mobile)  mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
   } else {
@@ -325,7 +331,7 @@ firebase.auth().onAuthStateChanged(user => {
   }
 });
 
-// Contador de cálculos
+// Contador
 const endpoint = "https://contador-clics-backend.onrender.com/contador";
 async function obtenerContador() {
   try {
@@ -348,20 +354,7 @@ async function registrarClic() {
   }
 }
 
-// Al cargar la página: inyectar header/footer y ejecutar inicializaciones
 document.addEventListener("DOMContentLoaded", () => {
-  fetch('header.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('header-placeholder').innerHTML = html;
-    });
-
-  fetch('footer.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('footer-placeholder').innerHTML = html;
-    });
-
   document.getElementById("c13").value = "OTROS";
   bloquearMotorPorVin();
   obtenerContador();
