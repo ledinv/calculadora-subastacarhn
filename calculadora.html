@@ -26,25 +26,11 @@
   <!-- Script principal -->
   <script defer src="script.js"></script>
 </head>
-
 <body>
-  <div id="content">
-    <header>
-      <div class="container header-inner">
-        <a href="index.html" class="brand">SubastaCarHN</a>
-        <nav class="nav-links">
-          <a href="cursos.html">Cursos</a>
-          <span id="userGreeting"></span>
-        </nav>
-        <button class="menu-icon" onclick="toggleMenu()">☰</button>
-      </div>
-      <ul id="mobile-menu-links" class="mobile-nav">
-        <li><a href="cursos.html">Cursos</a></li>
-        <li><span id="mobileGreeting"></span></li>
-        <li><a href="https://wa.me/50497330137" target="_blank">WhatsApp</a></li>
-      </ul>
-    </header>
+  <!-- HEADER -->
+  <div id="header-placeholder"></div>
 
+  <div id="content">
     <h1 class="titulo">Calculadora de Importación de Vehículos</h1>
     <p class="soporte">¿Necesitás ayuda? <a href="https://wa.me/50497330137" target="_blank">Soporte gratuito</a> al <span class="verde">+504 9733-0137</span></p>
 
@@ -58,22 +44,22 @@
       <div class="contenido-central">
         <label for="c1">Monto de Oferta $:</label>
         <input type="number" id="c1" />
-        
+
         <label for="c7">Precio de Barco $:</label>
         <input type="number" id="c7" />
-        
+
         <label for="c8">Precio de Grua $:</label>
         <input type="number" id="c8" />
-        
+
         <label for="e2">Tipo de Cambio:</label>
         <input type="number" id="e2" value="25.90" readonly />
-        
+
         <label for="c13">VIN:</label>
         <select id="c13" onchange="bloquearMotorPorVin()">
           <option value="OTROS" selected>OTROS</option>
           <option value="1,4,5">1,4,5</option>
         </select>
-        
+
         <label for="c14">Tipo de Vehículo:</label>
         <select id="c14">
           <option value="OTROS">TURISMO / CAMIONETAS</option>
@@ -84,7 +70,7 @@
           <option value="MAQUINARIA">MAQUINARIA</option>
           <option value="MOTO">MOTO</option>
         </select>
-        
+
         <label for="motor">Tipo de Motor:</label>
         <select id="motor">
           <option value="">Seleccionar...</option>
@@ -107,15 +93,9 @@
 
     <!-- Soporte flotante -->
     <a href="https://wa.me/50497330137" class="soporte-gratis" target="_blank">Cotízalo ya</a>
-
-    <footer>
-      <div>SubastaCarHN — Importaciones claras, seguras y al mejor precio</div>
-      <div>
-        <a href="https://www.facebook.com/people/Subasta-Car-HN/100090605243085/" target="_blank">Facebook</a> |
-        <a href="https://www.instagram.com/subastacar1/" target="_blank">Instagram</a> |
-        <a href="https://www.tiktok.com/@tu_amigo_el_importador" target="_blank">TikTok</a>
-      </div>
-    </footer>
   </div>
+
+  <!-- FOOTER -->
+  <div id="footer-placeholder"></div>
 </body>
 </html>
