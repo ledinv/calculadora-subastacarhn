@@ -354,36 +354,6 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(res => res.text())
     .then(html => {
       document.getElementById('header-placeholder').innerHTML = html;
-
-      setTimeout(() => {
-        const cursosLink = document.getElementById('linkCursos');
-        const cursosLinkMobile = document.getElementById('linkCursosMobile');
-        const currentPage = window.location.pathname.split("/").pop();
-        if (cursosLink && cursosLinkMobile) {
-          if (currentPage === '' || currentPage === 'index.html') {
-            cursosLink.href = '#cursos';
-            cursosLinkMobile.href = '#cursos';
-            cursosLink.addEventListener('click', e => {
-              e.preventDefault();
-              document.getElementById('videoCursos')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              setTimeout(() => {
-                document.querySelector('#videoCursos .play-button')?.click();
-              }, 600);
-            });
-            cursosLinkMobile.addEventListener('click', e => {
-              e.preventDefault();
-              toggleMenu();
-              document.getElementById('videoCursos')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              setTimeout(() => {
-                document.querySelector('#videoCursos .play-button')?.click();
-              }, 600);
-            });
-          } else {
-            cursosLink.href = 'cursos.html';
-            cursosLinkMobile.href = 'cursos.html';
-          }
-        }
-      }, 100);
     });
 
   fetch('footer.html')
