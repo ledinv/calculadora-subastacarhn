@@ -29,8 +29,10 @@ function bloquearMotorPorVin() {
 }
 
 // Formato monetario
-const formatear = v => new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
-const formatearUSD = v => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
+const formatear = v =>
+  new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
+const formatearUSD = v =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
 
 // Obtener tipo de cambio automático
 async function obtenerTipoCambioAutomatico() {
@@ -65,8 +67,10 @@ const buscarValor = (tabla, valor) => {
   }
   return 0;
 };
-const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
-const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
+const buscarBuyerFee = c1 =>
+  c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
+const buscarVirtualBidFee = c1 =>
+  c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
 
 // Función principal de cálculo
 function calcular() {
@@ -198,6 +202,19 @@ function calcular() {
   mostrarDetalles();
 }
 
+// Función para mostrar/ocultar detalles
+function toggleDetalles() {
+  const container = document.getElementById("detalleResultados");
+  const btn       = document.getElementById("toggleBtn");
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    btn.textContent = "Ocultar detalles";
+  } else {
+    container.style.display = "none";
+    btn.textContent = "Ver detalles";
+  }
+}
+
 // Genera y muestra la cotización formal
 function mostrarDetalles() {
   const detallesHtml = window._cotizacionDetalles.map(([t, v, tipo]) => `
@@ -218,23 +235,28 @@ function mostrarDetalles() {
         </div>
       </header>
       <hr />
-      <table class="tabla-cotizacion">
-        <thead>
-          <tr><th>Concepto</th><th>Valor</th></tr>
-        </thead>
-        <tbody>
-          ${detallesHtml}
-        </tbody>
-      </table>
       <div class="total-final">
         <strong>Total Final:</strong> ${formatear(window._cotizacionTotal)}
       </div>
-      <footer class="disclaimer">
-        <p><em>Esta cotización es solo un estimado y no constituye un compromiso de SubastaCarHN. SubastaCarHN se libera de toda responsabilidad por el uso de estos datos.</em></p>
-      </footer>
+
       <div class="botones-detalle">
+        <button id="toggleBtn" class="styled-btn" onclick="toggleDetalles()">Ver detalles</button>
         <button onclick="descargarPDF()" class="styled-btn">Descargar Cotización</button>
         <button onclick="compartirWhatsApp()" class="styled-btn">Compartir por WhatsApp</button>
+      </div>
+
+      <div id="detalleResultados" style="display: none; margin-top: 1rem;">
+        <table class="tabla-cotizacion">
+          <thead>
+            <tr><th>Concepto</th><th>Valor</th></tr>
+          </thead>
+          <tbody>
+            ${detallesHtml}
+          </tbody>
+        </table>
+        <footer class="disclaimer">
+          <p><em>Esta cotización es solo un estimado y no constituye un compromiso de SubastaCarHN. SubastaCarHN se libera de toda responsabilidad por el uso de estos datos.</em></p>
+        </footer>
       </div>
     </div>`;
 
@@ -243,8 +265,12 @@ function mostrarDetalles() {
 
 // Descarga la cotización usando tu CSS externo
 function descargarPDF() {
-  // Re-renderizamos para asegurarnos de que window._cotizacionDetalles y _total estén definidos
-  mostrarDetalles();
+  // Aseguramos que detalles estén visibles al imprimir
+  const detalles = document.getElementById("detalleResultados");
+  if (detalles.style.display === "none") {
+    detalles.style.display = "block";
+    document.getElementById("toggleBtn").textContent = "Ocultar detalles";
+  }
 
   const contenido = document.getElementById("results").innerHTML;
   const w = window.open('', '_blank', 'width=900,height=700');
