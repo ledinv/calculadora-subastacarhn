@@ -425,3 +425,23 @@ footer a {
     display: none;
   }
 }
+.contador-clics-desktop {
+  background-color: #ffcc00;
+  color: #002f6c;
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: 50px;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  z-index: 999;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+}
+
+/* Oculta en móviles */
+@media screen and (max-width: 768px) {
+  .contador-clics-desktop {
+    display: none;
+  }
+}
