@@ -354,3 +354,22 @@ footer a {
     display: none !important;
   }
 }
+/* === AVISO DE EXENCIÓN === */
+.disclaimer {
+  background: #f0f4f8;               /* Fondo muy suave */
+  color: #002f6c;                    /* Texto en azul oscuro */
+  padding: 12px 16px;                /* Espacio interior */
+  border-left: 4px solid #004aad;    /* Borde de acento */
+  font-style: normal;                /* Texto normal, no cursiva */
+  font-size: 0.85rem;                /* Ajuste de tamaño */
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+@media print {
+  /* Oculta botones en PDF/imprimir */
+  .botones-detalle,
+  .cotizacion-container .styled-btn {
+    display: none !important;
+  }
+}
