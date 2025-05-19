@@ -1,4 +1,4 @@
-// === script.js PARTE 1 de 4 ===
+// === script.js ===
 
 // Inicializa Firebase
 const firebaseConfig = {
@@ -29,10 +29,8 @@ function bloquearMotorPorVin() {
 }
 
 // Formato monetario
-const formatear = v =>
-  new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
-const formatearUSD = v =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
+const formatear = v => new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
+const formatearUSD = v => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
 
 // Obtener tipo de cambio automático
 async function obtenerTipoCambioAutomatico() {
@@ -48,7 +46,6 @@ async function obtenerTipoCambioAutomatico() {
     console.error("Error al conectar con el backend:", error);
   }
 }
-// === script.js PARTE 2 de 4 ===
 
 // Buyer fees y virtual bid fees
 const buyerFees = [
@@ -71,11 +68,8 @@ const buscarValor = (tabla, valor) => {
   return 0;
 };
 
-const buscarBuyerFee = c1 =>
-  c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
-
-const buscarVirtualBidFee = c1 =>
-  c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
+const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
+const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
 
 // Función principal de cálculo
 function calcular() {
@@ -122,7 +116,7 @@ function calcular() {
   //   guardarHistorial([{ titulo: "Vehículo con amnistía", valor: formatear(totalAmnistia) }], formatear(totalAmnistia));
   //   return;
   // }
-  // === C15 – DAI ===
+
   let c15 = 0;
   if (!tieneCafta) {
     const baseDAI = c11 + o3 + o4;
@@ -139,12 +133,11 @@ function calcular() {
     }
   }
 
-  // === C16 – ISC ===
   let c16 = 0;
   if (c14 === "PICK UP") {
-    c16 = 0; // PICK UP nunca paga ISC
+    c16 = 0;
   } else if (c14 === "MOTO") {
-    c16 = (c11 + o3 + o4 + c15) * 0.10; // ISC fijo 10% para motos
+    c16 = (c11 + o3 + o4 + c15) * 0.10;
   } else if (c14 === "HIBRIDO") {
     c16 = (c11 + o3 + o4 + c15) * 0.05;
   } else if (["CAMION", "BUS", "MAQUINARIA"].includes(c14)) {
@@ -160,7 +153,6 @@ function calcular() {
     c16 = (c11 + o3 + o4 + c15) * tasaISC;
   }
 
-  // === C17 – ISV ===
   let c17 = 0;
   if (c14 !== "MAQUINARIA") {
     c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
@@ -203,7 +195,8 @@ function calcular() {
     ['TOTAL DE GASTOS FIJOS',  c25, 'hnl'],
     ['TOTAL FINAL',            c26, 'hnl']
   ];
-    document.getElementById('results').innerHTML = `
+
+  document.getElementById('results').innerHTML = `
     <div style="text-align:center;">
       <p><strong>Total Final:</strong> ${formatear(c26)}</p>
       <div class="botones-detalle">
@@ -221,8 +214,7 @@ function calcular() {
             </tr>`).join('')}
         </table>
       </div>
-    </div>
-  `;
+    </div>`;
 
   const detallesFormateados = detalles.map(([t,v,tipo]) => ({
     titulo: t,
@@ -232,20 +224,16 @@ function calcular() {
   guardarHistorial(detallesFormateados, formatear(c26));
 }
 
-// Guardar historial en Firebase
 async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
   const user = auth.currentUser;
   if (!user) return;
-
   try {
     const historialRef = db.collection("clients").doc(user.uid).collection("historial");
     const snapshot = await historialRef.orderBy("fecha", "desc").get();
-
     if (snapshot.size >= 100) {
       const ultimo = snapshot.docs[snapshot.size - 1];
       await historialRef.doc(ultimo.id).delete();
     }
-
     await historialRef.add({
       nombre: "Sin título",
       fecha: firebase.firestore.FieldValue.serverTimestamp(),
@@ -284,8 +272,7 @@ function descargarPDF() {
       th:first-child, td:first-child { text-align: left; }
       th:nth-child(2), td:nth-child(2) { text-align: right; }
     </style>
-    </head><body>${contenido}</body></html>
-  `);
+    </head><body>${contenido}</body></html>`);
   w.document.close();
   setTimeout(() => w.print(), 500);
 }
@@ -315,7 +302,6 @@ function reiniciar() {
   bloquearMotorPorVin();
 }
 
-// Login
 function logout() {
   firebase.auth().signOut().then(() => location.reload());
 }
@@ -362,4 +348,19 @@ document.addEventListener("DOMContentLoaded", () => {
   bloquearMotorPorVin();
   obtenerContador();
   obtenerTipoCambioAutomatico();
+
+  // Cargar header y footer
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("header-placeholder").innerHTML = data;
+    })
+    .catch(err => console.error("Error cargando header:", err));
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("footer-placeholder").innerHTML = data;
+    })
+    .catch(err => console.error("Error cargando footer:", err));
 });
