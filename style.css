@@ -223,6 +223,8 @@ footer a {
   text-decoration: none;
   z-index: 999;
 }
+
+/* === FORMULARIO DE COTIZACIÓN === */
 .formulario-cotizacion {
   margin-top: 20px;
   padding: 15px;
@@ -253,13 +255,13 @@ footer a {
   }
 }
 
-
 /* === RESPONSIVE EXTRA === */
 @media (max-width: 768px) {
   .banner {
     display: none;
   }
 }
+
 /* === COTIZACIÓN PROFESIONAL === */
 .cotizacion-container {
   text-align: center;
@@ -272,49 +274,77 @@ footer a {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.cotizacion-container h2 {
-  color: #002f6c;
-  font-size: 1.8rem;
-  margin-bottom: 0.2rem;
+.cotizacion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
 }
 
-.cotizacion-container p {
-  margin: 0.3rem 0;
-  font-size: 0.95rem;
+.cotizacion-header .logo {
+  height: 60px;
 }
 
-.cotizacion-container h3 {
-  margin-top: 1rem;
-  font-size: 1.2rem;
-  color: #004aad;
+.empresa-info {
+  text-align: right;
+  font-size: 0.9rem;
 }
 
-.cotizacion-tabla {
+.empresa-info h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.tabla-cotizacion {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
 }
 
-.cotizacion-tabla th,
-.cotizacion-tabla td {
+.tabla-cotizacion th,
+.tabla-cotizacion td {
   padding: 8px 10px;
   border: 1px solid #ddd;
   text-align: right;
 }
 
-.cotizacion-tabla th {
+.tabla-cotizacion th {
   background: #004aad;
   color: white;
   text-align: left;
 }
 
-.cotizacion-tabla td:first-child {
+.tabla-cotizacion td:first-child {
   text-align: left;
 }
 
-.nota {
-  font-size: 0.85rem;
-  color: #555;
+.total-final {
+  text-align: right;
+  font-size: 1.2rem;
   margin-top: 1rem;
+  font-weight: bold;
+}
+
+.disclaimer {
+  font-size: 0.8rem;
+  color: #555;
+  margin-top: 2rem;
   text-align: left;
+}
+
+/* === IMPRESIÓN/PDF === */
+@media print {
+  body {
+    margin: 0;
+  }
+  .menu-icon,
+  .site-header,
+  footer,
+  .soporte-gratis {
+    display: none !important;
+  }
+  .cotizacion-container {
+    box-shadow: none;
+    border-radius: 0;
+  }
 }
