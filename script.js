@@ -105,6 +105,19 @@ function calcular() {
 
   const tieneCafta = c13 === "1,4,5";
 
+  // === LÓGICA DE AMNISTÍA COMENTADA ===
+  // const anio = parseInt(document.getElementById("anio").value);
+  // if (anio <= 2005) {
+  //   const totalAmnistia = c11 + 20000;
+  //   document.getElementById('results').innerHTML = `
+  //     <div style="text-align:center;">
+  //       <p><strong>Este vehículo aplica para amnistía.</strong></p>
+  //       <p><strong>Total Final:</strong> ${formatear(totalAmnistia)}</p>
+  //     </div>`;
+  //   guardarHistorial([{ titulo: "Vehículo con amnistía", valor: formatear(totalAmnistia) }], formatear(totalAmnistia));
+  //   return;
+  // }
+
   let c15 = 0;
   if (!tieneCafta) {
     const baseDAI = c11 + o3 + o4;
@@ -185,20 +198,14 @@ function calcular() {
   ];
   window._cotizacionTotal = c26;
 
-  // Mostrar cotización
+  // Mostramos la cotización en pantalla
   mostrarDetalles();
-
-  // Guardar historial en Firebase
-  const detallesFormateados = window._cotizacionDetalles.map(([t, v, tipo]) => ({
-    titulo: t,
-    valor: tipo === 'usd' ? formatearUSD(v) : formatear(v)
-  }));
-  guardarHistorial(detallesFormateados, formatear(window._cotizacionTotal));
 }
 
+// Función para mostrar/ocultar detalles
 function toggleDetalles() {
   const container = document.getElementById("detalleResultados");
-  const btn = document.getElementById("toggleBtn");
+  const btn       = document.getElementById("toggleBtn");
   if (container.style.display === "none") {
     container.style.display = "block";
     btn.textContent = "Ocultar detalles";
@@ -208,6 +215,7 @@ function toggleDetalles() {
   }
 }
 
+// Genera y muestra la cotización formal
 function mostrarDetalles() {
   const detallesHtml = window._cotizacionDetalles.map(([t, v, tipo]) => `
     <tr>
@@ -230,30 +238,40 @@ function mostrarDetalles() {
       <div class="total-final">
         <strong>Total Final:</strong> ${formatear(window._cotizacionTotal)}
       </div>
+
       <div class="botones-detalle">
         <button id="toggleBtn" class="styled-btn" onclick="toggleDetalles()">Ver detalles</button>
         <button onclick="descargarPDF()" class="styled-btn">Descargar Cotización</button>
         <button onclick="compartirWhatsApp()" class="styled-btn">Compartir por WhatsApp</button>
       </div>
+
       <div id="detalleResultados" style="display: none; margin-top: 1rem;">
         <table class="tabla-cotizacion">
-          <thead><tr><th>Concepto</th><th>Valor</th></tr></thead>
-          <tbody>${detallesHtml}</tbody>
+          <thead>
+            <tr><th>Concepto</th><th>Valor</th></tr>
+          </thead>
+          <tbody>
+            ${detallesHtml}
+          </tbody>
         </table>
         <footer class="disclaimer">
           <p><em>Esta cotización es solo un estimado y no constituye un compromiso de SubastaCarHN. SubastaCarHN se libera de toda responsabilidad por el uso de estos datos.</em></p>
         </footer>
       </div>
     </div>`;
+
   document.getElementById('results').innerHTML = plantillaCotizacion;
 }
 
+// Descarga la cotización usando tu CSS externo
 function descargarPDF() {
+  // Aseguramos que detalles estén visibles al imprimir
   const detalles = document.getElementById("detalleResultados");
   if (detalles.style.display === "none") {
     detalles.style.display = "block";
     document.getElementById("toggleBtn").textContent = "Ocultar detalles";
   }
+
   const contenido = document.getElementById("results").innerHTML;
   const w = window.open('', '_blank', 'width=900,height=700');
   w.document.open();
@@ -263,12 +281,15 @@ function descargarPDF() {
         <title>Cotización SubastaCarHN</title>
         <link rel="stylesheet" href="style.css">
       </head>
-      <body>${contenido}</body>
+      <body>
+        ${contenido}
+      </body>
     </html>`);
   w.document.close();
   setTimeout(() => w.print(), 500);
 }
 
+// Compartir por WhatsApp
 function compartirWhatsApp() {
   let texto = "¡Hola! Aquí tienes la cotización de tu vehículo:\n\n";
   window._cotizacionDetalles.forEach(([t, v, tipo]) => {
@@ -279,6 +300,7 @@ function compartirWhatsApp() {
   window.open(url, "_blank");
 }
 
+// Historial en Firestore
 async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
   const user = auth.currentUser;
   if (!user) return;
@@ -300,6 +322,7 @@ async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
   }
 }
 
+// Contador de usos
 const endpoint = "https://contador-clics-backend.onrender.com/contador";
 async function obtenerContador() {
   try {
@@ -322,6 +345,7 @@ async function registrarClic() {
   }
 }
 
+// Reiniciar formulario
 function reiniciar() {
   document.getElementById('c1').value = "";
   document.getElementById('c7').value = "";
@@ -334,10 +358,12 @@ function reiniciar() {
   bloquearMotorPorVin();
 }
 
+// Logout
 function logout() {
   firebase.auth().signOut().then(() => location.reload());
 }
 
+// Al iniciar
 firebase.auth().onAuthStateChanged(user => {
   const desktop = document.getElementById('userGreeting');
   const mobile  = document.getElementById('mobileGreeting');
@@ -351,12 +377,14 @@ firebase.auth().onAuthStateChanged(user => {
   }
 });
 
+// Carga inicial al DOM
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("c13").value = "OTROS";
   bloquearMotorPorVin();
   obtenerContador();
   obtenerTipoCambioAutomatico();
 
+  // Cargar header y footer
   fetch("header.html")
     .then(res => res.text())
     .then(data => {
@@ -371,4 +399,14 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(err => console.error("Error cargando footer:", err));
 
+  // Seguridad: mostrar el contenido solo si hay sesión activa
   auth.onAuthStateChanged(user => {
+    const contenido = document.getElementById("content");
+    if (user) {
+      if (contenido) contenido.style.display = "block";
+    } else {
+      alert("❗ Debes iniciar sesión para usar la calculadora.");
+      window.location.href = "login.html";
+    }
+  });
+});
