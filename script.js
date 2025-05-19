@@ -70,7 +70,6 @@ const buscarValor = (tabla, valor) => {
 
 const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
 const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
-
 // Función principal de cálculo
 function calcular() {
   registrarClic();
@@ -163,7 +162,6 @@ function calcular() {
   if      (c10 > 15000 && c10 <= 25000) c20 = 7000;
   else if (c10 > 25000)                 c20 = 10000;
   if (c14 === "MAQUINARIA")             c20 = 0;
-
   const c21 = 4000;
   const c22 = 7500;
   const c23 = 4000;
@@ -197,36 +195,25 @@ function calcular() {
   ];
 
   document.getElementById('results').innerHTML = `
-  <div class="cotizacion-container">
-    <h2>SUBASTACARHN</h2>
-    <p><strong>Teléfono:</strong> +504 9733-0137</p>
-    <p><strong>Web:</strong> www.comocomprarcarros.com</p>
-    <h3>Estimación de Costos de Importación</h3>
+    <div style="text-align:center;">
+      <p><strong>Total Final:</strong> ${formatear(c26)}</p>
+      <div class="botones-detalle">
+        <button onclick="mostrarDetalles()" id="toggleBtn" class="styled-btn">Ver detalles</button>
+        <button onclick="descargarPDF()" class="styled-btn">Descargar en PDF</button>
+        <button onclick="compartirWhatsApp()" class="styled-btn">Compartir por WhatsApp</button>
+      </div>
+      <div id="detalleResultados" style="display:none;">
+        <table class="tabla-detalles">
+          <tr><th>Concepto</th><th>Valor</th></tr>
+          ${detalles.map(([t,v,tipo]) => `
+            <tr>
+              <td>${t}</td>
+              <td>${tipo==='usd'?formatearUSD(v):formatear(v)}</td>
+            </tr>`).join('')}
+        </table>
+      </div>
+    </div>`;
 
-    <table class="cotizacion-tabla">
-      <thead>
-        <tr><th>Concepto</th><th>Valor</th></tr>
-      </thead>
-      <tbody>
-        ${detalles.map(([t, v, tipo]) => `
-          <tr>
-            <td>${t}</td>
-            <td>${tipo === 'usd' ? formatearUSD(v) : formatear(v)}</td>
-          </tr>`).join('')}
-      </tbody>
-    </table>
-
-    <div class="botones-detalle" style="margin-top:1rem;">
-      <button onclick="mostrarDetalles()" id="toggleBtn" class="styled-btn">Ver detalles</button>
-      <button onclick="descargarPDF()" class="styled-btn">Descargar en PDF</button>
-      <button onclick="compartirWhatsApp()" class="styled-btn">Compartir por WhatsApp</button>
-    </div>
-
-    <p class="nota">
-      ⚠️ Este cálculo es una estimación basada en tarifas actuales. El valor final puede variar por inspección, ajustes de aduana u otros factores oficiales.
-    </p>
-  </div>
-`;
   const detallesFormateados = detalles.map(([t,v,tipo]) => ({
     titulo: t,
     valor: tipo==='usd'?formatearUSD(v):formatear(v)
@@ -234,7 +221,6 @@ function calcular() {
 
   guardarHistorial(detallesFormateados, formatear(c26));
 }
-
 async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
   const user = auth.currentUser;
   if (!user) return;
@@ -296,7 +282,7 @@ function compartirWhatsApp() {
       texto += `${cols[0].innerText}: ${cols[1].innerText}\n`;
     }
   });
-  texto += "\nCalculado con SUBASTACARHN 👉 https://ledinv.github.io/calculadora-subastacarhn/";
+  texto += "\nCalculado con SUBASTACARHN 👉 https://comocomprarcarros.com";
   const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
   window.open(url, "_blank");
 }
@@ -353,6 +339,7 @@ async function registrarClic() {
   }
 }
 
+// Carga inicial
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("c13").value = "OTROS";
   bloquearMotorPorVin();
@@ -385,4 +372,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
