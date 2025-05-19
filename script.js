@@ -55,21 +55,19 @@ const buyerFees = [
   [5000,650],[5500,675],[6000,700],[7000,755],[7500,775],[8000,800],[8500,820],[9000,820],
   [10000,850],[11000,850],[11500,860],[12000,875],[12500,890],[13000,890],[14000,900],[15000,900]
 ];
-
 const virtualBidFees = [
   [100,50],[500,65],[1000,85],[1500,95],[2000,110],[4000,125],
   [6000,145],[8000,160],[9000,160],[10000,160],[200000,160]
 ];
-
 const buscarValor = (tabla, valor) => {
   for (let i = tabla.length - 1; i >= 0; i--) {
     if (valor >= tabla[i][0]) return tabla[i][1];
   }
   return 0;
 };
-
 const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
 const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
+
 // Función principal de cálculo
 function calcular() {
   registrarClic();
@@ -169,7 +167,8 @@ function calcular() {
   const c25 = c20 + c21 + c22 + c23 + c24;
   const c26 = c11 + c18 + c25;
 
-  const detalles = [
+  // Preparamos detalles para la cotización
+  window._cotizacionDetalles = [
     ['MONTO DE OFERTA',       c1,  'usd'],
     ['ENVIRONMENTAL FEE',     c2,  'usd'],
     ['VIRTUAL BID FEE',       c3,  'usd'],
@@ -193,34 +192,89 @@ function calcular() {
     ['TOTAL DE GASTOS FIJOS',  c25, 'hnl'],
     ['TOTAL FINAL',            c26, 'hnl']
   ];
+  window._cotizacionTotal = c26;
 
-  document.getElementById('results').innerHTML = `
-    <div style="text-align:center;">
-      <p><strong>Total Final:</strong> ${formatear(c26)}</p>
-      <div class="botones-detalle">
-        <button onclick="mostrarDetalles()" id="toggleBtn" class="styled-btn">Ver detalles</button>
-        <button onclick="descargarPDF()" class="styled-btn">Descargar en PDF</button>
-        <button onclick="compartirWhatsApp()" class="styled-btn">Compartir por WhatsApp</button>
-      </div>
-      <div id="detalleResultados" style="display:none;">
-        <table class="tabla-detalles">
+  // Mostramos la cotización en pantalla
+  mostrarDetalles();
+}
+
+// Genera y muestra la cotización formal
+function mostrarDetalles() {
+  const detallesHtml = window._cotizacionDetalles.map(([t, v, tipo]) => `
+    <tr>
+      <td>${t}</td>
+      <td>${tipo==='usd'?formatearUSD(v):formatear(v)}</td>
+    </tr>`).join('');
+
+  const plantillaCotizacion = `
+    <div class="cotizacion-container">
+      <header class="cotizacion-header">
+        <img src="logo.png" alt="SubastaCarHN" class="logo" />
+        <div class="empresa-info">
+          <h1>COTIZACIÓN</h1>
+          <p>SubastaCarHN</p>
+          <p>Tel: +504 1234-5678 | info@subastacarhn.com</p>
+          <p>www.comocomprarcarros.com</p>
+        </div>
+      </header>
+      <hr />
+      <table class="tabla-cotizacion">
+        <thead>
           <tr><th>Concepto</th><th>Valor</th></tr>
-          ${detalles.map(([t,v,tipo]) => `
-            <tr>
-              <td>${t}</td>
-              <td>${tipo==='usd'?formatearUSD(v):formatear(v)}</td>
-            </tr>`).join('')}
-        </table>
+        </thead>
+        <tbody>
+          ${detallesHtml}
+        </tbody>
+      </table>
+      <div class="total-final">
+        <strong>Total Final:</strong> ${formatear(window._cotizacionTotal)}
+      </div>
+      <footer class="disclaimer">
+        <p><em>Esta cotización es solo un estimado y no constituye un compromiso de SubastaCarHN. SubastaCarHN se libera de toda responsabilidad por el uso de estos datos.</em></p>
+      </footer>
+      <div class="botones-detalle">
+        <button onclick="descargarPDF()" class="styled-btn">Descargar Cotización</button>
+        <button onclick="compartirWhatsApp()" class="styled-btn">Compartir por WhatsApp</button>
       </div>
     </div>`;
 
-  const detallesFormateados = detalles.map(([t,v,tipo]) => ({
-    titulo: t,
-    valor: tipo==='usd'?formatearUSD(v):formatear(v)
-  }));
-
-  guardarHistorial(detallesFormateados, formatear(c26));
+  document.getElementById('results').innerHTML = plantillaCotizacion;
 }
+
+// Descarga la cotización usando tu CSS externo
+function descargarPDF() {
+  // Re-renderizamos para asegurarnos de que window._cotizacionDetalles y _total estén definidos
+  mostrarDetalles();
+
+  const contenido = document.getElementById("results").innerHTML;
+  const w = window.open('', '_blank', 'width=900,height=700');
+  w.document.open();
+  w.document.write(`
+    <html>
+      <head>
+        <title>Cotización SubastaCarHN</title>
+        <link rel="stylesheet" href="style.css">
+      </head>
+      <body>
+        ${contenido}
+      </body>
+    </html>`);
+  w.document.close();
+  setTimeout(() => w.print(), 500);
+}
+
+// Compartir por WhatsApp
+function compartirWhatsApp() {
+  let texto = "¡Hola! Aquí tienes la cotización de tu vehículo:\n\n";
+  window._cotizacionDetalles.forEach(([t, v, tipo]) => {
+    texto += `${t}: ${tipo==='usd'?formatearUSD(v):formatear(v)}\n`;
+  });
+  texto += `\nTotal Final: ${formatear(window._cotizacionTotal)}\n\nCalculado con SUBASTACARHN 👉 https://comocomprarcarros.com`;
+  const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+  window.open(url, "_blank");
+}
+
+// Historial en Firestore
 async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
   const user = auth.currentUser;
   if (!user) return;
@@ -242,81 +296,7 @@ async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
   }
 }
 
-function mostrarDetalles() {
-  const tabla = document.getElementById("detalleResultados");
-  const btn   = document.getElementById("toggleBtn");
-  tabla.style.display = tabla.style.display === "none" ? "block" : "none";
-  btn.textContent = tabla.style.display === "block" ? "Ocultar detalles" : "Ver detalles";
-}
-
-function descargarPDF() {
-  const detalleDiv = document.getElementById("detalleResultados");
-  if (detalleDiv.style.display === "none") mostrarDetalles();
-  const contenido = document.getElementById("results").innerHTML;
-  const w = window.open('', '_blank', 'width=800,height=600');
-  w.document.open();
-  w.document.write(`
-    <html><head><title>Descargar en PDF</title>
-    <style>
-      body { font-family: Helvetica; margin: 20px; }
-      .tabla-detalles {
-        margin: 20px auto; border-collapse: collapse; width: auto; max-width: 600px;
-      }
-      .tabla-detalles th, .tabla-detalles td {
-        padding: 8px 12px; border: 1px solid #ddd;
-      }
-      .tabla-detalles th { background: #f2f2f2; }
-      th:first-child, td:first-child { text-align: left; }
-      th:nth-child(2), td:nth-child(2) { text-align: right; }
-    </style>
-    </head><body>${contenido}</body></html>`);
-  w.document.close();
-  setTimeout(() => w.print(), 500);
-}
-
-function compartirWhatsApp() {
-  let texto = "¡Hola! Aquí tienes el cálculo de importación de tu vehículo:\n\n";
-  document.querySelectorAll("#detalleResultados table tr").forEach(fila => {
-    const cols = fila.querySelectorAll("td, th");
-    if (cols.length === 2) {
-      texto += `${cols[0].innerText}: ${cols[1].innerText}\n`;
-    }
-  });
-  texto += "\nCalculado con SUBASTACARHN 👉 https://comocomprarcarros.com";
-  const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
-  window.open(url, "_blank");
-}
-
-function reiniciar() {
-  document.getElementById('c1').value = "";
-  document.getElementById('c7').value = "";
-  document.getElementById('c8').value = "";
-  document.getElementById('e2').value = "25.90";
-  document.getElementById('c13').value = "OTROS";
-  document.getElementById('c14').value = "OTROS";
-  document.getElementById('motor').value = "";
-  document.getElementById('results').innerHTML = '';
-  bloquearMotorPorVin();
-}
-
-function logout() {
-  firebase.auth().signOut().then(() => location.reload());
-}
-
-firebase.auth().onAuthStateChanged(user => {
-  const desktop = document.getElementById('userGreeting');
-  const mobile  = document.getElementById('mobileGreeting');
-  if (user) {
-    const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
-    if (desktop) desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
-    if (mobile)  mobile.innerHTML  = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Salir</a>`;
-  } else {
-    if (desktop) desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
-    if (mobile)  mobile.innerHTML  = desktop.innerHTML;
-  }
-});
-
-// Contador
+// Contador de usos
 const endpoint = "https://contador-clics-backend.onrender.com/contador";
 async function obtenerContador() {
   try {
@@ -339,7 +319,39 @@ async function registrarClic() {
   }
 }
 
-// Carga inicial
+// Reiniciar formulario
+function reiniciar() {
+  document.getElementById('c1').value = "";
+  document.getElementById('c7').value = "";
+  document.getElementById('c8').value = "";
+  document.getElementById('e2').value = "25.90";
+  document.getElementById('c13').value = "OTROS";
+  document.getElementById('c14').value = "OTROS";
+  document.getElementById('motor').value = "";
+  document.getElementById('results').innerHTML = '';
+  bloquearMotorPorVin();
+}
+
+// Logout
+function logout() {
+  firebase.auth().signOut().then(() => location.reload());
+}
+
+// Al iniciar
+firebase.auth().onAuthStateChanged(user => {
+  const desktop = document.getElementById('userGreeting');
+  const mobile  = document.getElementById('mobileGreeting');
+  if (user) {
+    const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
+    if (desktop) desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
+    if (mobile)  mobile.innerHTML  = desktop.innerHTML;
+  } else {
+    if (desktop) desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+    if (mobile)  mobile.innerHTML  = desktop.innerHTML;
+  }
+});
+
+// Carga inicial al DOM
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("c13").value = "OTROS";
   bloquearMotorPorVin();
