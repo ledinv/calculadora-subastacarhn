@@ -432,7 +432,7 @@ footer a {
   padding: 6px 14px;
   border-radius: 50px;
   position: absolute;
-  right: -20px; /* 👈 Más a la derecha */
+  right: 10px; /* 👈 Más a la derecha */
   top: 10px;    /* ⬅️ Mantiene su altura original */
   z-index: 999;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
