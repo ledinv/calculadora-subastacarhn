@@ -432,16 +432,17 @@ footer a {
   padding: 6px 14px;
   border-radius: 50px;
   position: absolute;
-  right: 20px;
-  top: 10px;
+  right: -20px; /* 👈 Más a la derecha */
+  top: 10px;    /* ⬅️ Mantiene su altura original */
   z-index: 999;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   font-weight: bold;
 }
 
-/* Oculta en móviles */
+/* Ocultar en móviles */
 @media screen and (max-width: 768px) {
   .contador-clics-desktop {
     display: none;
   }
 }
+
