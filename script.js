@@ -213,7 +213,7 @@ function mostrarDetalles() {
         <div class="empresa-info">
           <h1>COTIZACIÓN</h1>
           <p>SubastaCarHN</p>
-          <p>Tel: +504 1234-5678 | info@subastacarhn.com</p>
+          <p>Tel: +504 97330137 | info@subastacarhn.com</p>
           <p>www.comocomprarcarros.com</p>
         </div>
       </header>
