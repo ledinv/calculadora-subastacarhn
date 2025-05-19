@@ -377,3 +377,31 @@ footer a {
 .cotizacion-container img {
   display: none !important;
 }
+/* =======================================
+   AJUSTES PARA IMPRESIÓN / PDF EN UNA SÓLA HOJA
+   ======================================= */
+@media print {
+  /* Define tamaño de página (A4) y márgenes */
+  @page {
+    size: A4 portrait;
+    margin: 15mm;
+  }
+
+  /* Oculta todo excepto la cotización */
+  body * {
+    visibility: hidden;
+  }
+  .cotizacion-container, .cotizacion-container * {
+    visibility: visible;
+  }
+
+  /* Coloca la cotización al inicio y evita saltos */
+  .cotizacion-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
