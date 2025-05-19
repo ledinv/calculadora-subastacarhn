@@ -348,3 +348,9 @@ footer a {
     border-radius: 0;
   }
 }
+@media print {
+  /* Oculta los botones dentro de la cotización */
+  .cotizacion-container .styled-btn {
+    display: none !important;
+  }
+}
