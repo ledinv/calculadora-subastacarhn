@@ -197,6 +197,11 @@ function calcular() {
     ['TOTAL FINAL',            c26, 'hnl']
   ];
   window._cotizacionTotal = c26;
+  const detallesFormateados = window._cotizacionDetalles.map(([t, v, tipo]) => ({
+  titulo: t,
+  valor: tipo === 'usd' ? formatearUSD(v) : formatear(v)
+}));
+guardarHistorial(detallesFormateados, formatear(window._cotizacionTotal));
 
   // Mostramos la cotización en pantalla
   mostrarDetalles();
