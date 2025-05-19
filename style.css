@@ -373,3 +373,7 @@ footer a {
     display: none !important;
   }
 }
+/* Oculta cualquier <img> dentro de la cotización */
+.cotizacion-container img {
+  display: none !important;
+}
