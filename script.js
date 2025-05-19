@@ -1,1 +1,386 @@
-const _0x46e781=_0x35a3;(function(_0x4a301c,_0x3f0b03){const _0x1ed6e8=_0x35a3,_0x41e37a=_0x4a301c();while(!![]){try{const _0x49d6eb=-parseInt(_0x1ed6e8(0x210))/0x1+parseInt(_0x1ed6e8(0x214))/0x2+-parseInt(_0x1ed6e8(0x1ef))/0x3*(-parseInt(_0x1ed6e8(0x1a8))/0x4)+parseInt(_0x1ed6e8(0x201))/0x5*(parseInt(_0x1ed6e8(0x1a6))/0x6)+parseInt(_0x1ed6e8(0x1c1))/0x7*(-parseInt(_0x1ed6e8(0x1f6))/0x8)+-parseInt(_0x1ed6e8(0x1ff))/0x9+-parseInt(_0x1ed6e8(0x20f))/0xa*(-parseInt(_0x1ed6e8(0x1d9))/0xb);if(_0x49d6eb===_0x3f0b03)break;else _0x41e37a['push'](_0x41e37a['shift']());}catch(_0x37522a){_0x41e37a['push'](_0x41e37a['shift']());}}}(_0x220c,0x63606));const firebaseConfig={'apiKey':_0x46e781(0x1f5),'authDomain':'subastacarhn-40554.firebaseapp.com','projectId':'subastacarhn-40554','storageBucket':_0x46e781(0x1f3),'messagingSenderId':'536785797974','appId':_0x46e781(0x1d1),'measurementId':_0x46e781(0x1a5)};function _0x35a3(_0x29abd0,_0x1a2e68){const _0x220cc2=_0x220c();return _0x35a3=function(_0x35a39f,_0x3c2a71){_0x35a39f=_0x35a39f-0x190;let _0x12804b=_0x220cc2[_0x35a39f];return _0x12804b;},_0x35a3(_0x29abd0,_0x1a2e68);}firebase[_0x46e781(0x1c2)](firebaseConfig);const auth=firebase[_0x46e781(0x1ab)](),db=firebase['firestore']();function toggleMenu(){const _0x5661ca=_0x46e781,_0x22f9f5=document['getElementById'](_0x5661ca(0x1b2));_0x22f9f5[_0x5661ca(0x1f7)][_0x5661ca(0x1fa)]=_0x22f9f5[_0x5661ca(0x1f7)][_0x5661ca(0x1fa)]===_0x5661ca(0x1b5)?_0x5661ca(0x1bb):_0x5661ca(0x1b5);}function bloquearMotorPorVin(){const _0x12d585=_0x46e781,_0x2117ef=document[_0x12d585(0x1bd)](_0x12d585(0x1b8))[_0x12d585(0x191)],_0x7c15e2=document['getElementById'](_0x12d585(0x1f4));_0x7c15e2[_0x12d585(0x1e1)]=_0x2117ef!=='OTROS';if(_0x7c15e2[_0x12d585(0x1e1)])_0x7c15e2['value']='';}const formatear=_0x5f5247=>new Intl[(_0x46e781(0x209))](_0x46e781(0x215),{'style':_0x46e781(0x1da),'currency':_0x46e781(0x199)})[_0x46e781(0x1a3)](_0x5f5247),formatearUSD=_0x5a7edb=>new Intl['NumberFormat'](_0x46e781(0x1dd),{'style':_0x46e781(0x1da),'currency':_0x46e781(0x1f0)})[_0x46e781(0x1a3)](_0x5a7edb);async function obtenerTipoCambioAutomatico(){const _0x100907=_0x46e781,_0x427bd3=_0x100907(0x1fd);try{const _0x3f43e1=await fetch(_0x427bd3),_0x514479=await _0x3f43e1[_0x100907(0x1aa)]();_0x514479[_0x100907(0x193)]&&(document[_0x100907(0x1bd)]('e2')[_0x100907(0x191)]=_0x514479[_0x100907(0x193)],document[_0x100907(0x1bd)]('e2')[_0x100907(0x1f8)]=!![]);}catch(_0x48ab17){console[_0x100907(0x205)]('Error\x20al\x20conectar\x20con\x20el\x20backend:',_0x48ab17);}}const buyerFees=[[0x32,0x1],[0x64,0x19],[0xc8,0x3c],[0x12c,0x55],[0x15e,0x64],[0x190,0x7d],[0x1c2,0x87],[0x1f4,0x91],[0x226,0x9b],[0x258,0xaa],[0x2bc,0xc3],[0x320,0xd7],[0x384,0xe6],[0x3e8,0xfa],[0x4b0,0x10e],[0x514,0x11d],[0x578,0x12c],[0x5dc,0x13b],[0x640,0x14a],[0x6a4,0x15e],[0x708,0x172],[0x7d0,0x186],[0x960,0x1a9],[0x9c4,0x1cc],[0xbb8,0x1f9],[0xdac,0x22b],[0xfa0,0x258],[0x1194,0x271],[0x1388,0x28a],[0x157c,0x2a3],[0x1770,0x2bc],[0x1b58,0x2f3],[0x1d4c,0x307],[0x1f40,0x320],[0x2134,0x334],[0x2328,0x334],[0x2710,0x352],[0x2af8,0x352],[0x2cec,0x35c],[0x2ee0,0x36b],[0x30d4,0x37a],[0x32c8,0x37a],[0x36b0,0x384],[0x3a98,0x384]],virtualBidFees=[[0x64,0x32],[0x1f4,0x41],[0x3e8,0x55],[0x5dc,0x5f],[0x7d0,0x6e],[0xfa0,0x7d],[0x1770,0x91],[0x1f40,0xa0],[0x2328,0xa0],[0x2710,0xa0],[0x30d40,0xa0]],buscarValor=(_0x392ea3,_0x5419ce)=>{const _0xd7d266=_0x46e781;for(let _0x4ba04d=_0x392ea3[_0xd7d266(0x1f2)]-0x1;_0x4ba04d>=0x0;_0x4ba04d--){if(_0x5419ce>=_0x392ea3[_0x4ba04d][0x0])return _0x392ea3[_0x4ba04d][0x1];}return 0x0;},buscarBuyerFee=_0x1c4ceb=>_0x1c4ceb>0x3a98?+(_0x1c4ceb*0.06)[_0x46e781(0x1c7)](0x2):buscarValor(buyerFees,_0x1c4ceb),buscarVirtualBidFee=_0xdbced5=>_0xdbced5>0x1f40?0xa0:buscarValor(virtualBidFees,_0xdbced5);function calcular(){const _0x2259d3=_0x46e781;registrarClic();const _0x4dace1=parseFloat(document[_0x2259d3(0x1bd)]('c1')[_0x2259d3(0x191)][_0x2259d3(0x1c9)]()),_0x5c37a5=parseFloat(document[_0x2259d3(0x1bd)]('c7')[_0x2259d3(0x191)][_0x2259d3(0x1c9)]()),_0x2012fd=parseFloat(document[_0x2259d3(0x1bd)]('c8')[_0x2259d3(0x191)][_0x2259d3(0x1c9)]()),_0x44826c=parseFloat(document[_0x2259d3(0x1bd)]('e2')[_0x2259d3(0x191)][_0x2259d3(0x1c9)]()),_0x3d0a79=document[_0x2259d3(0x1bd)](_0x2259d3(0x1b8))[_0x2259d3(0x191)],_0x12f0de=document[_0x2259d3(0x1bd)](_0x2259d3(0x1cb))[_0x2259d3(0x191)],_0x38dfc2=document[_0x2259d3(0x1bd)]('motor')[_0x2259d3(0x191)];if(!_0x4dace1||!_0x5c37a5||!_0x2012fd||!_0x44826c||!_0x3d0a79||!_0x12f0de||_0x3d0a79===_0x2259d3(0x192)&&!_0x38dfc2){alert(_0x2259d3(0x1e8));return;}const _0x2f7101=0xf,_0x19cb3f=buscarVirtualBidFee(_0x4dace1),_0x52e599=buscarBuyerFee(_0x4dace1),_0x464626=0x73,_0x5442c7=_0x4dace1+_0x2f7101+_0x19cb3f+_0x52e599+_0x464626,_0x4b9589=_0x5c37a5+_0x2012fd,_0x2320a4=_0x5442c7+_0x4b9589,_0x11be20=_0x2320a4*_0x44826c,_0x29b8df=0x32,_0x2cb493=_0x5442c7*0.015,_0x3c60fc=_0x29b8df*_0x44826c,_0x9ab37=_0x2cb493*_0x44826c,_0x4bc11e=_0x3d0a79==='1,4,5';let _0x2f197c=0x0;if(!_0x4bc11e){const _0x381747=_0x11be20+_0x3c60fc+_0x9ab37;if(_0x12f0de===_0x2259d3(0x1a4))_0x2f197c=_0x381747*0.05;else{if(_0x12f0de===_0x2259d3(0x1c6))_0x2f197c=_0x381747*0.1;else{if([_0x2259d3(0x1e7),'CAMION',_0x2259d3(0x196),'MOTO'][_0x2259d3(0x1b4)](_0x12f0de))_0x2f197c=_0x381747*0.1;else _0x38dfc2===_0x2259d3(0x1d7)?_0x2f197c=_0x381747*0.05:_0x2f197c=_0x381747*0.15;}}}let _0x368260=0x0;if(_0x12f0de==='PICK\x20UP')_0x368260=0x0;else{if(_0x12f0de===_0x2259d3(0x1a0))_0x368260=(_0x11be20+_0x3c60fc+_0x9ab37+_0x2f197c)*0.1;else{if(_0x12f0de===_0x2259d3(0x1c6))_0x368260=(_0x11be20+_0x3c60fc+_0x9ab37+_0x2f197c)*0.05;else{if([_0x2259d3(0x212),_0x2259d3(0x196),_0x2259d3(0x1a4)][_0x2259d3(0x1b4)](_0x12f0de))_0x368260=0x0;else{const _0x3ac962=_0x2320a4+_0x29b8df+_0x2cb493;let _0xca9a8e=0x0;if(_0x3ac962<=0x1b58)_0xca9a8e=0.1;else{if(_0x3ac962<=0x2710)_0xca9a8e=0.15;else{if(_0x3ac962<=0x4e20)_0xca9a8e=0.2;else{if(_0x3ac962<=0xc350)_0xca9a8e=0.3;else _0xca9a8e=0.45;}}}_0x368260=(_0x11be20+_0x3c60fc+_0x9ab37+_0x2f197c)*_0xca9a8e;}}}}let _0x53df1f=0x0;_0x12f0de!=='MAQUINARIA'&&(_0x53df1f=(_0x11be20+_0x2f197c+_0x368260+_0x3c60fc+_0x9ab37)*0.15);const _0x1f5d39=_0x2f197c+_0x368260+_0x53df1f;let _0x3a55a8=0x1388;if(_0x2320a4>0x3a98&&_0x2320a4<=0x61a8)_0x3a55a8=0x1b58;else{if(_0x2320a4>0x61a8)_0x3a55a8=0x2710;}if(_0x12f0de==='MAQUINARIA')_0x3a55a8=0x0;const _0x4af447=0xfa0,_0x441819=0x1d4c,_0x458b5f=0xfa0,_0x39d7f9=0x37*_0x44826c,_0x47ddde=_0x3a55a8+_0x4af447+_0x441819+_0x458b5f+_0x39d7f9,_0x38a9ed=_0x11be20+_0x1f5d39+_0x47ddde;window['_cotizacionDetalles']=[['MONTO\x20DE\x20OFERTA',_0x4dace1,_0x2259d3(0x194)],[_0x2259d3(0x1d6),_0x2f7101,'usd'],[_0x2259d3(0x1cf),_0x19cb3f,_0x2259d3(0x194)],['BUYER\x20FEE',_0x52e599,_0x2259d3(0x194)],[_0x2259d3(0x1d4),_0x464626,'usd'],['TOTAL\x20PRECIO\x20SUBASTA',_0x5442c7,_0x2259d3(0x194)],['VALOR\x20DE\x20BARCO',_0x5c37a5,_0x2259d3(0x194)],[_0x2259d3(0x1a7),_0x2012fd,'usd'],[_0x2259d3(0x19e),_0x4b9589,_0x2259d3(0x194)],['TOTAL\x20CIF\x20EN\x20DÓLARES',_0x2320a4,_0x2259d3(0x194)],[_0x2259d3(0x217),_0x11be20,_0x2259d3(0x19a)],['DAI',_0x2f197c,_0x2259d3(0x19a)],['ISC',_0x368260,'hnl'],[_0x2259d3(0x1d3),_0x53df1f,_0x2259d3(0x19a)],[_0x2259d3(0x1af),_0x1f5d39,_0x2259d3(0x19a)],[_0x2259d3(0x19f),_0x3a55a8,_0x2259d3(0x19a)],['ADUANERO',_0x4af447,_0x2259d3(0x19a)],[_0x2259d3(0x1d5),_0x441819,'hnl'],[_0x2259d3(0x1c3),_0x458b5f,_0x2259d3(0x19a)],[_0x2259d3(0x1cd),_0x39d7f9,_0x2259d3(0x19a)],[_0x2259d3(0x1ac),_0x47ddde,'hnl'],[_0x2259d3(0x1e2),_0x38a9ed,_0x2259d3(0x19a)]],window[_0x2259d3(0x19c)]=_0x38a9ed,mostrarDetalles();}function _0x220c(){const _0x4abd57=['block','Sin\x20título','replace','PICK\x20UP','Por\x20favor\x20completa\x20todos\x20los\x20campos.\x20El\x20campo\x20\x27Tipo\x20de\x20Motor\x27\x20solo\x20aplica\x20si\x20el\x20VIN\x20es\x20OTROS.','signOut','login.html','content','document','\x0a\x20\x20\x20\x20\x20\x20\x20\x20</tbody>\x0a\x20\x20\x20\x20\x20\x20</table>\x0a\x20\x20\x20\x20\x20\x20<div\x20class=\x22total-final\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<strong>Total\x20Final:</strong>\x20','https://contador-clics-backend.onrender.com/contador','923541yutgDh','USD','<a\x20href=\x22perfil.html\x22>Hola,\x20','length','subastacarhn-40554.appspot.com','motor','AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms','1641416aslLNt','style','readOnly','_blank','display','25.90','historial','https://subastacar-bch-api.onrender.com/api/tipo-cambio-bch','Error\x20al\x20registrar\x20clic:','4296411JoJUHS','header.html','5vBcgHT','catch','</a>\x20&nbsp;|&nbsp;\x20<a\x20href=\x22#\x22\x20onclick=\x22logout()\x22>Cerrar\x20sesión</a>','uid','error','\x0a\x0aCalculado\x20con\x20SUBASTACARHN\x20👉\x20https://comocomprarcarros.com','join','forEach','NumberFormat','fecha','open','delete','innerHTML','location','10CXKLNH','653832nTGUkB','❗\x20Debes\x20iniciar\x20sesión\x20para\x20usar\x20la\x20calculadora.','CAMION','clics','760946EmzjvK','es-HN','then','TOTAL\x20CIF\x20EN\x20LEMPIRAS','clients','email','value','OTROS','valor','usd','collection','BUS','Error\x20cargando\x20footer:','\x0a\x20\x20\x20\x20\x20\x20</body>\x0a\x20\x20\x20\x20</html>','HNL','hnl','onAuthStateChanged','_cotizacionTotal','desc','TOTAL\x20DE\x20ENVÍO\x20MARÍTIMO','ECOTASA','MOTO','results','textContent','format','MAQUINARIA','G-QM5N60K8C0','1704948wNNgtl','PRECIO\x20DE\x20GRÚA','8lYwQWU','DOMContentLoaded','json','auth','TOTAL\x20DE\x20GASTOS\x20FIJOS','\x0a\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20<footer\x20class=\x22disclaimer\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<p><em>Esta\x20cotización\x20es\x20solo\x20un\x20estimado\x20y\x20no\x20constituye\x20un\x20compromiso\x20de\x20SubastaCarHN.\x20SubastaCarHN\x20se\x20libera\x20de\x20toda\x20responsabilidad\x20por\x20el\x20uso\x20de\x20estos\x20datos.</em></p>\x0a\x20\x20\x20\x20\x20\x20</footer>\x0a\x20\x20\x20\x20\x20\x20<div\x20class=\x22botones-detalle\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22descargarPDF()\x22\x20class=\x22styled-btn\x22>Descargar\x20Cotización</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22compartirWhatsApp()\x22\x20class=\x22styled-btn\x22>Compartir\x20por\x20WhatsApp</button>\x0a\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20</div>','❌\x20Error\x20al\x20guardar\x20historial:','TOTAL\x20DE\x20IMPUESTOS\x20HONDURAS','close','addEventListener','mobile-menu-links','FieldValue','includes','flex','<a\x20href=\x22login.html\x22>Iniciar\x20sesión</a>\x20|\x20<a\x20href=\x22register.html\x22>Registrarse</a>','size','c13','mobileGreeting','text','none','print','getElementById','orderBy','\x0a\x20\x20\x20\x20<html>\x0a\x20\x20\x20\x20\x20\x20<head>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<title>Cotización\x20SubastaCarHN</title>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<link\x20rel=\x22stylesheet\x22\x20href=\x22style.css\x22>\x0a\x20\x20\x20\x20\x20\x20</head>\x0a\x20\x20\x20\x20\x20\x20<body>\x0a\x20\x20\x20\x20\x20\x20\x20\x20','Cálculos:\x20','21pGkPQr','initializeApp','MATRÍCULA\x20Y\x20PLACAS','serverTimestamp','Error\x20al\x20obtener\x20el\x20contador:','HIBRIDO','toFixed','Error\x20cargando\x20header:','trim','width=900,height=700','c14','contadorClics','TRANSFERENCIA\x20INTERNACIONAL','userGreeting','VIRTUAL\x20BID\x20FEE','split','1:536785797974:web=e3eabb4dcd898c2ffe8cf7','footer.html','ISV','GATE\x20Y\x20TITLE\x20PICK\x20FEE','VOTAINER\x20-\x20CONSOLIDADOS\x20HN','ENVIRONMENTAL\x20FEE','1.5\x20Inferior','href','9608093xshVvp','currency','doc','write','en-US','currentUser','</td>\x0a\x20\x20\x20\x20\x20\x20<td>','toUpperCase','disabled','TOTAL\x20FINAL','docs'];_0x220c=function(){return _0x4abd57;};return _0x220c();}function mostrarDetalles(){const _0x5b67bb=_0x46e781,_0xff2cb1=window['_cotizacionDetalles']['map'](([_0x1a584a,_0xf4c48d,_0x39282b])=>'\x0a\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20<td>'+_0x1a584a+_0x5b67bb(0x1df)+(_0x39282b===_0x5b67bb(0x194)?formatearUSD(_0xf4c48d):formatear(_0xf4c48d))+'</td>\x0a\x20\x20\x20\x20</tr>')[_0x5b67bb(0x207)](''),_0x28b436='\x0a\x20\x20\x20\x20<div\x20class=\x22cotizacion-container\x22>\x0a\x20\x20\x20\x20\x20\x20<header\x20class=\x22cotizacion-header\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<img\x20src=\x22logo.png\x22\x20alt=\x22SubastaCarHN\x22\x20class=\x22logo\x22\x20/>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22empresa-info\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h1>COTIZACIÓN</h1>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p>SubastaCarHN</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p>Tel:\x20+504\x2097330137\x20|\x20info@subastacarhn.com</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p>www.comocomprarcarros.com</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20</header>\x0a\x20\x20\x20\x20\x20\x20<hr\x20/>\x0a\x20\x20\x20\x20\x20\x20<table\x20class=\x22tabla-cotizacion\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<thead>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr><th>Concepto</th><th>Valor</th></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</thead>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<tbody>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+_0xff2cb1+_0x5b67bb(0x1ed)+formatear(window['_cotizacionTotal'])+_0x5b67bb(0x1ad);document[_0x5b67bb(0x1bd)](_0x5b67bb(0x1a1))[_0x5b67bb(0x20d)]=_0x28b436;}function descargarPDF(){const _0xa83e6a=_0x46e781;mostrarDetalles();const _0x4e6586=document['getElementById'](_0xa83e6a(0x1a1))[_0xa83e6a(0x20d)],_0x19d306=window[_0xa83e6a(0x20b)]('',_0xa83e6a(0x1f9),_0xa83e6a(0x1ca));_0x19d306[_0xa83e6a(0x1ec)]['open'](),_0x19d306[_0xa83e6a(0x1ec)][_0xa83e6a(0x1dc)](_0xa83e6a(0x1bf)+_0x4e6586+_0xa83e6a(0x198)),_0x19d306['document'][_0xa83e6a(0x1b0)](),setTimeout(()=>_0x19d306[_0xa83e6a(0x1bc)](),0x1f4);}function compartirWhatsApp(){const _0x1be7b0=_0x46e781;let _0x550dae='¡Hola!\x20Aquí\x20tienes\x20la\x20cotización\x20de\x20tu\x20vehículo:\x0a\x0a';window['_cotizacionDetalles'][_0x1be7b0(0x208)](([_0x3c0665,_0x36c5e1,_0x135df4])=>{const _0x59ddf6=_0x1be7b0;_0x550dae+=_0x3c0665+':\x20'+(_0x135df4===_0x59ddf6(0x194)?formatearUSD(_0x36c5e1):formatear(_0x36c5e1))+'\x0a';}),_0x550dae+='\x0aTotal\x20Final:\x20'+formatear(window[_0x1be7b0(0x19c)])+_0x1be7b0(0x206);const _0x489527='https://wa.me/?text='+encodeURIComponent(_0x550dae);window['open'](_0x489527,'_blank');}async function guardarHistorial(_0x1d853d,_0x23cc3a){const _0x548a58=_0x46e781,_0x29a10c=auth[_0x548a58(0x1de)];if(!_0x29a10c)return;try{const _0xa456e9=db[_0x548a58(0x195)](_0x548a58(0x218))[_0x548a58(0x1db)](_0x29a10c[_0x548a58(0x204)])['collection'](_0x548a58(0x1fc)),_0x2bc0c8=await _0xa456e9[_0x548a58(0x1be)](_0x548a58(0x20a),_0x548a58(0x19d))['get']();if(_0x2bc0c8['size']>=0x64){const _0x4ddb72=_0x2bc0c8[_0x548a58(0x1e3)][_0x2bc0c8[_0x548a58(0x1b7)]-0x1];await _0xa456e9[_0x548a58(0x1db)](_0x4ddb72['id'])[_0x548a58(0x20c)]();}await _0xa456e9['add']({'nombre':_0x548a58(0x1e5),'fecha':firebase['firestore'][_0x548a58(0x1b3)][_0x548a58(0x1c4)](),'detalles':_0x1d853d,'total':_0x23cc3a});}catch(_0x25a6e6){console[_0x548a58(0x205)](_0x548a58(0x1ae),_0x25a6e6);}}const endpoint=_0x46e781(0x1ee);async function obtenerContador(){const _0x4466fc=_0x46e781;try{const _0x107e9f=await fetch(endpoint),_0x16f095=await _0x107e9f[_0x4466fc(0x1aa)](),_0xac8046=document[_0x4466fc(0x1bd)](_0x4466fc(0x1cc));if(_0xac8046)_0xac8046['textContent']='Cálculos:\x20'+_0x16f095[_0x4466fc(0x213)];}catch(_0x53e5f3){console['error'](_0x4466fc(0x1c5),_0x53e5f3);}}async function registrarClic(){const _0x4ca592=_0x46e781;try{const _0x4f7900=await fetch(endpoint,{'method':'POST'}),_0x470072=await _0x4f7900[_0x4ca592(0x1aa)](),_0x39b308=document[_0x4ca592(0x1bd)](_0x4ca592(0x1cc));if(_0x39b308)_0x39b308[_0x4ca592(0x1a2)]=_0x4ca592(0x1c0)+_0x470072[_0x4ca592(0x213)];}catch(_0x5b7084){console[_0x4ca592(0x205)](_0x4ca592(0x1fe),_0x5b7084);}}function reiniciar(){const _0x173ad5=_0x46e781;document[_0x173ad5(0x1bd)]('c1')[_0x173ad5(0x191)]='',document[_0x173ad5(0x1bd)]('c7')[_0x173ad5(0x191)]='',document[_0x173ad5(0x1bd)]('c8')[_0x173ad5(0x191)]='',document[_0x173ad5(0x1bd)]('e2')['value']=_0x173ad5(0x1fb),document[_0x173ad5(0x1bd)](_0x173ad5(0x1b8))[_0x173ad5(0x191)]='OTROS',document[_0x173ad5(0x1bd)](_0x173ad5(0x1cb))['value']=_0x173ad5(0x192),document[_0x173ad5(0x1bd)](_0x173ad5(0x1f4))[_0x173ad5(0x191)]='',document[_0x173ad5(0x1bd)](_0x173ad5(0x1a1))[_0x173ad5(0x20d)]='',bloquearMotorPorVin();}function logout(){const _0x47debe=_0x46e781;firebase[_0x47debe(0x1ab)]()[_0x47debe(0x1e9)]()[_0x47debe(0x216)](()=>location['reload']());}firebase[_0x46e781(0x1ab)]()[_0x46e781(0x19b)](_0x575edd=>{const _0x2c68eb=_0x46e781,_0x42f34f=document[_0x2c68eb(0x1bd)](_0x2c68eb(0x1ce)),_0x3aa52c=document['getElementById'](_0x2c68eb(0x1b9));if(_0x575edd){const _0x4e255a=(_0x575edd['displayName']||_0x575edd[_0x2c68eb(0x190)][_0x2c68eb(0x1d0)]('@')[0x0])[_0x2c68eb(0x1e6)](/^./,_0x2a6d38=>_0x2a6d38[_0x2c68eb(0x1e0)]());if(_0x42f34f)_0x42f34f[_0x2c68eb(0x20d)]=_0x2c68eb(0x1f1)+_0x4e255a+_0x2c68eb(0x203);if(_0x3aa52c)_0x3aa52c[_0x2c68eb(0x20d)]=_0x42f34f[_0x2c68eb(0x20d)];}else{if(_0x42f34f)_0x42f34f[_0x2c68eb(0x20d)]=_0x2c68eb(0x1b6);if(_0x3aa52c)_0x3aa52c[_0x2c68eb(0x20d)]=_0x42f34f[_0x2c68eb(0x20d)];}}),document[_0x46e781(0x1b1)](_0x46e781(0x1a9),()=>{const _0x5b85e8=_0x46e781;document['getElementById'](_0x5b85e8(0x1b8))[_0x5b85e8(0x191)]='OTROS',bloquearMotorPorVin(),obtenerContador(),obtenerTipoCambioAutomatico(),fetch(_0x5b85e8(0x200))[_0x5b85e8(0x216)](_0x5ea1fa=>_0x5ea1fa[_0x5b85e8(0x1ba)]())['then'](_0x3ec845=>{document['getElementById']('header-placeholder')['innerHTML']=_0x3ec845;})['catch'](_0x766dd7=>console[_0x5b85e8(0x205)](_0x5b85e8(0x1c8),_0x766dd7)),fetch(_0x5b85e8(0x1d2))['then'](_0x5428ae=>_0x5428ae['text']())[_0x5b85e8(0x216)](_0x53502a=>{const _0x2de126=_0x5b85e8;document['getElementById']('footer-placeholder')[_0x2de126(0x20d)]=_0x53502a;})[_0x5b85e8(0x202)](_0x21cb84=>console[_0x5b85e8(0x205)](_0x5b85e8(0x197),_0x21cb84)),auth[_0x5b85e8(0x19b)](_0x116066=>{const _0x14eb6a=_0x5b85e8,_0xea4b92=document['getElementById'](_0x14eb6a(0x1eb));if(_0x116066){if(_0xea4b92)_0xea4b92[_0x14eb6a(0x1f7)][_0x14eb6a(0x1fa)]=_0x14eb6a(0x1e4);}else alert(_0x14eb6a(0x211)),window[_0x14eb6a(0x20e)][_0x14eb6a(0x1d8)]=_0x14eb6a(0x1ea);});});
+// === script.js ===
+
+// Inicializa Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
+  authDomain: "subastacarhn-40554.firebaseapp.com",
+  projectId: "subastacarhn-40554",
+  storageBucket: "subastacarhn-40554.appspot.com",
+  messagingSenderId: "536785797974",
+  appId: "1:536785797974:web=e3eabb4dcd898c2ffe8cf7",
+  measurementId: "G-QM5N60K8C0"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// Menú desplegable móvil
+function toggleMenu() {
+  const menu = document.getElementById("mobile-menu-links");
+  menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+}
+
+// Habilita o bloquea selección de motor
+function bloquearMotorPorVin() {
+  const vin = document.getElementById("c13").value;
+  const motorSelect = document.getElementById("motor");
+  motorSelect.disabled = vin !== "OTROS";
+  if (motorSelect.disabled) motorSelect.value = "";
+}
+
+// Formato monetario
+const formatear = v => new Intl.NumberFormat("es-HN", { style: "currency", currency: "HNL" }).format(v);
+const formatearUSD = v => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
+
+// Obtener tipo de cambio automático
+async function obtenerTipoCambioAutomatico() {
+  const url = "https://subastacar-bch-api.onrender.com/api/tipo-cambio-bch";
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    if (data.valor) {
+      document.getElementById("e2").value = data.valor;
+      document.getElementById("e2").readOnly = true;
+    }
+  } catch (error) {
+    console.error("Error al conectar con el backend:", error);
+  }
+}
+
+// Buyer fees y virtual bid fees
+const buyerFees = [
+  [50,1],[100,25],[200,60],[300,85],[350,100],[400,125],[450,135],[500,145],[550,155],[600,170],
+  [700,195],[800,215],[900,230],[1000,250],[1200,270],[1300,285],[1400,300],[1500,315],[1600,330],
+  [1700,350],[1800,370],[2000,390],[2400,425],[2500,460],[3000,505],[3500,555],[4000,600],[4500,625],
+  [5000,650],[5500,675],[6000,700],[7000,755],[7500,775],[8000,800],[8500,820],[9000,820],
+  [10000,850],[11000,850],[11500,860],[12000,875],[12500,890],[13000,890],[14000,900],[15000,900]
+];
+const virtualBidFees = [
+  [100,50],[500,65],[1000,85],[1500,95],[2000,110],[4000,125],
+  [6000,145],[8000,160],[9000,160],[10000,160],[200000,160]
+];
+const buscarValor = (tabla, valor) => {
+  for (let i = tabla.length - 1; i >= 0; i--) {
+    if (valor >= tabla[i][0]) return tabla[i][1];
+  }
+  return 0;
+};
+const buscarBuyerFee = c1 => c1 > 15000 ? +(c1 * 0.06).toFixed(2) : buscarValor(buyerFees, c1);
+const buscarVirtualBidFee = c1 => c1 > 8000 ? 160 : buscarValor(virtualBidFees, c1);
+
+// Función principal de cálculo
+function calcular() {
+  registrarClic();
+
+  const c1  = parseFloat(document.getElementById('c1').value.trim());
+  const c7  = parseFloat(document.getElementById('c7').value.trim());
+  const c8  = parseFloat(document.getElementById('c8').value.trim());
+  const e2  = parseFloat(document.getElementById('e2').value.trim());
+  const c13 = document.getElementById('c13').value;
+  const c14 = document.getElementById('c14').value;
+  const motor = document.getElementById('motor').value;
+
+  if (!c1 || !c7 || !c8 || !e2 || !c13 || !c14 || (c13 === "OTROS" && !motor)) {
+    alert("Por favor completa todos los campos. El campo 'Tipo de Motor' solo aplica si el VIN es OTROS.");
+    return;
+  }
+
+  const c2 = 15;
+  const c3 = buscarVirtualBidFee(c1);
+  const c4 = buscarBuyerFee(c1);
+  const c5 = 115;
+  const c6 = c1 + c2 + c3 + c4 + c5;
+  const c9 = c7 + c8;
+  const c10 = c6 + c9;
+  const c11 = c10 * e2;
+
+  const o3usd = 50;
+  const o4usd = c6 * 0.015;
+  const o3 = o3usd * e2;
+  const o4 = o4usd * e2;
+
+  const tieneCafta = c13 === "1,4,5";
+
+  // === LÓGICA DE AMNISTÍA COMENTADA ===
+  // const anio = parseInt(document.getElementById("anio").value);
+  // if (anio <= 2005) {
+  //   const totalAmnistia = c11 + 20000;
+  //   document.getElementById('results').innerHTML = `
+  //     <div style="text-align:center;">
+  //       <p><strong>Este vehículo aplica para amnistía.</strong></p>
+  //       <p><strong>Total Final:</strong> ${formatear(totalAmnistia)}</p>
+  //     </div>`;
+  //   guardarHistorial([{ titulo: "Vehículo con amnistía", valor: formatear(totalAmnistia) }], formatear(totalAmnistia));
+  //   return;
+  // }
+
+  let c15 = 0;
+  if (!tieneCafta) {
+    const baseDAI = c11 + o3 + o4;
+    if (c14 === "MAQUINARIA") {
+      c15 = baseDAI * 0.05;
+    } else if (c14 === "HIBRIDO") {
+      c15 = baseDAI * 0.10;
+    } else if (["PICK UP", "CAMION", "BUS", "MOTO"].includes(c14)) {
+      c15 = baseDAI * 0.10;
+    } else if (motor === "1.5 Inferior") {
+      c15 = baseDAI * 0.05;
+    } else {
+      c15 = baseDAI * 0.15;
+    }
+  }
+
+  let c16 = 0;
+  if (c14 === "PICK UP") {
+    c16 = 0;
+  } else if (c14 === "MOTO") {
+    c16 = (c11 + o3 + o4 + c15) * 0.10;
+  } else if (c14 === "HIBRIDO") {
+    c16 = (c11 + o3 + o4 + c15) * 0.05;
+  } else if (["CAMION", "BUS", "MAQUINARIA"].includes(c14)) {
+    c16 = 0;
+  } else {
+    const baseISCusd = c10 + o3usd + o4usd;
+    let tasaISC = 0;
+    if      (baseISCusd <= 7000)   tasaISC = 0.10;
+    else if (baseISCusd <= 10000)  tasaISC = 0.15;
+    else if (baseISCusd <= 20000)  tasaISC = 0.20;
+    else if (baseISCusd <= 50000)  tasaISC = 0.30;
+    else                            tasaISC = 0.45;
+    c16 = (c11 + o3 + o4 + c15) * tasaISC;
+  }
+
+  let c17 = 0;
+  if (c14 !== "MAQUINARIA") {
+    c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
+  }
+
+  const c18 = c15 + c16 + c17;
+  let c20 = 5000;
+  if      (c10 > 15000 && c10 <= 25000) c20 = 7000;
+  else if (c10 > 25000)                 c20 = 10000;
+  if (c14 === "MAQUINARIA")             c20 = 0;
+  const c21 = 4000;
+  const c22 = 7500;
+  const c23 = 4000;
+  const c24 = 55 * e2;
+  const c25 = c20 + c21 + c22 + c23 + c24;
+  const c26 = c11 + c18 + c25;
+
+  // Preparamos detalles para la cotización
+  window._cotizacionDetalles = [
+    ['MONTO DE OFERTA',       c1,  'usd'],
+    ['ENVIRONMENTAL FEE',     c2,  'usd'],
+    ['VIRTUAL BID FEE',       c3,  'usd'],
+    ['BUYER FEE',             c4,  'usd'],
+    ['GATE Y TITLE PICK FEE', c5,  'usd'],
+    ['TOTAL PRECIO SUBASTA',  c6,  'usd'],
+    ['VALOR DE BARCO',        c7,  'usd'],
+    ['PRECIO DE GRÚA',        c8,  'usd'],
+    ['TOTAL DE ENVÍO MARÍTIMO',c9,  'usd'],
+    ['TOTAL CIF EN DÓLARES',   c10, 'usd'],
+    ['TOTAL CIF EN LEMPIRAS',  c11, 'hnl'],
+    ['DAI',                    c15, 'hnl'],
+    ['ISC',                    c16, 'hnl'],
+    ['ISV',                    c17, 'hnl'],
+    ['TOTAL DE IMPUESTOS HONDURAS', c18, 'hnl'],
+    ['ECOTASA',                c20, 'hnl'],
+    ['ADUANERO',               c21, 'hnl'],
+    ['VOTAINER - CONSOLIDADOS HN', c22,'hnl'],
+    ['MATRÍCULA Y PLACAS',     c23, 'hnl'],
+    ['TRANSFERENCIA INTERNACIONAL', c24,'hnl'],
+    ['TOTAL DE GASTOS FIJOS',  c25, 'hnl'],
+    ['TOTAL FINAL',            c26, 'hnl']
+  ];
+  window._cotizacionTotal = c26;
+
+  // Mostramos la cotización en pantalla
+  mostrarDetalles();
+}
+
+// Genera y muestra la cotización formal
+function mostrarDetalles() {
+  const detallesHtml = window._cotizacionDetalles.map(([t, v, tipo]) => `
+    <tr>
+      <td>${t}</td>
+      <td>${tipo==='usd'?formatearUSD(v):formatear(v)}</td>
+    </tr>`).join('');
+
+  const plantillaCotizacion = `
+    <div class="cotizacion-container">
+      <header class="cotizacion-header">
+        <img src="logo.png" alt="SubastaCarHN" class="logo" />
+        <div class="empresa-info">
+          <h1>COTIZACIÓN</h1>
+          <p>SubastaCarHN</p>
+          <p>Tel: +504 97330137 | info@subastacarhn.com</p>
+          <p>www.comocomprarcarros.com</p>
+        </div>
+      </header>
+      <hr />
+      <table class="tabla-cotizacion">
+        <thead>
+          <tr><th>Concepto</th><th>Valor</th></tr>
+        </thead>
+        <tbody>
+          ${detallesHtml}
+        </tbody>
+      </table>
+      <div class="total-final">
+        <strong>Total Final:</strong> ${formatear(window._cotizacionTotal)}
+      </div>
+      <footer class="disclaimer">
+        <p><em>Esta cotización es solo un estimado y no constituye un compromiso de SubastaCarHN. SubastaCarHN se libera de toda responsabilidad por el uso de estos datos.</em></p>
+      </footer>
+      <div class="botones-detalle">
+        <button onclick="descargarPDF()" class="styled-btn">Descargar Cotización</button>
+        <button onclick="compartirWhatsApp()" class="styled-btn">Compartir por WhatsApp</button>
+      </div>
+    </div>`;
+
+  document.getElementById('results').innerHTML = plantillaCotizacion;
+}
+
+// Descarga la cotización usando tu CSS externo
+function descargarPDF() {
+  // Re-renderizamos para asegurarnos de que window._cotizacionDetalles y _total estén definidos
+  mostrarDetalles();
+
+  const contenido = document.getElementById("results").innerHTML;
+  const w = window.open('', '_blank', 'width=900,height=700');
+  w.document.open();
+  w.document.write(`
+    <html>
+      <head>
+        <title>Cotización SubastaCarHN</title>
+        <link rel="stylesheet" href="style.css">
+      </head>
+      <body>
+        ${contenido}
+      </body>
+    </html>`);
+  w.document.close();
+  setTimeout(() => w.print(), 500);
+}
+
+// Compartir por WhatsApp
+function compartirWhatsApp() {
+  let texto = "¡Hola! Aquí tienes la cotización de tu vehículo:\n\n";
+  window._cotizacionDetalles.forEach(([t, v, tipo]) => {
+    texto += `${t}: ${tipo==='usd'?formatearUSD(v):formatear(v)}\n`;
+  });
+  texto += `\nTotal Final: ${formatear(window._cotizacionTotal)}\n\nCalculado con SUBASTACARHN 👉 https://comocomprarcarros.com`;
+  const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+  window.open(url, "_blank");
+}
+
+// Historial en Firestore
+async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
+  const user = auth.currentUser;
+  if (!user) return;
+  try {
+    const historialRef = db.collection("clients").doc(user.uid).collection("historial");
+    const snapshot = await historialRef.orderBy("fecha", "desc").get();
+    if (snapshot.size >= 100) {
+      const ultimo = snapshot.docs[snapshot.size - 1];
+      await historialRef.doc(ultimo.id).delete();
+    }
+    await historialRef.add({
+      nombre: "Sin título",
+      fecha: firebase.firestore.FieldValue.serverTimestamp(),
+      detalles: detallesFormateados,
+      total: totalFinalFormateado
+    });
+  } catch (error) {
+    console.error("❌ Error al guardar historial:", error);
+  }
+}
+
+// Contador de usos
+const endpoint = "https://contador-clics-backend.onrender.com/contador";
+async function obtenerContador() {
+  try {
+    const res = await fetch(endpoint);
+    const data = await res.json();
+    const el = document.getElementById('contadorClics');
+    if (el) el.textContent = `Cálculos: ${data.clics}`;
+  } catch (e) {
+    console.error("Error al obtener el contador:", e);
+  }
+}
+async function registrarClic() {
+  try {
+    const res = await fetch(endpoint, { method: "POST" });
+    const data = await res.json();
+    const el = document.getElementById('contadorClics');
+    if (el) el.textContent = `Cálculos: ${data.clics}`;
+  } catch (e) {
+    console.error("Error al registrar clic:", e);
+  }
+}
+
+// Reiniciar formulario
+function reiniciar() {
+  document.getElementById('c1').value = "";
+  document.getElementById('c7').value = "";
+  document.getElementById('c8').value = "";
+  document.getElementById('e2').value = "25.90";
+  document.getElementById('c13').value = "OTROS";
+  document.getElementById('c14').value = "OTROS";
+  document.getElementById('motor').value = "";
+  document.getElementById('results').innerHTML = '';
+  bloquearMotorPorVin();
+}
+
+// Logout
+function logout() {
+  firebase.auth().signOut().then(() => location.reload());
+}
+
+// Al iniciar
+firebase.auth().onAuthStateChanged(user => {
+  const desktop = document.getElementById('userGreeting');
+  const mobile  = document.getElementById('mobileGreeting');
+  if (user) {
+    const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
+    if (desktop) desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
+    if (mobile)  mobile.innerHTML  = desktop.innerHTML;
+  } else {
+    if (desktop) desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
+    if (mobile)  mobile.innerHTML  = desktop.innerHTML;
+  }
+});
+
+// Carga inicial al DOM
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("c13").value = "OTROS";
+  bloquearMotorPorVin();
+  obtenerContador();
+  obtenerTipoCambioAutomatico();
+
+  // Cargar header y footer
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("header-placeholder").innerHTML = data;
+    })
+    .catch(err => console.error("Error cargando header:", err));
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("footer-placeholder").innerHTML = data;
+    })
+    .catch(err => console.error("Error cargando footer:", err));
+
+  // Seguridad: mostrar el contenido solo si hay sesión activa
+  auth.onAuthStateChanged(user => {
+    const contenido = document.getElementById("content");
+    if (user) {
+      if (contenido) contenido.style.display = "block";
+    } else {
+      alert("❗ Debes iniciar sesión para usar la calculadora.");
+      window.location.href = "login.html";
+    }
+  });
+});
