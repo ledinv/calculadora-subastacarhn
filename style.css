@@ -260,3 +260,61 @@ footer a {
     display: none;
   }
 }
+/* === COTIZACIÓN PROFESIONAL === */
+.cotizacion-container {
+  text-align: center;
+  max-width: 700px;
+  margin: auto;
+  padding: 20px;
+  font-family: 'Montserrat', sans-serif;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cotizacion-container h2 {
+  color: #002f6c;
+  font-size: 1.8rem;
+  margin-bottom: 0.2rem;
+}
+
+.cotizacion-container p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
+.cotizacion-container h3 {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: #004aad;
+}
+
+.cotizacion-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.cotizacion-tabla th,
+.cotizacion-tabla td {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  text-align: right;
+}
+
+.cotizacion-tabla th {
+  background: #004aad;
+  color: white;
+  text-align: left;
+}
+
+.cotizacion-tabla td:first-child {
+  text-align: left;
+}
+
+.nota {
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 1rem;
+  text-align: left;
+}
