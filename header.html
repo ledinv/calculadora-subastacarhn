@@ -1,5 +1,5 @@
 <header class="site-header">
-  <div class="container header-inner">
+  <div class="container header-inner" style="position: relative;">
     <a href="index.html" class="brand">SubastaCarHN</a>
     <nav class="nav-links" aria-label="Menú principal">
       <a href="calculadora.html">Calculadora</a>
@@ -9,10 +9,8 @@
       <span id="userGreeting"></span>
     </nav>
 
-    <!-- ✅ Aquí va el contador -->
-    <div id="contadorClics" style="font-size: 0.9rem; color: #ffffff; background: #002f6c; padding: 4px 10px; border-radius: 5px;">
-      Cálculos: 0
-    </div>
+    <!-- ✅ Contador tipo burbuja -->
+    <div id="contadorClics" class="contador-clics-desktop">Cálculos: 0</div>
 
     <button class="menu-icon" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
   </div>
