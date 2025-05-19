@@ -121,19 +121,29 @@ function calcular() {
   let c15 = 0;
   if (!tieneCafta) {
     const baseDAI = c11 + o3 + o4;
-    if      (c14 === "MAQUINARIA")              c15 = baseDAI * 0.05;
-    else if (c14 === "HIBRIDO")                 c15 = baseDAI * 0.10;
-    else if (["PICK UP","CAMION","BUS","MOTO"].includes(c14)) c15 = baseDAI * 0.10;
-    else if (motor === "1.5 Inferior")          c15 = baseDAI * 0.05;
-    else                                        c15 = baseDAI * 0.15;
+    if (c14 === "MAQUINARIA") {
+      c15 = baseDAI * 0.05;
+    } else if (c14 === "HIBRIDO") {
+      c15 = baseDAI * 0.10;
+    } else if (["PICK UP", "CAMION", "BUS", "MOTO"].includes(c14)) {
+      c15 = baseDAI * 0.10;
+    } else if (motor === "1.5 Inferior") {
+      c15 = baseDAI * 0.05;
+    } else {
+      c15 = baseDAI * 0.15;
+    }
   }
 
   let c16 = 0;
-  if (c14 === "PICK UP")           c16 = 0;
-  else if (c14 === "MOTO")         c16 = (c11 + o3 + o4 + c15) * 0.10;
-  else if (c14 === "HIBRIDO")      c16 = (c11 + o3 + o4 + c15) * 0.05;
-  else if (["CAMION","BUS","MAQUINARIA"].includes(c14)) c16 = 0;
-  else {
+  if (c14 === "PICK UP") {
+    c16 = 0;
+  } else if (c14 === "MOTO") {
+    c16 = (c11 + o3 + o4 + c15) * 0.10;
+  } else if (c14 === "HIBRIDO") {
+    c16 = (c11 + o3 + o4 + c15) * 0.05;
+  } else if (["CAMION", "BUS", "MAQUINARIA"].includes(c14)) {
+    c16 = 0;
+  } else {
     const baseISCusd = c10 + o3usd + o4usd;
     let tasaISC = 0;
     if      (baseISCusd <= 7000)   tasaISC = 0.10;
@@ -145,14 +155,15 @@ function calcular() {
   }
 
   let c17 = 0;
-  if (c14 !== "MAQUINARIA") c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
+  if (c14 !== "MAQUINARIA") {
+    c17 = (c11 + c15 + c16 + o3 + o4) * 0.15;
+  }
 
   const c18 = c15 + c16 + c17;
   let c20 = 5000;
   if      (c10 > 15000 && c10 <= 25000) c20 = 7000;
   else if (c10 > 25000)                 c20 = 10000;
   if (c14 === "MAQUINARIA")             c20 = 0;
-
   const c21 = 4000;
   const c22 = 7500;
   const c23 = 4000;
@@ -186,13 +197,6 @@ function calcular() {
     ['TOTAL FINAL',            c26, 'hnl']
   ];
   window._cotizacionTotal = c26;
-
-  // Guardar historial en Firebase
-  const detallesFormateados = window._cotizacionDetalles.map(([t, v, tipo]) => ({
-    titulo: t,
-    valor: tipo === 'usd' ? formatearUSD(v) : formatear(v)
-  }));
-  guardarHistorial(detallesFormateados, formatear(c26));
 
   // Mostramos la cotización en pantalla
   mostrarDetalles();
@@ -234,15 +238,21 @@ function mostrarDetalles() {
       <div class="total-final">
         <strong>Total Final:</strong> ${formatear(window._cotizacionTotal)}
       </div>
+
       <div class="botones-detalle">
         <button id="toggleBtn" class="styled-btn" onclick="toggleDetalles()">Ver detalles</button>
         <button onclick="descargarPDF()" class="styled-btn">Descargar Cotización</button>
         <button onclick="compartirWhatsApp()" class="styled-btn">Compartir por WhatsApp</button>
       </div>
+
       <div id="detalleResultados" style="display: none; margin-top: 1rem;">
         <table class="tabla-cotizacion">
-          <thead><tr><th>Concepto</th><th>Valor</th></tr></thead>
-          <tbody>${detallesHtml}</tbody>
+          <thead>
+            <tr><th>Concepto</th><th>Valor</th></tr>
+          </thead>
+          <tbody>
+            ${detallesHtml}
+          </tbody>
         </table>
         <footer class="disclaimer">
           <p><em>Esta cotización es solo un estimado y no constituye un compromiso de SubastaCarHN. SubastaCarHN se libera de toda responsabilidad por el uso de estos datos.</em></p>
@@ -255,11 +265,13 @@ function mostrarDetalles() {
 
 // Descarga la cotización usando tu CSS externo
 function descargarPDF() {
+  // Aseguramos que detalles estén visibles al imprimir
   const detalles = document.getElementById("detalleResultados");
   if (detalles.style.display === "none") {
     detalles.style.display = "block";
     document.getElementById("toggleBtn").textContent = "Ocultar detalles";
   }
+
   const contenido = document.getElementById("results").innerHTML;
   const w = window.open('', '_blank', 'width=900,height=700');
   w.document.open();
@@ -269,7 +281,9 @@ function descargarPDF() {
         <title>Cotización SubastaCarHN</title>
         <link rel="stylesheet" href="style.css">
       </head>
-      <body>${contenido}</body>
+      <body>
+        ${contenido}
+      </body>
     </html>`);
   w.document.close();
   setTimeout(() => w.print(), 500);
@@ -354,12 +368,12 @@ firebase.auth().onAuthStateChanged(user => {
   const desktop = document.getElementById('userGreeting');
   const mobile  = document.getElementById('mobileGreeting');
   if (user) {
-    const name = (user.displayName||user.email.split('@')[0]).replace(/^./,c=>c.toUpperCase());
-    if (desktop) desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> | <a href="#" onclick="logout()">Cerrar sesión</a>`;
-    if (mobile)  mobile.innerHTML = desktop.innerHTML;
+    const name = (user.displayName || user.email.split('@')[0]).replace(/^./, c => c.toUpperCase());
+    if (desktop) desktop.innerHTML = `<a href="perfil.html">Hola, ${name}</a> &nbsp;|&nbsp; <a href="#" onclick="logout()">Cerrar sesión</a>`;
+    if (mobile)  mobile.innerHTML  = desktop.innerHTML;
   } else {
     if (desktop) desktop.innerHTML = `<a href="login.html">Iniciar sesión</a> | <a href="register.html">Registrarse</a>`;
-    if (mobile)  mobile.innerHTML = desktop.innerHTML;
+    if (mobile)  mobile.innerHTML  = desktop.innerHTML;
   }
 });
 
@@ -369,4 +383,30 @@ document.addEventListener("DOMContentLoaded", () => {
   bloquearMotorPorVin();
   obtenerContador();
   obtenerTipoCambioAutomatico();
+
+  // Cargar header y footer
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("header-placeholder").innerHTML = data;
+    })
+    .catch(err => console.error("Error cargando header:", err));
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("footer-placeholder").innerHTML = data;
+    })
+    .catch(err => console.error("Error cargando footer:", err));
+
+  // Seguridad: mostrar el contenido solo si hay sesión activa
+  auth.onAuthStateChanged(user => {
+    const contenido = document.getElementById("content");
+    if (user) {
+      if (contenido) contenido.style.display = "block";
+    } else {
+      alert("❗ Debes iniciar sesión para usar la calculadora.");
+      window.location.href = "login.html";
+    }
+  });
 });
