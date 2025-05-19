@@ -342,7 +342,6 @@ async function registrarClic() {
   }
 }
 
-// Carga inicial
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("c13").value = "OTROS";
   bloquearMotorPorVin();
@@ -363,4 +362,16 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("footer-placeholder").innerHTML = data;
     })
     .catch(err => console.error("Error cargando footer:", err));
+
+  // Seguridad: mostrar el contenido solo si hay sesión activa
+  auth.onAuthStateChanged(user => {
+    const contenido = document.getElementById("content");
+    if (user) {
+      if (contenido) contenido.style.display = "block";
+    } else {
+      alert("❗ Debes iniciar sesión para usar la calculadora.");
+      window.location.href = "login.html";
+    }
+  });
 });
+
