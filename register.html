@@ -145,6 +145,26 @@
       align-items: center;
       justify-content: center;
     }
+    .terminos-container {
+  display: flex;
+  align-items: flex-start;
+  font-size: 0.9rem;
+  color: #002f6c;
+  text-align: left;
+  margin-top: 10px;
+}
+
+.terminos-container input[type="checkbox"] {
+  margin-right: 8px;
+  margin-top: 3px;
+}
+
+.terminos-container a {
+  color: #004aad;
+  font-weight: bold;
+  text-decoration: none;
+}
+
     .styled-btn:disabled { opacity: 0.7; cursor: not-allowed; }
     .styled-btn span.spinner { margin-left: 8px; }
   </style>
@@ -202,18 +222,17 @@
       </div>
       <small id="confirmHelper" class="helper"></small>
 
-<!-- ✅ Casilla para aceptar términos usando clases -->
-<div style="margin-top: 10px;">
-  <label class="checkbox-terminos">
-    <input type="checkbox" id="aceptaTerminos" />
-    <span>
-      Acepto los 
-      <a href="https://comocomprarcarros.com/docs/terminos_subastacarhn.pdf" target="_blank" style="color: #004aad;">
-        Términos y Condiciones
-      </a> del sitio.
-    </span>
+<!-- ✅ Casilla para aceptar términos, 100% alineada -->
+<div class="terminos-container">
+  <input type="checkbox" id="aceptaTerminos" />
+  <label for="aceptaTerminos">
+    Acepto los 
+    <a href="https://comocomprarcarros.com/docs/terminos_subastacarhn.pdf" target="_blank">
+      Términos y Condiciones
+    </a> del sitio.
   </label>
 </div>
+
 
 <!-- ✅ Botón inicialmente desactivado -->
 <button type="submit" class="styled-btn" id="submitBtn" disabled>
