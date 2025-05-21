@@ -163,6 +163,22 @@
     text-decoration: none;
     margin-left: 0.2rem;
   }
+    /* —— ANULA EL ESTILO GLOBAL EN EL CHECKBOX —— */
+.terminos-container input[type="checkbox"] {
+  /* quita el width:100% y el padding que heredaba */
+  width: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  flex: none !important;           /* que no crezca */
+}
+
+/* opcional: que el label ocupe el resto del espacio */
+.terminos-container label {
+  flex: 1 !important;
+}
+
+/* (mantén tu display:flex y align-items:center de antes) */
+
   /* —— FIN TÉRMINOS —— */
 </style>
 </head>
