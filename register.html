@@ -183,15 +183,8 @@
         </span>
       </div>
       <small id="confirmHelper" class="helper"></small>
-      <!-- Casilla para aceptar términos -->
-      <div style="margin-top: 15px;">
-        <label style="font-size: 0.9rem; color: #002f6c;">
-          <input type="checkbox" id="aceptaTerminos" />
-          Acepto los <a href="https://comocomprarcarros.com/docs/terminos_subastacarhn.pdf" target="_blank">Términos y Condiciones</a> del sitio.
-        </label>
-      </div>
 
-      <button type="submit" class="styled-btn" id="submitBtn" disabled>
+      <button type="submit" class="styled-btn" id="submitBtn">
         <span id="btnText">Registrarse</span>
         <span class="spinner" id="btnSpinner" style="display:none;">⏳</span>
       </button>
@@ -251,7 +244,7 @@
     });
   });
 
-  const passwordRegex = /^(?=.*[A-Z])(?=.*\\d).{8,}$/;
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
 
   document.getElementById('registerForm').addEventListener('submit', async e => {
     e.preventDefault();
@@ -283,6 +276,7 @@
       return;
     }
     document.getElementById('confirmHelper').textContent = '';
+
     try {
       const cred = await auth.createUserWithEmailAndPassword(email, pass);
       await cred.user.updateProfile({ displayName: name });
@@ -306,16 +300,6 @@
       btn.disabled = false; spinner.style.display = 'none'; txt.style.display = '';
     }
   });
-
-  // Desactiva el botón hasta que se acepte términos
-  const aceptar = document.getElementById('aceptaTerminos');
-  const submitBtn = document.getElementById('submitBtn');
-  if (aceptar && submitBtn) {
-    submitBtn.disabled = true;
-    aceptar.addEventListener('change', () => {
-      submitBtn.disabled = !aceptar.checked;
-    });
-  }
 </script>
 
 </body>
