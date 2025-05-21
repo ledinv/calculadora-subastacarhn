@@ -184,10 +184,22 @@
       </div>
       <small id="confirmHelper" class="helper"></small>
 
-      <button type="submit" class="styled-btn" id="submitBtn">
-        <span id="btnText">Registrarse</span>
-        <span class="spinner" id="btnSpinner" style="display:none;">⏳</span>
-      </button>
+<!-- ✅ Casilla para aceptar términos -->
+<div style="margin-top: 10px; text-align: left;">
+  <label style="font-size: 0.9rem; color: #002f6c;">
+    <input type="checkbox" id="aceptaTerminos" style="margin-right: 6px;" />
+    Acepto los 
+    <a href="https://comocomprarcarros.com/docs/terminos_subastacarhn.pdf" target="_blank">
+      Términos y Condiciones
+    </a> del sitio.
+  </label>
+</div>
+
+<!-- ✅ Botón inicialmente desactivado -->
+<button type="submit" class="styled-btn" id="submitBtn" disabled>
+  <span id="btnText">Registrarse</span>
+  <span class="spinner" id="btnSpinner" style="display:none;">⏳</span>
+</button>
     </form>
     <p style="text-align:center; margin-top:15px;">
       ¿Ya tienes cuenta? <a href="login.html">Iniciar Sesión</a>
@@ -300,6 +312,16 @@
       btn.disabled = false; spinner.style.display = 'none'; txt.style.display = '';
     }
   });
+  // ✅ Lógica para activar el botón solo si se aceptan los términos
+const aceptaTerminos = document.getElementById('aceptaTerminos');
+const botonRegistrar = document.getElementById('submitBtn');
+
+if (aceptaTerminos && botonRegistrar) {
+  botonRegistrar.disabled = true;
+  aceptaTerminos.addEventListener('change', () => {
+    botonRegistrar.disabled = !aceptaTerminos.checked;
+  });
+}
 </script>
 
 </body>
