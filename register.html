@@ -13,174 +13,159 @@
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="theme-color" content="#002f6c">
   <style>
-  body {
-    font-family: Helvetica, sans-serif;
-    margin: 0; padding: 0;
-    background: #f9f9f9;
-  }
-  header {
-    background: linear-gradient(to right, #002f6c, #004aad);
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 15px;
-    position: sticky;
-    top: 0;
-    z-index: 999;
-  }
-  header a.brand {
-    color: white;
-    font-size: 22px;
-    font-weight: bold;
-    text-decoration: none;
-  }
-  .menu-icon {
-    font-size: 20px;
-    background: #ffc20e;
-    color: #002f6c;
-    padding: 8px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-  #menu-links {
-    display: none;
-    list-style: none;
-    padding: 10px;
-    margin: 10px 0 0;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    position: absolute;
-    top: 70px;
-    left: 15px;
-    z-index: 1000;
-  }
-  #menu-links li { margin-bottom: 10px; }
-  #menu-links a { text-decoration: none; color: #002f6c; font-weight: bold; }
+    body {
+      font-family: Helvetica, sans-serif;
+      margin: 0; padding: 0;
+      background: #f9f9f9;
+    }
+    header {
+      background: linear-gradient(to right, #002f6c, #004aad);
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+    header a.brand {
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .menu-icon {
+      font-size: 20px;
+      background: #ffc20e;
+      color: #002f6c;
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    #menu-links {
+      display: none;
+      list-style: none;
+      padding: 10px;
+      margin: 10px 0 0;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      position: absolute;
+      top: 70px;
+      left: 15px;
+      z-index: 1000;
+    }
+    #menu-links li { margin-bottom: 10px; }
+    #menu-links a { text-decoration: none; color: #002f6c; font-weight: bold; }
 
-  .layout {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 10px;
-  }
-  .contenido-central {
-    width: 100%;
-    max-width: 400px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    padding: 20px;
-  }
-  .contenido-central h1 {
-    text-align: center;
-    color: #002f6c;
-    margin-bottom: 20px;
-  }
+    .layout {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 10px;
+    }
+    .contenido-central {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      padding: 20px;
+    }
+    .contenido-central h1 {
+      text-align: center;
+      color: #002f6c;
+      margin-bottom: 20px;
+    }
 
-  /* Etiquetas de los campos (excepto términos) */
-  label.form-label {
-    font-weight: bold;
-    color: #002f6c;
-    display: block;
-    margin-top: 10px;
-  }
-  
-  input {
-    font-size: 14px;
-    padding: 8px 40px 8px 12px;
-    border-radius: 8px;
-    border: 1px solid #004aad;
-    background: #f0f8ff;
-    width: 100%;
-    margin-top: 5px;
-    box-sizing: border-box;
-  }
-  .pass-wrapper {
-    position: relative;
-  }
-  .toggle-eye {
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
-    color: #555;
-  }
-  .toggle-eye:hover { color: #000; }
-  .helper { font-size: 13px; color: #666; margin-top: 4px; }
-  .helper.invalid { color: #c00; }
-  
-  .styled-btn {
-    background-color: #ffc20e;
-    color: #002f6c;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    padding: 10px;
-    margin-top: 20px;
-    width: 100%;
-    cursor: pointer;
-    font-size: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .styled-btn:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-  .styled-btn span.spinner {
-    margin-left: 8px;
-  }
+    /* Etiquetas de los campos */
+    label.form-label {
+      font-weight: bold;
+      color: #002f6c;
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      font-size: 14px;
+      padding: 8px 40px 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #004aad;
+      background: #f0f8ff;
+      width: 100%;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    .pass-wrapper { position: relative; }
+    .toggle-eye {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      color: #555;
+    }
+    .toggle-eye:hover { color: #000; }
+    .helper { font-size: 13px; color: #666; margin-top: 4px; }
+    .helper.invalid { color: #c00; }
 
-  /* —— SECCIÓN TÉRMINOS & CONDICIONES —— */
-  .terminos-container {
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-    margin-top: 10px !important;
-  }
-  .terminos-container input[type="checkbox"] {
-    margin: 0 !important;
-    vertical-align: middle !important;
-  }
-  .terminos-container label {
-    display: inline-flex !important;
-    align-items: center !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-  .terminos-container a {
-    color: #004aad;
-    font-weight: bold;
-    text-decoration: none;
-    margin-left: 0.2rem;
-  }
-    /* —— ANULA EL ESTILO GLOBAL EN EL CHECKBOX —— */
-.terminos-container input[type="checkbox"] {
-  /* quita el width:100% y el padding que heredaba */
-  width: auto !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  flex: none !important;           /* que no crezca */
-}
+    .styled-btn {
+      background-color: #ffc20e;
+      color: #002f6c;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 20px;
+      width: 100%;
+      cursor: pointer;
+      font-size: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .styled-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    .styled-btn span.spinner {
+      margin-left: 8px;
+    }
 
-/* opcional: que el label ocupe el resto del espacio */
-.terminos-container label {
-  flex: 1 !important;
-}
-
-/* (mantén tu display:flex y align-items:center de antes) */
-
-  /* —— FIN TÉRMINOS —— */
-</style>
+    /* —— SECCIÓN TÉRMINOS & CONDICIONES —— */
+    .terminos-container {
+      display: flex !important;
+      align-items: center !important;
+      gap: 0.5rem !important;
+      margin-top: 10px !important;
+    }
+    .terminos-container input[type="checkbox"] {
+      width: auto !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      flex: none !important;
+      vertical-align: middle !important;
+    }
+    .terminos-container label {
+      flex: 1 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .terminos-container a {
+      color: #004aad;
+      font-weight: bold;
+      text-decoration: none;
+      margin-left: 0.2rem;
+    }
+    /* —— FIN TÉRMINOS & CONDICIONES —— */
+  </style>
 </head>
 <body>
 
@@ -198,23 +183,27 @@
   <div class="contenido-central">
     <h1>Crear cuenta</h1>
     <form id="registerForm">
-      <label for="fullName">Nombre completo</label>
+      <label class="form-label" for="fullName">Nombre completo</label>
       <input type="text" id="fullName" required />
 
-      <label for="email">Correo electrónico</label>
+      <label class="form-label" for="email">Correo electrónico</label>
       <input type="email" id="email" required />
 
-      <label for="phone">Teléfono / Celular</label>
+      <label class="form-label" for="phone">Teléfono / Celular</label>
       <input type="text" id="phone" pattern="^[9238][0-9]{7}$" required />
 
-      <label for="password">Contraseña</label>
+      <label class="form-label" for="password">Contraseña</label>
       <div class="pass-wrapper">
         <input type="password" id="password" minlength="8" required />
         <span class="toggle-eye" data-target="password">
           <!-- SVG ojo cerrado -->
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0
+                     8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542
+                     7-4.477 0-8.268-2.943-9.542-7z" />
           </svg>
         </span>
       </div>
@@ -222,36 +211,38 @@
         La contraseña debe tener ≥8 caracteres, 1 mayúscula y 1 número.
       </small>
 
-      <label for="confirmPassword">Confirmar contraseña</label>
+      <label class="form-label" for="confirmPassword">Confirmar contraseña</label>
       <div class="pass-wrapper">
         <input type="password" id="confirmPassword" minlength="8" required />
         <span class="toggle-eye" data-target="confirmPassword">
           <!-- SVG ojo cerrado -->
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0
+                     8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542
+                     7-4.477 0-8.268-2.943-9.542-7z" />
           </svg>
         </span>
       </div>
       <small id="confirmHelper" class="helper"></small>
 
-<!-- ✅ Casilla para aceptar términos, 100% alineada -->
-<div class="terminos-container">
-  <input type="checkbox" id="aceptaTerminos" />
-  <label for="aceptaTerminos">
-    Acepto los 
-    <a href="https://comocomprarcarros.com/docs/terminos_subastacarhn.pdf" target="_blank">
-      Términos y Condiciones
-    </a> del sitio.
-  </label>
-</div>
+      <div class="terminos-container">
+        <input type="checkbox" id="aceptaTerminos" />
+        <label for="aceptaTerminos">
+          Acepto los
+          <a href="https://comocomprarcarros.com/docs/terminos_subastacarhn.pdf" target="_blank">
+            Términos y Condiciones
+          </a>
+          del sitio.
+        </label>
+      </div>
 
-
-<!-- ✅ Botón inicialmente desactivado -->
-<button type="submit" class="styled-btn" id="submitBtn" disabled>
-  <span id="btnText">Registrarse</span>
-  <span class="spinner" id="btnSpinner" style="display:none;">⏳</span>
-</button>
+      <button type="submit" class="styled-btn" id="submitBtn" disabled>
+        <span id="btnText">Registrarse</span>
+        <span class="spinner" id="btnSpinner" style="display:none;">⏳</span>
+      </button>
     </form>
     <p style="text-align:center; margin-top:15px;">
       ¿Ya tienes cuenta? <a href="login.html">Iniciar Sesión</a>
@@ -262,7 +253,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyA5BuOwgEUYK1JMwJD0PL0k0rcAST_Koms",
@@ -270,7 +260,7 @@
     projectId: "subastacarhn-40554",
     storageBucket: "subastacarhn-40554.appspot.com",
     messagingSenderId: "536785797974",
-    appId: "1:536785797974:web:e3eabb4dcd898c2ffe8cf7",
+    appId: "1:536785797974:web=e3eabb4dcd898c2ffe8cf7",
     measurementId: "G-QM5N60K8C0"
   };
   firebase.initializeApp(firebaseConfig);
@@ -290,9 +280,8 @@
       icon.innerHTML = isPwd
         ? `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                   d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478
-                      0-8.27-2.94-9.543-7a9.97 9.97 0 012.214-3.518M6.12
-                      6.12a9.953 9.953 0 011.518-1.518M3 3l18 18" />
+                   d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.27-2.94-9.543-7a9.97
+                      9.97 0 012.214-3.518M6.12 6.12a9.953 9.953 0 011.518-1.518M3 3l18 18" />
              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                    d="M10.477 10.477a3 3 0 104.243 4.243M9.88
                       9.88l4.24 4.242" />
@@ -301,9 +290,9 @@
              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477
-                      0 8.268 2.943 9.542 7-1.274 4.057-5.065
-                      7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268
+                      2.943 9.542 7-1.274 4.057-5.065 7-9.542
+                      7-4.477 0-8.268-2.943-9.542-7z" />
            </svg>`;
     });
   });
@@ -364,16 +353,15 @@
       btn.disabled = false; spinner.style.display = 'none'; txt.style.display = '';
     }
   });
-  // ✅ Lógica para activar el botón solo si se aceptan los términos
-const aceptaTerminos = document.getElementById('aceptaTerminos');
-const botonRegistrar = document.getElementById('submitBtn');
 
-if (aceptaTerminos && botonRegistrar) {
-  botonRegistrar.disabled = true;
-  aceptaTerminos.addEventListener('change', () => {
-    botonRegistrar.disabled = !aceptaTerminos.checked;
-  });
-}
+  const aceptaTerminos = document.getElementById('aceptaTerminos');
+  const botonRegistrar = document.getElementById('submitBtn');
+  if (aceptaTerminos && botonRegistrar) {
+    botonRegistrar.disabled = true;
+    aceptaTerminos.addEventListener('change', () => {
+      botonRegistrar.disabled = !aceptaTerminos.checked;
+    });
+  }
 </script>
 
 </body>
