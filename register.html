@@ -13,158 +13,158 @@
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="theme-color" content="#002f6c">
   <style>
-    body {
-      font-family: Helvetica, sans-serif;
-      margin: 0; padding: 0;
-      background: #f9f9f9;
-    }
-    header {
-      background: linear-gradient(to right, #002f6c, #004aad);
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 15px;
-      position: sticky;
-      top: 0;
-      z-index: 999;
-    }
-    header a.brand {
-      color: white;
-      font-size: 22px;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    .menu-icon {
-      font-size: 20px;
-      background: #ffc20e;
-      color: #002f6c;
-      padding: 8px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-    #menu-links {
-      display: none;
-      list-style: none;
-      padding: 10px;
-      margin: 10px 0 0;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      position: absolute;
-      top: 70px;
-      left: 15px;
-      z-index: 1000;
-    }
-    .checkbox-terminos {
-  display: flex;
-  align-items: flex-start;
-  font-size: 0.9rem;
-  color: #002f6c;
-  margin-left: 0;
-  text-align: left;
-  padding-left: 0;
-}
+  body {
+    font-family: Helvetica, sans-serif;
+    margin: 0; padding: 0;
+    background: #f9f9f9;
+  }
+  header {
+    background: linear-gradient(to right, #002f6c, #004aad);
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+  header a.brand {
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  .menu-icon {
+    font-size: 20px;
+    background: #ffc20e;
+    color: #002f6c;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  #menu-links {
+    display: none;
+    list-style: none;
+    padding: 10px;
+    margin: 10px 0 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    position: absolute;
+    top: 70px;
+    left: 15px;
+    z-index: 1000;
+  }
+  #menu-links li { margin-bottom: 10px; }
+  #menu-links a { text-decoration: none; color: #002f6c; font-weight: bold; }
 
-.checkbox-terminos input[type="checkbox"] {
-  margin: 2px 8px 0 0;
-}
+  .layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 10px;
+  }
+  .contenido-central {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 20px;
+  }
+  .contenido-central h1 {
+    text-align: center;
+    color: #002f6c;
+    margin-bottom: 20px;
+  }
 
-.checkbox-terminos span {
-  line-height: 1.4;
-}
+  /* Etiquetas de los campos (excepto términos) */
+  label.form-label {
+    font-weight: bold;
+    color: #002f6c;
+    display: block;
+    margin-top: 10px;
+  }
+  
+  input {
+    font-size: 14px;
+    padding: 8px 40px 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #004aad;
+    background: #f0f8ff;
+    width: 100%;
+    margin-top: 5px;
+    box-sizing: border-box;
+  }
+  .pass-wrapper {
+    position: relative;
+  }
+  .toggle-eye {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    color: #555;
+  }
+  .toggle-eye:hover { color: #000; }
+  .helper { font-size: 13px; color: #666; margin-top: 4px; }
+  .helper.invalid { color: #c00; }
+  
+  .styled-btn {
+    background-color: #ffc20e;
+    color: #002f6c;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 20px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .styled-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  .styled-btn span.spinner {
+    margin-left: 8px;
+  }
 
-    #menu-links li { margin-bottom: 10px; }
-    #menu-links a { text-decoration: none; color: #002f6c; font-weight: bold; }
-    .layout {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px 10px;
-    }
-    .contenido-central {
-      width: 100%;
-      max-width: 400px;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      padding: 20px;
-    }
-    .contenido-central h1 {
-      text-align: center;
-      color: #002f6c;
-      margin-bottom: 20px;
-    }
-    label:not(.checkbox-terminos) {
-  font-weight: bold;
-  color: #002f6c;
-  display: block;
-  margin-top: 10px;
-}
-    input {
-      font-size: 14px;
-      padding: 8px 40px 8px 12px;
-      border-radius: 8px;
-      border: 1px solid #004aad;
-      background: #f0f8ff;
-      width: 100%;
-      margin-top: 5px;
-      box-sizing: border-box;
-    }
-    .pass-wrapper {
-      position: relative;
-    }
-    .toggle-eye {
-      position: absolute;
-      top: 50%;
-      right: 12px;
-      transform: translateY(-50%);
-      cursor: pointer;
-      width: 24px;
-      height: 24px;
-      color: #555;
-    }
-    .toggle-eye:hover { color: #000; }
-    .helper { font-size: 13px; color: #666; margin-top: 4px; }
-    .helper.invalid { color: #c00; }
-    .styled-btn {
-      background-color: #ffc20e;
-      color: #002f6c;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      padding: 10px;
-      margin-top: 20px;
-      width: 100%;
-      cursor: pointer;
-      font-size: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .terminos-container {
-  display: flex;          /* pone checkbox y texto en línea */
-  align-items: center;    /* los alinea verticalmente */
-  gap: 0.5rem;            /* espacio horizontal consistente */
-  margin-top: 10px;       /* separación superior */
-}
-
-.terminos-container input[type="checkbox"] {
-  margin: 0;              /* quita márgenes extra del checkbox */
-}
-
-.terminos-container label {
-  display: inline;        /* fuerza que el texto quede en línea */
-  margin: 0;              /* quita el margin-top heredado */
-}
-
-
-    .styled-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-    .styled-btn span.spinner { margin-left: 8px; }
-  </style>
+  /* —— SECCIÓN TÉRMINOS & CONDICIONES —— */
+  .terminos-container {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    margin-top: 10px !important;
+  }
+  .terminos-container input[type="checkbox"] {
+    margin: 0 !important;
+    vertical-align: middle !important;
+  }
+  .terminos-container label {
+    display: inline-flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .terminos-container a {
+    color: #004aad;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 0.2rem;
+  }
+  /* —— FIN TÉRMINOS —— */
+</style>
 </head>
 <body>
 
