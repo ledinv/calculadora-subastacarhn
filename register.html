@@ -58,6 +58,24 @@
       left: 15px;
       z-index: 1000;
     }
+    .checkbox-terminos {
+  display: flex;
+  align-items: flex-start;
+  font-size: 0.9rem;
+  color: #002f6c;
+  margin-left: 0;
+  text-align: left;
+  padding-left: 0;
+}
+
+.checkbox-terminos input[type="checkbox"] {
+  margin: 2px 8px 0 0;
+}
+
+.checkbox-terminos span {
+  line-height: 1.4;
+}
+
     #menu-links li { margin-bottom: 10px; }
     #menu-links a { text-decoration: none; color: #002f6c; font-weight: bold; }
     .layout {
@@ -184,11 +202,11 @@
       </div>
       <small id="confirmHelper" class="helper"></small>
 
-<!-- ✅ Casilla para aceptar términos, bien alineada -->
+<!-- ✅ Casilla para aceptar términos usando clases -->
 <div style="margin-top: 10px;">
-  <label style="display: flex; align-items: flex-start; font-size: 0.9rem; color: #002f6c; margin-left: 0;">
-    <input type="checkbox" id="aceptaTerminos" style="margin: 2px 8px 0 0;" />
-    <span style="line-height: 1.4;">
+  <label class="checkbox-terminos">
+    <input type="checkbox" id="aceptaTerminos" />
+    <span>
       Acepto los 
       <a href="https://comocomprarcarros.com/docs/terminos_subastacarhn.pdf" target="_blank" style="color: #004aad;">
         Términos y Condiciones
@@ -196,8 +214,6 @@
     </span>
   </label>
 </div>
-
-
 
 <!-- ✅ Botón inicialmente desactivado -->
 <button type="submit" class="styled-btn" id="submitBtn" disabled>
