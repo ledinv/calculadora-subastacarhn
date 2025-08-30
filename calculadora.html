@@ -144,5 +144,66 @@
       cargarEstados();
     });
   </script>
+
+  <!-- Auto-relleno desde la extensión: lee parámetros de la URL y llena los campos -->
+  <script>
+  window.addEventListener('DOMContentLoaded', function () {
+    const q = new URLSearchParams(location.search);
+    const get = (k) => q.get(k) || "";
+
+    const vin   = get("vin");
+    const make  = get("make");
+    const model = get("model");
+    const value_usd = get("value_usd");
+    const est_mid   = get("est_mid"); // respaldo si no viene value_usd
+
+    // 1) Monto de oferta -> #c1
+    (function () {
+      const el = document.getElementById("c1");
+      const oferta = value_usd || est_mid || "";
+      if (el && oferta) {
+        el.value = oferta;
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+        el.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    })();
+
+    // 2) CAFTA por VIN -> #c13
+    (function () {
+      const el = document.getElementById("c13");
+      if (!el || !vin) return;
+      const first = vin.trim()[0];
+      const cafta = ["1","4","5"].includes(first) ? "1,4,5" : "OTROS";
+      el.value = cafta;
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    })();
+
+    // 3) Tipo de vehículo -> #c14 (PICK UP si detecta modelos típicos)
+    (function () {
+      const el = document.getElementById("c14");
+      if (!el) return;
+      const txt = `${make||""} ${model||""}`.toLowerCase();
+      const isPickup = /silverado|sierra|f-150|f150|ram|tundra|tacoma|frontier|ranger|colorado|maverick|hilux|l200|d-?max|navara|ridgeline/.test(txt);
+      el.value = isPickup ? "PICK UP" : "OTROS";
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    })();
+
+    // 4) Motor -> #motor (si detecta 1.2 / 1.5 / 2.0 en el modelo)
+    (function () {
+      const el = document.getElementById("motor");
+      if (!el) return;
+      const m = /(\d\.\d)/.exec(model || "");
+      if (!m) return;
+      const litros = parseFloat(m[1]);
+      el.value = (litros <= 1.5) ? "1.5 Inferior" : "Superior 1.5";
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    })();
+
+    // 5) (Opcional) Si quieres auto-calcular cuando ya hay monto:
+    if (typeof window.calcular === "function" && (value_usd || est_mid)) {
+      setTimeout(() => window.calcular(), 200);
+    }
+  });
+  </script>
 </body>
 </html>
