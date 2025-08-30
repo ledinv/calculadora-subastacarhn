@@ -214,10 +214,10 @@
   })();
   </script>
 
-  <!-- Barco fijo = $900 y grúa por ciudad usando gruas.js -->
+  <!-- Barco fijo = $900 + Grúa por ciudad (versión robusta, soporta "fl - miami central") -->
   <script>
   (function () {
-    // 1) BARCO FIJO = 900 USD
+    // ===== 1) BARCO FIJO = 900 USD =====
     document.addEventListener('DOMContentLoaded', () => {
       const barco = document.getElementById('c7');
       if (barco) {
@@ -227,44 +227,64 @@
       }
     });
 
-    // 2) GRÚA SEGÚN CIUDAD (usa gruas.js -> buscarRuta)
+    // ===== 2) GRÚA SEGÚN CIUDAD (usa gruas.js -> buscarRuta) =====
     const q = new URLSearchParams(location.search);
-    const locationRaw = q.get('location') || ''; // "FL - Miami" o "Miami, FL"
+    const locationRaw = q.get('location') || ''; // ej: "fl - miami central" | "Miami, FL"
     if (!locationRaw) return;
 
-    // helpers
-    function waitFor(testFn, onReady, tries = 40, everyMs = 200) {
-      const t = setInterval(() => {
-        if (testFn()) { clearInterval(t); onReady(); }
-        else if (--tries <= 0) { clearInterval(t); }
-      }, everyMs);
+    // ---- Helpers de normalización ----
+    const rmAcc = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const slug  = s => rmAcc(String(s).toLowerCase()).replace(/[^a-z0-9]+/g,' ').trim();
+
+    const CITY_ALIASES = {
+      'miami central':'miami','miami north':'miami','miami south':'miami',
+      'orlando north':'orlando','orlando south':'orlando',
+      'tampa south':'tampa','jacksonville east':'jacksonville','jacksonville west':'jacksonville',
+      'ft lauderdale':'fort lauderdale','fort lauderdale':'fort lauderdale',
+      'west palm':'west palm beach','wpb':'west palm beach',
+      'newburg':'newburgh'
+    };
+
+    function normalizeCity(s) {
+      let x = slug(s)
+        .replace(/\b(copart|iaai|auction|auto|facility|location)\b/g,'')
+        .replace(/\b(central|north|south|east|west|norte|sur|este|oeste)\b/g,'')
+        .replace(/\s+/g,' ')
+        .trim();
+      if (CITY_ALIASES[x]) return CITY_ALIASES[x];
+      return x;
     }
+
     function parseCityState(s) {
-      let city = '', state = '';
+      // Soporta "FL - Miami Central", "Miami, FL", "miami central fl"
       if (s.includes(' - ')) {
         const parts = s.split(' - ');
-        state = (parts[0] || '').trim();
-        city  = parts.slice(1).join(' - ').trim();
-      } else if (s.includes(',')) {
-        const parts = s.split(',');
-        city  = (parts[0] || '').trim();
-        state = (parts[1] || '').trim();
-      } else {
-        city = s.trim();
+        return { state: slug(parts[0]).toUpperCase(), city: normalizeCity(parts.slice(1).join(' - ')) };
       }
-      return { city, state };
+      if (s.includes(',')) {
+        const parts = s.split(',');
+        return { city: normalizeCity(parts[0]), state: slug(parts[1]).toUpperCase() };
+      }
+      const m = slug(s).match(/\b([a-z]{2})$/);
+      if (m) return { city: normalizeCity(s.replace(new RegExp(m[1]+'$','i'),'')), state: m[1].toUpperCase() };
+      return { city: normalizeCity(s), state: '' };
     }
-    function findOptionMatch(sel, needle) {
-      if (!sel || !needle) return null;
-      const n = needle.toLowerCase();
-      return [...sel.options].find(o =>
-        (o.value || '').toLowerCase() === n ||
-        (o.text  || '').toLowerCase().includes(n)
-      ) || null;
+
+    function findOptionMatch(sel, needleRaw) {
+      if (!sel || !needleRaw) return null;
+      const n = slug(needleRaw);
+      for (const o of [...sel.options]) {
+        const val = slug(o.value || '');
+        const txt = slug(o.text  || '');
+        if (val && (val.includes(n) || n.includes(val))) return o;
+        if (txt && (txt.includes(n) || n.includes(txt))) return o;
+      }
+      return null;
     }
+
     function numberFromText(txt) {
       if (!txt) return null;
-      const clean = String(txt).replace(/[^\d.,]/g, '').replace(/,/g, '');
+      const clean = String(txt).replace(/[^\d.,]/g,'').replace(/,/g,'');
       const m = clean.match(/(\d+(\.\d+)?)/);
       return m ? m[1] : null;
     }
@@ -292,24 +312,31 @@
     });
 
     // Seleccionar Estado/Ciudad y ejecutar buscarRuta()
+    function waitFor(testFn, onReady, tries = 40, everyMs = 200) {
+      const t = setInterval(() => {
+        if (testFn()) { clearInterval(t); onReady(); }
+        else if (--tries <= 0) { clearInterval(t); }
+      }, everyMs);
+    }
+
     function applyLocationAndSearch() {
       const estadoSel = document.getElementById('estadoSelect');
       const ciudadSel = document.getElementById('ciudadSelect');
       if (!estadoSel || !ciudadSel) return;
 
       if (state) {
-        const mEst = findOptionMatch(estadoSel, state);
-        if (mEst) {
-          estadoSel.value = mEst.value;
+        const estOpt = findOptionMatch(estadoSel, state) || findOptionMatch(estadoSel, state === 'FL' ? 'florida' : state);
+        if (estOpt) {
+          estadoSel.value = estOpt.value;
           estadoSel.dispatchEvent(new Event('change', { bubbles: true }));
         }
       }
 
       waitFor(() => ciudadSel.options && ciudadSel.options.length > 0, () => {
         if (city) {
-          const mCiu = findOptionMatch(ciudadSel, city);
-          if (mCiu) {
-            ciudadSel.value = mCiu.value;
+          const ciuOpt = findOptionMatch(ciudadSel, city);
+          if (ciuOpt) {
+            ciudadSel.value = ciuOpt.value;
             ciudadSel.dispatchEvent(new Event('change', { bubbles: true }));
           }
         }
@@ -318,9 +345,9 @@
         const tipo = document.getElementById('c14')?.value || 'OTROS';
         const vehSel = document.getElementById('vehiculoSelect');
         if (vehSel) {
-          let target = (tipo === 'PICK UP') ? 'Camionetas Regulares' : 'Turismos Pequeños';
-          const mVeh = findOptionMatch(vehSel, target);
-          if (mVeh) vehSel.value = mVeh.value;
+          const target = (tipo === 'PICK UP') ? 'Camionetas Regulares' : 'Turismos Pequeños';
+          const vehOpt = findOptionMatch(vehSel, target);
+          if (vehOpt) vehSel.value = vehOpt.value;
         }
 
         if (typeof window.buscarRuta === 'function') {
@@ -329,7 +356,6 @@
       });
     }
 
-    // Esperar a que cargarEstados() haya llenado el selector
     waitFor(
       () => document.getElementById('estadoSelect')?.options?.length > 0,
       applyLocationAndSearch
