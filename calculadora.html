@@ -205,5 +205,128 @@
     }
   });
   </script>
+
+  <!-- Barco fijo = $900 y grúa por ciudad usando gruas.js -->
+  <script>
+  (function () {
+    // ===== 1) BARCO FIJO = 900 USD =====
+    document.addEventListener('DOMContentLoaded', () => {
+      const barco = document.getElementById('c7');
+      if (barco) {
+        barco.value = '900';
+        barco.dispatchEvent(new Event('input',  { bubbles: true }));
+        barco.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+
+    // ===== 2) GRÚA SEGÚN CIUDAD (usa gruas.js -> buscarRuta) =====
+    const q = new URLSearchParams(location.search);
+    const locationRaw = q.get('location') || ''; // "FL - Miami" o "Miami, FL"
+    if (!locationRaw) return;
+
+    // --- helpers ---
+    function waitFor(testFn, onReady, tries = 40, everyMs = 200) {
+      const t = setInterval(() => {
+        if (testFn()) { clearInterval(t); onReady(); }
+        else if (--tries <= 0) { clearInterval(t); }
+      }, everyMs);
+    }
+    function parseCityState(s) {
+      let city = '', state = '';
+      if (s.includes(' - ')) {
+        const parts = s.split(' - ');
+        state = (parts[0] || '').trim();
+        city  = parts.slice(1).join(' - ').trim();
+      } else if (s.includes(',')) {
+        const parts = s.split(',');
+        city  = (parts[0] || '').trim();
+        state = (parts[1] || '').trim();
+      } else {
+        city = s.trim();
+      }
+      return { city, state };
+    }
+    function findOptionMatch(sel, needle) {
+      if (!sel || !needle) return null;
+      const n = needle.toLowerCase();
+      return [...sel.options].find(o =>
+        (o.value || '').toLowerCase() === n ||
+        (o.text  || '').toLowerCase().includes(n)
+      ) || null;
+    }
+    function numberFromText(txt) {
+      if (!txt) return null;
+      const clean = String(txt).replace(/[^\d.,]/g, '').replace(/,/g, '');
+      const m = clean.match(/(\d+(\.\d+)?)/);
+      return m ? m[1] : null;
+    }
+
+    const { city, state } = parseCityState(locationRaw);
+
+    // Observa resultados para copiar GRÚA a #c8 (barco NO se toca: $900 fijo)
+    document.addEventListener('DOMContentLoaded', () => {
+      const resDiv = document.getElementById('resultadoGrua');
+      if (!resDiv) return;
+      const mo = new MutationObserver(() => {
+        const gruaTxt = document.getElementById('precioGrua')?.textContent || '';
+        const nGrua   = numberFromText(gruaTxt);
+        const c8      = document.getElementById('c8');
+        if (nGrua && c8) {
+          c8.value = nGrua;
+          c8.dispatchEvent(new Event('input',  { bubbles: true }));
+          c8.dispatchEvent(new Event('change', { bubbles: true }));
+          if (typeof window.calcular === 'function') {
+            setTimeout(() => window.calcular(), 200);
+          }
+        }
+      });
+      mo.observe(resDiv, { subtree: true, childList: true, characterData: true });
+    });
+
+    // Selecciona Estado/Ciudad y ejecuta buscarRuta()
+    function applyLocationAndSearch() {
+      const estadoSel = document.getElementById('estadoSelect');
+      const ciudadSel = document.getElementById('ciudadSelect');
+      if (!estadoSel || !ciudadSel) return;
+
+      if (state) {
+        const mEst = findOptionMatch(estadoSel, state);
+        if (mEst) {
+          estadoSel.value = mEst.value;
+          estadoSel.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      }
+
+      waitFor(() => ciudadSel.options && ciudadSel.options.length > 0, () => {
+        if (city) {
+          const mCiu = findOptionMatch(ciudadSel, city);
+          if (mCiu) {
+            ciudadSel.value = mCiu.value;
+            ciudadSel.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        }
+
+        // Ajuste simple: si #c14 es PICK UP, elegimos Camionetas Regulares; si no, Turismos Pequeños
+        const tipo = document.getElementById('c14')?.value || 'OTROS';
+        const vehSel = document.getElementById('vehiculoSelect');
+        if (vehSel) {
+          let target = (tipo === 'PICK UP') ? 'Camionetas Regulares' : 'Turismos Pequeños';
+          const mVeh = findOptionMatch(vehSel, target);
+          if (mVeh) vehSel.value = mVeh.value;
+        }
+
+        if (typeof window.buscarRuta === 'function') {
+          window.buscarRuta();
+        }
+      });
+    }
+
+    // Espera a que cargarEstados() llene el selector y luego aplica
+    waitFor(
+      () => document.getElementById('estadoSelect')?.options?.length > 0,
+      applyLocationAndSearch
+    );
+  })();
+  </script>
 </body>
 </html>
