@@ -145,71 +145,79 @@
     });
   </script>
 
-  <!-- Auto-relleno desde la extensión: lee parámetros de la URL y llena los campos -->
+  <!-- Auto-relleno desde la extensión (NUEVO: evita el error de motor cuando VIN es CAFTA) -->
   <script>
-  window.addEventListener('DOMContentLoaded', function () {
+  (function () {
     const q = new URLSearchParams(location.search);
     const get = (k) => q.get(k) || "";
 
-    const vin   = get("vin");
-    const make  = get("make");
-    const model = get("model");
+    const vin       = get("vin");
+    const make      = get("make");
+    const model     = get("model");
     const value_usd = get("value_usd");
-    const est_mid   = get("est_mid"); // respaldo si no viene value_usd
+    const est_mid   = get("est_mid");
+    const motorURL  = get("motor"); // opcional
 
-    // 1) Monto de oferta -> #c1
-    (function () {
-      const el = document.getElementById("c1");
-      const oferta = value_usd || est_mid || "";
-      if (el && oferta) {
-        el.value = oferta;
-        el.dispatchEvent(new Event("input", { bubbles: true }));
-        el.dispatchEvent(new Event("change", { bubbles: true }));
-      }
-    })();
-
-    // 2) CAFTA por VIN -> #c13
-    (function () {
-      const el = document.getElementById("c13");
-      if (!el || !vin) return;
-      const first = vin.trim()[0];
-      const cafta = ["1","4","5"].includes(first) ? "1,4,5" : "OTROS";
-      el.value = cafta;
+    function setVal(id, v) {
+      const el = document.getElementById(id);
+      if (!el || v === "") return;
+      el.value = v;
+      el.dispatchEvent(new Event("input",  { bubbles: true }));
       el.dispatchEvent(new Event("change", { bubbles: true }));
-    })();
-
-    // 3) Tipo de vehículo -> #c14 (PICK UP si detecta modelos típicos)
-    (function () {
-      const el = document.getElementById("c14");
-      if (!el) return;
-      const txt = `${make||""} ${model||""}`.toLowerCase();
-      const isPickup = /silverado|sierra|f-150|f150|ram|tundra|tacoma|frontier|ranger|colorado|maverick|hilux|l200|d-?max|navara|ridgeline/.test(txt);
-      el.value = isPickup ? "PICK UP" : "OTROS";
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    })();
-
-    // 4) Motor -> #motor (si detecta 1.2 / 1.5 / 2.0 en el modelo)
-    (function () {
-      const el = document.getElementById("motor");
-      if (!el) return;
-      const m = /(\d\.\d)/.exec(model || "");
-      if (!m) return;
-      const litros = parseFloat(m[1]);
-      el.value = (litros <= 1.5) ? "1.5 Inferior" : "Superior 1.5";
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    })();
-
-    // 5) (Opcional) Si quieres auto-calcular cuando ya hay monto:
-    if (typeof window.calcular === "function" && (value_usd || est_mid)) {
-      setTimeout(() => window.calcular(), 200);
     }
-  });
+
+    // 1) VIN/CAFTA primero
+    let cafta = "OTROS";
+    if (vin && ["1","4","5"].includes(vin.trim()[0])) cafta = "1,4,5";
+    setVal("c13", cafta);
+    if (typeof window.bloquearMotorPorVin === "function") {
+      try { window.bloquearMotorPorVin(); } catch(e){}
+    }
+
+    // 2) Monto
+    const oferta = value_usd || est_mid || "";
+    setVal("c1", oferta);
+
+    // 3) Tipo de vehículo
+    const txt = `${make||""} ${model||""}`.toLowerCase();
+    const isPickup = /silverado|sierra|f-150|f150|ram|tundra|tacoma|frontier|ranger|colorado|maverick|hilux|l200|d-?max|navara|ridgeline/.test(txt);
+    setVal("c14", isPickup ? "PICK UP" : "OTROS");
+
+    // 4) Motor SOLO si VIN = OTROS
+    (function () {
+      const motorEl = document.getElementById("motor");
+      if (!motorEl) return;
+      if (cafta !== "OTROS") { motorEl.value = ""; motorEl.dispatchEvent(new Event("change",{bubbles:true})); return; }
+      let motorValue = motorURL || "";
+      if (!motorValue) {
+        const m = /(\d\.\d)/.exec(model || "");
+        if (m) {
+          const litros = parseFloat(m[1]);
+          motorValue = (litros <= 1.5) ? "1.5 Inferior" : "Superior 1.5";
+        }
+      }
+      if (motorValue) setVal("motor", motorValue);
+    })();
+
+    // 5) Calcular solo si requisitos básicos listos
+    function ready() {
+      const c1    = document.getElementById("c1")?.value;
+      const c13   = document.getElementById("c13")?.value;
+      const motor = document.getElementById("motor")?.value;
+      if (!c1) return false;
+      if (c13 === "OTROS" && !motor) return false;
+      return true;
+    }
+    setTimeout(() => {
+      if (typeof window.calcular === "function" && ready()) window.calcular();
+    }, 400);
+  })();
   </script>
 
   <!-- Barco fijo = $900 y grúa por ciudad usando gruas.js -->
   <script>
   (function () {
-    // ===== 1) BARCO FIJO = 900 USD =====
+    // 1) BARCO FIJO = 900 USD
     document.addEventListener('DOMContentLoaded', () => {
       const barco = document.getElementById('c7');
       if (barco) {
@@ -219,12 +227,12 @@
       }
     });
 
-    // ===== 2) GRÚA SEGÚN CIUDAD (usa gruas.js -> buscarRuta) =====
+    // 2) GRÚA SEGÚN CIUDAD (usa gruas.js -> buscarRuta)
     const q = new URLSearchParams(location.search);
     const locationRaw = q.get('location') || ''; // "FL - Miami" o "Miami, FL"
     if (!locationRaw) return;
 
-    // --- helpers ---
+    // helpers
     function waitFor(testFn, onReady, tries = 40, everyMs = 200) {
       const t = setInterval(() => {
         if (testFn()) { clearInterval(t); onReady(); }
@@ -263,7 +271,7 @@
 
     const { city, state } = parseCityState(locationRaw);
 
-    // Observa resultados para copiar GRÚA a #c8 (barco NO se toca: $900 fijo)
+    // Copiar GRÚA a #c8 cuando gruas.js muestre resultados
     document.addEventListener('DOMContentLoaded', () => {
       const resDiv = document.getElementById('resultadoGrua');
       if (!resDiv) return;
@@ -283,7 +291,7 @@
       mo.observe(resDiv, { subtree: true, childList: true, characterData: true });
     });
 
-    // Selecciona Estado/Ciudad y ejecuta buscarRuta()
+    // Seleccionar Estado/Ciudad y ejecutar buscarRuta()
     function applyLocationAndSearch() {
       const estadoSel = document.getElementById('estadoSelect');
       const ciudadSel = document.getElementById('ciudadSelect');
@@ -306,7 +314,7 @@
           }
         }
 
-        // Ajuste simple: si #c14 es PICK UP, elegimos Camionetas Regulares; si no, Turismos Pequeños
+        // Ajuste simple: #c14 PICK UP -> Camionetas Regulares; resto -> Turismos Pequeños
         const tipo = document.getElementById('c14')?.value || 'OTROS';
         const vehSel = document.getElementById('vehiculoSelect');
         if (vehSel) {
@@ -321,7 +329,7 @@
       });
     }
 
-    // Espera a que cargarEstados() llene el selector y luego aplica
+    // Esperar a que cargarEstados() haya llenado el selector
     waitFor(
       () => document.getElementById('estadoSelect')?.options?.length > 0,
       applyLocationAndSearch
