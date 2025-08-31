@@ -145,296 +145,107 @@
     });
   </script>
 
-  <!-- Auto-relleno desde la extensión (VIN/CAFTA, monto, tipo de vehículo, motor) -->
+  <!-- Auto-relleno básico desde la extensión (VIN/CAFTA, monto, tipo y motor) -->
   <script>
   (function () {
     const q = new URLSearchParams(location.search);
-    const get = (k) => q.get(k) || "";
+    const get = k => q.get(k) || "";
 
-    const vin       = get("vin");
-    const make      = get("make");
-    const model     = get("model");
-    const value_usd = get("value_usd");
-    const est_mid   = get("est_mid");
-    const motorURL  = get("motor"); // opcional
+    const vin = get("vin"), make = get("make"), model = get("model");
+    const value_usd = get("value_usd"), est_mid = get("est_mid"), motorURL = get("motor");
 
-    function setVal(id, v) {
-      const el = document.getElementById(id);
-      if (!el || v === "") return;
-      el.value = v;
-      el.dispatchEvent(new Event("input",  { bubbles: true }));
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    }
+    function setVal(id, v){ const el=document.getElementById(id); if(!el||v==="") return;
+      el.value=v; el.dispatchEvent(new Event("input",{bubbles:true})); el.dispatchEvent(new Event("change",{bubbles:true})); }
 
-    // 1) VIN/CAFTA primero
-    let cafta = "OTROS";
-    if (vin && ["1","4","5"].includes(vin.trim()[0])) cafta = "1,4,5";
-    setVal("c13", cafta);
-    if (typeof window.bloquearMotorPorVin === "function") {
-      try { window.bloquearMotorPorVin(); } catch(e){}
-    }
+    // VIN/CAFTA
+    let cafta="OTROS"; if (vin && ["1","4","5"].includes(vin.trim()[0])) cafta="1,4,5";
+    setVal("c13", cafta); if (typeof window.bloquearMotorPorVin==="function") try{bloquearMotorPorVin();}catch(_){}
 
-    // 2) Monto
-    const oferta = value_usd || est_mid || "";
-    setVal("c1", oferta);
+    // Monto
+    setVal("c1", value_usd || est_mid || "");
 
-    // 3) Tipo de vehículo
+    // Tipo de vehículo
     const txt = `${make||""} ${model||""}`.toLowerCase();
     const isPickup = /silverado|sierra|f-150|f150|ram|tundra|tacoma|frontier|ranger|colorado|maverick|hilux|l200|d-?max|navara|ridgeline/.test(txt);
     setVal("c14", isPickup ? "PICK UP" : "OTROS");
 
-    // 4) Motor SOLO si VIN = OTROS
-    (function () {
-      const motorEl = document.getElementById("motor");
-      if (!motorEl) return;
-      if (cafta !== "OTROS") { motorEl.value = ""; motorEl.dispatchEvent(new Event("change",{bubbles:true})); return; }
-      let motorValue = motorURL || "";
-      if (!motorValue) {
-        const m = /(\d\.\d)/.exec(model || "");
-        if (m) {
-          const litros = parseFloat(m[1]);
-          motorValue = (litros <= 1.5) ? "1.5 Inferior" : "Superior 1.5";
-        }
-      }
-      if (motorValue) setVal("motor", motorValue);
+    // Motor (solo si VIN=OTROS)
+    (function(){
+      const el=document.getElementById("motor"); if(!el) return;
+      if (cafta!=="OTROS"){ el.value=""; el.dispatchEvent(new Event("change",{bubbles:true})); return; }
+      let mVal = motorURL || ""; if(!mVal){ const m=/(\d\.\d)/.exec(model||""); if(m){ mVal=(parseFloat(m[1])<=1.5)?"1.5 Inferior":"Superior 1.5"; } }
+      if (mVal) setVal("motor", mVal);
     })();
 
-    // 5) Calcular solo si requisitos básicos listos
-    function ready() {
-      const c1    = document.getElementById("c1")?.value;
-      const c13   = document.getElementById("c13")?.value;
-      const motor = document.getElementById("motor")?.value;
-      if (!c1) return false;
-      if (c13 === "OTROS" && !motor) return false;
-      return true;
-    }
-    setTimeout(() => {
-      if (typeof window.calcular === "function" && ready()) window.calcular();
-    }, 400);
+    // Auto-calcular si listo
+    setTimeout(()=>{ const c1=document.getElementById("c1")?.value||"", c13=document.getElementById("c13")?.value||"", m=document.getElementById("motor")?.value||"";
+      if (typeof window.calcular==="function" && c1 && (c13!=="OTROS" || m)) window.calcular();
+    },400);
   })();
   </script>
 
-  <!-- Auto-grúa desde ?location (toma SIEMPRE el precio más alto) + Barco fijo 900 -->
+  <!-- Barco fijo=900 y Grúa por ciudad (precio MÁXIMO) desde ?location= -->
   <script>
   (function () {
-    /* ====== Utilidades ====== */
+    // Barco fijo
+    document.addEventListener('DOMContentLoaded', ()=>{ const b=document.getElementById('c7'); if(b){ b.value='900'; b.dispatchEvent(new Event('input',{bubbles:true})); b.dispatchEvent(new Event('change',{bubbles:true})); }});
+
+    // ===== Grúa por CIUDAD (máximo entre Florida/Texas/Delaware) =====
     const rmAcc = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
     const slug  = s => rmAcc(String(s||'').toLowerCase()).replace(/[^a-z0-9]+/g,' ').trim();
 
-    // Normaliza nombres de ciudad (quita direcciones, marcas y sublotes; homologa "ft"->"fort")
-    function normCity(s) {
+    function normCity(s){
       let x = slug(s)
         .replace(/\b(copart|iaai|auction|facility|location|manheim|sublot|sublote)\b/g,'')
         .replace(/\b(central|north|south|east|west|norte|sur|este|oeste)\b/g,'')
         .replace(/\bft\b\.?/g,'fort')
-        .replace(/\s+/g,' ')
+        .replace(/\bst\b\.?/g,'st')
         .trim();
-      const ALIASES = {
-        'wpb': 'west palm beach',
-        'west palm': 'west palm beach',
-        'ft lauderdale': 'fort lauderdale',
-        'newburg': 'newburgh'
-      };
-      return ALIASES[x] || x;
+      const A={ 'wpb':'west palm beach','west palm':'west palm beach','ft lauderdale':'fort lauderdale','s bernardino':'san bernardino','newburg':'newburgh' };
+      return A[x] || x;
     }
 
-    // Parse de la cadena de ubicación que manda la extensión
-    function parseCityState(s) {
-      if (!s) return { city:'', stateRaw:'' };
-      // "City (ST)"
-      let m = s.match(/^\s*([^()]+)\(\s*([A-Za-z]{2})\s*\)\s*$/);
-      if (m) return { city: m[1].trim(), stateRaw: m[2].toUpperCase() };
-      // "ST - City"
-      if (s.includes(' - ')) {
-        const p = s.split(' - ');
-        return { stateRaw: p[0].trim(), city: p.slice(1).join(' - ').trim() };
-      }
-      // "City, ST"
-      if (s.includes(',')) {
-        const p = s.split(',');
-        return { city: p[0].trim(), stateRaw: p[1].trim() };
-      }
-      // "City ST" (sigla)
-      m = slug(s).match(/\b([a-z]{2})$/);
-      if (m) return { city: s.replace(new RegExp(m[1]+'$','i'), '').trim(), stateRaw: m[1].toUpperCase() };
-      return { city: s.trim(), stateRaw: '' };
+    function cityFromLocation(raw){
+      if (!raw) return '';
+      let s=String(raw);
+      if (s.includes(' - ')) s = s.split(' - ').slice(1).join(' - ');
+      if (s.includes(','))  s = s.split(',')[0];
+      s = s.replace(/\([^)]*\)/g,'');
+      return normCity(s);
     }
 
-    const STATES = {
-      AL:'Alabama', AK:'Alaska', AZ:'Arizona', AR:'Arkansas', CA:'California', CO:'Colorado', CT:'Connecticut',
-      DE:'Delaware', FL:'Florida', GA:'Georgia', HI:'Hawaii', ID:'Idaho', IL:'Illinois', IN:'Indiana', IA:'Iowa',
-      KS:'Kansas', KY:'Kentucky', LA:'Louisiana', ME:'Maine', MD:'Maryland', MA:'Massachusetts', MI:'Michigan',
-      MN:'Minnesota', MS:'Mississippi', MO:'Missouri', MT:'Montana', NE:'Nebraska', NV:'Nevada', NH:'New Hampshire',
-      NJ:'New Jersey', NM:'New Mexico', NY:'New York', NC:'North Carolina', ND:'North Dakota', OH:'Ohio', OK:'Oklahoma',
-      OR:'Oregon', PA:'Pennsylvania', RI:'Rhode Island', SC:'South Carolina', SD:'South Dakota', TN:'Tennessee',
-      TX:'Texas', UT:'Utah', VT:'Vermont', VA:'Virginia', WA:'Washington', WV:'West Virginia', WI:'Wisconsin', WY:'Wyoming'
-    };
-
-    // Lee los tarifarios (cuando ya cargó gruas.js)
-    function getPortTarifs() {
-      const F = (typeof tarifarioGruasPuertoFlorida  !== 'undefined') ? tarifarioGruasPuertoFlorida  : {};
-      const T = (typeof tarifarioGruasPuertoTexas    !== 'undefined') ? tarifarioGruasPuertoTexas    : {};
-      const D = (typeof tarifarioGruasPuertoDelaware !== 'undefined') ? tarifarioGruasPuertoDelaware : {};
-      return [
-        { name: 'Florida',  data: F },
-        { name: 'Texas',    data: T },
-        { name: 'Delaware', data: D }
+    function maxPriceByCity(cityWanted){
+      const ports = [
+        (typeof tarifarioGruasPuertoFlorida  !== 'undefined') ? tarifarioGruasPuertoFlorida  : {},
+        (typeof tarifarioGruasPuertoTexas    !== 'undefined') ? tarifarioGruasPuertoTexas    : {},
+        (typeof tarifarioGruasPuertoDelaware !== 'undefined') ? tarifarioGruasPuertoDelaware : {}
       ];
-    }
-
-    function getAllStateNames() {
-      const set = new Set();
-      for (const p of getPortTarifs()) Object.keys(p.data).forEach(s => set.add(s));
-      return Array.from(set);
-    }
-
-    function resolveStateName(token) {
-      if (!token) return '';
-      const t = token.trim();
-      const code = t.toUpperCase();
-      if (code.length === 2 && STATES[code]) return STATES[code]; // NY -> New York
-      const wanted = slug(t);
-      const hit = getAllStateNames().find(n => slug(n) === wanted);
-      return hit || '';
-    }
-
-    // Devuelve el precio MÁS ALTO (y de qué puerto/ciudad salió) para ese estado+ciudad
-    function getMaxGruaPrice(stateName, cityInput) {
-      const ports = getPortTarifs();
-      const cityN = normCity(cityInput || '');
-      let best = { price:null, bestCity:null, bestPort:null, bestState:null };
-
-      const stateNames = stateName ? [stateName] : getAllStateNames(); // si no viene estado, busco en todos
-
-      for (const sName of stateNames) {
-        for (const port of ports) {
-          const table = port.data[sName];
-          if (!table) continue;
-          for (const [cityKey, price] of Object.entries(table)) {
+      const needle = normCity(cityWanted); if (!needle) return null;
+      let max = null;
+      for (const p of ports){
+        for (const [state, table] of Object.entries(p)){
+          for (const [cityKey, price] of Object.entries(table)){
             const ck = normCity(cityKey);
-            if (!cityN || ck.includes(cityN) || cityN.includes(ck)) {
-              const p = Number(price);
-              if (best.price == null || p > best.price) {
-                best = { price: p, bestCity: cityKey, bestPort: port.name, bestState: sName };
-              }
+            if (ck && (ck.includes(needle) || needle.includes(ck))){
+              const val = Number(price);
+              if (max===null || val>max) max = val;
             }
           }
         }
       }
-      return best;
+      return max;
     }
 
-    // Selección flexible en selects
-    function matchOptionFlexible(sel, needle){
-      if (!sel || !needle) return null;
-      const n = slug(needle);
-      for (const o of [...sel.options]) {
-        const v = slug(o.value||''), t = slug(o.text||'');
-        if ((v && (v.includes(n)||n.includes(v))) || (t && (t.includes(n)||n.includes(t)))) return o;
-      }
-      return null;
-    }
-
-    function waitFor(test, done, tries=60, ms=120){
-      const t=setInterval(()=>{ if(test()){clearInterval(t); done();} else if(--tries<=0){clearInterval(t);} },ms);
-    }
-
-    // Rellena #c8 y, si se puede, refleja Estado/Ciudad en la UI + buscarRuta()
-    function applyGruaToForm(stateName, cityExact, price) {
-      const c8 = document.getElementById('c8');
-      if (c8 && price != null) {
-        c8.value = price;
-        c8.dispatchEvent(new Event('input',  { bubbles:true }));
-        c8.dispatchEvent(new Event('change', { bubbles:true }));
-      }
-
-      const estadoSel = document.getElementById('estadoSelect');
-      const ciudadSel = document.getElementById('ciudadSelect');
-
-      if (estadoSel && stateName) {
-        const opt = matchOptionFlexible(estadoSel, stateName);
-        if (opt) {
-          estadoSel.value = opt.value;
-          estadoSel.dispatchEvent(new Event('change', { bubbles:true })); // llenará ciudades
-
-          waitFor(() => ciudadSel && ciudadSel.options && ciudadSel.options.length > 1, () => {
-            const cOpt = matchOptionFlexible(ciudadSel, cityExact);
-            if (cOpt) {
-              ciudadSel.value = cOpt.value;
-              ciudadSel.dispatchEvent(new Event('change', { bubbles:true }));
-            }
-            // tipo de vehiculo sugerido
-            const tipo = document.getElementById('c14')?.value || 'OTROS';
-            const vehSel = document.getElementById('vehiculoSelect');
-            if (vehSel) {
-              const target = (tipo === 'PICK UP') ? 'Camionetas Regulares' : 'Turismos Pequeños';
-              const vOpt = matchOptionFlexible(vehSel, target);
-              if (vOpt) vehSel.value = vOpt.value;
-            }
-            if (typeof window.buscarRuta === 'function') window.buscarRuta();
-          });
-        }
-      }
-
-      if (typeof window.calcular === 'function') setTimeout(() => window.calcular(), 120);
-    }
-
-    /* ====== (A) Barco fijo = 900 ====== */
-    document.addEventListener('DOMContentLoaded', () => {
-      const barco = document.getElementById('c7');
-      if (barco) {
-        barco.value = '900';
-        barco.dispatchEvent(new Event('input',  { bubbles:true }));
-        barco.dispatchEvent(new Event('change', { bubbles:true }));
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const loc = new URLSearchParams(location.search).get('location') || '';
+      const city = cityFromLocation(loc);
+      const price = maxPriceByCity(city);
+      if (price!=null){
+        const c8=document.getElementById('c8');
+        if (c8){ c8.value=price; c8.dispatchEvent(new Event('input',{bubbles:true})); c8.dispatchEvent(new Event('change',{bubbles:true})); }
+        if (typeof window.calcular==='function') setTimeout(()=>window.calcular(),120);
       }
     });
-
-    /* ====== (B) Tomar ?location=, buscar MAX y poner en #c8 ====== */
-    document.addEventListener('DOMContentLoaded', () => {
-      const q = new URLSearchParams(location.search);
-      const locationRaw = q.get('location') || '';   // ej: "Taunton (MA)" | "NY - Newburgh" | "Miami, FL" | "fl - miami central"
-      if (!locationRaw) return;
-
-      const { city, stateRaw } = parseCityState(locationRaw);
-      const stateName = resolveStateName(stateRaw);
-      const { price, bestCity, bestState } = getMaxGruaPrice(stateName, city);
-
-      if (price != null) {
-        applyGruaToForm(bestState || stateName, bestCity || city, price);
-      }
-    });
-
-    /* ====== (C) Al usar “Buscar”, también actualizar #c8 con el MAX ====== */
-    document.addEventListener('DOMContentLoaded', () => {
-      const original = window.buscarRuta;
-      if (typeof original === 'function') {
-        window.buscarRuta = function () {
-          const r = original.apply(this, arguments);
-          try {
-            const est = document.getElementById('estadoSelect')?.value || '';
-            const ciu = document.getElementById('ciudadSelect')?.value || '';
-            const { price, bestCity, bestState } = getMaxGruaPrice(est, ciu);
-            if (price != null) applyGruaToForm(bestState || est, bestCity || ciu, price);
-          } catch(_) {}
-          return r;
-        };
-      }
-
-      // y si el usuario cambia el estado/ciudad manualmente, refrescamos #c8
-      const estSel = document.getElementById('estadoSelect');
-      const ciuSel = document.getElementById('ciudadSelect');
-      if (estSel) estSel.addEventListener('change', () => setTimeout(() => {
-        const est = estSel.value, ciu = ciuSel?.value || '';
-        const { price, bestCity, bestState } = getMaxGruaPrice(est, ciu);
-        if (price != null) applyGruaToForm(bestState || est, bestCity || ciu, price);
-      }, 100));
-      if (ciuSel) ciuSel.addEventListener('change', () => {
-        const est = estSel?.value || '', ciu = ciuSel.value;
-        const { price, bestCity, bestState } = getMaxGruaPrice(est, ciu);
-        if (price != null) applyGruaToForm(bestState || est, bestCity || ciu, price);
-      });
-    });
-
   })();
   </script>
 </body>
