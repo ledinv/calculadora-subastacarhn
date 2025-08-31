@@ -154,12 +154,19 @@
     const vin = get("vin"), make = get("make"), model = get("model");
     const value_usd = get("value_usd"), est_mid = get("est_mid"), motorURL = get("motor");
 
-    function setVal(id, v){ const el=document.getElementById(id); if(!el||v==="") return;
-      el.value=v; el.dispatchEvent(new Event("input",{bubbles:true})); el.dispatchEvent(new Event("change",{bubbles:true})); }
+    function setVal(id, v){
+      const el = document.getElementById(id);
+      if (!el || v === "") return;
+      el.value = v;
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    }
 
     // VIN/CAFTA
-    let cafta="OTROS"; if (vin && ["1","4","5"].includes(vin.trim()[0])) cafta="1,4,5";
-    setVal("c13", cafta); if (typeof window.bloquearMotorPorVin==="function") try{bloquearMotorPorVin();}catch(_){}
+    let cafta = "OTROS";
+    if (vin && ["1","4","5"].includes(vin.trim()[0])) cafta = "1,4,5";
+    setVal("c13", cafta);
+    if (typeof window.bloquearMotorPorVin==="function") { try{bloquearMotorPorVin();}catch(_){} }
 
     // Monto
     setVal("c1", value_usd || est_mid || "");
@@ -171,14 +178,21 @@
 
     // Motor (solo si VIN=OTROS)
     (function(){
-      const el=document.getElementById("motor"); if(!el) return;
+      const el = document.getElementById("motor"); if(!el) return;
       if (cafta!=="OTROS"){ el.value=""; el.dispatchEvent(new Event("change",{bubbles:true})); return; }
-      let mVal = motorURL || ""; if(!mVal){ const m=/(\d\.\d)/.exec(model||""); if(m){ mVal=(parseFloat(m[1])<=1.5)?"1.5 Inferior":"Superior 1.5"; } }
+      let mVal = motorURL || "";
+      if (!mVal){
+        const m=/(\d\.\d)/.exec(model||"");
+        if (m){ mVal = (parseFloat(m[1])<=1.5) ? "1.5 Inferior" : "Superior 1.5"; }
+      }
       if (mVal) setVal("motor", mVal);
     })();
 
     // Auto-calcular si listo
-    setTimeout(()=>{ const c1=document.getElementById("c1")?.value||"", c13=document.getElementById("c13")?.value||"", m=document.getElementById("motor")?.value||"";
+    setTimeout(()=>{
+      const c1=document.getElementById("c1")?.value||"";
+      const c13=document.getElementById("c13")?.value||"";
+      const m=document.getElementById("motor")?.value||"";
       if (typeof window.calcular==="function" && c1 && (c13!=="OTROS" || m)) window.calcular();
     },400);
   })();
@@ -187,13 +201,21 @@
   <!-- Barco fijo=900 y Grúa por ciudad (precio MÁXIMO) desde ?location= -->
   <script>
   (function () {
-    // Barco fijo
-    document.addEventListener('DOMContentLoaded', ()=>{ const b=document.getElementById('c7'); if(b){ b.value='900'; b.dispatchEvent(new Event('input',{bubbles:true})); b.dispatchEvent(new Event('change',{bubbles:true})); }});
+    /* ====== Barco fijo ====== */
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const b = document.getElementById('c7');
+      if (b){
+        b.value = '900';
+        b.dispatchEvent(new Event('input',{bubbles:true}));
+        b.dispatchEvent(new Event('change',{bubbles:true}));
+      }
+    });
 
-    // ===== Grúa por CIUDAD (máximo entre Florida/Texas/Delaware) =====
+    /* ====== Utilidades ====== */
     const rmAcc = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
     const slug  = s => rmAcc(String(s||'').toLowerCase()).replace(/[^a-z0-9]+/g,' ').trim();
 
+    // Normaliza nombres de ciudad y corrige alias/typos
     function normCity(s){
       let x = slug(s)
         .replace(/\b(copart|iaai|auction|facility|location|manheim|sublot|sublote)\b/g,'')
@@ -201,29 +223,45 @@
         .replace(/\bft\b\.?/g,'fort')
         .replace(/\bst\b\.?/g,'st')
         .trim();
-      const A={ 'wpb':'west palm beach','west palm':'west palm beach','ft lauderdale':'fort lauderdale','s bernardino':'san bernardino','newburg':'newburgh' };
+      const A = {
+        'wpb':'west palm beach',
+        'west palm':'west palm beach',
+        'ft lauderdale':'fort lauderdale',
+        's bernardino':'san bernardino',
+        'newburg':'newburgh',
+        'tauton':'taunton' // typo frecuente
+      };
       return A[x] || x;
     }
 
+    // Extrae SOLO la ciudad de la cadena que manda la extensión
     function cityFromLocation(raw){
       if (!raw) return '';
-      let s=String(raw);
-      if (s.includes(' - ')) s = s.split(' - ').slice(1).join(' - ');
-      if (s.includes(','))  s = s.split(',')[0];
+      let s = String(raw);
+
+      // Acepta "ST- Ciudad", "ST -Ciudad", "ST - Ciudad"
+      s = s.replace(/^\s*[A-Za-z]{2}\s*-\s*/,'');
+      // Acepta "Ciudad, ST"
+      if (s.includes(',')) s = s.split(',')[0];
+      // Quita "(ST)" u otros paréntesis
       s = s.replace(/\([^)]*\)/g,'');
+
       return normCity(s);
     }
 
+    // Busca el precio MÁXIMO para esa ciudad en los 3 tarifarios
     function maxPriceByCity(cityWanted){
       const ports = [
         (typeof tarifarioGruasPuertoFlorida  !== 'undefined') ? tarifarioGruasPuertoFlorida  : {},
         (typeof tarifarioGruasPuertoTexas    !== 'undefined') ? tarifarioGruasPuertoTexas    : {},
         (typeof tarifarioGruasPuertoDelaware !== 'undefined') ? tarifarioGruasPuertoDelaware : {}
       ];
-      const needle = normCity(cityWanted); if (!needle) return null;
+      const needle = normCity(cityWanted);
+      if (!needle) return null;
+
       let max = null;
       for (const p of ports){
-        for (const [state, table] of Object.entries(p)){
+        for (const table of Object.values(p)){
           for (const [cityKey, price] of Object.entries(table)){
             const ck = normCity(cityKey);
             if (ck && (ck.includes(needle) || needle.includes(ck))){
@@ -236,13 +274,23 @@
       return max;
     }
 
+    // Resolver y aplicar a #c8
     document.addEventListener('DOMContentLoaded', ()=>{
-      const loc = new URLSearchParams(location.search).get('location') || '';
+      const params = new URLSearchParams(location.search);
+      const loc = params.get('location') || '';
       const city = cityFromLocation(loc);
       const price = maxPriceByCity(city);
+
+      // mini debug en consola
+      console.debug('[GRUA]', { locationRaw: loc, ciudadNormalizada: city, precioMaxEncontrado: price });
+
       if (price!=null){
-        const c8=document.getElementById('c8');
-        if (c8){ c8.value=price; c8.dispatchEvent(new Event('input',{bubbles:true})); c8.dispatchEvent(new Event('change',{bubbles:true})); }
+        const c8 = document.getElementById('c8');
+        if (c8){
+          c8.value = price;
+          c8.dispatchEvent(new Event('input',{bubbles:true}));
+          c8.dispatchEvent(new Event('change',{bubbles:true}));
+        }
         if (typeof window.calcular==='function') setTimeout(()=>window.calcular(),120);
       }
     });
