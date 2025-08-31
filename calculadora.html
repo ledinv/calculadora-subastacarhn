@@ -57,7 +57,7 @@
         <input type="number" id="e2" value="25.90" readonly />
 
         <label for="c13">VIN:</label>
-        <select id="c13" onchange="bloquearMotorPorVin()">
+        <select id="c13" onchange="window.bloquearMotorPorVin && window.bloquearMotorPorVin()">
           <option value="OTROS" selected>OTROS</option>
           <option value="1,4,5">1,4,5</option>
         </select>
@@ -143,6 +143,11 @@
     document.addEventListener('DOMContentLoaded', function() {
       cargarEstados();
     });
+  </script>
+
+  <!-- Shim seguro por si bloquearMotorPorVin no está definido aún -->
+  <script>
+    window.bloquearMotorPorVin = window.bloquearMotorPorVin || function(){};
   </script>
 
   <!-- Auto-relleno básico desde la extensión (VIN/CAFTA, monto, tipo y motor) -->
@@ -241,8 +246,10 @@
 
       // Acepta "ST- Ciudad", "ST -Ciudad", "ST - Ciudad"
       s = s.replace(/^\s*[A-Za-z]{2}\s*-\s*/,'');
+
       // Acepta "Ciudad, ST"
       if (s.includes(',')) s = s.split(',')[0];
+
       // Quita "(ST)" u otros paréntesis
       s = s.replace(/\([^)]*\)/g,'');
 
