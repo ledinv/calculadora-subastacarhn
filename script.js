@@ -355,7 +355,7 @@ function reiniciar() {
   document.getElementById('c1').value = "";
   document.getElementById('c7').value = "";
   document.getElementById('c8').value = "";
-  document.getElementById('e2').value = "25.90";
+  document.getElementById('e2').value = "26.60";
   document.getElementById('c13').value = "OTROS";
   document.getElementById('c14').value = "OTROS";
   document.getElementById('motor').value = "";
