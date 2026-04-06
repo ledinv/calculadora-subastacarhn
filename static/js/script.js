@@ -493,10 +493,6 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "login.html";
     }
   });
-});
-// ===============================
-
-
 // ===============================
 // 🔥 PEGADO DE GRUAS.JS
 // ===============================
