@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>SubastaCarHN</title>
+<!-- Firebase SIEMPRE ANTES -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<!-- 🔥 CSS correctamente conectado -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+</head>
+
+<body>
+
+<div class="header">
+  <h2>Calculadora de Importación de Vehículos</h2>
+</div>
+
+<div class="container">
+
+<!-- 🔍 BUSCADOR -->
+<div class="card">
+  <h3>Buscar Auto</h3>
+
+  <input id="marca" value="TOYOTA">
+  <input id="modelo" value="COROLLA">
+  <input id="anio_min" placeholder="Año Min">
+  <input id="anio_max" placeholder="Año Max">
+  <input type="date" id="fecha">
+
+  <button onclick="buscarAutos()">Buscar</button>
+</div>
+
+<!-- 🧮 CALCULADORA -->
+<div class="card">
+
+<label>Monto de Oferta</label>
+<input id="c1">
+
+<label>Precio Barco</label>
+<input id="c7">
+
+<label>Precio Grua</label>
+<input id="c8">
+
+<label>Tipo de Cambio</label>
+<input id="e2" value="26.60">
+
+<label>VIN</label>
+<select id="c13" onchange="bloquearMotorPorVin()">
+<option value="OTROS">OTROS</option>
+<option value="1,4,5">1,4,5</option>
+</select>
+
+<label>Tipo Vehículo</label>
+<select id="c14">
+<option value="OTROS">TURISMO</option>
+<option value="PICK UP">PICK UP</option>
+<option value="HIBRIDO">HIBRIDO</option>
+<option value="CAMION">CAMION</option>
+<option value="BUS">BUS</option>
+<option value="MAQUINARIA">MAQUINARIA</option>
+<option value="MOTO">MOTO</option>
+</select>
+
+<label>Motor</label>
+<select id="motor">
+<option value="">Seleccionar</option>
+<option value="1.5 Inferior">1.5 Inferior</option>
+<option value="Superior 1.5">Superior</option>
+</select>
+
+<button onclick="calcular()">Calcular</button>
+<button onclick="reiniciar()">Reiniciar</button>
+
+<div id="results"></div>
+
+</div>
+
+<!-- 🚢 GRUAS -->
+<div class="card">
+<h3>Grúa y Barco</h3>
+
+<select id="estadoSelect" onchange="cargarCiudades()"></select>
+<select id="ciudadSelect"></select>
+
+<select id="vehiculoSelect">
+<option value="Turismos Pequeños">Turismos</option>
+<option value="Camionetas Regulares">Camionetas</option>
+</select>
+
+<button onclick="buscarRuta()">Buscar</button>
+
+<div id="resultadoGrua" style="display:none;">
+<p id="precioBarco"></p>
+<p id="precioGrua"></p>
+</div>
+
+<div id="mensajeError" style="display:none;color:red;">
+No encontrado
+</div>
+
+</div>
+
+<!-- RESULTADOS -->
+<div class="autos" id="autos"></div>
+
+</div>
+
+<!-- 🔥 JS correctamente conectado -->
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>
