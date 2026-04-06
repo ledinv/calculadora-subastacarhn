@@ -122,21 +122,14 @@ data.forEach(auto => {
 // 🔽 AQUÍ VA TODO TU script.js COMPLETO SIN MODIFICAR
 // (ya está respetado en lógica, solo omití Firebase UI para local)
 
-// 👉 IMPORTANTE:
-// PEGA AQUÍ TODO tu script.js desde:
-// const buyerFees = ...
-// hasta el final
-// 🔥 MODO LOCAL DEBUG
+
 
 const formatear = v => "L " + Number(v).toFixed(2);
 const formatearUSD = v => "$ " + Number(v).toFixed(2);
 
-const auth = {
-
 
 // Desactivar funciones externas
 function registrarClic() {}
-function guardarHistorial() {}
 const buyerFees = [
   [50,1],[100,25],[200,60],[300,85],[350,100],[400,125],[450,135],[500,145],[550,155],[600,170],
   [700,195],[800,215],[900,230],[1000,250],[1200,270],[1300,285],[1400,300],[1500,315],[1600,330],
@@ -394,7 +387,7 @@ function compartirWhatsApp() {
 }
 
 // Historial en Firestore
-async function guardarHistorial(detallesFormateados, totalFinalFormateado) 
+async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
   const user = auth.currentUser;
   if (!user) return;
 
