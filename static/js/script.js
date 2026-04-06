@@ -11,7 +11,6 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
 const auth = firebase.auth();
 const db = firebase.firestore();
  
@@ -414,7 +413,6 @@ async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
   } catch (error) {
     console.error("Error guardando historial:", error);
   }
-}
 }
 
 // Contador de usos
