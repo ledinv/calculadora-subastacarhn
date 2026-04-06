@@ -132,21 +132,7 @@ const formatear = v => "L " + Number(v).toFixed(2);
 const formatearUSD = v => "$ " + Number(v).toFixed(2);
 
 const auth = {
-  currentUser: null
-};
 
-const db = {
-  collection: () => ({
-    doc: () => ({
-      collection: () => ({
-        orderBy: () => ({
-          get: async () => ({ size: 0, docs: [] })
-        }),
-        add: async () => {}
-      })
-    })
-  })
-};
 
 // Desactivar funciones externas
 function registrarClic() {}
