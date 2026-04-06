@@ -394,7 +394,7 @@ function compartirWhatsApp() {
 }
 
 // Historial en Firestore
-async function guardarHistorial(detallesFormateados, totalFinalFormateado) {
+async function guardarHistorial(detallesFormateados, totalFinalFormateado) 
   const user = auth.currentUser;
   if (!user) return;
 
