@@ -1024,7 +1024,6 @@ function buscarRuta() {
       htmlGrua += `🏗️ <strong>Grúa (${ciudad} - ${nombrePuerto}):</strong> USD ${valorGrua}<br>`;
       encontrado = true;
     }
-  });
 
   if (encontrado) {
     barcoText.innerHTML = htmlBarco;
