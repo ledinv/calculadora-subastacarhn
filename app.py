@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -6,10 +6,10 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import json
 from datetime import datetime
-from flask import Flask, render_template, request, jsonify
+import os
+
 app = Flask(__name__)
 CORS(app)
-
 
 def safe_int(value):
     try:
@@ -17,19 +17,23 @@ def safe_int(value):
     except:
         return None
 
-
-
-app = Flask(__name__)
+# ===============================
+# RUTAS
+# ===============================
 
 @app.route("/")
 def home():
     return render_template("index.html")
-    from flask import send_from_directory
-import os
 
-@app.route("/login.html")
-def login_html():
-    return send_from_directory(os.getcwd(), "login.html")
+# ✅ CORREGIDO (ANTES DABA 500)
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+# ===============================
+# BUSCADOR
+# ===============================
+
 @app.route("/buscar", methods=["POST"])
 def buscar():
 
@@ -63,19 +67,17 @@ def buscar():
     driver.get("https://www.copart.com")
 
     payload = {
-    "query": ["*"],
-    "filter": {
-        "MAKE": [f'lot_make_desc:"{marca}"'],
-        "MISC": [f'#LotModel:"{modelo}"'],
-
-        # 🔥 FILTRO REAL DE COPART
-        "YEAR": [
-            f'lot_year:[{anio_min} TO {anio_max}]'
-        ] if anio_min and anio_max else []
-    },
-    "page": 0,
-    "size": 1000
-}
+        "query": ["*"],
+        "filter": {
+            "MAKE": [f'lot_make_desc:"{marca}"'],
+            "MISC": [f'#LotModel:"{modelo}"'],
+            "YEAR": [
+                f'lot_year:[{anio_min} TO {anio_max}]'
+            ] if anio_min and anio_max else []
+        },
+        "page": 0,
+        "size": 1000
+    }
 
     script = f"""
     return fetch("https://www.copart.com/public/lots/vehicle-finder-search-results", {{
@@ -108,12 +110,7 @@ def buscar():
         anio_lote = lot.get("lcy")
         print("AÑO:", anio_lote)
 
-        # 🔥 filtro año
-        
-
-        # 🔥 fecha
         fecha = None
-
         if lot.get("ad"):
             try:
                 fecha = datetime.fromtimestamp(lot["ad"]/1000).strftime("%Y-%m-%d")
@@ -121,12 +118,8 @@ def buscar():
                 fecha = None
 
         print("FECHA LOTE:", fecha)
-
-        # 🔥 DEBUG FILTRO FECHA
-
         print("✅ PASÓ FILTROS")
 
-        # valores
         precio = lot.get("hb") or "Sin oferta"
         buy_now = lot.get("bnp") or "No disponible"
         odometro = lot.get("orr") or "No disponible"
@@ -134,7 +127,6 @@ def buscar():
         danio_sec = lot.get("sdd") or "N/A"
         valor = lot.get("lotPlugAcv") or lot.get("la") or "No disponible"
 
-        # imagen
         imagen = ""
 
         if lot.get("imagesList"):
@@ -186,6 +178,8 @@ def buscar():
 
     return jsonify(autos)
 
-
+# ===============================
+# RUN
+# ===============================
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
