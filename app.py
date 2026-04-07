@@ -1,12 +1,7 @@
-from flask import Flask, request, jsonify, render_template, send_from_directory
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-import json
+import requests
 from datetime import datetime
-import os
 
 app = Flask(__name__)
 CORS(app)
@@ -25,161 +20,119 @@ def safe_int(value):
 def home():
     return render_template("index.html")
 
-# ✅ CORREGIDO (ANTES DABA 500)
 @app.route("/login")
 def login():
     return render_template("login.html")
 
 # ===============================
-# BUSCADOR
+# BUSCADOR (SIN SELENIUM 🔥)
 # ===============================
 
 @app.route("/buscar", methods=["POST"])
 def buscar():
+    try:
+        filtros = request.json or {}
 
-    filtros = request.json or {}
+        marca = filtros.get("marca", "TOYOTA")
+        modelo = filtros.get("modelo", "camry")
 
-    marca = filtros.get("marca", "TOYOTA")
-    modelo = filtros.get("modelo", "camry")
+        anio_min = safe_int(filtros.get("anio_min"))
+        anio_max = safe_int(filtros.get("anio_max"))
 
-    anio_min = safe_int(filtros.get("anio_min"))
-    anio_max = safe_int(filtros.get("anio_max"))
-    fecha_filtro = filtros.get("fecha")
+        print("\n================= NUEVA BUSQUEDA =================")
+        print("MARCA:", marca)
+        print("MODELO:", modelo)
 
-    print("\n================= NUEVA BUSQUEDA =================")
-    print("MARCA:", marca)
-    print("MODELO:", modelo)
-    print("AÑO MIN:", anio_min)
-    print("AÑO MAX:", anio_max)
-    print("FECHA FILTRO:", fecha_filtro)
+        payload = {
+            "query": ["*"],
+            "filter": {
+                "MAKE": [f'lot_make_desc:"{marca}"'],
+                "MISC": [f'#LotModel:"{modelo}"'],
+                "YEAR": [
+                    f'lot_year:[{anio_min} TO {anio_max}]'
+                ] if anio_min and anio_max else []
+            },
+            "page": 0,
+            "size": 100
+        }
 
-    # 🔥 modo oculto
-    options = Options()
-    options.add_argument("--headless=new")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")
+        url = "https://www.copart.com/public/lots/vehicle-finder-search-results"
 
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()),
-        options=options
-    )
+        headers = {
+            "Content-Type": "application/json",
+            "User-Agent": "Mozilla/5.0"
+        }
 
-    driver.get("https://www.copart.com")
+        res = requests.post(url, json=payload, headers=headers)
+        data = res.json()
 
-    payload = {
-        "query": ["*"],
-        "filter": {
-            "MAKE": [f'lot_make_desc:"{marca}"'],
-            "MISC": [f'#LotModel:"{modelo}"'],
-            "YEAR": [
-                f'lot_year:[{anio_min} TO {anio_max}]'
-            ] if anio_min and anio_max else []
-        },
-        "page": 0,
-        "size": 1000
-    }
+        resultados = data.get("data", {}).get("results", {}).get("content", [])
 
-    script = f"""
-    return fetch("https://www.copart.com/public/lots/vehicle-finder-search-results", {{
-        method: "POST",
-        headers: {{
-            "Content-Type": "application/json"
-        }},
-        body: JSON.stringify({json.dumps(payload)})
-    }})
-    .then(res => res.json())
-    """
+        if not resultados:
+            resultados = data.get("data", {}).get("content", [])
 
-    data = driver.execute_script(script)
-    driver.quit()
+        autos = []
 
-    resultados = data.get("data", {}).get("results", {}).get("content", [])
+        for lot in resultados:
 
-    if not resultados:
-        resultados = data.get("data", {}).get("content", [])
+            fecha = None
+            if lot.get("ad"):
+                try:
+                    fecha = datetime.fromtimestamp(lot["ad"]/1000).strftime("%Y-%m-%d")
+                except:
+                    fecha = None
 
-    print("👉 TOTAL RECIBIDOS DE COPART:", len(resultados))
+            imagen = ""
+            if lot.get("imagesList"):
+                imagen = lot["imagesList"][0].get("url", "")
+            elif lot.get("imageUrls") and "full" in lot["imageUrls"]:
+                imagen = lot["imageUrls"]["full"][0]
+            elif lot.get("tims"):
+                imagen = lot["tims"]
 
-    autos = []
+            autos.append({
+                "lote": lot.get("lotNumberStr"),
+                "link": f"https://www.copart.com/lot/{lot.get('lotNumberStr')}",
 
-    for lot in resultados:
+                "anio": lot.get("lcy"),
+                "marca": lot.get("mkn"),
+                "modelo": lot.get("lmg"),
 
-        print("\n----------- LOTE -----------")
-        print("LOTE:", lot.get("lotNumberStr"))
+                "precio": lot.get("hb") or "Sin oferta",
+                "buy_now": lot.get("bnp") or "No disponible",
+                "valor_mercado": lot.get("lotPlugAcv") or lot.get("la") or "No disponible",
 
-        anio_lote = lot.get("lcy")
-        print("AÑO:", anio_lote)
+                "odometro": lot.get("orr") or "No disponible",
+                "motor": lot.get("egn") or "",
+                "transmision": lot.get("tmtp") or "",
+                "traccion": lot.get("drv") or "",
+                "combustible": lot.get("ft") or "",
+                "cilindros": lot.get("cy") or "",
 
-        fecha = None
-        if lot.get("ad"):
-            try:
-                fecha = datetime.fromtimestamp(lot["ad"]/1000).strftime("%Y-%m-%d")
-            except:
-                fecha = None
+                "danio": lot.get("dd") or "No especificado",
+                "danio_secundario": lot.get("sdd") or "N/A",
 
-        print("FECHA LOTE:", fecha)
-        print("✅ PASÓ FILTROS")
+                "codigo_titulo": lot.get("tgd") or "",
+                "llaves": lot.get("hk") or "",
 
-        precio = lot.get("hb") or "Sin oferta"
-        buy_now = lot.get("bnp") or "No disponible"
-        odometro = lot.get("orr") or "No disponible"
-        danio = lot.get("dd") or "No especificado"
-        danio_sec = lot.get("sdd") or "N/A"
-        valor = lot.get("lotPlugAcv") or lot.get("la") or "No disponible"
+                "fecha_subasta": fecha or "No disponible",
+                "destacados": lot.get("ess") or "",
+                "ubicacion": lot.get("yn"),
 
-        imagen = ""
+                "imagen": imagen
+            })
 
-        if lot.get("imagesList"):
-            imagen = lot["imagesList"][0].get("url", "")
-        elif lot.get("imageUrls") and "full" in lot["imageUrls"]:
-            imagen = lot["imageUrls"]["full"][0]
-        elif lot.get("tims"):
-            imagen = lot["tims"]
+        print("👉 TOTAL ENVIADOS:", len(autos))
 
-        autos.append({
-            "lote": lot.get("lotNumberStr"),
-            "link": f"https://www.copart.com/lot/{lot.get('lotNumberStr')}",
+        return jsonify(autos)
 
-            "anio": anio_lote,
-            "marca": lot.get("mkn"),
-            "modelo": lot.get("lmg"),
-            "version": lot.get("ltd"),
+    except Exception as e:
+        print("ERROR:", str(e))
+        return jsonify({"error": str(e)}), 500
 
-            "precio": precio,
-            "buy_now": buy_now,
-            "valor_mercado": valor,
-
-            "odometro": odometro,
-            "tipo_odometro": lot.get("ord") or "",
-
-            "danio": danio,
-            "danio_secundario": danio_sec,
-
-            "codigo_titulo": lot.get("tgd") or "",
-            "descripcion_titulo": lot.get("td") or "",
-
-            "cilindros": lot.get("cy") or "",
-            "llaves": lot.get("hk") or "",
-
-            "motor": lot.get("egn") or "",
-            "transmision": lot.get("tmtp") or "",
-            "traccion": lot.get("drv") or "",
-            "combustible": lot.get("ft") or "",
-
-            "fecha_subasta": fecha or "No disponible",
-            "destacados": lot.get("ess") or "",
-            "notas": lot.get("lcd") or "",
-
-            "ubicacion": lot.get("yn"),
-            "imagen": imagen
-        })
-
-    print("\n👉 TOTAL ENVIADOS AL FRONT:", len(autos))
-
-    return jsonify(autos)
 
 # ===============================
 # RUN
 # ===============================
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000)
