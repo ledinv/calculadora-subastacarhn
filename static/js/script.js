@@ -1032,6 +1032,6 @@ function buscarRuta() {
     resultadoDiv.style.display = "block";
     errorDiv.style.display = "none";
   } else {
-    resultadoDiv.style.display = "none";
-    errorDiv.style.display = "block";
-});
+  resultadoDiv.style.display = "none";
+  errorDiv.style.display = "block";
+}
