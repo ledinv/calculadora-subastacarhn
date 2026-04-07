@@ -1034,5 +1034,4 @@ function buscarRuta() {
   } else {
     resultadoDiv.style.display = "none";
     errorDiv.style.display = "block";
-  }
 });
