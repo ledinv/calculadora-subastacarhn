@@ -1035,5 +1035,4 @@ function buscarRuta() {
     resultadoDiv.style.display = "none";
     errorDiv.style.display = "block";
   }
-}
 });
