@@ -490,7 +490,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (contenido) contenido.style.display = "block";
     } else {
       alert("❗ Debes iniciar sesión para usar la calculadora.");
-      window.location.href = "login.html";
+      window.location.href = "/login";
     }
    });
  });
