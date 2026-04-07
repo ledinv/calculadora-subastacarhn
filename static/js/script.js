@@ -29,7 +29,7 @@ const db = firebase.firestore();
 // ===============================
 async function buscarAutos() {
 const fecha = document.getElementById("fecha").value;
-  const res = await fetch("/buscar", {
+ const res = await fetch(window.location.origin + "/buscar", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
 
@@ -61,7 +61,7 @@ data.forEach(auto => {
     <div class="lote">
 
       <div>
-        <img src="${auto.imagen}" onclick="window.open('${auto.link}')">
+        <img src="${auto.imagen}" onclick="window.open('${auto.link.replace(/'/g, "\\'")}')"
       </div>
 
       <div class="col">
@@ -492,7 +492,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("❗ Debes iniciar sesión para usar la calculadora.");
       window.location.href = "login.html";
     }
-  });
+   });
  });
 // ===============================
 // 🔥 PEGADO DE GRUAS.JS
