@@ -1024,6 +1024,7 @@ function buscarRuta() {
       htmlGrua += `🏗️ <strong>Grúa (${ciudad} - ${nombrePuerto}):</strong> USD ${valorGrua}<br>`;
       encontrado = true;
     }
+  }); // ✅ ESTE FALTABA
 
   if (encontrado) {
     barcoText.innerHTML = htmlBarco;
@@ -1031,6 +1032,8 @@ function buscarRuta() {
     resultadoDiv.style.display = "block";
     errorDiv.style.display = "none";
   } else {
-  resultadoDiv.style.display = "none";
-  errorDiv.style.display = "block";
-}
+    resultadoDiv.style.display = "none";
+    errorDiv.style.display = "block";
+  }
+
+} // ✅ ESTE TAMBIÉN FALTABA
