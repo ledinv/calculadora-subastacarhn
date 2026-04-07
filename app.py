@@ -24,6 +24,12 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     return render_template("index.html")
+    from flask import send_from_directory
+import os
+
+@app.route("/login.html")
+def login_html():
+    return send_from_directory(os.getcwd(), "login.html")
 @app.route("/buscar", methods=["POST"])
 def buscar():
 
