@@ -1,0 +1,448 @@
+/* === BASE === */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #f9f9f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* === HEADER === */
+.site-header {
+  background: linear-gradient(to right, #002f6c, #004aad);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.site-header .header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.brand {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: none;
+  gap: 1.5rem;
+}
+
+.nav-links a,
+.nav-links span {
+  color: #ffc20e;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.menu-icon {
+  background: #ffc20e;
+  color: #002f6c;
+  border: none;
+  font-size: 1.25rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  background: white;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 998;
+}
+
+.mobile-nav.open {
+  display: flex;
+}
+
+.mobile-nav a,
+.mobile-nav span {
+  display: block;
+  color: #002f6c;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+}
+
+.mobile-nav a:hover,
+.mobile-nav span:hover {
+  background: rgba(0, 47, 108, 0.1);
+}
+
+/* === RESPONSIVE === */
+@media (min-width: 768px) {
+  .nav-links {
+    display: flex;
+  }
+
+  .menu-icon {
+    display: none;
+  }
+}
+
+/* === CONTENIDO PRINCIPAL === */
+.layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px 10px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.banner img {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.contenido-central {
+  max-width: 380px;
+  width: 100%;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+}
+
+/* === FORMULARIOS === */
+label {
+  font-weight: bold;
+  color: #002f6c;
+  display: block;
+  margin-top: 10px;
+}
+
+input,
+select {
+  font-size: 14px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #004aad;
+  background: #f0f8ff;
+  width: 100%;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+/* === BOTONES === */
+.styled-btn {
+  background: #ffc20e;
+  color: #002f6c;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  margin: 8px 4px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.styled-btn:hover {
+  background: #e6ac00;
+}
+
+/* === TEXTOS === */
+.titulo {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #002f6c;
+  margin: 1.5rem 0;
+  font-weight: 700;
+}
+
+.soporte {
+  text-align: center;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.soporte a {
+  color: #004aad;
+}
+
+.verde {
+  color: green;
+}
+
+/* === FOOTER === */
+footer {
+  background: #004aad;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 3rem;
+}
+
+footer a {
+  color: #ffc20e;
+  text-decoration: none;
+  margin: 0 0.5rem;
+}
+
+/* === BOTÓN FLOTANTE WHATSAPP === */
+.soporte-gratis {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background-color: rgba(0, 74, 173, 0.85);
+  color: white;
+  border-radius: 50px;
+  padding: 5px 10px;
+  font-weight: bold;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  z-index: 999;
+}
+
+/* === FORMULARIO DE COTIZACIÓN === */
+.formulario-cotizacion {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.formulario-cotizacion form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formulario-cotizacion label {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.formulario-cotizacion select,
+.formulario-cotizacion button {
+  margin-top: 5px;
+  padding: 8px;
+  font-size: 1em;
+}
+
+@media (max-width: 600px) {
+  .formulario-cotizacion form {
+    flex-direction: column;
+  }
+}
+
+/* === RESPONSIVE EXTRA === */
+@media (max-width: 768px) {
+  .banner {
+    display: none;
+  }
+}
+
+/* === COTIZACIÓN PROFESIONAL === */
+.cotizacion-container {
+  text-align: center;
+  max-width: 700px;
+  margin: auto;
+  padding: 20px;
+  font-family: 'Montserrat', sans-serif;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cotizacion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.cotizacion-header .logo {
+  height: 60px;
+}
+
+.empresa-info {
+  text-align: right;
+  font-size: 0.9rem;
+}
+
+.empresa-info h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.tabla-cotizacion {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.tabla-cotizacion th,
+.tabla-cotizacion td {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  text-align: right;
+}
+
+.tabla-cotizacion th {
+  background: #004aad;
+  color: white;
+  text-align: left;
+}
+
+.tabla-cotizacion td:first-child {
+  text-align: left;
+}
+
+.total-final {
+  text-align: right;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.disclaimer {
+  font-size: 0.8rem;
+  color: #555;
+  margin-top: 2rem;
+  text-align: left;
+}
+
+/* === IMPRESIÓN/PDF === */
+@media print {
+  body {
+    margin: 0;
+  }
+  .menu-icon,
+  .site-header,
+  footer,
+  .soporte-gratis {
+    display: none !important;
+  }
+  .cotizacion-container {
+    box-shadow: none;
+    border-radius: 0;
+  }
+}
+@media print {
+  /* Oculta los botones dentro de la cotización */
+  .cotizacion-container .styled-btn {
+    display: none !important;
+  }
+}
+/* === AVISO DE EXENCIÓN === */
+.disclaimer {
+  background: #f0f4f8;               /* Fondo muy suave */
+  color: #002f6c;                    /* Texto en azul oscuro */
+  padding: 12px 16px;                /* Espacio interior */
+  border-left: 4px solid #004aad;    /* Borde de acento */
+  font-style: normal;                /* Texto normal, no cursiva */
+  font-size: 0.85rem;                /* Ajuste de tamaño */
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+@media print {
+  /* Oculta botones en PDF/imprimir */
+  .botones-detalle,
+  .cotizacion-container .styled-btn {
+    display: none !important;
+  }
+}
+/* Oculta cualquier <img> dentro de la cotización */
+.cotizacion-container img {
+  display: none !important;
+}
+/* =======================================
+   AJUSTES PARA IMPRESIÓN / PDF EN UNA SÓLA HOJA
+   ======================================= */
+@media print {
+  /* Define tamaño de página (A4) y márgenes */
+  @page {
+    size: A4 portrait;
+    margin: 15mm;
+  }
+
+  /* Oculta todo excepto la cotización */
+  body * {
+    visibility: hidden;
+  }
+  .cotizacion-container, .cotizacion-container * {
+    visibility: visible;
+  }
+
+  /* Coloca la cotización al inicio y evita saltos */
+  .cotizacion-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
+.contador-clics-desktop {
+  background-color: #ffcc00;
+  color: #002f6c;
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: 50px;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  z-index: 999;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+}
+
+/* Oculta en pantallas pequeñas (móviles) */
+@media screen and (max-width: 768px) {
+  .contador-clics-desktop {
+    display: none;
+  }
+}
+.contador-clics-desktop {
+  background-color: #ffcc00;
+  color: #002f6c;
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: 50px;
+  position: absolute;
+  right: 10px; /* 👈 Más a la derecha */
+  top: 10px;    /* ⬅️ Mantiene su altura original */
+  z-index: 999;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+}
+
+/* Ocultar en móviles */
+@media screen and (max-width: 768px) {
+  .contador-clics-desktop {
+    display: none;
+  }
+}
+

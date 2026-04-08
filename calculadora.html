@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora – SubastaCarHN</title>
+
+  <!-- Favicons -->
+  <link rel="manifest" href="Img/site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="Img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="Img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="Img/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="Img/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="Img/android-chrome-512x512.png">
+  <meta name="theme-color" content="#002f6c">
+
+  <!-- Estilo -->
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <!-- Script de tarifas -->
+  <script defer src="gruas.js"></script>
+  <!-- Script principal -->
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <div id="header-placeholder"></div>
+
+  <div id="content" style="display:none;">
+    <h1 class="titulo">Calculadora de Importación de Vehículos</h1>
+    <p class="soporte">¿Necesitás ayuda? <a href="https://wa.me/50497330137" target="_blank">Soporte gratuito</a> al <span class="verde">+504 9733-0137</span></p>
+
+    <div class="layout">
+      <!-- Imagen izquierda -->
+      <div class="banner">
+        <img src="https://raw.githubusercontent.com/ledinv/calculadora-subastacarhn/main/lateral%20izquierdo.jpeg" alt="Banner Izquierdo" />
+      </div>
+
+      <!-- Calculadora -->
+      <div class="contenido-central">
+        <label for="c1">Monto de Oferta $:</label>
+        <input type="number" id="c1" />
+
+        <label for="c7">Precio de Barco $:</label>
+        <input type="number" id="c7" />
+
+        <label for="c8">Precio de Grua $:</label>
+        <input type="number" id="c8" />
+
+        <label for="e2">Tipo de Cambio:</label>
+        <input type="number" id="e2" value="26.60" readonly />
+
+        <label for="c13">VIN:</label>
+        <select id="c13" onchange="bloquearMotorPorVin()">
+          <option value="OTROS" selected>OTROS</option>
+          <option value="1,4,5">1,4,5</option>
+        </select>
+
+        <label for="c14">Tipo de Vehículo:</label>
+        <select id="c14">
+          <option value="OTROS">TURISMO / CAMIONETAS</option>
+          <option value="PICK UP">PICK UP</option>
+          <option value="HIBRIDO">HIBRIDO</option>
+          <option value="CAMION">CAMION</option>
+          <option value="BUS">BUS</option>
+          <option value="MAQUINARIA">MAQUINARIA</option>
+          <option value="MOTO">MOTO</option>
+        </select>
+
+        <label for="motor">Tipo de Motor:</label>
+        <select id="motor">
+          <option value="">Seleccionar...</option>
+          <option value="1.5 Inferior">1.5 Inferior</option>
+          <option value="Superior 1.5">Superior 1.5</option>
+        </select>
+
+        <button type="button" class="styled-btn" onclick="calcular()">Calcular</button>
+        <button type="button" class="styled-btn" onclick="reiniciar()">Reiniciar</button>
+
+        <!-- Resultados -->
+        <div id="results" style="margin-top: 1rem;"></div>
+      </div>
+
+      <!-- Consulta de Grúa y Barco -->
+      <div class="contenido-central">
+        <h3 style="text-align:center;">Consulta Automática de Grúa y Barco</h3>
+
+        <label for="estadoSelect">Estado:</label>
+        <select id="estadoSelect" onchange="cargarCiudades()"></select>
+
+        <label for="ciudadSelect">Ciudad:</label>
+        <select id="ciudadSelect"></select>
+
+        <label for="vehiculoSelect">Tipo de vehículo:</label>
+        <select id="vehiculoSelect">
+          <option value="Turismos Pequeños">Turismos Pequeños</option>
+          <option value="Turismos Grande">Turismos Grande</option>
+          <option value="Camionetas Regulares">Camionetas Regulares</option>
+          <option value="Camionetas Grandes">Camionetas Grandes</option>
+          <option value="Camionetas XL">Camionetas XL</option>
+          <option value="Motos Regulares">Motos Regulares</option>
+          <option value="Marcas Exclusivas">Marcas Exclusivas</option>
+          <option value="Cabina Sencilla (no excediendo 16')">Cabina Sencilla</option>
+          <option value="Cabina y Media (baja)">Cabina y Media (baja)</option>
+          <option value="Cabina y Media (alto) y doble cabina">Cabina y Media (alto)</option>
+          <option value="Extra Grandes (más de 17'3'')">Extra Grandes</option>
+        </select>
+
+        <button onclick="buscarRuta()" class="styled-btn" style="margin-top:1rem;">Buscar</button>
+
+        <div id="resultadoGrua" style="margin-top:1rem; display:none;">
+          <p id="precioBarco"></p>
+          <p id="precioGrua"></p>
+        </div>
+
+        <div id="mensajeError" style="color:red; display:none; margin-top:1rem;">
+          No se encontró una coincidencia para tu búsqueda.
+        </div>
+
+        <div style="margin-top:1rem; text-align:center;">
+          <a href="https://wa.me/50497330137?text=Hola,%20quiero%20coordinar%20una%20revisión%20de%20grúa%20y%20barco" class="styled-btn" target="_blank">
+            Coordina con nosotros
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Soporte flotante -->
+    <a href="https://wa.me/50497330137" class="soporte-gratis" target="_blank">Cotízalo ya</a>
+  </div>
+
+  <!-- FOOTER -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Inicializar carga de estados -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      cargarEstados();
+    });
+  </script>
+</body>
+</html>
