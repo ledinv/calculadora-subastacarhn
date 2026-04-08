@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SubastaCarHN</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">SubastaCarHN</div>
+
+      <nav class="topnav">
+        <a href="#">Calculadora</a>
+        <a href="#">Cursos</a>
+        <a href="#">Vehículos</a>
+        <a href="#">Soporte</a>
+      </nav>
+
+      <div class="topbar-right">
+        <span class="welcome-text">Hola, Ledin Valle | <a href="#" class="logout-link">Cerrar sesión</a></span>
+        <div class="badge-calculos">Cálculos: 41126</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-shell">
+
+    <section class="hero">
+      <h1>Calculadora de Importación de Vehículos</h1>
+      <p>¿Necesitás ayuda? <strong>Soporte gratuito al +504 9733-0137</strong></p>
+    </section>
+
+    <section class="main-grid">
+
+      <!-- BUSCADOR -->
+      <div class="card card-large">
+        <div class="promo-img-wrapper">
+          <img 
+            src="{{ url_for('static', filename='img/subastacar-banner.jpg') }}" 
+            alt="SubastaCarHN" 
+            class="promo-image"
+          >
+        </div>
+
+        <div class="card-content">
+          <div class="section-head">
+            <h3>Búsqueda de Auto Específico</h3>
+            <p>Encontrá vehículos por marca, modelo, año y fecha.</p>
+          </div>
+
+          <div class="form-grid form-grid-2">
+            <div>
+              <label for="marca">Marca:</label>
+              <input id="marca" value="TOYOTA" placeholder="Marca">
+            </div>
+
+            <div>
+              <label for="modelo">Modelo:</label>
+              <input id="modelo" value="COROLLA" placeholder="Modelo">
+            </div>
+
+            <div>
+              <label for="anio_min">Año mínimo:</label>
+              <input id="anio_min" placeholder="Año mínimo">
+            </div>
+
+            <div>
+              <label for="anio_max">Año máximo:</label>
+              <input id="anio_max" placeholder="Año máximo">
+            </div>
+
+            <div class="full-width">
+              <label for="fecha">Fecha:</label>
+              <input type="date" id="fecha" value="2026-04-04">
+            </div>
+          </div>
+
+          <div class="action-bar">
+            <button class="btn-primary full-width-btn" onclick="buscarAutos()">Buscar vehículos</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CALCULADORA -->
+      <div class="card card-large">
+        <div class="card-content">
+          <div class="section-head">
+            <h3>Cotización de Importación</h3>
+            <p>Ingresá los datos principales y calculá el costo estimado.</p>
+          </div>
+
+          <div class="form-grid form-grid-2">
+            <div>
+              <label for="c1">Monto de Oferta $:</label>
+              <input id="c1">
+            </div>
+
+            <div>
+              <label for="c7">Precio de Barco $:</label>
+              <input id="c7">
+            </div>
+
+            <div>
+              <label for="c8">Precio de Grúa $:</label>
+              <input id="c8">
+            </div>
+
+            <div>
+              <label for="e2">Tipo de Cambio:</label>
+              <input id="e2" value="26.6736">
+            </div>
+
+            <div>
+              <label for="c13">VIN:</label>
+              <select id="c13" onchange="bloquearMotorPorVin()">
+                <option value="OTROS">OTROS</option>
+                <option value="1,4,5">1,4,5</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="c14">Tipo de Vehículo:</label>
+              <select id="c14">
+                <option value="OTROS">TURISMO / CAMIONETAS</option>
+                <option value="PICK UP">PICK UP</option>
+                <option value="HIBRIDO">HIBRIDO</option>
+                <option value="CAMION">CAMION</option>
+                <option value="BUS">BUS</option>
+                <option value="MAQUINARIA">MAQUINARIA</option>
+                <option value="MOTO">MOTO</option>
+              </select>
+            </div>
+
+            <div class="full-width">
+              <label for="motor">Tipo de Motor:</label>
+              <select id="motor">
+                <option value="">Seleccionar...</option>
+                <option value="1.5 Inferior">1.5 Inferior</option>
+                <option value="Superior 1.5">Superior</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="btn-primary" style="flex:1" onclick="calcular()">Calcular</button>
+            <button class="btn-secondary" style="flex:1" onclick="reiniciar()">Reiniciar</button>
+          </div>
+
+          <div class="results-panel">
+            <div class="results-panel-head">
+              <h4>Detalle de cotización</h4>
+              <span>Resumen automático</span>
+            </div>
+            <div id="results" class="results-output"></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="secondary-grid">
+      <div class="card">
+        <div class="card-content">
+          <div class="section-head">
+            <h3>Consulta Automática de Grúa y Barco</h3>
+            <p>Seleccioná ubicación y tipo de vehículo para obtener referencia.</p>
+          </div>
+
+          <div class="form-grid form-grid-2">
+            <div>
+              <label for="estadoSelect">Estado:</label>
+              <select id="estadoSelect" onchange="cargarCiudades()">
+                <option>Selecciona un estado</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="ciudadSelect">Ciudad:</label>
+              <select id="ciudadSelect"></select>
+            </div>
+
+            <div class="full-width">
+              <label for="vehiculoSelect">Tipo de vehículo:</label>
+              <select id="vehiculoSelect"></select>
+            </div>
+          </div>
+
+          <div class="button-stack">
+            <button class="btn-primary full-width-btn" onclick="buscarRuta()">Buscar</button>
+            <button class="btn-secondary full-width-btn btn-mt" type="button">Coordina con nosotros</button>
+          </div>
+
+          <div id="resultadoGrua" class="info-box resultado-grua" style="display:none;">
+            <div class="info-row">
+              <span>Precio de Barco</span>
+              <strong id="precioBarco"></strong>
+            </div>
+            <div class="info-row">
+              <span>Precio de Grúa</span>
+              <strong id="precioGrua"></strong>
+            </div>
+          </div>
+
+          <div id="mensajeError" class="message-box message-error" style="display:none;">
+            No encontrado
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="results-section">
+      <div class="card">
+        <div class="card-content">
+          <div class="section-head section-head-results">
+            <div>
+              <h3>Resultados de búsqueda</h3>
+              <p>Mostrando solo la información esencial para que la pantalla no se vea cargada.</p>
+            </div>
+          </div>
+
+          <div class="autos-grid" id="autos"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="btn-flotante" type="button">Cotízalo ya</button>
+
+  <script src="{{ url_for('static', filename='js/buscador.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/calculadora.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/gruas.js') }}"></script>
+
+</body>
+</html>
