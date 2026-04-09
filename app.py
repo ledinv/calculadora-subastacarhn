@@ -10,13 +10,11 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-
 def safe_int(value):
     try:
         return int(value)
     except Exception:
         return None
-
 
 def crear_driver():
     options = Options()
@@ -25,6 +23,7 @@ def crear_driver():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=1920,1080")
+    options.add_argument("--remote-debugging-port=9222")
 
     chrome_binary = os.getenv("CHROME_BIN")
     chromedriver_path = os.getenv("CHROMEDRIVER_PATH")
@@ -34,15 +33,16 @@ def crear_driver():
 
     if chromedriver_path:
         service = Service(chromedriver_path)
-        return webdriver.Chrome(service=service, options=options)
+        driver = webdriver.Chrome(service=service, options=options)
+    else:
+        driver = webdriver.Chrome(options=options)
 
-    return webdriver.Chrome(options=options)
-
+    driver.set_page_load_timeout(30)
+    return driver
 
 @app.route("/")
 def home():
     return render_template("index.html")
-
 
 @app.route("/buscar", methods=["POST"])
 def buscar():
@@ -84,21 +84,20 @@ def buscar():
                 "Content-Type": "application/json"
             }},
             body: JSON.stringify({json.dumps(payload)})
-        }})
-        .then(res => res.json())
+        }}).then(res => res.json())
         """
 
         data = driver.execute_script(script)
+
+        if not data:
+            return jsonify({"error": "No se obtuvo respuesta válida de Copart"}), 500
 
     finally:
         driver.quit()
 
     resultados = data.get("data", {}).get("results", {}).get("content", [])
-
     if not resultados:
         resultados = data.get("data", {}).get("content", [])
-
-    print("👉 TOTAL RECIBIDOS DE COPART:", len(resultados))
 
     autos = []
 
@@ -120,9 +119,9 @@ def buscar():
         valor = lot.get("lotPlugAcv") or lot.get("la") or "No disponible"
 
         imagen = ""
-        if lot.get("imagesList"):
+        if lot.get("imagesList") and len(lot["imagesList"]) > 0:
             imagen = lot["imagesList"][0].get("url", "")
-        elif lot.get("imageUrls") and "full" in lot["imageUrls"]:
+        elif lot.get("imageUrls") and "full" in lot["imageUrls"] and lot["imageUrls"]["full"]:
             imagen = lot["imageUrls"]["full"][0]
         elif lot.get("tims"):
             imagen = lot["tims"]
@@ -156,9 +155,4 @@ def buscar():
             "imagen": imagen
         })
 
-    print("\n👉 TOTAL ENVIADOS AL FRONT:", len(autos))
     return jsonify(autos)
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
